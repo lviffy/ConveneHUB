@@ -13,6 +13,7 @@ import MovieTeamForgotPasswordPage from '@/app/movie-team-forgot-password/page';
 import AdminUsersPage from '@/app/admin/users/page';
 import AdminAssignmentsPage from '@/app/admin/assignments/page';
 import AdminEditEventPage from '@/app/admin/events/edit/page';
+import AuthCallbackPage from '@/app/auth/callback/page';
 import AuthErrorPage from '@/app/auth/error/page';
 import PrivacyPolicyPage from '@/app/privacy/page';
 import RefundPolicyPage from '@/app/refund/page';
@@ -58,6 +59,7 @@ export default function App() {
         <Route path="/privacy" element={<PrivacyPolicyPage />} />
         <Route path="/refund" element={<RefundPolicyPage />} />
         <Route path="/terms" element={<TermsAndConditionsPage />} />
+        <Route path="/auth/callback" element={<AuthCallbackPage />} />
         <Route path="/auth/error" element={<AuthErrorPage />} />
 
         <Route path="*" element={<NotFoundPage />} />

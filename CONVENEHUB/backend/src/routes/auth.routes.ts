@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { randomBytes } from 'crypto';
 import { z } from 'zod';
 import { UserModel } from '../models/User';
 import { signAccessToken, signRefreshToken } from '../utils/tokens';
@@ -55,6 +56,30 @@ function toFrontendUser(user: {
   };
 }
 
+function getGoogleOAuthConfig() {
+  const clientId = env.GOOGLE_CLIENT_ID;
+  const clientSecret = env.GOOGLE_CLIENT_SECRET;
+  const redirectUri = env.GOOGLE_REDIRECT_URI;
+
+  if (!clientId || !clientSecret || !redirectUri) {
+    return null;
+  }
+
+  return { clientId, clientSecret, redirectUri };
+}
+
+function sanitizeRole(role?: string): 'user' | 'movie_team' {
+  if (role === 'movie_team' || role === 'organizer') return 'movie_team';
+  return 'user';
+}
+
+function oauthErrorRedirect(code: string, details: string) {
+  const url = new URL('/auth/error', env.FRONTEND_ORIGIN);
+  url.searchParams.set('error', code);
+  url.searchParams.set('details', details);
+  return url.toString();
+}
+
 const registerSchema = z.object({
   fullName: z.string().min(2).optional(),
   full_name: z.string().min(2).optional(),
@@ -107,6 +132,183 @@ async function handleRegister(req: Request, res: Response) {
 
 authRouter.post('/register', handleRegister);
 authRouter.post('/signup', handleRegister);
+
+authRouter.get('/google', async (req, res) => {
+  const googleConfig = getGoogleOAuthConfig();
+  if (!googleConfig) {
+    return res.status(500).json({
+      success: false,
+      message: 'Google OAuth is not configured. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET and GOOGLE_REDIRECT_URI.',
+    });
+  }
+
+  const role = sanitizeRole(typeof req.query.role === 'string' ? req.query.role : undefined);
+  const city = typeof req.query.city === 'string' ? req.query.city.trim().slice(0, 120) : '';
+  const phone = typeof req.query.phone === 'string' ? req.query.phone.trim().slice(0, 32) : '';
+  const movieTeam = req.query.movie_team === 'true';
+
+  const state = jwt.sign(
+    {
+      role: movieTeam ? 'movie_team' : role,
+      city,
+      phone,
+      movieTeam,
+    },
+    env.JWT_ACCESS_SECRET,
+    { expiresIn: '10m' }
+  );
+
+  const params = new URLSearchParams({
+    client_id: googleConfig.clientId,
+    redirect_uri: googleConfig.redirectUri,
+    response_type: 'code',
+    scope: 'openid email profile',
+    state,
+    access_type: 'offline',
+    include_granted_scopes: 'true',
+    prompt: 'select_account',
+  });
+
+  return res.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`);
+});
+
+authRouter.get('/google/callback', async (req, res) => {
+  const googleConfig = getGoogleOAuthConfig();
+  if (!googleConfig) {
+    return res.redirect(
+      oauthErrorRedirect('auth_failed', 'Google OAuth is not configured on the backend.')
+    );
+  }
+
+  const providerError = typeof req.query.error === 'string' ? req.query.error : '';
+  if (providerError) {
+    return res.redirect(oauthErrorRedirect('access_denied', providerError));
+  }
+
+  const code = typeof req.query.code === 'string' ? req.query.code : '';
+  if (!code) {
+    return res.redirect(oauthErrorRedirect('invalid_callback', 'Missing OAuth authorization code.'));
+  }
+
+  const stateToken = typeof req.query.state === 'string' ? req.query.state : '';
+  if (!stateToken) {
+    return res.redirect(oauthErrorRedirect('invalid_callback', 'Missing OAuth state token.'));
+  }
+
+  let oauthState: { role?: string; city?: string; phone?: string; movieTeam?: boolean };
+  try {
+    oauthState = jwt.verify(stateToken, env.JWT_ACCESS_SECRET) as {
+      role?: string;
+      city?: string;
+      phone?: string;
+      movieTeam?: boolean;
+    };
+  } catch {
+    return res.redirect(oauthErrorRedirect('invalid_link', 'OAuth state expired or invalid.'));
+  }
+
+  try {
+    const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        code,
+        client_id: googleConfig.clientId,
+        client_secret: googleConfig.clientSecret,
+        redirect_uri: googleConfig.redirectUri,
+        grant_type: 'authorization_code',
+      }),
+    });
+
+    if (!tokenResponse.ok) {
+      return res.redirect(oauthErrorRedirect('auth_failed', 'Failed to exchange Google OAuth code.'));
+    }
+
+    const tokenPayload = (await tokenResponse.json()) as { id_token?: string };
+    if (!tokenPayload.id_token) {
+      return res.redirect(oauthErrorRedirect('auth_failed', 'Google did not return an ID token.'));
+    }
+
+    const tokenInfoResponse = await fetch(
+      `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(tokenPayload.id_token)}`
+    );
+
+    if (!tokenInfoResponse.ok) {
+      return res.redirect(oauthErrorRedirect('auth_failed', 'Failed to validate Google identity token.'));
+    }
+
+    const googleUser = (await tokenInfoResponse.json()) as {
+      aud?: string;
+      email?: string;
+      email_verified?: string;
+      name?: string;
+      given_name?: string;
+    };
+
+    if (googleUser.aud !== googleConfig.clientId) {
+      return res.redirect(oauthErrorRedirect('auth_failed', 'Google token audience mismatch.'));
+    }
+
+    if (!googleUser.email || googleUser.email_verified !== 'true') {
+      return res.redirect(oauthErrorRedirect('auth_failed', 'Google account email is missing or unverified.'));
+    }
+
+    const normalizedRole = sanitizeRole(oauthState.role);
+    const requestedBackendRole = normalizedRole === 'movie_team' ? 'organizer' : 'attendee';
+
+    let user = await UserModel.findOne({ email: googleUser.email });
+    if (!user) {
+      const passwordHash = await bcrypt.hash(randomBytes(32).toString('hex'), 10);
+      user = await UserModel.create({
+        fullName: googleUser.name || googleUser.given_name || googleUser.email.split('@')[0],
+        email: googleUser.email,
+        passwordHash,
+        role: requestedBackendRole,
+        city: oauthState.city || undefined,
+        phone: oauthState.phone || undefined,
+      });
+    } else {
+      let shouldSave = false;
+
+      if (requestedBackendRole === 'organizer' && user.role === 'attendee') {
+        user.role = 'organizer';
+        shouldSave = true;
+      }
+
+      if (!user.city && oauthState.city) {
+        user.city = oauthState.city;
+        shouldSave = true;
+      }
+
+      if (!user.phone && oauthState.phone) {
+        user.phone = oauthState.phone;
+        shouldSave = true;
+      }
+
+      if (shouldSave) {
+        await user.save();
+      }
+    }
+
+    const payload = { sub: String(user._id), role: user.role, tenantId: user.tenantId };
+    const accessToken = signAccessToken(payload);
+    const refreshToken = signRefreshToken(payload);
+    const frontendUser = toFrontendUser(user as any);
+
+    const redirectUrl = new URL('/auth/callback', env.FRONTEND_ORIGIN);
+    const hashParams = new URLSearchParams({
+      accessToken,
+      refreshToken,
+      role: frontendUser.role,
+      user: JSON.stringify(frontendUser),
+    });
+
+    return res.redirect(`${redirectUrl.toString()}#${hashParams.toString()}`);
+  } catch (error) {
+    const details = error instanceof Error ? error.message : 'Google OAuth callback failed.';
+    return res.redirect(oauthErrorRedirect('auth_failed', details));
+  }
+});
 
 authRouter.post('/login', async (req, res) => {
   const parsed = loginSchema.safeParse(req.body);

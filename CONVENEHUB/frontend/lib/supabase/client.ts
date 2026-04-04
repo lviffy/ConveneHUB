@@ -65,6 +65,18 @@ function safeJsonParse<T>(value: string | null): T | null {
   }
 }
 
+function getCookieValue(name: string): string | null {
+  if (typeof document === 'undefined') return null;
+  const entries = document.cookie ? document.cookie.split('; ') : [];
+  for (const entry of entries) {
+    const [cookieName, ...rest] = entry.split('=');
+    if (cookieName === name) {
+      return rest.join('=');
+    }
+  }
+  return null;
+}
+
 function getStoredAccessToken() {
   return typeof window === 'undefined' ? null : localStorage.getItem(ACCESS_TOKEN_KEY);
 }
@@ -763,13 +775,37 @@ const auth = {
     return { data: { user: (await this.getUser()).data.user }, error: null };
   },
 
-  async signInWithOAuth(_payload: any) {
-    return {
-      data: null,
-      error: {
-        message: 'OAuth is not available in MongoDB backend mode yet. Use email/password login.',
-      },
-    };
+  async signInWithOAuth(payload: any) {
+    if (typeof window === 'undefined') {
+      return { data: null, error: { message: 'OAuth can only be started in the browser.' } };
+    }
+
+    const provider = payload?.provider;
+    if (provider !== 'google') {
+      return { data: null, error: { message: `Unsupported OAuth provider: ${provider || 'unknown'}` } };
+    }
+
+    const pendingSignupRaw = getCookieValue('pending_google_signup');
+    const movieTeamCookie = getCookieValue('movie_team_login');
+    const pendingSignup = safeJsonParse<{ role?: string; city?: string; phone?: string }>(
+      pendingSignupRaw ? decodeURIComponent(pendingSignupRaw) : null
+    );
+
+    const redirectTo = typeof payload?.options?.redirectTo === 'string' ? payload.options.redirectTo : '';
+
+    const movieTeamFromRedirect = redirectTo.includes('movie_team=true');
+    const isMovieTeamFlow = movieTeamCookie === 'true' || movieTeamFromRedirect || pendingSignup?.role === 'movie_team';
+
+    const params = new URLSearchParams();
+    params.set('role', isMovieTeamFlow ? 'movie_team' : pendingSignup?.role || 'user');
+    params.set('movie_team', isMovieTeamFlow ? 'true' : 'false');
+
+    if (pendingSignup?.city) params.set('city', pendingSignup.city);
+    if (pendingSignup?.phone) params.set('phone', pendingSignup.phone);
+
+    window.location.assign(`${API_BASE}/auth/google?${params.toString()}`);
+
+    return { data: null, error: null };
   },
 
   onAuthStateChange(callback: (event: string, session: { user: AuthUser } | null) => void) {
