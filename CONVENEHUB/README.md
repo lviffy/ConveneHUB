@@ -15,7 +15,41 @@ This is the new separate implementation workspace for ConveneHub.
 2. Copy env file and update values:
    cp backend/.env.example backend/.env
 
+### Start With Docker Compose (Recommended)
+
+Run backend + MongoDB together from the project root:
+
+```bash
+docker compose up --build
+```
+
+Run in detached mode:
+
+```bash
+docker compose up -d --build
+```
+
+View logs:
+
+```bash
+docker compose logs -f
+```
+
+Stop services:
+
+```bash
+docker compose down
+```
+
+Stop services and remove MongoDB volume data:
+
+```bash
+docker compose down -v
+```
+
 ### Start MongoDB (Docker)
+
+If you prefer running services manually:
 
 If this is your first run, create and start the MongoDB container:
 
