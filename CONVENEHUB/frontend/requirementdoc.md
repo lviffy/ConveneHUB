@@ -5,7 +5,7 @@
 ### ✅ Fully Implemented Sections
 - [x] **Header**: Navigation with branding and login/signup
 - [x] **Hero Section**: Full-screen video background with search bar (Location, Date, Genre filters)
-- [x] **How It Works**: Four-step process (Browse → Book → Receive → Experience) - Standalone component
+- [x] **Role Flows**: Role-based flow section for Organizer, Attendee, Promoter, and Admin journeys - Standalone component
 - [x] **Featured Experiences**: Carousel with event cards, limited spots, countdown timers
 - [x] **Upcoming Highlights**: Grid of upcoming shoots with event cards
 - [x] **Events List**: Searchable/filterable list of all available events
@@ -51,10 +51,10 @@
 - [ ] **Related Experiences**: No recommendation section
 - [ ] **Add-ons Selection**: No merchandise or photo-op upgrades
 
-## User Dashboard
+## Attendee Dashboard
 
 ### ✅ Implemented
-- [x] **Bookings Page**: View all user bookings with QR codes
+- [x] **Bookings Page**: View all attendee bookings with QR codes
 - [x] **Profile Management**: Complete profile functionality
 
 ### Additional Features

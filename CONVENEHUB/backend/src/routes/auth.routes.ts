@@ -8,6 +8,7 @@ import { UserModel } from '../models/User';
 import { signAccessToken, signRefreshToken } from '../utils/tokens';
 import { env } from '../config/env';
 import { requireAuth } from '../middlewares/auth.middleware';
+import { syncTenantRecord } from '../utils/tenants';
 
 export const authRouter = Router();
 
@@ -21,15 +22,21 @@ const frontendToBackendRole: Record<string, 'admin' | 'organizer' | 'promoter' |
   attendee: 'attendee',
 };
 
-const backendToFrontendRole: Record<'admin' | 'organizer' | 'promoter' | 'attendee', 'admin_team' | 'organizer' | 'promoter' | 'user'> = {
-  admin: 'admin_team',
-  organizer: 'organizer',
-  promoter: 'promoter',
-  attendee: 'user',
-};
-
 function normalizeRole(role?: string): 'admin' | 'organizer' | 'promoter' | 'attendee' {
   return frontendToBackendRole[role || 'attendee'] || 'attendee';
+}
+
+function resolveTenantId(role: 'admin' | 'organizer' | 'promoter' | 'attendee', tenantId?: string) {
+  const normalizedTenantId = tenantId?.trim();
+  if (normalizedTenantId) {
+    return normalizedTenantId;
+  }
+
+  if (role === 'admin' || role === 'organizer') {
+    return 'default-tenant';
+  }
+
+  return undefined;
 }
 
 function toFrontendUser(user: {
@@ -50,7 +57,8 @@ function toFrontendUser(user: {
     email: user.email,
     phone: user.phone,
     city: user.city,
-    role: backendToFrontendRole[user.role] || 'user',
+    role: user.role,
+    canonical_role: user.role,
     tenantId: user.tenantId,
     campusId: user.campusId,
     created_at: user.createdAt,
@@ -69,9 +77,9 @@ function getGoogleOAuthConfig() {
   return { clientId, clientSecret, redirectUri };
 }
 
-function sanitizeRole(role?: string): 'user' | 'organizer' {
+function sanitizeRole(role?: string): 'attendee' | 'organizer' {
   if (role === 'organizer' || role === 'movie_team') return 'organizer';
-  return 'user';
+  return 'attendee';
 }
 
 function sanitizeAuthIntent(intent?: string): 'signin' | 'signup' {
@@ -210,13 +218,21 @@ async function handleRegister(req: Request, res: Response) {
   const { password, tenantId, campusId, phone, city } = parsed.data;
   const email = normalizeEmail(parsed.data.email);
   const role = normalizeRole(parsed.data.role);
+  const resolvedTenantId = resolveTenantId(role, tenantId);
   const existing = await UserModel.findOne({ email });
   if (existing) {
     return res.status(409).json({ success: false, message: 'Email already in use' });
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  const user = await UserModel.create({ fullName, email, passwordHash, role, tenantId, campusId, phone, city });
+  const user = await UserModel.create({ fullName, email, passwordHash, role, tenantId: resolvedTenantId, campusId, phone, city });
+
+  await syncTenantRecord({
+    tenantId: resolvedTenantId,
+    campusId,
+    adminId: role === 'admin' ? String(user._id) : undefined,
+    organizerId: role === 'organizer' ? String(user._id) : undefined,
+  });
 
   const payload = { sub: String(user._id), role: user.role, tenantId: user.tenantId };
   const accessToken = signAccessToken(payload);
@@ -376,6 +392,7 @@ authRouter.get('/google/callback', async (req, res) => {
         email: googleUser.email,
         passwordHash,
         role: requestedBackendRole,
+        tenantId: resolveTenantId(requestedBackendRole),
         city: oauthState.city || undefined,
         phone: oauthState.phone || undefined,
       });
@@ -394,6 +411,12 @@ authRouter.get('/google/callback', async (req, res) => {
 
       if (requestedBackendRole === 'organizer' && user.role === 'attendee') {
         user.role = 'organizer';
+        user.tenantId = resolveTenantId('organizer', user.tenantId);
+        shouldSave = true;
+      }
+
+      if (!user.tenantId && (user.role === 'admin' || user.role === 'organizer')) {
+        user.tenantId = resolveTenantId(user.role, user.tenantId);
         shouldSave = true;
       }
 
@@ -411,6 +434,13 @@ authRouter.get('/google/callback', async (req, res) => {
         await user.save();
       }
     }
+
+    await syncTenantRecord({
+      tenantId: user.tenantId,
+      campusId: user.campusId,
+      adminId: user.role === 'admin' ? String(user._id) : undefined,
+      organizerId: user.role === 'organizer' ? String(user._id) : undefined,
+    });
 
     const payload = { sub: String(user._id), role: user.role, tenantId: user.tenantId };
     const accessToken = signAccessToken(payload);
@@ -602,20 +632,41 @@ authRouter.post('/reset-password', requireAuth, async (req, res) => {
 authRouter.post('/complete-profile', requireAuth, async (req, res) => {
   const phone = typeof req.body?.phone === 'string' ? req.body.phone : undefined;
   const city = typeof req.body?.city === 'string' ? req.body.city : undefined;
+  const tenantId = typeof req.body?.tenantId === 'string' ? req.body.tenantId.trim() : undefined;
+  const campusId = typeof req.body?.campusId === 'string' ? req.body.campusId.trim() : undefined;
 
   if (!phone || !city) {
     return res.status(400).json({ success: false, message: 'Phone and city are required' });
   }
 
+  const currentUser = await UserModel.findById(req.user?.sub).lean();
+  if (!currentUser) {
+    return res.status(404).json({ success: false, message: 'User not found' });
+  }
+
+  const resolvedTenantId = resolveTenantId(currentUser.role, tenantId || currentUser.tenantId);
+
   const user = await UserModel.findByIdAndUpdate(
     req.user?.sub,
-    { phone, city },
+    {
+      phone,
+      city,
+      ...(resolvedTenantId ? { tenantId: resolvedTenantId } : {}),
+      ...(campusId ? { campusId } : {}),
+    },
     { new: true, projection: { passwordHash: 0 } }
   ).lean();
 
   if (!user) {
     return res.status(404).json({ success: false, message: 'User not found' });
   }
+
+  await syncTenantRecord({
+    tenantId: user.tenantId,
+    campusId: user.campusId,
+    adminId: user.role === 'admin' ? String(user._id) : undefined,
+    organizerId: user.role === 'organizer' ? String(user._id) : undefined,
+  });
 
   return res.json({ success: true, user: toFrontendUser(user as any) });
 });

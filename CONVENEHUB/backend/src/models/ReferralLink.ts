@@ -23,4 +23,6 @@ const referralLinkSchema = new Schema<ReferralLinkDocument>(
   { timestamps: true }
 );
 
+referralLinkSchema.index({ promoterId: 1, eventId: 1 }, { unique: true });
+
 export const ReferralLinkModel = model<ReferralLinkDocument>('ReferralLink', referralLinkSchema);

@@ -124,7 +124,7 @@ Organizers create events with details and ticket tiers.
 
 ### Step 3: Ticket Sales and RSVP
 
-Users register and purchase tickets.
+Attendees register and purchase tickets.
 
 ### Step 4: Promoter Allocation
 
@@ -146,7 +146,7 @@ System generates:
 - Attendance analytics
 - Promoter commission reports
 
-## 7. User Flow
+## 7. Role Flow
 
 ### Organizer Flow
 
@@ -154,7 +154,7 @@ Organizer -> Create Event -> Set Ticket Tiers -> Monitor Dashboard
 
 ### Attendee Flow
 
-User -> Register -> Buy Ticket -> Receive QR Code -> Check-in
+Attendee -> Register -> Buy Ticket -> Receive QR Code -> Check-in
 
 ### Promoter Flow
 
@@ -168,21 +168,25 @@ Admin -> Monitor Platform -> Manage Tenants
 
 ### Entities
 
-- User: Core entity for all users (attendees, organizers, promoters, admins)
+- Organizer: Creates events, defines ticket tiers, and monitors event performance
+- Attendee: Registers, purchases tickets, receives QR codes, and checks in to events
+- Promoter: Shares referral links, tracks ticket sales, and earns commissions
+- Admin: Monitors the platform and manages tenants
 - Event: Events created by organizers with details like date, location, and capacity
-- Ticket: Tickets purchased by users for events with check-in tracking
+- Ticket: Tickets purchased by attendees for events with check-in tracking
 - ReferralLink: Unique referral links created by promoters
-- Sales: Tracks ticket sales generated through referral links with commissions
-- Admin: Administrators who monitor the entire platform
+- Commission: Tracks promoter earnings from referral-driven ticket sales
+- Tenant: Represents an organizer group, campus, or managed event unit on the platform
 
 ### Key Relationships
 
-- User -> Event (1:M): Organizers can create multiple events
-- User -> Ticket (1:M): Users can buy multiple tickets
+- Organizer -> Event (1:M): Organizers can create multiple events
+- Attendee -> Ticket (1:M): Attendees can buy multiple tickets
 - Event -> Ticket (1:M): Events have multiple tickets
-- User -> ReferralLink (1:M): Promoters can create multiple referral links
-- ReferralLink -> Sales (1:M): Each referral link can generate multiple sales
-- User -> Admin (1:1): Admins are special users with elevated permissions
+- Promoter -> ReferralLink (1:M): Promoters can create multiple referral links
+- ReferralLink -> Commission (1:M): Each referral link can generate commission records from conversions
+- Admin -> Tenant (1:M): Admins can monitor and manage multiple tenants
+- Tenant -> Organizer (1:M): A tenant can have multiple organizers and managed events
 
 ## 9. Pre-Requisites
 
@@ -241,13 +245,37 @@ Admin -> Monitor Platform -> Manage Tenants
 
 ## 11. Suggested Database Collections
 
-### Users
+### Organizers
 
 - _id
 - name
 - email
 - password
-- role (organizer/promoter/attendee/admin)
+- role (organizer)
+
+### Attendees
+
+- _id
+- name
+- email
+- password
+- role (attendee)
+
+### Promoters
+
+- _id
+- name
+- email
+- password
+- role (promoter)
+
+### Admins
+
+- _id
+- name
+- email
+- password
+- role (admin)
 
 ### Events
 
@@ -269,7 +297,7 @@ Admin -> Monitor Platform -> Manage Tenants
 ### Orders
 
 - _id
-- userId
+- attendeeId
 - eventId
 - ticketId
 - paymentStatus
@@ -278,14 +306,41 @@ Admin -> Monitor Platform -> Manage Tenants
 
 - _id
 - eventId
-- userId
+- attendeeId
 - qrCode
 - checkInStatus
+
+### ReferralLinks
+
+- _id
+- promoterId
+- eventId
+- referralCode
+- clicks
+- conversions
+
+### Commissions
+
+- _id
+- promoterId
+- bookingId
+- eventId
+- referralCode
+- amount
+- status
+
+### Tenants
+
+- _id
+- name
+- campusId
+- adminId
+- organizerIds
 
 ### Promoters
 
 - _id
-- userId
+- promoterId
 - eventId
 - referralCode
 - commission

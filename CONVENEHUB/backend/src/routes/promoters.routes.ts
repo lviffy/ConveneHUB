@@ -5,6 +5,7 @@ import { ReferralLinkModel } from '../models/ReferralLink';
 import { BookingModel } from '../models/Booking';
 import { CommissionModel } from '../models/Commission';
 import { generateCode } from '../utils/codes';
+import { EventModel } from '../models/Event';
 
 export const promotersRouter = Router();
 
@@ -16,6 +17,34 @@ promotersRouter.post('/links', requireAuth, requireRole('promoter', 'admin'), as
   const parsed = createReferralSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ success: false, message: 'Invalid eventId' });
+  }
+
+  const event = await EventModel.findById(parsed.data.eventId, { status: 1 }).lean();
+  if (!event) {
+    return res.status(404).json({ success: false, message: 'Event not found' });
+  }
+
+  if (event.status !== 'published' && req.user?.role !== 'admin') {
+    return res.status(400).json({ success: false, message: 'Referral links can only be created for published events' });
+  }
+
+  const existingLink = await ReferralLinkModel.findOne({
+    promoterId: req.user?.sub,
+    eventId: parsed.data.eventId,
+  }).lean();
+
+  if (existingLink) {
+    return res.status(200).json({
+      success: true,
+      link: {
+        id: String(existingLink._id),
+        eventId: existingLink.eventId,
+        code: existingLink.code,
+        url: `/events/${existingLink.eventId}?ref=${existingLink.code}`,
+        clicks: existingLink.clicks,
+        conversions: existingLink.conversions,
+      },
+    });
   }
 
   const code = generateCode('REF', 7);

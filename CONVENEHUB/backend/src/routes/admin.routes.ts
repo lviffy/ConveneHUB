@@ -6,7 +6,9 @@ import { BookingModel } from '../models/Booking';
 import { CheckInModel } from '../models/CheckIn';
 import { CouponModel } from '../models/Coupon';
 import { MovieTeamAssignmentModel } from '../models/MovieTeamAssignment';
+import { TenantModel } from '../models/Tenant';
 import { z } from 'zod';
+import { syncTenantRecord } from '../utils/tenants';
 
 export const adminRouter = Router();
 
@@ -43,6 +45,21 @@ const createAssignmentSchema = z.object({
 
 const deleteAssignmentSchema = z.object({
   assignmentId: z.string().min(1),
+});
+
+const tenantCreateSchema = z.object({
+  tenantId: z.string().min(2),
+  name: z.string().min(2).optional(),
+  campusId: z.string().optional(),
+  adminId: z.string().optional(),
+  organizerIds: z.array(z.string()).optional(),
+});
+
+const tenantUpdateSchema = z.object({
+  name: z.string().min(2).optional(),
+  campusId: z.string().optional(),
+  adminIds: z.array(z.string()).optional(),
+  organizerIds: z.array(z.string()).optional(),
 });
 
 function mapEventStatus(status?: string) {
@@ -87,18 +104,85 @@ function toLegacyCoupon(coupon: any, eventById: Map<string, any>) {
 }
 
 adminRouter.get('/tenants', requireAuth, requireRole('admin'), async (_req, res) => {
-  const users = await UserModel.find({}, { tenantId: 1 }).lean();
-  const events = await EventModel.find({}, { tenantId: 1 }).lean();
+  const [tenants, users, events] = await Promise.all([
+    TenantModel.find({}).sort({ createdAt: -1 }).lean(),
+    UserModel.find({}, { tenantId: 1, role: 1 }).lean(),
+    EventModel.find({}, { tenantId: 1 }).lean(),
+  ]);
 
-  const tenantSet = new Set<string>();
-  users.forEach((u) => {
-    if (u.tenantId) tenantSet.add(u.tenantId);
+  const tenantsPayload = tenants.map((tenant) => ({
+    id: String(tenant._id),
+    tenantId: tenant.tenantId,
+    name: tenant.name,
+    campusId: tenant.campusId,
+    adminIds: tenant.adminIds || [],
+    organizerIds: tenant.organizerIds || [],
+    organizerCount: users.filter((user) => user.tenantId === tenant.tenantId && user.role === 'organizer').length,
+    attendeeCount: users.filter((user) => user.tenantId === tenant.tenantId && user.role === 'attendee').length,
+    promoterCount: users.filter((user) => user.tenantId === tenant.tenantId && user.role === 'promoter').length,
+    eventCount: events.filter((event) => event.tenantId === tenant.tenantId).length,
+    createdAt: (tenant as any).createdAt,
+  }));
+
+  return res.json({
+    success: true,
+    tenants: tenantsPayload,
+    tenantIds: tenantsPayload.map((tenant) => tenant.tenantId),
   });
-  events.forEach((event) => {
-    if (event.tenantId) tenantSet.add(event.tenantId);
+});
+
+adminRouter.post('/tenants', requireAuth, requireRole('admin'), async (req, res) => {
+  const parsed = tenantCreateSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ success: false, message: parsed.error.issues[0]?.message || 'Invalid tenant payload' });
+  }
+
+  const existing = await TenantModel.findOne({ tenantId: parsed.data.tenantId.trim() }).lean();
+  if (existing) {
+    return res.status(409).json({ success: false, message: 'Tenant already exists' });
+  }
+
+  const tenant = await syncTenantRecord({
+    tenantId: parsed.data.tenantId,
+    campusId: parsed.data.campusId,
+    name: parsed.data.name,
+    adminId: parsed.data.adminId,
   });
 
-  return res.json({ success: true, tenants: Array.from(tenantSet) });
+  if (parsed.data.organizerIds?.length) {
+    await TenantModel.findOneAndUpdate(
+      { tenantId: parsed.data.tenantId.trim() },
+      { $addToSet: { organizerIds: { $each: parsed.data.organizerIds } } },
+      { new: true }
+    );
+  }
+
+  return res.status(201).json({ success: true, tenant });
+});
+
+adminRouter.patch('/tenants/:tenantId', requireAuth, requireRole('admin'), async (req, res) => {
+  const parsed = tenantUpdateSchema.safeParse(req.body || {});
+  if (!parsed.success) {
+    return res.status(400).json({ success: false, message: parsed.error.issues[0]?.message || 'Invalid tenant payload' });
+  }
+
+  const update: Record<string, unknown> = {};
+  if (parsed.data.name !== undefined) update.name = parsed.data.name;
+  if (parsed.data.campusId !== undefined) update.campusId = parsed.data.campusId;
+  if (parsed.data.adminIds !== undefined) update.adminIds = parsed.data.adminIds;
+  if (parsed.data.organizerIds !== undefined) update.organizerIds = parsed.data.organizerIds;
+
+  const tenant = await TenantModel.findOneAndUpdate(
+    { tenantId: req.params.tenantId },
+    update,
+    { new: true }
+  ).lean();
+
+  if (!tenant) {
+    return res.status(404).json({ success: false, message: 'Tenant not found' });
+  }
+
+  return res.json({ success: true, tenant });
 });
 
 adminRouter.get('/users', requireAuth, requireRole('admin'), async (_req, res) => {

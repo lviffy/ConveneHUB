@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import { requireAuth, requireRole } from '../middlewares/auth.middleware';
 import { EventModel } from '../models/Event';
+import { syncTenantRecord } from '../utils/tenants';
 
 export const eventsRouter = Router();
 
@@ -103,6 +104,13 @@ eventsRouter.post('/', requireAuth, requireRole('organizer', 'admin'), async (re
     remaining: parsed.data.capacity,
     status: parsed.data.status || 'draft',
     ticketTiers: parsed.data.ticketTiers.map((tier) => ({ ...tier, soldCount: 0 })),
+  });
+
+  await syncTenantRecord({
+    tenantId: event.tenantId,
+    campusId: event.campusId,
+    adminId: req.user?.role === 'admin' ? req.user.sub : undefined,
+    organizerId: event.organizerId,
   });
 
   return res.status(201).json({ success: true, event });

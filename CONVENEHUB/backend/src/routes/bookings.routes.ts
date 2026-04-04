@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { requireAuth } from '../middlewares/auth.middleware';
+import { requireAuth, requireRole } from '../middlewares/auth.middleware';
 import { BookingModel } from '../models/Booking';
 import { EventModel } from '../models/Event';
 import { TicketModel } from '../models/Ticket';
 import { ReferralLinkModel } from '../models/ReferralLink';
 import { CommissionModel } from '../models/Commission';
+import { AttendeeModel } from '../models/Attendee';
 import { generateCode } from '../utils/codes';
 import QRCode from 'qrcode';
 
@@ -49,7 +50,37 @@ const createBookingSchema = z.object({
   referralCode: z.string().optional(),
 });
 
-bookingsRouter.post('/', requireAuth, async (req, res) => {
+async function syncAttendeeRecord(eventId: string, attendeeId: string) {
+  const activeBookings = await BookingModel.find({
+    eventId,
+    attendeeId,
+    bookingStatus: 'confirmed',
+  })
+    .sort({ createdAt: 1 })
+    .lean();
+
+  if (activeBookings.length === 0) {
+    await AttendeeModel.findOneAndDelete({ eventId, attendeeId });
+    return;
+  }
+
+  const bookingIds = activeBookings.map((booking) => String(booking._id));
+  const tickets = await TicketModel.find({ bookingId: { $in: bookingIds } }).sort({ createdAt: 1 }).lean();
+  const primaryTicket = tickets[0];
+
+  await AttendeeModel.findOneAndUpdate(
+    { eventId, attendeeId },
+    {
+      eventId,
+      attendeeId,
+      qrCode: primaryTicket?.qrPayload || activeBookings[0].bookingCode,
+      checkInStatus: tickets.some((ticket) => ticket.checkInStatus === 'checked_in') ? 'checked_in' : 'pending',
+    },
+    { upsert: true, new: true, setDefaultsOnInsert: true }
+  );
+}
+
+bookingsRouter.post('/', requireAuth, requireRole('attendee', 'admin'), async (req, res) => {
   const parsed = createBookingSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ success: false, message: parsed.error.issues[0]?.message || 'Invalid input' });
@@ -123,6 +154,8 @@ bookingsRouter.post('/', requireAuth, async (req, res) => {
     ticketIds.push(String(ticket._id));
   }
 
+  await syncAttendeeRecord(String(event._id), req.user!.sub);
+
   if (promoterId && referralCode) {
     const commissionAmount = Number((amount * 0.1).toFixed(2));
     await CommissionModel.create({
@@ -138,7 +171,7 @@ bookingsRouter.post('/', requireAuth, async (req, res) => {
   return res.status(201).json({ success: true, booking, ticketIds });
 });
 
-bookingsRouter.get('/', requireAuth, async (req, res) => {
+bookingsRouter.get('/', requireAuth, requireRole('attendee', 'admin'), async (req, res) => {
   const bookings = await BookingModel.find({ attendeeId: req.user?.sub }).sort({ createdAt: -1 }).lean();
   const eventIds = bookings.map((booking) => booking.eventId);
   const events = await EventModel.find({ _id: { $in: eventIds } }).lean();
@@ -148,12 +181,12 @@ bookingsRouter.get('/', requireAuth, async (req, res) => {
   return res.json({ success: true, bookings: legacyBookings });
 });
 
-bookingsRouter.get('/me', requireAuth, async (req, res) => {
+bookingsRouter.get('/me', requireAuth, requireRole('attendee', 'admin'), async (req, res) => {
   const bookings = await BookingModel.find({ attendeeId: req.user?.sub }).sort({ createdAt: -1 }).lean();
   return res.json({ success: true, bookings });
 });
 
-bookingsRouter.get('/:id/tickets', requireAuth, async (req, res) => {
+bookingsRouter.get('/:id/tickets', requireAuth, requireRole('attendee', 'admin'), async (req, res) => {
   const booking = await BookingModel.findById(req.params.id).lean();
   if (!booking) {
     return res.status(404).json({ success: false, message: 'Booking not found' });
@@ -177,7 +210,7 @@ bookingsRouter.get('/:id/tickets', requireAuth, async (req, res) => {
   return res.json({ success: true, tickets: mappedTickets, booking: toLegacyBooking(booking) });
 });
 
-bookingsRouter.get('/:id/qr', requireAuth, async (req, res) => {
+bookingsRouter.get('/:id/qr', requireAuth, requireRole('attendee', 'admin'), async (req, res) => {
   const booking = await BookingModel.findById(req.params.id).lean();
   if (!booking) {
     return res.status(404).json({ success: false, message: 'Booking not found' });
@@ -196,7 +229,7 @@ bookingsRouter.get('/:id/qr', requireAuth, async (req, res) => {
   return res.json({ success: true, qr_code: qrCode });
 });
 
-bookingsRouter.get('/:id', requireAuth, async (req, res) => {
+bookingsRouter.get('/:id', requireAuth, requireRole('attendee', 'admin'), async (req, res) => {
   const booking = await BookingModel.findById(req.params.id).lean();
   if (!booking) {
     return res.status(404).json({ success: false, message: 'Booking not found' });
@@ -210,7 +243,7 @@ bookingsRouter.get('/:id', requireAuth, async (req, res) => {
   return res.json({ success: true, booking, tickets });
 });
 
-bookingsRouter.post('/:id/cancel', requireAuth, async (req, res) => {
+bookingsRouter.post('/:id/cancel', requireAuth, requireRole('attendee', 'admin'), async (req, res) => {
   const booking = await BookingModel.findById(req.params.id);
   if (!booking) {
     return res.status(404).json({ success: false, message: 'Booking not found' });
@@ -236,6 +269,7 @@ bookingsRouter.post('/:id/cancel', requireAuth, async (req, res) => {
   }
 
   await TicketModel.deleteMany({ bookingId: String(booking._id) });
+  await syncAttendeeRecord(String(booking.eventId), booking.attendeeId);
 
   return res.json({ success: true, message: 'Booking cancelled' });
 });

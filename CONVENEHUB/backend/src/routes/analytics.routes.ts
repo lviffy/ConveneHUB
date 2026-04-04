@@ -20,6 +20,10 @@ analyticsRouter.get('/event/:eventId', requireAuth, requireRole('organizer', 'ad
     return res.status(404).json({ success: false, message: 'Event not found' });
   }
 
+  if (req.user?.role !== 'admin' && event.organizerId !== req.user?.sub) {
+    return res.status(403).json({ success: false, message: 'Forbidden' });
+  }
+
   const ticketsSold = bookings.reduce((sum, b) => sum + b.ticketsCount, 0);
   const revenue = Number(bookings.reduce((sum, b) => sum + b.amount, 0).toFixed(2));
 
@@ -42,6 +46,10 @@ analyticsRouter.get('/event/:eventId', requireAuth, requireRole('organizer', 'ad
 });
 
 analyticsRouter.get('/organizer/:organizerId', requireAuth, requireRole('organizer', 'admin'), async (req, res) => {
+  if (req.user?.role !== 'admin' && req.user?.sub !== req.params.organizerId) {
+    return res.status(403).json({ success: false, message: 'Forbidden' });
+  }
+
   const events = await EventModel.find({ organizerId: req.params.organizerId }).lean();
   const eventIds = events.map((e) => String(e._id));
   const bookings = await BookingModel.find({ eventId: { $in: eventIds }, bookingStatus: 'confirmed' }).lean();
@@ -61,6 +69,10 @@ analyticsRouter.get('/organizer/:organizerId', requireAuth, requireRole('organiz
 
 analyticsRouter.get('/promoter/:promoterId', requireAuth, requireRole('promoter', 'admin'), async (req, res) => {
   const promoterId = req.params.promoterId;
+  if (req.user?.role !== 'admin' && req.user?.sub !== promoterId) {
+    return res.status(403).json({ success: false, message: 'Forbidden' });
+  }
+
   const bookings = await BookingModel.find({ promoterId, bookingStatus: 'confirmed' }).lean();
   const commissions = await CommissionModel.find({ promoterId }).lean();
 
