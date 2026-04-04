@@ -37,8 +37,8 @@ export async function syncTenantRecord(options: SyncTenantOptions) {
   const update: Record<string, unknown> = {
     $setOnInsert: {
       tenantId,
-      name: buildTenantName(tenantId, options.name),
-      campusId: options.campusId,
+      ...(!options.name?.trim() ? { name: buildTenantName(tenantId, options.name) } : {}),
+      ...(!options.campusId ? {} : {}),
     },
   };
 

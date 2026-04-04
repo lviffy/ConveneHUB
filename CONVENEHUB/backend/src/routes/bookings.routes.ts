@@ -137,11 +137,11 @@ bookingsRouter.post('/', requireAuth, requireRole('attendee', 'admin'), async (r
 
   const ticketIds: string[] = [];
   for (let i = 0; i < ticketsCount; i += 1) {
-    const ticket = await TicketModel.create({
+    const ticket = new TicketModel({
       bookingId: String(booking._id),
       eventId: String(event._id),
       attendeeId: req.user?.sub,
-      qrPayload: '',
+      qrPayload: 'pending',
       checkInStatus: 'pending',
     });
     ticket.qrPayload = JSON.stringify({
