@@ -522,6 +522,15 @@ class QueryBuilder {
       }
       const rows = (payload.events || []).map((event: any) => mapBackendEvent(event));
       const filtered = this.applyFilters(rows);
+      if (this.returnSingle) {
+        if (filtered.length === 0) {
+          return this.makeResult(
+            this.allowEmptySingle ? null : null,
+            this.allowEmptySingle ? null : { message: 'No rows found' }
+          );
+        }
+        return this.makeResult(filtered[0], null);
+      }
       return this.makeResult(filtered, null, this.countMode ? filtered.length : undefined);
     }
 
