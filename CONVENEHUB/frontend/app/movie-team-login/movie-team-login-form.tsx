@@ -134,9 +134,9 @@ export function MovieTeamLoginForm() {
       description: 'Redirecting to your dashboard...',
     });
     
-    // Always redirect to movie-team dashboard since this is movie team signup
+    // Always redirect to organizer dashboard since this is organizer signup
     setTimeout(() => {
-      window.location.href = '/movie-team';
+      window.location.href = '/organizer';
     }, 500);
   };
 
@@ -247,7 +247,7 @@ export function MovieTeamLoginForm() {
           description: 'Please add your phone number to continue.',
         });
         await new Promise(resolve => setTimeout(resolve, 100));
-        window.location.href = '/complete-profile?redirect=/movie-team';
+        window.location.href = '/complete-profile?redirect=/organizer';
         return;
       }
 
@@ -259,7 +259,7 @@ export function MovieTeamLoginForm() {
       // Use window.location for a full page navigation to ensure server picks up the new session
       // Small delay to ensure cookies are fully set before navigation
       await new Promise(resolve => setTimeout(resolve, 100));
-      window.location.href = '/movie-team';
+      window.location.href = '/organizer';
       return; // Prevent finally block from running setIsLoading(false)
     } catch (error: any) {
       const errorMessage = error.message || 'Incorrect email or password. Please try again.';
@@ -460,7 +460,7 @@ export function MovieTeamLoginForm() {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      router.push('/movie-team-forgot-password');
+                      router.push('/organizer-forgot-password');
                     }}
                     className="text-xs text-purple-600 hover:text-purple-700 font-medium cursor-pointer"
                   >

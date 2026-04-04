@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/convene/server';
 
-// GET /api/bookings/event/[eventId] - Get all bookings for an event (admin/movie_team only)
+// GET /api/bookings/event/[eventId] - Get all bookings for an event (admin/organizer)
 export async function GET(
   request: Request,
   { params }: { params: { eventId: string } }
@@ -26,7 +26,7 @@ export async function GET(
       .eq('id', user.id)
       .single();
 
-    // Check if user has permission (admin_team or movie_team assigned to this event)
+    // Check if user has permission (admin_team or organizer)
     if ((profile as any)?.role === 'user') {
       return NextResponse.json(
         { error: 'Forbidden. You do not have permission to view event bookings.' },
@@ -34,18 +34,18 @@ export async function GET(
       );
     }
 
-    // For movie_team, verify they are assigned to this event
+    // For organizers, verify they own this event.
     if ((profile as any)?.role === 'organizer') {
-      const { data: assignment } = await supabase
-        .from('movie_team_assignments')
-        .select('assignment_id')
+      const { data: ownedEvent } = await supabase
+        .from('events')
+        .select('event_id')
         .eq('event_id', params.eventId)
-        .eq('user_id', user.id)
+        .eq('created_by', user.id)
         .single();
 
-      if (!assignment) {
+      if (!ownedEvent) {
         return NextResponse.json(
-          { error: 'Forbidden. You are not assigned to this event.' },
+          { error: 'Forbidden. You can only view your own events.' },
           { status: 403 }
         );
       }

@@ -55,11 +55,6 @@ interface EventFinancial {
     notes?: string;
   } | null;
   financial_summary: FinancialSummary;
-  assigned_team_members?: Array<{
-    id: string;
-    full_name: string;
-    role: string;
-  }>;
   bookings: Array<{
     booking_id: string;
     tickets_count: number;
@@ -89,7 +84,15 @@ interface FinancialData {
   };
 }
 
-export default function FinancialDashboard() {
+interface FinancialDashboardProps {
+  apiBasePath?: string;
+  showAdminActions?: boolean;
+}
+
+export default function FinancialDashboard({
+  apiBasePath = '/api/admin',
+  showAdminActions = true,
+}: FinancialDashboardProps) {
   const [data, setData] = useState<FinancialData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -103,7 +106,7 @@ export default function FinancialDashboard() {
   });
   const [emailModal, setEmailModal] = useState<{
     isOpen: boolean;
-    event: { id: string; title: string; assigned_team_members?: Array<{ id: string; full_name: string; role: string }> } | null;
+    event: { id: string; title: string } | null;
     loading: boolean;
     error: string | null;
     success: boolean;
@@ -135,7 +138,7 @@ export default function FinancialDashboard() {
   const fetchFinancialData = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/admin/financial-summary');
+      const response = await fetch(`${apiBasePath}/financial-summary`);
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -306,7 +309,6 @@ export default function FinancialDashboard() {
       event: {
         id: event.event_id,
         title: event.title,
-        assigned_team_members: event.assigned_team_members,
       },
       loading: false,
       error: null,
@@ -372,7 +374,7 @@ export default function FinancialDashboard() {
     }));
 
     try {
-      const response = await fetch('/api/admin/financial-summary/email', {
+      const response = await fetch(`${apiBasePath}/financial-summary/email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -424,7 +426,7 @@ export default function FinancialDashboard() {
     }));
 
     try {
-      const response = await fetch('/api/admin/settlements/email', {
+      const response = await fetch(`${apiBasePath}/settlements/email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -755,16 +757,18 @@ export default function FinancialDashboard() {
                   <span className="hidden sm:inline">Export Full Report</span>
                   <span className="sm:hidden">Export</span>
                 </Button>
-                <Button
-                  onClick={openSummaryEmailModal}
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 flex-1 sm:flex-none"
-                >
-                  <Mail className="h-4 w-4" />
-                  <span className="hidden sm:inline">Email Summary</span>
-                  <span className="sm:hidden">Email</span>
-                </Button>
+                {showAdminActions && (
+                  <Button
+                    onClick={openSummaryEmailModal}
+                    variant="outline"
+                    size="sm"
+                    className="gap-2 flex-1 sm:flex-none"
+                  >
+                    <Mail className="h-4 w-4" />
+                    <span className="hidden sm:inline">Email Summary</span>
+                    <span className="sm:hidden">Email</span>
+                  </Button>
+                )}
               </div>
               <div className="text-xs text-gray-500 text-center sm:text-left">
                 {data.summary.total_events} event{data.summary.total_events !== 1 ? 's' : ''} • {data.summary.total_tickets_sold} tickets
@@ -854,37 +858,41 @@ export default function FinancialDashboard() {
                         <Download className="h-4 w-4" />
                         Download Report
                       </Button>
-                      {event.settlement_status === 'settled' ? (
-                        <Button
-                          disabled
-                          variant="default"
-                          size="sm"
-                          className="gap-2 bg-green-600 hover:bg-green-600 cursor-default"
-                        >
-                          <CheckCircle2 className="h-4 w-4" />
-                          ✓ Settled
-                        </Button>
-                      ) : (
-                        <Button
-                          onClick={() => openSettlementModal(event)}
-                          variant="default"
-                          size="sm"
-                          className="gap-2 bg-[#195ADC] hover:bg-[#1451c4]"
-                        >
-                          <CheckCircle2 className="h-4 w-4" />
-                          Mark as Paid
-                        </Button>
+                      {showAdminActions && (
+                        event.settlement_status === 'settled' ? (
+                          <Button
+                            disabled
+                            variant="default"
+                            size="sm"
+                            className="gap-2 bg-green-600 hover:bg-green-600 cursor-default"
+                          >
+                            <CheckCircle2 className="h-4 w-4" />
+                            ✓ Settled
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={() => openSettlementModal(event)}
+                            variant="default"
+                            size="sm"
+                            className="gap-2 bg-[#195ADC] hover:bg-[#1451c4]"
+                          >
+                            <CheckCircle2 className="h-4 w-4" />
+                            Mark as Paid
+                          </Button>
+                        )
                       )}
                     </div>
-                    <Button
-                      onClick={() => openEmailModal(event)}
-                      variant="outline"
-                      size="sm"
-                      className="gap-2"
-                    >
-                      <Mail className="h-4 w-4" />
-                      Send Email
-                    </Button>
+                    {showAdminActions && (
+                      <Button
+                        onClick={() => openEmailModal(event)}
+                        variant="outline"
+                        size="sm"
+                        className="gap-2"
+                      >
+                        <Mail className="h-4 w-4" />
+                        Send Email
+                      </Button>
+                    )}
                   </div>
 
                   {/* Settlement Details - Show when settled */}
@@ -1003,7 +1011,7 @@ export default function FinancialDashboard() {
       </Card>
 
       {/* Settlement Modal */}
-      {settlementModal.event && (
+      {showAdminActions && settlementModal.event && (
         <SettlementModal
           isOpen={settlementModal.isOpen}
           onClose={closeSettlementModal}
@@ -1013,7 +1021,7 @@ export default function FinancialDashboard() {
       )}
 
       {/* Email Modal */}
-      <Dialog open={emailModal.isOpen} onOpenChange={closeEmailModal}>
+      <Dialog open={showAdminActions && emailModal.isOpen} onOpenChange={closeEmailModal}>
         <DialogContent className="sm:max-w-[450px]">
           {emailModal.success ? (
             <>
@@ -1045,22 +1053,6 @@ export default function FinancialDashboard() {
               </DialogHeader>
 
               <div className="space-y-4 py-4">
-                {/* Assigned Team Members Section */}
-                <div className="space-y-2">
-                  <Label className="text-sm font-semibold">Assigned Team Members</Label>
-                  {emailModal.event?.assigned_team_members && emailModal.event.assigned_team_members.length > 0 ? (
-                    <div className="flex flex-wrap gap-2">
-                      {emailModal.event.assigned_team_members.map((member) => (
-                        <Badge key={member.id} variant="secondary" className="text-xs">
-                          {member.full_name}
-                        </Badge>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-xs text-gray-500 italic">No team members assigned to this event</p>
-                  )}
-                </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="movie_team_email">
                     Event Operations Email Address <span className="text-red-500">*</span>
@@ -1126,7 +1118,7 @@ export default function FinancialDashboard() {
       </Dialog>
 
       {/* Summary Email Modal */}
-      <Dialog open={summaryEmailModal.isOpen} onOpenChange={closeSummaryEmailModal}>
+      <Dialog open={showAdminActions && summaryEmailModal.isOpen} onOpenChange={closeSummaryEmailModal}>
         <DialogContent className="sm:max-w-[500px]">
           {summaryEmailModal.success ? (
             <>

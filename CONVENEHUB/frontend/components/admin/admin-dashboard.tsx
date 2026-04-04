@@ -2,27 +2,20 @@
 
 import { Profile } from '@/types/database.types';
 import { useState, useEffect } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import CreateEventForm from './create-event-form';
 import EventsList from './events-list';
-import { Plus, Calendar, Users, Settings, LogOut, Home, DollarSign, BarChart3, Ticket } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Plus, Calendar, Settings, LogOut, Home, DollarSign, BarChart3 } from 'lucide-react';
 import { createClient } from '@/lib/convene/client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Logo } from '@/components/logo';
 import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
-import ProfileDropdown from '@/components/ui/profile-dropdown';
 import ProfileModal from '@/components/ui/profile-modal';
-import { Sidebar, SidebarBody, SidebarLink } from '@/components/ui/sidebar';
-import Image from 'next/image';
-import MovieTeamList from './movie-team-list';
-import TeamAssignments from './team-assignments';
+import { Sidebar, SidebarBody } from '@/components/ui/sidebar';
 import FinancialDashboard from './financial-dashboard';
 import ReconciliationDashboard from './reconciliation-dashboard';
-import CouponsManagement from './coupons-management';
 
 interface AdminDashboardProps {
   profile: Profile;
@@ -31,9 +24,13 @@ interface AdminDashboardProps {
 
 export default function AdminDashboard({ profile, userEmail }: AdminDashboardProps) {
   const searchParams = useSearchParams();
-  const initialTab = searchParams.get('tab') || 'events';
+  const normalizeTab = (tab: string | null) => {
+    const nextTab = tab || 'events';
+    if (nextTab === 'teams') return 'events';
+    return nextTab;
+  };
+  const initialTab = normalizeTab(searchParams.get('tab'));
   const [activeTab, setActiveTab] = useState(initialTab);
-  const [hoveredTab, setHoveredTab] = useState<string | null>(null);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
@@ -41,7 +38,7 @@ export default function AdminDashboard({ profile, userEmail }: AdminDashboardPro
 
   // Update active tab when URL changes
   useEffect(() => {
-    const tab = searchParams.get('tab');
+    const tab = normalizeTab(searchParams.get('tab'));
     if (tab && tab !== activeTab) {
       setActiveTab(tab);
     }
@@ -62,16 +59,6 @@ export default function AdminDashboard({ profile, userEmail }: AdminDashboardPro
       label: "Create Event",
       href: "#create",
       icon: <Plus className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
-    },
-    {
-      label: "Coupons",
-      href: "#coupons",
-      icon: <Ticket className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
-    },
-    {
-      label: "Teams",
-      href: "#teams",
-      icon: <Users className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
     },
     {
       label: "Financial",
@@ -253,7 +240,7 @@ export default function AdminDashboard({ profile, userEmail }: AdminDashboardPro
               className="mb-6 sm:mb-8"
             >
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">Dashboard</h1>
-              <p className="text-sm sm:text-base text-gray-600">Manage events, bookings, and team members</p>
+              <p className="text-sm sm:text-base text-gray-600">Manage events, bookings, and finances</p>
             </motion.div>
 
             {/* Quick Access Tabs */}
@@ -267,8 +254,6 @@ export default function AdminDashboard({ profile, userEmail }: AdminDashboardPro
                 {[
                   { value: 'events', label: 'Events', shortLabel: 'Events', icon: Calendar },
                   { value: 'create', label: 'Create Event', shortLabel: 'Create', icon: Plus },
-                  { value: 'coupons', label: 'Coupons', shortLabel: 'Coupons', icon: Ticket },
-                  { value: 'teams', label: 'Teams', shortLabel: 'Teams', icon: Users },
                   { value: 'financial', label: 'Financial', shortLabel: 'Finance', icon: DollarSign },
                   { value: 'reconciliation', label: 'Reconciliation', shortLabel: 'Reconcile', icon: BarChart3 },
                 ].map((tab) => {
@@ -280,8 +265,6 @@ export default function AdminDashboard({ profile, userEmail }: AdminDashboardPro
                       type="button"
                       key={tab.value}
                       onClick={() => setActiveTab(tab.value)}
-                      onMouseEnter={() => setHoveredTab(tab.value)}
-                      onMouseLeave={() => setHoveredTab(null)}
                       className={cn(
                         'relative flex-1 min-w-0 px-1 sm:px-6 py-2 sm:py-2.5 rounded-md text-sm font-medium transition-all duration-300 cursor-pointer',
                         'flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-2',
@@ -345,55 +328,6 @@ export default function AdminDashboard({ profile, userEmail }: AdminDashboardPro
                     </CardHeader>
                     <CardContent className="p-6">
                       <CreateEventForm userId={profile.id} />
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              )}
-
-              {activeTab === 'coupons' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <CouponsManagement />
-                </motion.div>
-              )}
-
-              {activeTab === 'teams' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="space-y-6"
-                >
-                  {/* Team Assignments - Events with assigned members */}
-                  <Card className="border-gray-200 shadow-sm">
-                    <CardHeader className="border-b border-gray-100 bg-gray-50/50">
-                      <div>
-                        <CardTitle className="text-xl">Team Assignments</CardTitle>
-                        <CardDescription className="mt-1">
-                          Assign event operations members to events for check-in and management
-                        </CardDescription>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="p-6">
-                      <TeamAssignments />
-                    </CardContent>
-                  </Card>
-
-                  {/* All Event Operations Members */}
-                  <Card className="border-gray-200 shadow-sm">
-                    <CardHeader className="border-b border-gray-100 bg-gray-50/50">
-                      <div>
-                        <CardTitle className="text-xl">All Event Operations Members</CardTitle>
-                        <CardDescription className="mt-1">
-                          View all event operations accounts in the system
-                        </CardDescription>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="p-6">
-                      <MovieTeamList />
                     </CardContent>
                   </Card>
                 </motion.div>

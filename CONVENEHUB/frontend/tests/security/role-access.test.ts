@@ -146,18 +146,6 @@ test.describe('Movie Team Role Access Control', () => {
     expect(response.status()).toBe(403);
   });
 
-  test('movie team cannot assign team members', async ({ page, request }) => {
-    await loginAs(page, 'movie_team');
-    
-    const response = await request.post('/api/admin/movie-team-assignments', {
-      data: {
-        event_id: 'test-event-id',
-        user_id: 'test-user-id',
-      },
-    });
-
-    expect(response.status()).toBe(403);
-  });
 });
 
 test.describe('ConveneHub Team (Admin) Role Access Control', () => {
@@ -242,19 +230,6 @@ test.describe('ConveneHub Team (Admin) Role Access Control', () => {
     const response = await request.delete('/api/admin/users/delete', {
       data: {
         userId: 'test-user-id',
-      },
-    });
-
-    expect(response.status()).not.toBe(403);
-  });
-
-  test('admin_team can assign movie team members', async ({ page, request }) => {
-    await loginAs(page, 'admin_team');
-    
-    const response = await request.post('/api/admin/movie-team-assignments', {
-      data: {
-        event_id: 'test-event-id',
-        user_id: 'movie-team-user-id',
       },
     });
 

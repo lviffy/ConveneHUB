@@ -51,7 +51,11 @@ interface ReconciliationSummary {
   }>;
 }
 
-export default function ReconciliationDashboard() {
+interface ReconciliationDashboardProps {
+  apiBasePath?: string;
+}
+
+export default function ReconciliationDashboard({ apiBasePath = '/api/admin' }: ReconciliationDashboardProps) {
   const [data, setData] = useState<ReconciliationData[] | null>(null);
   const [summary, setSummary] = useState<ReconciliationSummary | null>(null);
   const [loading, setLoading] = useState(true);
@@ -65,7 +69,7 @@ export default function ReconciliationDashboard() {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch('/api/admin/reconciliation');
+      const response = await fetch(`${apiBasePath}/reconciliation`);
       
       if (!response.ok) {
         const errorData = await response.json();

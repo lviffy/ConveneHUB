@@ -433,7 +433,7 @@ export default function EventsList() {
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This will permanently delete the event "{eventToDelete?.title}". 
-              This action cannot be undone. All bookings and assignments related to this event will also be deleted.
+              This action cannot be undone. All bookings and check-ins related to this event will also be deleted.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -1,9 +1,5 @@
-import { MovieTeamAssignments } from '@/components/admin/movie-team-assignments';
+import { redirect } from 'next/navigation';
 
-export default function MovieTeamAssignmentsPage() {
-  return (
-    <div className="container mx-auto py-8">
-      <MovieTeamAssignments />
-    </div>
-  );
+export default function AdminAssignmentsRedirectPage() {
+  redirect('/admin?tab=events');
 }

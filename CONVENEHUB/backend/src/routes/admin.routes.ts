@@ -4,48 +4,11 @@ import { UserModel } from '../models/User';
 import { EventModel } from '../models/Event';
 import { BookingModel } from '../models/Booking';
 import { CheckInModel } from '../models/CheckIn';
-import { CouponModel } from '../models/Coupon';
-import { MovieTeamAssignmentModel } from '../models/MovieTeamAssignment';
 import { TenantModel } from '../models/Tenant';
 import { z } from 'zod';
 import { syncTenantRecord } from '../utils/tenants';
 
 export const adminRouter = Router();
-
-const couponCreateSchema = z.object({
-  code: z.string().min(3),
-  discountType: z.enum(['percentage', 'fixed', 'free']),
-  discountValue: z.number(),
-  eventIds: z.array(z.string()).min(1),
-  usageLimit: z.number().int().positive().nullable().optional(),
-  perUserLimit: z.number().int().positive().optional(),
-  minTickets: z.number().int().positive().optional(),
-  validFrom: z.string().nullable().optional(),
-  validUntil: z.string().nullable().optional(),
-  isActive: z.boolean().optional(),
-});
-
-const couponUpdateSchema = z.object({
-  code: z.string().min(3).optional(),
-  discountType: z.enum(['percentage', 'fixed', 'free']).optional(),
-  discountValue: z.number().optional(),
-  eventIds: z.array(z.string()).min(1).optional(),
-  usageLimit: z.number().int().positive().nullable().optional(),
-  perUserLimit: z.number().int().positive().optional(),
-  minTickets: z.number().int().positive().optional(),
-  validFrom: z.string().nullable().optional(),
-  validUntil: z.string().nullable().optional(),
-  isActive: z.boolean().optional(),
-});
-
-const createAssignmentSchema = z.object({
-  userId: z.string().min(1),
-  eventId: z.string().min(1),
-});
-
-const deleteAssignmentSchema = z.object({
-  assignmentId: z.string().min(1),
-});
 
 const tenantCreateSchema = z.object({
   tenantId: z.string().min(2),
@@ -69,38 +32,6 @@ function mapEventStatus(status?: string) {
 
 function toMoney(value: number) {
   return Number(value.toFixed(2));
-}
-
-function toLegacyCoupon(coupon: any, eventById: Map<string, any>) {
-  const couponEvents = (coupon.eventIds || []).map((eventId: string) => {
-    const event = eventById.get(eventId);
-    return {
-      event_id: eventId,
-      events: event
-        ? {
-            event_id: eventId,
-            title: event.title,
-          }
-        : undefined,
-    };
-  });
-
-  return {
-    id: coupon.id,
-    code: coupon.code,
-    discount_type: coupon.discountType,
-    discount_value: coupon.discountValue,
-    event_id: coupon.eventIds?.[0] || null,
-    usage_limit: coupon.usageLimit ?? null,
-    per_user_limit: coupon.perUserLimit,
-    min_tickets: coupon.minTickets,
-    valid_from: coupon.validFrom,
-    valid_until: coupon.validUntil,
-    is_active: coupon.isActive,
-    current_usage_count: coupon.currentUsageCount || 0,
-    created_at: coupon.createdAt,
-    coupon_events: couponEvents,
-  };
 }
 
 adminRouter.get('/tenants', requireAuth, requireRole('admin'), async (_req, res) => {
@@ -190,199 +121,6 @@ adminRouter.get('/users', requireAuth, requireRole('admin'), async (_req, res) =
   return res.json({ success: true, users });
 });
 
-adminRouter.get('/coupons', requireAuth, requireRole('admin'), async (_req, res) => {
-  const coupons = await CouponModel.find({}).sort({ createdAt: -1 }).lean();
-  const eventIds = Array.from(
-    new Set(coupons.flatMap((coupon) => coupon.eventIds || []).filter(Boolean))
-  );
-  const events = await EventModel.find({ _id: { $in: eventIds } }, { title: 1 }).lean();
-  const eventById = new Map(events.map((event) => [String(event._id), event]));
-
-  return res.json({
-    success: true,
-    coupons: coupons.map((coupon) => toLegacyCoupon(coupon, eventById)),
-  });
-});
-
-adminRouter.post('/coupons', requireAuth, requireRole('admin'), async (req, res) => {
-  const parsed = couponCreateSchema.safeParse(req.body);
-  if (!parsed.success) {
-    return res.status(400).json({ error: parsed.error.issues[0]?.message || 'Invalid coupon payload' });
-  }
-
-  const code = parsed.data.code.trim().toUpperCase();
-  const existing = await CouponModel.findOne({ code }).lean();
-  if (existing) {
-    return res.status(409).json({ error: 'Coupon code already exists' });
-  }
-
-  const latestCoupon = await CouponModel.findOne({}, { id: 1 }).sort({ id: -1 }).lean();
-  const nextId = (latestCoupon?.id || 0) + 1;
-
-  const coupon = await CouponModel.create({
-    id: nextId,
-    code,
-    discountType: parsed.data.discountType,
-    discountValue: parsed.data.discountType === 'free' ? 100 : parsed.data.discountValue,
-    eventIds: parsed.data.eventIds,
-    usageLimit: parsed.data.usageLimit ?? null,
-    perUserLimit: parsed.data.perUserLimit ?? 1,
-    minTickets: parsed.data.minTickets ?? 1,
-    validFrom: parsed.data.validFrom ? new Date(parsed.data.validFrom) : null,
-    validUntil: parsed.data.validUntil ? new Date(parsed.data.validUntil) : null,
-    isActive: parsed.data.isActive ?? true,
-    currentUsageCount: 0,
-    createdBy: req.user?.sub,
-  });
-
-  const eventById = new Map<string, any>();
-  const mappedCoupon = toLegacyCoupon(coupon.toObject(), eventById);
-  return res.status(201).json({ success: true, coupon: mappedCoupon });
-});
-
-adminRouter.patch('/coupons/:couponId', requireAuth, requireRole('admin'), async (req, res) => {
-  const parsed = couponUpdateSchema.safeParse(req.body || {});
-  if (!parsed.success) {
-    return res.status(400).json({ error: parsed.error.issues[0]?.message || 'Invalid coupon payload' });
-  }
-
-  const couponId = Number(req.params.couponId);
-  if (Number.isNaN(couponId)) {
-    return res.status(400).json({ error: 'Invalid coupon id' });
-  }
-
-  const update: Record<string, unknown> = {};
-  if (parsed.data.code !== undefined) update.code = parsed.data.code.trim().toUpperCase();
-  if (parsed.data.discountType !== undefined) update.discountType = parsed.data.discountType;
-  if (parsed.data.discountValue !== undefined) update.discountValue = parsed.data.discountValue;
-  if (parsed.data.eventIds !== undefined) update.eventIds = parsed.data.eventIds;
-  if (parsed.data.usageLimit !== undefined) update.usageLimit = parsed.data.usageLimit;
-  if (parsed.data.perUserLimit !== undefined) update.perUserLimit = parsed.data.perUserLimit;
-  if (parsed.data.minTickets !== undefined) update.minTickets = parsed.data.minTickets;
-  if (parsed.data.validFrom !== undefined) update.validFrom = parsed.data.validFrom ? new Date(parsed.data.validFrom) : null;
-  if (parsed.data.validUntil !== undefined) update.validUntil = parsed.data.validUntil ? new Date(parsed.data.validUntil) : null;
-  if (parsed.data.isActive !== undefined) update.isActive = parsed.data.isActive;
-
-  if (parsed.data.discountType === 'free') {
-    update.discountValue = 100;
-  }
-
-  const coupon = await CouponModel.findOneAndUpdate({ id: couponId }, update, { new: true }).lean();
-  if (!coupon) {
-    return res.status(404).json({ error: 'Coupon not found' });
-  }
-
-  const eventIds = coupon.eventIds || [];
-  const events = await EventModel.find({ _id: { $in: eventIds } }, { title: 1 }).lean();
-  const eventById = new Map(events.map((event) => [String(event._id), event]));
-  return res.json({ success: true, coupon: toLegacyCoupon(coupon, eventById) });
-});
-
-adminRouter.delete('/coupons/:couponId', requireAuth, requireRole('admin'), async (req, res) => {
-  const couponId = Number(req.params.couponId);
-  if (Number.isNaN(couponId)) {
-    return res.status(400).json({ error: 'Invalid coupon id' });
-  }
-
-  const deleted = await CouponModel.findOneAndDelete({ id: couponId }).lean();
-  if (!deleted) {
-    return res.status(404).json({ error: 'Coupon not found' });
-  }
-
-  return res.json({ success: true, message: 'Coupon deleted successfully' });
-});
-
-adminRouter.get('/movie-team-assignments', requireAuth, requireRole('admin'), async (_req, res) => {
-  const assignments = await MovieTeamAssignmentModel.find({}).sort({ createdAt: -1 }).lean();
-
-  const userIds = Array.from(new Set(assignments.map((assignment) => assignment.userId)));
-  const eventIds = Array.from(new Set(assignments.map((assignment) => assignment.eventId)));
-
-  const [users, events] = await Promise.all([
-    UserModel.find({ _id: { $in: userIds } }, { fullName: 1, role: 1, city: 1, email: 1 }).lean(),
-    EventModel.find({ _id: { $in: eventIds } }, { title: 1, city: 1, dateTime: 1, status: 1 }).lean(),
-  ]);
-
-  const userById = new Map(users.map((user) => [String(user._id), user]));
-  const eventById = new Map(events.map((event) => [String(event._id), event]));
-
-  const payload = assignments.map((assignment) => {
-    const user = userById.get(assignment.userId);
-    const event = eventById.get(assignment.eventId);
-    return {
-      assignment_id: String(assignment._id),
-      event_id: assignment.eventId,
-      user_id: assignment.userId,
-      assigned_at: (assignment as any).createdAt,
-      user_name: user?.fullName || 'Unknown',
-      user_full_name: user?.fullName || 'Unknown',
-      user_city: user?.city || '',
-      user_role: user?.role || 'attendee',
-      event_title: event?.title || 'Unknown Event',
-      event_date: event?.dateTime,
-      event_date_time: event?.dateTime,
-      event_city: event?.city || '',
-      event_status: mapEventStatus(event?.status),
-    };
-  });
-
-  return res.json({ success: true, assignments: payload });
-});
-
-adminRouter.post('/movie-team-assignments', requireAuth, requireRole('admin'), async (req, res) => {
-  const parsed = createAssignmentSchema.safeParse(req.body);
-  if (!parsed.success) {
-    return res.status(400).json({ error: parsed.error.issues[0]?.message || 'Invalid assignment payload' });
-  }
-
-  const [user, event] = await Promise.all([
-    UserModel.findById(parsed.data.userId).lean(),
-    EventModel.findById(parsed.data.eventId).lean(),
-  ]);
-
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' });
-  }
-
-  if (user.role !== 'organizer') {
-    return res.status(400).json({ error: 'User is not an event operations member' });
-  }
-
-  if (!event) {
-    return res.status(404).json({ error: 'Event not found' });
-  }
-
-  try {
-    const assignment = await MovieTeamAssignmentModel.create({
-      userId: parsed.data.userId,
-      eventId: parsed.data.eventId,
-      assignedBy: req.user?.sub,
-    });
-
-    return res.status(201).json({
-      success: true,
-      assignmentId: String(assignment._id),
-      message: 'Movie team member assigned successfully',
-    });
-  } catch {
-    return res.status(409).json({ error: 'Member is already assigned to this event' });
-  }
-});
-
-adminRouter.delete('/movie-team-assignments', requireAuth, requireRole('admin'), async (req, res) => {
-  const parsed = deleteAssignmentSchema.safeParse(req.body);
-  if (!parsed.success) {
-    return res.status(400).json({ error: parsed.error.issues[0]?.message || 'Invalid assignment payload' });
-  }
-
-  const deleted = await MovieTeamAssignmentModel.findByIdAndDelete(parsed.data.assignmentId).lean();
-  if (!deleted) {
-    return res.status(404).json({ error: 'Assignment not found' });
-  }
-
-  return res.json({ success: true, message: 'Assignment removed successfully' });
-});
-
 adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (_req, res) => {
   const PROCESSING_FEE_PERCENTAGE = 0;
   const PLATFORM_COMMISSION_PERCENTAGE = 10;
@@ -411,13 +149,7 @@ adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (
   }
 
   const eventIds = events.map((event) => String(event._id));
-  const [bookings, assignments, users] = await Promise.all([
-    BookingModel.find({ eventId: { $in: eventIds }, bookingStatus: 'confirmed' }).sort({ createdAt: -1 }).lean(),
-    MovieTeamAssignmentModel.find({ eventId: { $in: eventIds } }).lean(),
-    UserModel.find({}, { fullName: 1, role: 1 }).lean(),
-  ]);
-
-  const userById = new Map(users.map((user) => [String(user._id), user]));
+  const bookings = await BookingModel.find({ eventId: { $in: eventIds }, bookingStatus: 'confirmed' }).sort({ createdAt: -1 }).lean();
 
   const eventsPayload = events.map((event) => {
     const eventId = String(event._id);
@@ -430,17 +162,6 @@ adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (
     const platformCommission = (grossRevenue * PLATFORM_COMMISSION_PERCENTAGE) / 100;
     const netPayout = grossRevenue - processingFees - platformCommission;
 
-    const assignedTeamMembers = assignments
-      .filter((assignment) => assignment.eventId === eventId)
-      .map((assignment) => {
-        const user = userById.get(assignment.userId);
-        return {
-          id: assignment.userId,
-          full_name: user?.fullName || 'Unknown',
-          role: user?.role || 'organizer',
-        };
-      });
-
     return {
       event_id: eventId,
       title: event.title,
@@ -450,7 +171,6 @@ adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (
       status: mapEventStatus(event.status),
       settlement_status: null,
       settlement_details: null,
-      assigned_team_members: assignedTeamMembers,
       financial_summary: {
         total_bookings: totalBookings,
         total_tickets_sold: totalTicketsSold,

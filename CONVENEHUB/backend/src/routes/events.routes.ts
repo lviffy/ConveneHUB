@@ -47,7 +47,23 @@ const eventSchema = z.object({
         quantity: z.number().int().positive(),
       })
     )
-    .min(1),
+    .length(2, 'Events must include exactly two ticket tiers: VIP and General')
+    .refine(
+      (tiers) => {
+        const names = tiers.map((tier) => tier.name.trim().toLowerCase());
+        return names.includes('vip') && names.includes('general');
+      },
+      { message: 'Ticket tiers must include both VIP and General' }
+    )
+    .refine(
+      (tiers) => {
+        const general = tiers.find((tier) => tier.name.trim().toLowerCase() === 'general');
+        const vip = tiers.find((tier) => tier.name.trim().toLowerCase() === 'vip');
+        if (!general || !vip) return false;
+        return general.price !== vip.price;
+      },
+      { message: 'VIP and General prices must be different' }
+    ),
 });
 
 eventsRouter.get('/', async (req, res) => {

@@ -41,31 +41,43 @@ import { downloadCSV, generateCSVFilename } from '@/lib/csv-export';
 import { extractUploadPath, resolveAssetUrl } from '@/lib/storage';
 
 // Form validation schema
-const eventFormSchema = z.object({
-  title: z.string().min(3, 'Title must be at least 3 characters'),
-  description: z.string().min(10, 'Description must be at least 10 characters'),
-  venue_name: z.string().min(3, 'Venue name is required'),
-  venue_address: z.string().min(5, 'Venue address must be at least 5 characters'),
-  city: z.string().min(2, 'City is required'),
-  latitude: z.string().optional(),
-  longitude: z.string().optional(),
-  date_time: z.string().min(1, 'Date and time are required'),
-  capacity: z.coerce.number().min(1, 'Capacity must be at least 1'),
-  ticket_price: z.coerce.number().min(0, 'Price must be 0 or greater'),
-  platform_commission_percentage: z.coerce.number().min(0, 'Commission must be 0 or greater').max(100, 'Commission cannot exceed 100%'),
-  event_image: z.string().optional(),
-  entry_instructions: z.string().optional(),
-  terms: z.string().optional(),
-  status: z.enum(['draft', 'published', 'checkin_open', 'in_progress', 'ended']),
-});
+const eventFormSchema = z
+  .object({
+    title: z.string().min(3, 'Title must be at least 3 characters'),
+    description: z.string().min(10, 'Description must be at least 10 characters'),
+    venue_name: z.string().min(3, 'Venue name is required'),
+    venue_address: z.string().min(5, 'Venue address must be at least 5 characters'),
+    city: z.string().min(2, 'City is required'),
+    latitude: z.string().optional(),
+    longitude: z.string().optional(),
+    date_time: z.string().min(1, 'Date and time are required'),
+    capacity: z.coerce.number().min(2, 'Capacity must be at least 2 for VIP and General tiers'),
+    ticket_price: z.coerce.number().min(0, 'Price must be 0 or greater'),
+    vip_ticket_price: z.coerce.number().min(0, 'VIP price must be 0 or greater'),
+    platform_commission_percentage: z.coerce.number().min(0, 'Commission must be 0 or greater').max(100, 'Commission cannot exceed 100%'),
+    event_image: z.string().optional(),
+    entry_instructions: z.string().optional(),
+    terms: z.string().optional(),
+    status: z.enum(['draft', 'published', 'checkin_open', 'in_progress', 'ended']),
+  })
+  .refine((data) => data.ticket_price !== data.vip_ticket_price, {
+    message: 'General and VIP prices must be different',
+    path: ['vip_ticket_price'],
+  });
 
 type EventFormValues = z.infer<typeof eventFormSchema>;
 
 interface CreateEventFormProps {
   userId: string;
+  actorRole?: 'admin_team' | 'organizer';
+  successRedirectPath?: string;
 }
 
-export default function CreateEventForm({ userId }: CreateEventFormProps) {
+export default function CreateEventForm({
+  userId,
+  actorRole = 'admin_team',
+  successRedirectPath = '/admin?tab=events',
+}: CreateEventFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const router = useRouter();
@@ -85,6 +97,7 @@ export default function CreateEventForm({ userId }: CreateEventFormProps) {
       date_time: '',
       capacity: 50,
       ticket_price: 0,
+      vip_ticket_price: 200,
       platform_commission_percentage: 10,
       event_image: '',
       entry_instructions: '',
@@ -111,6 +124,7 @@ export default function CreateEventForm({ userId }: CreateEventFormProps) {
           capacity: data.capacity,
           remaining: data.capacity, // Initialize remaining with capacity
           ticket_price: data.ticket_price,
+          vip_ticket_price: data.vip_ticket_price,
           platform_commission_percentage: data.platform_commission_percentage,
           event_image: data.event_image || null,
           entry_instructions: data.entry_instructions || null,
@@ -128,7 +142,7 @@ export default function CreateEventForm({ userId }: CreateEventFormProps) {
       // Log the action in audit logs
       await supabase.from('audit_logs').insert({
         actor_id: userId,
-        actor_role: 'admin_team',
+        actor_role: actorRole,
         action: 'CREATE_EVENT',
         entity: 'events',
         entity_id: (event as any)?.event_id,
@@ -142,8 +156,8 @@ export default function CreateEventForm({ userId }: CreateEventFormProps) {
       // Reset form
       form.reset();
 
-      // Redirect to admin events list after successful creation
-      router.push('/admin?tab=events');
+      // Redirect to the configured destination after successful creation
+      router.push(successRedirectPath);
     } catch (error: any) {
       toast({
         title: 'Error',
@@ -624,7 +638,7 @@ export default function CreateEventForm({ userId }: CreateEventFormProps) {
                   <FormControl>
                     <Input 
                       type="number" 
-                      min="1" 
+                      min="2" 
                       placeholder="50" 
                       className="border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
                       {...field} 
@@ -638,13 +652,13 @@ export default function CreateEventForm({ userId }: CreateEventFormProps) {
               )}
             />
 
-            {/* Ticket Price */}
+            {/* General Ticket Price */}
             <FormField
               control={form.control}
               name="ticket_price"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-700 font-medium">Ticket Price (₹) *</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">General Ticket Price (₹) *</FormLabel>
                   <FormControl>
                     <Input 
                       type="number" 
@@ -656,7 +670,32 @@ export default function CreateEventForm({ userId }: CreateEventFormProps) {
                     />
                   </FormControl>
                   <FormDescription className="text-xs text-gray-500">
-                    Price in Indian Rupees (INR). Set to 0 for free events
+                    Price for the General tier in INR
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* VIP Ticket Price */}
+            <FormField
+              control={form.control}
+              name="vip_ticket_price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 font-medium">VIP Ticket Price (₹) *</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      placeholder="200.00"
+                      className="border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription className="text-xs text-gray-500">
+                    Must be different from the General price
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

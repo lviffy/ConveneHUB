@@ -91,7 +91,7 @@ export function LoginForm() {
       if (role === 'admin_team') {
         window.location.href = '/admin';
       } else if (role === 'organizer') {
-        window.location.href = '/movie-team';
+        window.location.href = '/organizer';
       } else {
         window.location.href = '/events';
       }
@@ -285,7 +285,7 @@ export function LoginForm() {
       if (userRole === 'admin_team') {
         window.location.href = '/admin';
       } else if (userRole === 'organizer') {
-        window.location.href = '/movie-team';
+        window.location.href = '/organizer';
       } else {
         window.location.href = '/events';
       }

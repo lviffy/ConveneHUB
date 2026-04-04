@@ -9,7 +9,6 @@ import { test, expect } from '@playwright/test';
 test.describe('RLS Policies - Profiles Table', () => {
   let adminClient: any;
   let userClient: any;
-  let movieTeamClient: any;
   let testUserIds: string[] = [];
 
   test.beforeAll(async () => {
@@ -250,67 +249,6 @@ test.describe('RLS Policies - Bookings Table', () => {
 
     expect(error).toBeNull();
     expect(data).toBeTruthy();
-  });
-});
-
-test.describe('RLS Policies - Movie Team Assignments', () => {
-  let movieTeamClient: any;
-  let adminClient: any;
-
-  test('movie_team can view their assignments', async () => {
-    // Test that movie team can SELECT their assignments
-    const { data, error } = await movieTeamClient
-      .from('movie_team_assignments')
-      .select('*')
-      .eq('user_id', 'movie-team-user-id');
-
-    expect(error).toBeNull();
-    expect(data).toBeTruthy();
-  });
-
-  test('movie_team cannot view other assignments', async () => {
-    // Test that movie team cannot SELECT other team members assignments
-    const { data } = await movieTeamClient
-      .from('movie_team_assignments')
-      .select('*')
-      .eq('user_id', 'different-movie-team-id');
-
-    expect(data?.length).toBe(0);
-  });
-
-  test('regular users cannot create assignments', async () => {
-    // Test that regular users cannot INSERT assignments
-    const { error } = await movieTeamClient
-      .from('movie_team_assignments')
-      .insert({
-        event_id: 'test-event-id',
-        user_id: 'movie-team-user-id',
-      });
-
-    expect(error).toBeTruthy();
-  });
-
-  test('admin_team can create assignments', async () => {
-    // Test that ConveneHub team can INSERT assignments
-    const { error } = await adminClient
-      .from('movie_team_assignments')
-      .insert({
-        event_id: 'test-event-id',
-        user_id: 'movie-team-user-id',
-      });
-
-    expect(error).toBeNull();
-  });
-
-  test('admin_team can delete assignments', async () => {
-    // Test that ConveneHub team can DELETE assignments
-    const { error } = await adminClient
-      .from('movie_team_assignments')
-      .delete()
-      .eq('event_id', 'test-event-id')
-      .eq('user_id', 'movie-team-user-id');
-
-    expect(error).toBeNull();
   });
 });
 

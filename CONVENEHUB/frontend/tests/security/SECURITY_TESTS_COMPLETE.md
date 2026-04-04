@@ -8,7 +8,7 @@
 
 #### 1. **RLS Policies Tests** (`rls-policies.test.ts`)
 - ✅ 25+ tests for Row Level Security policies
-- ✅ Tests all 5 tables (profiles, events, bookings, movie_team_assignments, audit_logs)
+- ✅ Tests core tables (profiles, events, bookings, audit_logs)
 - ✅ Validates CRUD permissions by role
 - ✅ Ensures data isolation between users
 

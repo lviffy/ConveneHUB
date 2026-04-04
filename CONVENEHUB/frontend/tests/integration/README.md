@@ -97,7 +97,6 @@ Ensure all tables, triggers, and functions are created:
 ```bash
 # Run in Supabase SQL Editor
 1. complete-database-setup.sql
-2. movie-team-assignments-functions.sql
 ```
 
 ### 3. Test Data

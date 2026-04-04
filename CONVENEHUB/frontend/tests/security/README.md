@@ -9,11 +9,10 @@ Tests Row Level Security (RLS) policies in Supabase database:
 - ✅ User profile access restrictions
 - ✅ Event CRUD permissions by role
 - ✅ Booking ownership validation
-- ✅ Movie team assignment access
 - ✅ Audit log visibility
 
 **Coverage:**
-- 5 tables: profiles, events, bookings, movie_team_assignments, audit_logs
+- 4 core tables: profiles, events, bookings, audit_logs
 - 25+ RLS policy tests
 - All CRUD operations (SELECT, INSERT, UPDATE, DELETE)
 

@@ -1,280 +1,265 @@
-# ConveneHub Implementation Plan (Separate React + Backend)
+# ConveneHub
 
-## 1) What Was Analyzed
+## 1. Introduction
 
-Reference requirements:
-- [conveneHUB.md](conveneHUB.md)
+ConveneHub is a web-based event management platform designed to help organizers manage the complete lifecycle of events, from ticketing to attendee check-in and analytics.
 
-Reference implementation:
-- [Eonverse/README.md](Eonverse/README.md)
-- [Eonverse/API_DOCUMENTATION.md](Eonverse/API_DOCUMENTATION.md)
-- [Eonverse/types/database.types.ts](Eonverse/types/database.types.ts)
-- [Eonverse/app](Eonverse/app)
-- [Eonverse/components](Eonverse/components)
-- [Eonverse/app/api](Eonverse/app/api)
+Event organizers often rely on multiple tools for ticketing, promotions, attendee tracking, and analytics, which leads to inefficiencies, data inconsistencies, and increased operational complexity.
 
-## 2) Key Analysis Findings
+ConveneHub provides a unified solution that integrates ticketing, RSVP management, promoter tracking, and analytics into a single platform. It also supports multi-campus or multi-tenant environments, making it ideal for colleges, organizations, and event agencies.
 
-1. Existing Eonverse is tightly coupled to Next.js App Router + Supabase.
-2. UI can be reused significantly, but routing, auth/session handling, and all data-access layers must be replaced.
-3. Requirements in [conveneHUB.md](conveneHUB.md) ask for a separate React frontend and Node/Express backend with MongoDB (no Supabase).
-4. Some Eonverse modules are extra relative to your requirements and should be dropped from v1:
-- Supabase auth/session middleware and callbacks
-- Supabase RLS-specific logic
-- Supabase RPC-specific logic
-- Next.js server components and API routes
-- Any EONVERSE-only branding/docs/features not relevant to ConveneHub
-5. Requirement-driven additions needed beyond current Eonverse model:
-- Promoter referral tracking and commissions as a first-class domain
-- Multi-campus/multi-tenant isolation model
+The project demonstrates concepts such as event management systems, multi-tenant architectures, analytics dashboards, and full-stack development.
 
-## 3) Target Project Structure (New, Separate Project)
+---
 
-Create a new root project folder:
+## 2. Description
 
-```text
-CONVENEHUB/
-  frontend/                 # React (Vite + TypeScript)
-  backend/                  # Express + TypeScript + MongoDB
-  shared/                   # Shared DTO/types (optional)
-  docs/
-    api/
-    architecture/
+ConveneHub enables organizers to create, manage, and analyze events efficiently.
+
+**The application allows organizers to:**
+- Create events with ticketing and seat tiers
+- Manage RSVPs and attendee registrations
+- Track attendance using QR-based check-ins
+- Manage promoters and commission structures
+- Analyze event performance through dashboards
+
+**Promoters can:**
+- Promote events using referral links
+- Track ticket sales and commissions
+
+**Attendees can:**
+- Register for events
+- Purchase tickets
+- Receive QR codes for entry
+
+The platform ensures smooth event execution, better audience engagement, and data-driven decision-making.
+
+---
+
+## 3. Problem Statement
+
+Event organizers face challenges in managing events due to reliance on multiple disconnected tools.
+
+**This results in:**
+- Inefficient ticketing and attendee management
+- Difficulty tracking promoter performance
+- Poor visibility into revenue and attendance
+- Manual check-in processes causing delays
+
+**The challenge is to build a platform that:**
+- Provides integrated ticketing and RSVP management
+- Enables QR-based attendee check-in
+- Supports promoter tracking and commission flows
+- Offers analytics for revenue and attendance
+- Supports multi-campus or multi-tenant setups
+
+The solution should provide a centralized, scalable, and efficient event management system.
+
+---
+
+## 4. Scenario
+
+Consider a university hosting a tech fest across multiple campuses.
+
+- The organizer creates the event on ConveneHub.
+- Different ticket tiers are created (General, VIP, Early Bird).
+- Promoters are assigned unique referral links to sell tickets.
+- Students register and receive QR-based tickets.
+
+**On the event day:**
+- Attendees check in by scanning QR codes.
+- The system updates attendance in real time.
+
+**After the event:**
+- Organizers view analytics such as:
+  - Total revenue
+  - Attendance rates
+  - Promoter performance
+
+This helps organizers improve future events and manage operations efficiently.
+
+---
+
+## 5. Architecture
+
+The platform follows a **three-tier architecture with multi-tenant support**.
+
+### Frontend Layer
+- Event creation and management UI
+- Ticket booking interface
+- Promoter dashboards
+- Analytics dashboards
+- Developed using **React.js**
+
+### Backend Layer
+- Handles event management, ticketing, and RSVPs
+- QR code generation and check-in system
+- Promoter tracking and commission logic
+- Multi-tenant (multi-campus) handling
+- Developed using **Node.js + Express.js**
+
+### Database Layer
+- Stores events, users, tickets, promoters, and analytics data
+- Implemented using **MongoDB**
+
+### Communication Flow
+
+```
+Frontend (React)
+      ↓ API Requests
+Backend (Node.js + Express)
+      ↓ Database Queries
+MongoDB Database
 ```
 
-Recommended stack:
+---
 
-Frontend:
-- React + Vite + TypeScript
+## 6. Project Flow (System Flow)
+
+| Step | Description |
+|------|-------------|
+| Step 1 | **Organizer Registration** — Organizers create accounts and set up their profiles. |
+| Step 2 | **Event Creation** — Organizers create events with details and ticket tiers. |
+| Step 3 | **Ticket Sales & RSVP** — Users register and purchase tickets. |
+| Step 4 | **Promoter Allocation** — Promoters are assigned referral links and track sales. |
+| Step 5 | **QR Ticket Generation** — Each attendee receives a unique QR code. |
+| Step 6 | **Event Check-in** — Attendees are verified via QR scanning. |
+| Step 7 | **Analytics & Reporting** — System generates revenue reports, attendance analytics, and promoter commission reports. |
+
+---
+
+## 7. User Flow
+
+**Organizer Flow**
+`Organizer → Create Event → Set Ticket Tiers → Monitor Dashboard`
+
+**Attendee Flow**
+`User → Register → Buy Ticket → Receive QR Code → Check-in`
+
+**Promoter Flow**
+`Promoter → Share Referral Link → Track Sales → Earn Commission`
+
+**Admin Flow**
+`Admin → Monitor Platform → Manage Tenants`
+
+---
+
+## 8. ER Diagram
+
+### Entities
+
+| Entity | Description |
+|--------|-------------|
+| **User** | Core entity for all users (attendees, organizers, promoters, admins) |
+| **Event** | Events created by organizers with details like date, location, capacity |
+| **Ticket** | Tickets purchased by users for events with check-in tracking |
+| **ReferralLink** | Unique referral links created by promoters |
+| **Sales** | Tracks ticket sales generated through referral links with commissions |
+| **Admin** | Administrators who monitor the entire platform |
+
+### Key Relationships
+
+- **User → Event** (1:M) — Organizers can create multiple events
+- **User → Ticket** (1:M) — Users can buy multiple tickets
+- **Event → Ticket** (1:M) — Events have multiple tickets
+- **User → ReferralLink** (1:M) — Promoters can create multiple referral links
+- **ReferralLink → Sales** (1:M) — Each referral link can generate multiple sales
+- **User → Admin** (1:1) — Admins are special users with elevated permissions
+
+---
+
+## 9. Pre-Requisites
+
+### Frontend (React)
+- React Components
+- React Hooks
 - React Router
-- Tailwind CSS (reuse existing styles)
-- Axios + TanStack Query
-- React Hook Form + Zod
+- Axios
+- TailwindCSS / CSS
 
-Backend:
-- Node.js + Express + TypeScript
-- MongoDB + Mongoose
-- JWT auth (access + refresh)
-- bcrypt
-- Helmet + CORS + rate limiter + request validation
-- Email and SMS API integration
-- QR generation library
+### Backend (Node.js & Express)
+- Node.js fundamentals
+- Express routing
+- REST APIs
+- Middleware
+- JWT Authentication
 
-## 4) Feature Scope (From Requirements)
+### Database (MongoDB)
+- CRUD operations
+- Schema design
+- Mongoose ODM
 
-Mandatory for v1:
-1. Organizer event management
-2. Ticket tiers and online booking
-3. RSVP/attendee registration
-4. Promoter referral links + commission tracking
-5. QR ticket generation and check-in
-6. Revenue/attendance/promoter analytics
-7. Multi-campus or multi-tenant support
+---
 
-Optional (v2+):
-1. Dynamic pricing
-2. AI demand prediction
-3. Fraud detection
-4. Mobile app for check-in staff
-5. Real-time event heatmaps
-6. Social media integration for promotion
-7. Automated marketing campaigns
+## 10. Required Technologies
 
-## 5) Reuse vs Rewrite Matrix
+| Layer | Technologies |
+|-------|-------------|
+| **Frontend** | React.js, TailwindCSS / Material UI, Axios |
+| **Backend** | Node.js, Express.js, JWT Authentication |
+| **Database** | MongoDB, Mongoose |
+| **Integrations** | Razorpay / Stripe, QR Code generator libraries, Email/SMS APIs |
+| **Tools** | Git, GitHub, Postman |
 
-Reuse with minimal changes:
-1. Most presentational UI components in [Eonverse/components/ui](Eonverse/components/ui)
-2. Layout visuals, cards, forms, dashboard widgets
-3. QR display UI patterns
-4. Styling tokens and global CSS patterns
+---
 
-Refactor heavily:
-1. Components that import next/link, next/image, next/navigation
-2. Components directly calling Supabase client
-3. Protected route logic based on Supabase session
+## 11. Suggested Database Collections
 
-Rewrite fully:
-1. [Eonverse/app/api](Eonverse/app/api) (replace with Express modules)
-2. [Eonverse/lib/supabase](Eonverse/lib/supabase)
-3. Next middleware and auth callbacks
-4. DB schema and server-side auth built around Supabase semantics
+### Users
+- `_id`, `name`, `email`, `password`, `role` (organizer/promoter/attendee/admin)
 
-## 6) Domain Model for MongoDB (Initial)
+### Events
+- `_id`, `title`, `description`, `date`, `venue`, `organizerId`
 
-Collections:
-1. users
-- name, email, passwordHash, role (admin/organizer/promoter/attendee)
-- tenantId, campusId (optional by model)
-- profile fields
+### Tickets
+- `_id`, `eventId`, `type` (VIP/General), `price`, `quantity`
 
-2. tenants
-- name, slug, settings
+### Orders
+- `_id`, `userId`, `eventId`, `ticketId`, `paymentStatus`
 
-3. campuses
-- tenantId, name, location
+### Attendees
+- `_id`, `eventId`, `userId`, `qrCode`, `checkInStatus`
 
-4. events
-- tenantId, campusId, organizerId
-- title, description, dateTime, venue, capacity
-- status, poster/media, terms, instructions
+### Promoters
+- `_id`, `userId`, `eventId`, `referralCode`, `commission`
 
-5. ticketTiers
-- eventId, name (General/VIP/Early Bird)
-- price, quantity, soldCount
+### Analytics
+- `_id`, `eventId`, `revenue`, `attendance`, `promoterPerformance`
 
-6. bookings
-- eventId, attendeeId, tierId
-- quantity, amount, bookingStatus, bookingCode
-- referralCode/appliedPromoterId (optional)
+---
 
-7. tickets
-- bookingId, eventId, attendeeId, qrPayload, qrNonce
-- checkInStatus, checkedInAt, checkedInBy
+## 12. Key Features
 
-8. promoters
-- userId, tenantId, commissionType, commissionValue
+| Feature | Details |
+|---------|---------|
+| **Event Management** | Create and manage events, multi-campus support |
+| **Ticketing System** | Ticket tiers, online booking |
+| **Check-in System** | QR-based verification |
+| **Promoter System** | Referral tracking, commission calculation |
+| **Analytics Dashboard** | Revenue tracking, attendance insights, event performance |
 
-9. referralLinks
-- promoterId, eventId, code, url, clicks, conversions
+---
 
-10. sales
-- referralLinkId, promoterId, eventId, bookingId, ticketsSold, saleAmount, commissionAmount, createdAt
+## 13. Optional Advanced Features
 
-11. commissions
-- promoterId, bookingId, amount, status
+- Dynamic pricing for tickets
+- AI-based demand prediction
+- Fraud detection in ticketing
+- Mobile app for check-in staff
+- Real-time event heatmaps
+- Social media integration for promotion
+- Automated marketing campaigns
 
-12. analyticsSnapshots (optional)
-- eventId, revenue, attendance, promoterPerformance, generatedAt
+---
 
-## 7) Backend API Plan (Express)
+## 14. Learning Outcomes
 
-Base: /api/v1
+By completing this project, developers will learn:
 
-Auth:
-1. POST /auth/register
-2. POST /auth/login
-3. POST /auth/refresh
-4. POST /auth/logout
-5. POST /auth/forgot-password
-6. POST /auth/reset-password
-
-Events:
-1. GET /events (public + filtered)
-2. GET /events/:id
-3. POST /events (organizer/admin)
-4. PATCH /events/:id
-5. DELETE /events/:id
-
-Ticketing/Booking:
-1. POST /bookings
-2. GET /bookings/me
-3. GET /bookings/:id
-4. POST /bookings/:id/cancel
-5. GET /tickets/:id/qr
-
-Check-in:
-1. POST /checkins/qr
-2. POST /checkins/manual
-3. GET /checkins/event/:eventId
-
-Promoter:
-1. POST /promoters/links
-2. GET /promoters/links
-3. GET /promoters/performance
-4. GET /promoters/commissions
-
-Analytics:
-1. GET /analytics/event/:eventId
-2. GET /analytics/organizer/:organizerId
-3. GET /analytics/promoter/:promoterId
-
-Admin:
-1. Tenant/campus management
-2. User/role management
-
-## 8) Frontend App Plan (React)
-
-Routes:
-1. Public: /, /events, /events/:id, /login, /register
-2. Attendee: /bookings, /profile
-3. Organizer: /organizer/dashboard, /organizer/events, /organizer/analytics
-4. Promoter: /promoter/dashboard, /promoter/links, /promoter/commissions
-5. Admin: /admin/tenants, /admin/users
-
-Frontend architecture:
-1. src/pages for route screens
-2. src/components for reusable UI (ported from Eonverse)
-3. src/services/api for Axios client and domain services
-4. src/store or React Query for server state
-5. src/guards for role-based route protection
-
-## 9) Migration and Implementation Phases
-
-Phase 0: Foundation (1-2 days)
-1. Create CONVENEHUB monorepo with frontend/backend
-2. Setup TypeScript, linting, formatting, env strategy
-3. Setup CI baseline and branch strategy
-
-Phase 1: Backend Core (4-6 days)
-1. Express app skeleton and security middleware
-2. Mongo connection and base models
-3. JWT auth + role middleware
-4. Tenant/campus scoping middleware
-
-Phase 2: Event + Ticketing Core (5-7 days)
-1. Events, ticket tiers, bookings, tickets APIs
-2. QR generation and validation logic
-3. Booking confirmation and ticket issuance flow
-
-Phase 3: Promoter and Commission Module (4-5 days)
-1. Referral link generation and tracking
-2. Commission computation and reporting
-3. Promoter dashboard APIs
-
-Phase 4: Frontend Porting (7-10 days)
-1. Port reusable UI from Eonverse
-2. Replace Next router/image/link APIs
-3. Integrate Axios/React Query with Express APIs
-4. Build attendee, organizer, promoter, admin flows
-
-Phase 5: Analytics + Hardening (4-6 days)
-1. Revenue, attendance, promoter metrics
-2. Audit logs and monitoring
-3. Rate limiting and abuse controls
-4. Error handling and edge-case validation
-
-Phase 6: Testing + Release Prep (4-6 days)
-1. Unit and integration tests (backend)
-2. Critical E2E tests (frontend)
-3. Seed scripts, migration scripts, runbooks
-4. Production deployment setup
-
-## 10) What to Remove from Reference During Port
-
-Do not carry over into the new app:
-1. Supabase SDK usage
-2. Supabase-specific auth and cookie/session flows
-3. Next.js API routes and middleware
-4. Supabase RLS/RPC assumptions
-5. EONVERSE naming/branding where not needed
-
-## 11) Acceptance Criteria for v1
-
-1. Separate deployable frontend and backend
-2. MongoDB is sole primary data store
-3. End-to-end flow works:
-- organizer creates event and tiers
-- attendee books ticket and receives QR
-- promoter referral tracked with commission
-- check-in via QR updates attendance
-- analytics show revenue + attendance + promoter stats
-4. Role-based access control works for admin/organizer/promoter/attendee
-5. Multi-tenant/campus data isolation is enforced
-
-## 12) Immediate Next Execution Steps
-
-1. Confirm v1 scope lock:
-- Keep movie-team role or replace with promoter + check-in staff role
-2. Scaffold CONVENEHUB/frontend and CONVENEHUB/backend
-3. Start backend first (auth, users, events, bookings)
-4. Start UI port in parallel for public pages and auth
+- Full-stack MERN application development
+- Event management system design
+- Multi-tenant architecture
+- Payment gateway integration
+- QR-based systems
+- Analytics and reporting systems
+- Scalable backend design

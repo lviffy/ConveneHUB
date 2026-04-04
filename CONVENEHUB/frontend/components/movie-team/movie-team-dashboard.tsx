@@ -25,7 +25,7 @@ interface MovieTeamDashboardProps {
   userEmail?: string;
 }
 
-interface AssignedEvent {
+interface OrganizerEvent {
   event_id: string;
   title: string;
   description: string;
@@ -40,12 +40,12 @@ interface AssignedEvent {
 }
 
 export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDashboardProps) {
-  const [activeTab, setActiveTab] = useState('assigned');
+  const [activeTab, setActiveTab] = useState('events');
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
-  const [selectedEvent, setSelectedEvent] = useState<AssignedEvent | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<OrganizerEvent | null>(null);
   const [isCheckinModalOpen, setIsCheckinModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  const [assignedEvents, setAssignedEvents] = useState<AssignedEvent[]>([]);
+  const [organizerEvents, setOrganizerEvents] = useState<OrganizerEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -55,22 +55,22 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
   const [notesError, setNotesError] = useState('');  const router = useRouter();
   const supabase = createClient();
 
-  // Fetch assigned events on component mount
+  // Fetch organizer-owned events on component mount
   useEffect(() => {
-    fetchAssignedEvents();
+    fetchOrganizerEvents();
   }, []);
 
-  const fetchAssignedEvents = async () => {
+  const fetchOrganizerEvents = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/movie-team/my-events');
+      const response = await fetch('/api/organizer/my-events');
       
       if (!response.ok) {
-        throw new Error('Failed to fetch assigned events');
+        throw new Error('Failed to fetch organizer events');
       }
 
       const data = await response.json();
-      setAssignedEvents(data.events || []);
+      setOrganizerEvents(data.events || []);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -99,7 +99,7 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
     setNotesSaved(false);
 
     try {
-      const response = await fetch(`/api/movie-team/events/${selectedEvent.event_id}/notes`, {
+      const response = await fetch(`/api/organizer/events/${selectedEvent.event_id}/notes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ notes: onGroundNotes })
@@ -119,7 +119,7 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
     }
   };
 
-  const handleOpenCheckin = (event: AssignedEvent) => {
+  const handleOpenCheckin = (event: OrganizerEvent) => {
     setSelectedEvent(event);
     setIsCheckinModalOpen(true);
   };
@@ -154,7 +154,7 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
   };
 
   const handleEventStatusChange = (eventId: string, newStatus: string) => {
-    setAssignedEvents(prev =>
+    setOrganizerEvents(prev =>
       prev.map(event =>
         event.event_id === eventId ? { ...event, status: newStatus } : event
       )
@@ -175,8 +175,8 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
 
   const sidebarLinks = [
     {
-      label: "Assigned Events",
-      href: "#assigned",
+      label: "My Events",
+      href: "#events",
       icon: <ClipboardList className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
     },
     {
@@ -349,7 +349,7 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
           className="mb-6 sm:mb-8"
         >
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">Event Operations Dashboard</h1>
-          <p className="text-sm sm:text-base text-gray-600">Manage check-ins, live updates, and assigned events</p>
+          <p className="text-sm sm:text-base text-gray-600">Manage check-ins, live updates, and your events</p>
         </motion.div>
 
         {/* Custom Tabs */}
@@ -362,7 +362,7 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
           {/* Tab Navigation */}
           <div className="flex gap-1 sm:gap-2 p-1 bg-gray-100 rounded-lg w-full overflow-x-auto scrollbar-hide mb-6 sm:mb-8">
             {[
-              { value: 'assigned', label: 'Assigned Events', shortLabel: 'Assigned', icon: ClipboardList },
+              { value: 'events', label: 'My Events', shortLabel: 'Events', icon: ClipboardList },
               { value: 'live-dash', label: 'Live Dashboard', shortLabel: 'Live', icon: BarChart3 },
               { value: 'on-ground-notes', label: 'On Ground Notes', shortLabel: 'Notes', icon: StickyNote },
             ].map((tab) => {
@@ -394,7 +394,7 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
 
           {/* Tab Content */}
           <div className="space-y-6">
-            {activeTab === 'assigned' && (
+            {activeTab === 'events' && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -405,9 +405,9 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
                     <div className="flex items-center gap-2">
                       <ClipboardList className="h-5 w-5 text-[#195ADC]" />
                       <div>
-                        <CardTitle className="text-xl">My Assigned Events</CardTitle>
+                        <CardTitle className="text-xl">My Events</CardTitle>
                         <CardDescription className="mt-1">
-                          View and manage events you've been assigned to
+                          View and manage events created by you
                         </CardDescription>
                       </div>
                     </div>
@@ -416,7 +416,7 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
                     {loading ? (
                       <div className="text-center py-16">
                         <Spinner className="h-8 w-8 text-[#195ADC] mx-auto mb-4" />
-                        <p className="text-gray-500">Loading your assigned events...</p>
+                        <p className="text-gray-500">Loading your events...</p>
                       </div>
                     ) : error ? (
                       <div className="text-center py-16">
@@ -425,23 +425,23 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
                         </div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-2">Error Loading Events</h3>
                         <p className="text-gray-500 max-w-sm mx-auto mb-4">{error}</p>
-                        <Button onClick={fetchAssignedEvents} variant="outline">
+                        <Button onClick={fetchOrganizerEvents} variant="outline">
                           Try Again
                         </Button>
                       </div>
-                    ) : assignedEvents.length === 0 ? (
+                    ) : organizerEvents.length === 0 ? (
                       <div className="text-center py-16">
                         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#195ADC]/10 mb-4">
                           <ClipboardList className="h-8 w-8 text-[#195ADC]" />
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">No Events Assigned Yet</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2">No Events Yet</h3>
                         <p className="text-gray-500 max-w-sm mx-auto">
-                          You don't have any assigned events yet. Once the CONVENEHUB admin assigns you to an event, it will appear here.
+                          You have not created any events yet. Once you create one, it will appear here.
                         </p>
                       </div>
                     ) : (
                       <div className="grid gap-3 sm:gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-                        {assignedEvents.map((event) => (
+                        {organizerEvents.map((event) => (
                           <motion.div
                             key={event.event_id}
                             initial={{ opacity: 0, y: 20 }}
@@ -483,7 +483,7 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
 
                                 <div className="pt-3 border-t border-gray-100">
                                   <p className="text-xs text-gray-500">
-                                    Assigned: {format(new Date(event.assigned_at), 'PPP')}
+                                    Created: {format(new Date(event.assigned_at), 'PPP')}
                                   </p>
                                 </div>
 
@@ -538,10 +538,10 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
               >
-                {assignedEvents.length > 0 ? (
+                {organizerEvents.length > 0 ? (
                   <div className="space-y-6">
                     {/* Sort events by date_time (newer first) */}
-                    {[...assignedEvents]
+                    {[...organizerEvents]
                       .sort((a, b) => new Date(b.date_time).getTime() - new Date(a.date_time).getTime())
                       .map((event) => (
                         <LiveDashboard
@@ -559,12 +559,12 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
                   <Card className="border-gray-200 shadow-sm">
                     <CardContent className="p-16 text-center">
                       <BarChart3 className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">No Events Assigned</h3>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">No Events</h3>
                       <p className="text-gray-500 max-w-sm mx-auto mb-4">
-                        You haven't been assigned to any events yet.
+                        Create an event first to see live stats.
                       </p>
-                      <Button onClick={() => setActiveTab('assigned')}>
-                        View Assigned Events
+                      <Button onClick={() => setActiveTab('events')}>
+                        View My Events
                       </Button>
                     </CardContent>
                   </Card>
@@ -602,12 +602,12 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
                             id="event-select"
                             value={selectedEvent?.event_id || ''}
                             onChange={async (e) => {
-                              const event = assignedEvents.find(ev => ev.event_id === e.target.value);
+                              const event = organizerEvents.find(ev => ev.event_id === e.target.value);
                               setSelectedEvent(event || null);
                               // Load notes for selected event
                               if (event) {
                                 try {
-                                  const response = await fetch(`/api/movie-team/events/${event.event_id}/notes`);
+                                  const response = await fetch(`/api/organizer/events/${event.event_id}/notes`);
                                   if (response.ok) {
                                     const data = await response.json();
                                     setOnGroundNotes(data.notes || '');
@@ -626,7 +626,7 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
                               appearance-none font-medium text-gray-700 truncate"
                           >
                             <option value="" className="text-gray-500">-- Select an event --</option>
-                            {assignedEvents.map((event) => (
+                            {organizerEvents.map((event) => (
                               <option key={event.event_id} value={event.event_id} className="text-gray-900 py-2">
                                 {event.title} - {format(new Date(event.date_time), 'MMM d, yyyy')}
                               </option>

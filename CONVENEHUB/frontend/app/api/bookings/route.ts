@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 
     // Get request body
     const body = await request.json();
-    const { event_id, tickets_count = 1, coupon_code } = body;
+    const { event_id, tickets_count = 1 } = body;
 
     if (!event_id) {
       return NextResponse.json(
@@ -76,34 +76,7 @@ export async function POST(request: Request) {
     // Calculate amounts
     const ticketPrice = Number(event.ticket_price || 0);
     const originalAmount = ticketPrice * tickets_count;
-    let discountAmount = 0;
-    let finalAmount = originalAmount;
-    let couponId: number | null = null;
-
-    // Validate and apply coupon if provided
-    if (coupon_code) {
-      const { data: couponValidation, error: couponError } = await supabase.rpc(
-        'validate_and_calculate_coupon' as any,
-        {
-          p_coupon_code: coupon_code.toUpperCase(),
-          p_event_id: event_id,
-          p_user_id: user.id,
-          p_tickets_count: tickets_count,
-          p_original_amount: originalAmount,
-        } as any
-      );
-
-      if (couponError || !(couponValidation as any)?.valid) {
-        return NextResponse.json(
-          { error: (couponValidation as any)?.error || couponError?.message || 'Invalid coupon code' },
-          { status: 400 }
-        );
-      }
-
-      discountAmount = (couponValidation as any).discount_amount || 0;
-      finalAmount = (couponValidation as any).final_amount || 0;
-      couponId = (couponValidation as any).coupon_id || null;
-    }
+    const finalAmount = originalAmount;
 
     // Check server config
     if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
@@ -189,9 +162,8 @@ export async function POST(request: Request) {
         event_id: event_id,
         tickets_count: tickets_count,
         original_amount: originalAmount,
-        discount_amount: discountAmount,
+        discount_amount: 0,
         total_amount: finalAmount,
-        coupon_id: couponId,
         payment_required: false,
         payment_status: 'NOT_REQUIRED',
         booking_status: 'confirmed',
@@ -282,55 +254,6 @@ export async function POST(request: Request) {
         booking: bookingData,
         message: 'Booking created successfully'
       });
-    }
-
-    // Track coupon usage if coupon was applied
-    if (coupon_code) {
-      try {
-        // Get coupon details
-        const { data: coupon, error: couponError } = await supabase
-          .from('coupons')
-          .select('id, discount_value, discount_type')
-          .eq('code', coupon_code.toUpperCase())
-          .eq('is_active', true)
-          .single() as {
-            data: {
-              id: number;
-              discount_value: number;
-              discount_type: string;
-            } | null;
-            error: any;
-          };
-
-        if (!couponError && coupon && bookingDetails) {
-          const booking = bookingDetails as any;
-
-          // Calculate discount amount
-          let discountAmount = 0;
-          const originalAmount = booking.total_amount || 0;
-
-          if (coupon.discount_type === 'percentage') {
-            discountAmount = (originalAmount * coupon.discount_value) / 100;
-          } else if (coupon.discount_type === 'fixed') {
-            discountAmount = coupon.discount_value;
-          } else if (coupon.discount_type === 'free') {
-            discountAmount = originalAmount;
-          }
-
-          // Record coupon usage
-          await (supabase
-            .from('coupon_usage') as any)
-            .insert({
-              coupon_id: coupon.id,
-              booking_id: booking.booking_id,
-              user_id: user.id,
-              discount_amount: discountAmount,
-              original_amount: originalAmount,
-            });
-        }
-      } catch (couponError) {
-        // Don't fail the booking if coupon tracking fails
-      }
     }
 
     // Send confirmation email with ticket IDs (async, don't wait)

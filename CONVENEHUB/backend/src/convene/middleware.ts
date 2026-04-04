@@ -8,6 +8,26 @@ import '@/lib/env';
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
+  const pathname = req.nextUrl.pathname;
+
+  // Backward-compatible redirects: keep old movie-team URLs working.
+  if (pathname === '/movie-team-login') {
+    const redirectUrl = req.nextUrl.clone();
+    redirectUrl.pathname = '/organizer-login';
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  if (pathname === '/movie-team-forgot-password') {
+    const redirectUrl = req.nextUrl.clone();
+    redirectUrl.pathname = '/organizer-forgot-password';
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  if (pathname === '/movie-team' || pathname.startsWith('/movie-team/')) {
+    const redirectUrl = req.nextUrl.clone();
+    redirectUrl.pathname = pathname.replace('/movie-team', '/organizer');
+    return NextResponse.redirect(redirectUrl);
+  }
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -34,10 +54,8 @@ export async function middleware(req: NextRequest) {
     error: userError,
   } = await supabase.auth.getUser();
 
-  const pathname = req.nextUrl.pathname;
-
   // Public routes - no authentication required
-  const publicRoutes = ['/', '/login', '/movie-team-login', '/forgot-password', '/movie-team-forgot-password', '/reset-password', '/complete-profile'];
+  const publicRoutes = ['/', '/login', '/organizer-login', '/forgot-password', '/organizer-forgot-password', '/reset-password', '/complete-profile'];
   const isPublicRoute = publicRoutes.some(route => pathname === route) ||
     pathname.startsWith('/events') || // Events pages are public (login required only when booking)
     pathname.startsWith('/api/') ||
@@ -46,9 +64,9 @@ export async function middleware(req: NextRequest) {
   // If not logged in and trying to access protected route
   if (!user && !isPublicRoute) {
     const redirectUrl = req.nextUrl.clone();
-    // Redirect to movie-team-login for movie-team routes, otherwise regular login
-    if (pathname.startsWith('/movie-team')) {
-      redirectUrl.pathname = '/movie-team-login';
+    // Redirect to organizer-login for organizer routes, otherwise regular login
+    if (pathname.startsWith('/organizer')) {
+      redirectUrl.pathname = '/organizer-login';
     } else {
       redirectUrl.pathname = '/login';
     }
@@ -80,19 +98,19 @@ export async function middleware(req: NextRequest) {
       const redirectUrl = req.nextUrl.clone();
       if (userRole === 'admin_team') {
         redirectUrl.pathname = '/admin';
-      } else if (userRole === 'movie_team') {
-        redirectUrl.pathname = '/movie-team';
+      } else if (userRole === 'organizer' || userRole === 'movie_team') {
+        redirectUrl.pathname = '/organizer';
       } else {
         redirectUrl.pathname = '/events';
       }
       return NextResponse.redirect(redirectUrl);
     }
 
-    // Redirect authenticated users away from movie-team-login to appropriate dashboard
-    if (pathname === '/movie-team-login') {
+    // Redirect authenticated users away from organizer-login to appropriate dashboard
+    if (pathname === '/organizer-login') {
       const redirectUrl = req.nextUrl.clone();
-      if (userRole === 'movie_team') {
-        redirectUrl.pathname = '/movie-team';
+      if (userRole === 'organizer' || userRole === 'movie_team') {
+        redirectUrl.pathname = '/organizer';
       } else if (userRole === 'admin_team') {
         redirectUrl.pathname = '/admin';
       } else {
@@ -110,9 +128,9 @@ export async function middleware(req: NextRequest) {
       }
     }
 
-    // Movie team routes (except login) - only for movie_team
-    if (pathname.startsWith('/movie-team') && pathname !== '/movie-team-login') {
-      if (userRole !== 'movie_team') {
+    // Organizer routes (except auth pages) - only for organizer.
+    if (pathname.startsWith('/organizer') && pathname !== '/organizer-login' && pathname !== '/organizer-forgot-password') {
+      if (userRole !== 'organizer' && userRole !== 'movie_team') {
         const redirectUrl = req.nextUrl.clone();
         redirectUrl.pathname = '/events';
         return NextResponse.redirect(redirectUrl);

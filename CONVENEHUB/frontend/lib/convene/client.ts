@@ -575,6 +575,15 @@ class QueryBuilder {
       const body = Array.isArray(this.payload) ? this.payload[0] : this.payload;
       const capacity = Number(body?.capacity || 1);
       const ticketPrice = Number(body?.ticket_price || 0);
+      const vipTicketPrice = Number(body?.vip_ticket_price ?? ticketPrice);
+
+      if (capacity < 2) {
+        return this.makeResult(null, { message: 'Capacity must be at least 2 to support VIP and General tiers' });
+      }
+
+      // Keep General as default booking tier while ensuring both required tiers exist.
+      const vipQuantity = Math.max(1, Math.floor(capacity * 0.2));
+      const generalQuantity = capacity - vipQuantity;
 
       const response = await rawApiFetch('/events', {
         method: 'POST',
@@ -594,7 +603,12 @@ class QueryBuilder {
             {
               name: 'General',
               price: ticketPrice,
-              quantity: capacity,
+              quantity: generalQuantity,
+            },
+            {
+              name: 'VIP',
+              price: vipTicketPrice,
+              quantity: vipQuantity,
             },
           ],
         }),

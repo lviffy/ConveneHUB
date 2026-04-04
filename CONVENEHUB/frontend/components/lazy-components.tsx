@@ -21,8 +21,8 @@ export const AdminDashboardLazy = dynamic(
   }
 );
 
-export const MovieTeamDashboardLazy = dynamic(
-  () => import('@/components/movie-team/movie-team-dashboard'),
+export const OrganizerTeamDashboardLazy = dynamic(
+  () => import('@/components/organizer-team/organizer-team-dashboard'),
   {
     loading: () => <LoadingFallback />,
     ssr: false,

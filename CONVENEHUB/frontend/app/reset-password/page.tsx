@@ -26,8 +26,9 @@ function ResetPasswordContent() {
   const { toast } = useToast();
   const supabase = useMemo(() => createClient(), []);
   
-  // Check if coming from movie team forgot password
-  const isMovieTeam = searchParams.get('from') === 'movie-team';
+  // Support both legacy movie-team and new organizer context flags.
+  const fromParam = searchParams.get('from');
+  const isOrganizerFlow = fromParam === 'movie-team' || fromParam === 'organizer';
 
   useEffect(() => {
     // Check if user has a valid recovery session
@@ -106,7 +107,7 @@ function ResetPasswordContent() {
 
       // Redirect to appropriate login after 2 seconds
       setTimeout(() => {
-        router.push(isMovieTeam ? '/movie-team-login' : '/login');
+        router.push(isOrganizerFlow ? '/organizer-login' : '/login');
       }, 2000);
     } catch (error: any) {
       toast({
@@ -122,7 +123,7 @@ function ResetPasswordContent() {
   // Loading state while checking session
   if (isValidSession === null) {
     return (
-      <div className={`min-h-screen flex items-center justify-center ${isMovieTeam ? 'bg-gradient-to-br from-purple-50 to-white' : 'bg-white'}`}>
+      <div className={`min-h-screen flex items-center justify-center ${isOrganizerFlow ? 'bg-gradient-to-br from-purple-50 to-white' : 'bg-white'}`}>
         <Spinner className="w-8 h-8" />
       </div>
     );
@@ -131,11 +132,11 @@ function ResetPasswordContent() {
   // Invalid or expired link
   if (isValidSession === false) {
     return (
-      <div className={`min-h-screen flex items-center justify-center p-4 ${isMovieTeam ? 'bg-gradient-to-br from-purple-50 to-white' : 'bg-white'}`}>
-        <Card className={`w-full max-w-md ${isMovieTeam ? 'border-purple-200 shadow-lg' : 'border-slate-200 shadow-sm'}`}>
+      <div className={`min-h-screen flex items-center justify-center p-4 ${isOrganizerFlow ? 'bg-gradient-to-br from-purple-50 to-white' : 'bg-white'}`}>
+        <Card className={`w-full max-w-md ${isOrganizerFlow ? 'border-purple-200 shadow-lg' : 'border-slate-200 shadow-sm'}`}>
           <CardHeader className="space-y-6 text-center pb-8">
             <div className="mx-auto">
-              {isMovieTeam ? (
+              {isOrganizerFlow ? (
                 <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center">
                   <Film className="w-10 h-10 text-purple-600" />
                 </div>
@@ -160,15 +161,15 @@ function ResetPasswordContent() {
             </div>
           </CardHeader>
           <CardContent>
-            <Link href={isMovieTeam ? '/movie-team-forgot-password' : '/forgot-password'}>
-              <Button className={`w-full ${isMovieTeam ? 'bg-purple-600 hover:bg-purple-700' : 'bg-[#195ADC] hover:bg-[#195ADC]/90'}`}>
+            <Link href={isOrganizerFlow ? '/organizer-forgot-password' : '/forgot-password'}>
+              <Button className={`w-full ${isOrganizerFlow ? 'bg-purple-600 hover:bg-purple-700' : 'bg-[#195ADC] hover:bg-[#195ADC]/90'}`}>
                 Request New Link
               </Button>
             </Link>
             <div className="text-center mt-4">
               <Link 
-                href={isMovieTeam ? '/movie-team-login' : '/login'}
-                className={`text-sm font-medium ${isMovieTeam ? 'text-purple-600 hover:text-purple-700' : 'text-[#195ADC] hover:text-[#195ADC]/80'}`}
+                href={isOrganizerFlow ? '/organizer-login' : '/login'}
+                className={`text-sm font-medium ${isOrganizerFlow ? 'text-purple-600 hover:text-purple-700' : 'text-[#195ADC] hover:text-[#195ADC]/80'}`}
               >
                 Back to Login
               </Link>
@@ -180,12 +181,12 @@ function ResetPasswordContent() {
   }
 
   return (
-    <div className={`min-h-screen flex items-center justify-center p-4 ${isMovieTeam ? 'bg-gradient-to-br from-purple-50 to-white' : 'bg-white'}`}>
-      <Card className={`w-full max-w-md ${isMovieTeam ? 'border-purple-200 shadow-lg' : 'border-slate-200 shadow-sm'}`}>
+    <div className={`min-h-screen flex items-center justify-center p-4 ${isOrganizerFlow ? 'bg-gradient-to-br from-purple-50 to-white' : 'bg-white'}`}>
+      <Card className={`w-full max-w-md ${isOrganizerFlow ? 'border-purple-200 shadow-lg' : 'border-slate-200 shadow-sm'}`}>
         <CardHeader className="space-y-6 text-center pb-8">
           {/* Logo */}
           <div className="mx-auto">
-            {isMovieTeam ? (
+            {isOrganizerFlow ? (
               <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center">
                 <Film className="w-10 h-10 text-purple-600" />
               </div>
@@ -244,7 +245,7 @@ function ResetPasswordContent() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     disabled={isLoading}
-                    className={`h-11 border-2 border-slate-200 transition-all duration-200 pr-10 ${isMovieTeam ? 'focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20' : 'focus:border-[#195ADC] focus:ring-2 focus:ring-[#195ADC]/20'}`}
+                    className={`h-11 border-2 border-slate-200 transition-all duration-200 pr-10 ${isOrganizerFlow ? 'focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20' : 'focus:border-[#195ADC] focus:ring-2 focus:ring-[#195ADC]/20'}`}
                   />
                   <button
                     type="button"
@@ -271,7 +272,7 @@ function ResetPasswordContent() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                     disabled={isLoading}
-                    className={`h-11 border-2 border-slate-200 transition-all duration-200 pr-10 ${isMovieTeam ? 'focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20' : 'focus:border-[#195ADC] focus:ring-2 focus:ring-[#195ADC]/20'}`}
+                    className={`h-11 border-2 border-slate-200 transition-all duration-200 pr-10 ${isOrganizerFlow ? 'focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20' : 'focus:border-[#195ADC] focus:ring-2 focus:ring-[#195ADC]/20'}`}
                   />
                   <button
                     type="button"
@@ -286,7 +287,7 @@ function ResetPasswordContent() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                className={`w-full h-10 text-white font-medium mt-6 ${isMovieTeam ? 'bg-purple-600 hover:bg-purple-700' : 'bg-[#195ADC] hover:bg-[#195ADC]/90'}`}
+                className={`w-full h-10 text-white font-medium mt-6 ${isOrganizerFlow ? 'bg-purple-600 hover:bg-purple-700' : 'bg-[#195ADC] hover:bg-[#195ADC]/90'}`}
                 disabled={isLoading}
               >
                 {isLoading ? (

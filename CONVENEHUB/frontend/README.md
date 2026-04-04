@@ -391,14 +391,6 @@ checkins
 ├── notes (TEXT)
 └── checked_in_at (TIMESTAMP)
 
--- Movie team assignments
-movie_team_assignments
-├── assignment_id (UUID, PK)
-├── user_id (UUID, FK → profiles)
-├── event_id (UUID, FK → events)
-├── assigned_by (UUID, FK → profiles)
-└── assigned_at (TIMESTAMP)
-
 -- Audit logs
 audit_logs
 ├── log_id (UUID, PK)

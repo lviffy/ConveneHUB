@@ -14,8 +14,6 @@ import { TicketModel } from '../src/models/Ticket';
 import { CheckInModel } from '../src/models/CheckIn';
 import { ReferralLinkModel } from '../src/models/ReferralLink';
 import { CommissionModel } from '../src/models/Commission';
-import { CouponModel } from '../src/models/Coupon';
-import { MovieTeamAssignmentModel } from '../src/models/MovieTeamAssignment';
 import { AttendeeModel } from '../src/models/Attendee';
 import { TenantModel } from '../src/models/Tenant';
 
@@ -43,8 +41,6 @@ const createdIds = {
   eventIds: new Set<string>(),
   bookingIds: new Set<string>(),
   ticketIds: new Set<string>(),
-  assignmentIds: new Set<string>(),
-  couponIds: new Set<number>(),
   tenantIds: new Set<string>(),
 };
 
@@ -150,14 +146,6 @@ async function registerUser(role: 'admin' | 'organizer' | 'promoter' | 'attendee
 }
 
 async function cleanup() {
-  if (createdIds.assignmentIds.size > 0) {
-    await MovieTeamAssignmentModel.deleteMany({ _id: { $in: Array.from(createdIds.assignmentIds) } });
-  }
-
-  if (createdIds.couponIds.size > 0) {
-    await CouponModel.deleteMany({ id: { $in: Array.from(createdIds.couponIds) } });
-  }
-
   if (createdIds.ticketIds.size > 0) {
     await TicketModel.deleteMany({ _id: { $in: Array.from(createdIds.ticketIds) } });
   }
@@ -195,8 +183,6 @@ async function purgePreviousSmokeData() {
   const eventIds = smokeEvents.map((event: any) => String(event._id));
 
   await Promise.all([
-    MovieTeamAssignmentModel.deleteMany({ $or: [{ userId: { $in: userIds } }, { eventId: { $in: eventIds } }] }),
-    CouponModel.deleteMany({ code: /^SMK/ }),
     CheckInModel.deleteMany({ $or: [{ attendeeId: { $in: userIds } }, { scannedBy: { $in: userIds } }, { eventId: { $in: eventIds } }] }),
     CommissionModel.deleteMany({ $or: [{ promoterId: { $in: userIds } }, { eventId: { $in: eventIds } }] }),
     ReferralLinkModel.deleteMany({ $or: [{ promoterId: { $in: userIds } }, { eventId: { $in: eventIds } }] }),
@@ -476,51 +462,6 @@ async function main() {
     expectedStatuses: [200],
   });
 
-  await callApi('admin coupons list', 'GET', '/api/v1/admin/coupons', {
-    token: admin.accessToken,
-    expectedStatuses: [200],
-  });
-
-  const couponCode = `SMK${Date.now().toString().slice(-6)}`;
-  const createCoupon = await callApi<{ coupon: { id: number } }>('admin create coupon', 'POST', '/api/v1/admin/coupons', {
-    token: admin.accessToken,
-    expectedStatuses: [201],
-    body: {
-      code: couponCode,
-      discountType: 'percentage',
-      discountValue: 15,
-      eventIds: [organizerEvent.payload.event._id],
-      usageLimit: 50,
-      perUserLimit: 1,
-      minTickets: 1,
-      isActive: true,
-    },
-  });
-  createdIds.couponIds.add(createCoupon.payload.coupon.id);
-
-  await callApi('admin patch coupon', 'PATCH', `/api/v1/admin/coupons/${createCoupon.payload.coupon.id}`, {
-    token: admin.accessToken,
-    expectedStatuses: [200],
-    body: {
-      discountValue: 20,
-    },
-  });
-
-  await callApi('admin assignments list', 'GET', '/api/v1/admin/movie-team-assignments', {
-    token: admin.accessToken,
-    expectedStatuses: [200],
-  });
-
-  const assignment = await callApi<{ assignmentId: string }>('admin create assignment', 'POST', '/api/v1/admin/movie-team-assignments', {
-    token: admin.accessToken,
-    expectedStatuses: [201],
-    body: {
-      userId: organizer.user.id,
-      eventId: organizerEvent.payload.event._id,
-    },
-  });
-  createdIds.assignmentIds.add(assignment.payload.assignmentId);
-
   await callApi('admin financial summary', 'GET', '/api/v1/admin/financial-summary', {
     token: admin.accessToken,
     expectedStatuses: [200],
@@ -545,19 +486,6 @@ async function main() {
 
   await callApi('booking cancel', 'POST', `/api/v1/bookings/${cancelBooking.payload.booking._id}/cancel`, {
     token: relogin.payload.accessToken,
-    expectedStatuses: [200],
-  });
-
-  await callApi('admin delete assignment', 'DELETE', '/api/v1/admin/movie-team-assignments', {
-    token: admin.accessToken,
-    expectedStatuses: [200],
-    body: {
-      assignmentId: assignment.payload.assignmentId,
-    },
-  });
-
-  await callApi('admin delete coupon', 'DELETE', `/api/v1/admin/coupons/${createCoupon.payload.coupon.id}`, {
-    token: admin.accessToken,
     expectedStatuses: [200],
   });
 

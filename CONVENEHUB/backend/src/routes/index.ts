@@ -8,6 +8,7 @@ import { promotersRouter } from './promoters.routes';
 import { analyticsRouter } from './analytics.routes';
 import { adminRouter } from './admin.routes';
 import { uploadsRouter } from './uploads.routes';
+import { organizerRouter } from './organizer.routes';
 
 export const apiRouter = Router();
 
@@ -23,4 +24,5 @@ apiRouter.use('/checkins', checkinsRouter);
 apiRouter.use('/promoters', promotersRouter);
 apiRouter.use('/analytics', analyticsRouter);
 apiRouter.use('/admin', adminRouter);
+apiRouter.use('/organizer', organizerRouter);
 apiRouter.use('/uploads', uploadsRouter);

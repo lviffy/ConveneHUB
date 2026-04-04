@@ -31,11 +31,6 @@ export interface Database {
         Insert: Omit<CheckIn, 'checkin_id' | 'scanned_at'>
         Update: Partial<Omit<CheckIn, 'checkin_id' | 'scanned_at'>>
       }
-      movie_team_assignments: {
-        Row: MovieTeamAssignment
-        Insert: Omit<MovieTeamAssignment, 'assignment_id' | 'assigned_at'>
-        Update: Partial<Omit<MovieTeamAssignment, 'assignment_id' | 'assigned_at'>>
-      }
       audit_logs: {
         Row: AuditLog
         Insert: Omit<AuditLog, 'log_id' | 'created_at'>
@@ -142,13 +137,6 @@ export interface CheckIn {
   scanned_at: string
   method: 'qr' | 'manual'
   notes?: string
-}
-
-export interface MovieTeamAssignment {
-  assignment_id: string // uuid
-  event_id: string // FK to events.event_id
-  user_id: string // FK to profiles.id
-  assigned_at: string
 }
 
 export interface AuditLog {
