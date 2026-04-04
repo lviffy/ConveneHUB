@@ -166,7 +166,7 @@ export function MovieTeamLoginForm() {
             full_name: fullName,
             phone,
             city,
-            role: 'movie_team',
+            role: 'organizer',
           },
         },
       });
@@ -234,7 +234,7 @@ export function MovieTeamLoginForm() {
       const userPhone = data.user?.phone || data.user?.user_metadata?.phone;
 
       // SECURITY: Verify the user is a movie team member
-      if (userRole !== 'movie_team') {
+      if (userRole !== 'organizer') {
         // Sign out the user since they're not a movie team member
         await supabase.auth.signOut();
         throw new Error('This login is for event operations members only. Please use the regular login page if you are a general user.');
@@ -340,7 +340,7 @@ export function MovieTeamLoginForm() {
       // Role is always movie_team - hardcoded for security
       const signupData = {
         ...googleSignupData,
-        role: 'movie_team',
+        role: 'organizer',
       };
       
       // SECURITY: Use Secure flag in production, SameSite=Lax for OAuth flow

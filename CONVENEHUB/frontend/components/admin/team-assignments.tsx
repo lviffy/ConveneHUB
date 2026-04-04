@@ -101,7 +101,7 @@ export default function TeamAssignments() {
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
-      .eq('role', 'movie_team')
+      .eq('role', 'organizer')
       .order('full_name', { ascending: true });
 
     if (error) {

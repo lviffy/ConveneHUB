@@ -18,7 +18,7 @@ function clearLegacyOAuthCookies() {
 
 function getRedirectForRole(role?: string) {
   if (role === 'admin_team' || role === 'admin') return '/admin';
-  if (role === 'movie_team' || role === 'organizer') return '/movie-team';
+  if (role === 'organizer' || role === 'movie_team') return '/movie-team';
   return '/events';
 }
 

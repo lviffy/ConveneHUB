@@ -49,7 +49,7 @@ interface User {
   phone?: string;
   full_name: string;
   city: string;
-  role: 'user' | 'movie_team' | 'admin_team';
+  role: 'user' | 'organizer' | 'admin_team';
   created_at: string;
 }
 
@@ -95,7 +95,7 @@ export default function UserManagementPage() {
     }
   };
 
-  const updateUserRole = async (userId: string, newRole: 'user' | 'movie_team' | 'admin_team') => {
+  const updateUserRole = async (userId: string, newRole: 'user' | 'organizer' | 'admin_team') => {
     try {
       setUpdating(userId);
 
@@ -165,7 +165,7 @@ export default function UserManagementPage() {
     switch (role) {
       case 'admin_team':
         return 'bg-purple-500 hover:bg-purple-600';
-      case 'movie_team':
+      case 'organizer':
         return 'bg-blue-500 hover:bg-blue-600';
       default:
         return 'bg-gray-500 hover:bg-gray-600';
@@ -176,7 +176,7 @@ export default function UserManagementPage() {
     switch (role) {
       case 'admin_team':
         return 'ConveneHub Team';
-      case 'movie_team':
+      case 'organizer':
         return 'Event Operations';
       default:
         return 'User';
@@ -257,7 +257,7 @@ export default function UserManagementPage() {
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="user">User</SelectItem>
-                              <SelectItem value="movie_team">Event Operations</SelectItem>
+                              <SelectItem value="organizer">Event Operations</SelectItem>
                               <SelectItem value="admin_team">ConveneHub Team</SelectItem>
                             </SelectContent>
                           </Select>

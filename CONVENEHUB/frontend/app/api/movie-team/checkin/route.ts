@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
       .eq('id', session.user.id)
       .single();
 
-    if ((profile as any)?.role !== 'movie_team') {
+    if ((profile as any)?.role !== 'organizer') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 

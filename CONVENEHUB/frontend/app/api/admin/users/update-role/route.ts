@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     }
 
     // Validate role
-    if (!['user', 'movie_team', 'admin_team'].includes(role)) {
+    if (!['user', 'organizer', 'admin_team'].includes(role)) {
       return NextResponse.json(
         { error: 'Invalid role' },
         { status: 400 }

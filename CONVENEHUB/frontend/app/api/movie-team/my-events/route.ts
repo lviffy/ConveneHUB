@@ -23,7 +23,7 @@ export async function GET() {
       .eq('id', currentUser.id)
       .single() as { data: { role: string } | null; error: any };
 
-    if (profileCheckError || !currentProfile || currentProfile.role !== 'movie_team') {
+    if (profileCheckError || !currentProfile || currentProfile.role !== 'organizer') {
       return NextResponse.json(
         { error: 'Forbidden - Movie team access required' },
         { status: 403 }

@@ -1,5 +1,5 @@
 type BackendRole = 'admin' | 'organizer' | 'promoter' | 'attendee';
-type FrontendRole = 'admin_team' | 'movie_team' | 'promoter' | 'user';
+type FrontendRole = 'admin_team' | 'organizer' | 'promoter' | 'user';
 
 type AuthUser = {
   id: string;
@@ -44,14 +44,14 @@ let refreshInFlight: Promise<string | null> | null = null;
 
 function mapRoleToFrontend(role?: string): FrontendRole {
   if (role === 'admin' || role === 'admin_team') return 'admin_team';
-  if (role === 'organizer' || role === 'movie_team') return 'movie_team';
+  if (role === 'organizer' || role === 'movie_team') return 'organizer';
   if (role === 'promoter') return 'promoter';
   return 'user';
 }
 
 function mapRoleToBackend(role?: string): BackendRole {
   if (role === 'admin_team' || role === 'admin') return 'admin';
-  if (role === 'movie_team' || role === 'organizer') return 'organizer';
+  if (role === 'organizer' || role === 'movie_team') return 'organizer';
   if (role === 'promoter') return 'promoter';
   return 'attendee';
 }
@@ -833,12 +833,16 @@ const auth = {
     const redirectTo = typeof payload?.options?.redirectTo === 'string' ? payload.options.redirectTo : '';
 
     const movieTeamFromRedirect = redirectTo.includes('movie_team=true');
-    const isMovieTeamFlow = movieTeamCookie === 'true' || movieTeamFromRedirect || pendingSignup?.role === 'movie_team';
+    const isMovieTeamFlow =
+      movieTeamCookie === 'true' ||
+      movieTeamFromRedirect ||
+      pendingSignup?.role === 'organizer' ||
+      pendingSignup?.role === 'movie_team';
     const intent = pendingSignup ? 'signup' : 'signin';
 
     const params = new URLSearchParams();
     params.set('intent', intent);
-    params.set('role', isMovieTeamFlow ? 'movie_team' : pendingSignup?.role || 'user');
+    params.set('role', isMovieTeamFlow ? 'organizer' : pendingSignup?.role || 'user');
     params.set('movie_team', isMovieTeamFlow ? 'true' : 'false');
 
     if (pendingSignup?.city) params.set('city', pendingSignup.city);

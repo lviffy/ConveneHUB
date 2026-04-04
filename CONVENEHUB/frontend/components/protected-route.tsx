@@ -7,7 +7,7 @@ import { Spinner } from '@/components/ui/spinner';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  allowedRoles?: ('user' | 'movie_team' | 'admin_team')[];
+  allowedRoles?: ('user' | 'organizer' | 'admin_team')[];
   redirectTo?: string;
 }
 

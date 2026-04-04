@@ -42,7 +42,7 @@ export default function MovieTeamPage() {
           created_at: session.user.created_at,
         };
 
-      if (finalProfile.role !== 'movie_team') {
+      if (finalProfile.role !== 'organizer') {
         setAccessDenied(true);
         setLoading(false);
         return;

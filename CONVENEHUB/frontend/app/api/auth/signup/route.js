@@ -123,9 +123,9 @@ export async function POST(request) {
       }
     }
     
-    // Validate role - only allow 'user' or 'movie_team' from signup
+    // Validate role - only allow 'user' or 'organizer' from signup
     // 'admin_team' should only be assigned by admins
-    const validRole = ['user', 'movie_team'].includes(role) ? role : 'user';
+    const validRole = ['user', 'organizer'].includes(role) ? role : 'user';
     
     const { data, error } = await supabase.auth.signUp({
       email: email,

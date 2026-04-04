@@ -22,7 +22,7 @@ export async function GET(
       .eq('id', session.user.id)
       .single();
 
-    if ((profile as any)?.role !== 'movie_team') {
+    if ((profile as any)?.role !== 'organizer') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -85,7 +85,7 @@ export async function POST(
       .eq('id', session.user.id)
       .single();
 
-    if ((profile as any)?.role !== 'movie_team') {
+    if ((profile as any)?.role !== 'organizer') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 

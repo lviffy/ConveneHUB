@@ -80,7 +80,7 @@ export async function middleware(req: NextRequest) {
       const redirectUrl = req.nextUrl.clone();
       if (userRole === 'admin_team') {
         redirectUrl.pathname = '/admin';
-      } else if (userRole === 'movie_team') {
+      } else if (userRole === 'organizer') {
         redirectUrl.pathname = '/movie-team';
       } else {
         redirectUrl.pathname = '/events';
@@ -91,7 +91,7 @@ export async function middleware(req: NextRequest) {
     // Redirect authenticated users away from movie-team-login to appropriate dashboard
     if (pathname === '/movie-team-login') {
       const redirectUrl = req.nextUrl.clone();
-      if (userRole === 'movie_team') {
+      if (userRole === 'organizer') {
         redirectUrl.pathname = '/movie-team';
       } else if (userRole === 'admin_team') {
         redirectUrl.pathname = '/admin';
@@ -112,7 +112,7 @@ export async function middleware(req: NextRequest) {
 
     // Movie team routes (except login) - only for movie_team
     if (pathname.startsWith('/movie-team') && pathname !== '/movie-team-login') {
-      if (userRole !== 'movie_team') {
+      if (userRole !== 'organizer') {
         const redirectUrl = req.nextUrl.clone();
         redirectUrl.pathname = '/events';
         return NextResponse.redirect(redirectUrl);

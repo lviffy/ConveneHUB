@@ -26,7 +26,7 @@ export default function MovieTeamList() {
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('role', 'movie_team')
+        .eq('role', 'organizer')
         .order('created_at', { ascending: false });
 
       if (error) throw error;

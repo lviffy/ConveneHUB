@@ -90,7 +90,7 @@ export function LoginForm() {
     setTimeout(() => {
       if (role === 'admin_team') {
         window.location.href = '/admin';
-      } else if (role === 'movie_team') {
+      } else if (role === 'organizer') {
         window.location.href = '/movie-team';
       } else {
         window.location.href = '/events';
@@ -284,7 +284,7 @@ export function LoginForm() {
       
       if (userRole === 'admin_team') {
         window.location.href = '/admin';
-      } else if (userRole === 'movie_team') {
+      } else if (userRole === 'organizer') {
         window.location.href = '/movie-team';
       } else {
         window.location.href = '/events';

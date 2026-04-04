@@ -38,7 +38,7 @@ export async function POST(request) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    // If a role was specified (e.g., "movie_team"), set it in the profiles table
+    // If a role was specified (e.g., "organizer"), set it in the profiles table
     if (role && data.user) {
       const { error: roleError } = await supabaseAdmin
         .from('profiles')

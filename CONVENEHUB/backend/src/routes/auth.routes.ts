@@ -21,9 +21,9 @@ const frontendToBackendRole: Record<string, 'admin' | 'organizer' | 'promoter' |
   attendee: 'attendee',
 };
 
-const backendToFrontendRole: Record<'admin' | 'organizer' | 'promoter' | 'attendee', 'admin_team' | 'movie_team' | 'promoter' | 'user'> = {
+const backendToFrontendRole: Record<'admin' | 'organizer' | 'promoter' | 'attendee', 'admin_team' | 'organizer' | 'promoter' | 'user'> = {
   admin: 'admin_team',
-  organizer: 'movie_team',
+  organizer: 'organizer',
   promoter: 'promoter',
   attendee: 'user',
 };
@@ -69,8 +69,8 @@ function getGoogleOAuthConfig() {
   return { clientId, clientSecret, redirectUri };
 }
 
-function sanitizeRole(role?: string): 'user' | 'movie_team' {
-  if (role === 'movie_team' || role === 'organizer') return 'movie_team';
+function sanitizeRole(role?: string): 'user' | 'organizer' {
+  if (role === 'organizer' || role === 'movie_team') return 'organizer';
   return 'user';
 }
 
@@ -251,7 +251,7 @@ authRouter.get('/google', async (req, res) => {
   const state = jwt.sign(
     {
       intent,
-      role: movieTeam ? 'movie_team' : role,
+      role: movieTeam ? 'organizer' : role,
       city,
       phone,
       movieTeam,
@@ -358,8 +358,8 @@ authRouter.get('/google/callback', async (req, res) => {
 
     const normalizedRole = sanitizeRole(oauthState.role);
     const normalizedIntent = sanitizeAuthIntent(oauthState.intent);
-    const requestedBackendRole = normalizedRole === 'movie_team' ? 'organizer' : 'attendee';
-    const movieTeamFlow = oauthState.movieTeam === true || normalizedRole === 'movie_team';
+    const requestedBackendRole = normalizedRole === 'organizer' ? 'organizer' : 'attendee';
+    const movieTeamFlow = oauthState.movieTeam === true || normalizedRole === 'organizer';
 
     let user = await UserModel.findOne({ email: googleUser.email });
     if (!user && normalizedIntent === 'signin') {

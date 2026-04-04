@@ -129,7 +129,7 @@ export function UserProfileDropdown() {
             <p className="text-sm font-medium leading-none">{fullName}</p>
             <p className="text-xs leading-none text-muted-foreground">{email}</p>
             <p className="text-xs leading-none text-blue-600 capitalize mt-1">
-              {role === 'admin_team' ? 'ConveneHub Team' : role === 'movie_team' ? 'Event Operations' : 'User'}
+              {role === 'admin_team' ? 'ConveneHub Team' : role === 'organizer' ? 'Event Operations' : 'User'}
             </p>
           </div>
         </DropdownMenuLabel>

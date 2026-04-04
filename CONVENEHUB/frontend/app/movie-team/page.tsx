@@ -22,7 +22,7 @@ export default async function MovieTeamPage() {
   const userRole = (profile as any)?.role || 'user';
 
   // Check if user is part of movie team
-  if (userRole !== 'movie_team') {
+  if (userRole !== 'organizer') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-red-100">
         <div className="text-center p-8 bg-white rounded-lg shadow-xl max-w-md">
@@ -44,7 +44,7 @@ export default async function MovieTeamPage() {
     id: session.user.id,
     full_name: session.user.user_metadata?.full_name || 'Event Operations Member',
     city: session.user.user_metadata?.city || 'Unknown',
-    role: 'movie_team' as const,
+    role: 'organizer' as const,
     created_at: session.user.created_at,
   };
 

@@ -35,7 +35,7 @@ export async function GET(
     }
 
     // For movie_team, verify they are assigned to this event
-    if ((profile as any)?.role === 'movie_team') {
+    if ((profile as any)?.role === 'organizer') {
       const { data: assignment } = await supabase
         .from('movie_team_assignments')
         .select('assignment_id')
