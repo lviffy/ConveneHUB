@@ -1,0 +1,28 @@
+*node_modules/
+.next/
+.env.local
+.vscode/
+
+# Test artifacts
+playwright-report/
+test-results/
+playwright/.cache/
+
+# Screenshots
+tests/screenshots/
+
+# Videos
+tests/videos/
+
+# Traces
+tests/traces/
+
+# Auth states
+tests/.auth/
+
+# Coverage
+coverage/
+.nyc_output/
+
+DB
+structure.md

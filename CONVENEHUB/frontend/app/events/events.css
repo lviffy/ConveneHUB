@@ -1,0 +1,137 @@
+/* Events Page - Custom Animations & Styles */
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar for filters but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Subtle backdrop blur for hover states */
+@supports (backdrop-filter: blur(10px)) {
+  .event-card-hover {
+    backdrop-filter: blur(10px);
+  }
+}
+
+/* Custom easing for professional feel */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Smooth gradient animation for backgrounds */
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Refined button ripple effect */
+.button-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.button-ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.button-ripple:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Improved text rendering */
+.text-render-optimized {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Subtle shadow for depth without heaviness */
+.shadow-refined {
+  box-shadow: 
+    0 1px 2px 0 rgba(0, 0, 0, 0.05),
+    0 8px 16px -4px rgba(0, 0, 0, 0.04);
+}
+
+.shadow-refined-hover {
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 10px 20px -5px rgba(0, 0, 0, 0.06);
+}
+
+/* Custom focus ring that matches design system */
+.focus-ring-refined:focus-visible {
+  outline: 2px solid rgba(17, 24, 39, 0.8);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+/* Smooth color transitions */
+.transition-colors-refined {
+  transition: color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+              background-color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+              border-color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Professional hover lift effect */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+              box-shadow 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+/* Reduced motion support for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}
