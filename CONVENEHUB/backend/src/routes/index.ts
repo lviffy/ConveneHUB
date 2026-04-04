@@ -7,6 +7,7 @@ import { checkinsRouter } from './checkins.routes';
 import { promotersRouter } from './promoters.routes';
 import { analyticsRouter } from './analytics.routes';
 import { adminRouter } from './admin.routes';
+import { uploadsRouter } from './uploads.routes';
 
 export const apiRouter = Router();
 
@@ -22,3 +23,4 @@ apiRouter.use('/checkins', checkinsRouter);
 apiRouter.use('/promoters', promotersRouter);
 apiRouter.use('/analytics', analyticsRouter);
 apiRouter.use('/admin', adminRouter);
+apiRouter.use('/uploads', uploadsRouter);

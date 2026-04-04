@@ -384,7 +384,7 @@ adminRouter.delete('/movie-team-assignments', requireAuth, requireRole('admin'),
 });
 
 adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (_req, res) => {
-  const RAZORPAY_FEE_PERCENTAGE = 2;
+  const PROCESSING_FEE_PERCENTAGE = 0;
   const PLATFORM_COMMISSION_PERCENTAGE = 10;
 
   const events = await EventModel.find({ status: { $in: ['published', 'closed'] } })
@@ -399,12 +399,12 @@ adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (
         total_events: 0,
         total_tickets_sold: 0,
         total_gross_revenue: 0,
-        total_razorpay_fees: 0,
+        total_processing_fees: 0,
         total_platform_commission: 0,
         total_net_payout: 0,
       },
       fee_structure: {
-        razorpay_fee_percentage: RAZORPAY_FEE_PERCENTAGE,
+        processing_fee_percentage: PROCESSING_FEE_PERCENTAGE,
         platform_commission_note: 'Commission percentage varies per event',
       },
     });
@@ -426,9 +426,9 @@ adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (
     const totalBookings = eventBookings.length;
     const totalTicketsSold = eventBookings.reduce((sum, booking) => sum + booking.ticketsCount, 0);
     const grossRevenue = eventBookings.reduce((sum, booking) => sum + booking.amount, 0);
-    const razorpayFees = (grossRevenue * RAZORPAY_FEE_PERCENTAGE) / 100;
+    const processingFees = (grossRevenue * PROCESSING_FEE_PERCENTAGE) / 100;
     const platformCommission = (grossRevenue * PLATFORM_COMMISSION_PERCENTAGE) / 100;
-    const netPayout = grossRevenue - razorpayFees - platformCommission;
+    const netPayout = grossRevenue - processingFees - platformCommission;
 
     const assignedTeamMembers = assignments
       .filter((assignment) => assignment.eventId === eventId)
@@ -457,8 +457,8 @@ adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (
         free_bookings: 0,
         paid_bookings: totalBookings,
         gross_revenue: toMoney(grossRevenue),
-        razorpay_fees: toMoney(razorpayFees),
-        razorpay_fee_percentage: RAZORPAY_FEE_PERCENTAGE,
+        processing_fees: toMoney(processingFees),
+        processing_fee_percentage: PROCESSING_FEE_PERCENTAGE,
         platform_commission: toMoney(platformCommission),
         platform_commission_percentage: PLATFORM_COMMISSION_PERCENTAGE,
         net_payout_to_movie_team: toMoney(netPayout),
@@ -468,8 +468,8 @@ adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (
         tickets_count: booking.ticketsCount,
         total_amount: toMoney(booking.amount),
         booking_status: booking.bookingStatus,
-        payment_required: true,
-        payment_status: booking.paymentStatus || 'paid',
+        payment_required: false,
+        payment_status: booking.paymentStatus || 'not_required',
         booked_at: (booking as any).createdAt,
       })),
     };
@@ -480,7 +480,7 @@ adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (
       acc.total_events += 1;
       acc.total_tickets_sold += event.financial_summary.total_tickets_sold;
       acc.total_gross_revenue += event.financial_summary.gross_revenue;
-      acc.total_razorpay_fees += event.financial_summary.razorpay_fees;
+      acc.total_processing_fees += event.financial_summary.processing_fees;
       acc.total_platform_commission += event.financial_summary.platform_commission;
       acc.total_net_payout += event.financial_summary.net_payout_to_movie_team;
       return acc;
@@ -489,7 +489,7 @@ adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (
       total_events: 0,
       total_tickets_sold: 0,
       total_gross_revenue: 0,
-      total_razorpay_fees: 0,
+      total_processing_fees: 0,
       total_platform_commission: 0,
       total_net_payout: 0,
     }
@@ -502,12 +502,12 @@ adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (
       total_events: summary.total_events,
       total_tickets_sold: summary.total_tickets_sold,
       total_gross_revenue: toMoney(summary.total_gross_revenue),
-      total_razorpay_fees: toMoney(summary.total_razorpay_fees),
+      total_processing_fees: toMoney(summary.total_processing_fees),
       total_platform_commission: toMoney(summary.total_platform_commission),
       total_net_payout: toMoney(summary.total_net_payout),
     },
     fee_structure: {
-      razorpay_fee_percentage: RAZORPAY_FEE_PERCENTAGE,
+      processing_fee_percentage: PROCESSING_FEE_PERCENTAGE,
       platform_commission_note: 'Commission percentage varies per event',
     },
   });

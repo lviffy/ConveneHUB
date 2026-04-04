@@ -26,6 +26,7 @@ import { cn } from '@/lib/utils'
 import type { Event } from '@/types/database.types'
 import { createClient } from '@/lib/convene/client'
 import { Spinner } from '@/components/ui/spinner'
+import { resolveAssetUrl } from '@/lib/storage'
 
 export default function EventsBrowsePage() {
     const router = useRouter()
@@ -56,10 +57,14 @@ export default function EventsBrowsePage() {
             if (!response.ok) return
 
             const { events: fetchedEvents } = await response.json()
+            const normalizedEvents = (fetchedEvents || []).map((event: Event) => ({
+                ...event,
+                event_image: resolveAssetUrl(event.event_image || ''),
+            }))
 
-            if (fetchedEvents?.length > 0) {
-                setEvents(fetchedEvents)
-                const eventCities = fetchedEvents
+            if (normalizedEvents.length > 0) {
+                setEvents(normalizedEvents)
+                const eventCities = normalizedEvents
                     .map((event: Event) => event.city)
                     .filter(Boolean)
                     .map((city: string) => city.trim())

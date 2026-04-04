@@ -88,10 +88,6 @@ export default function RootLayout({
           src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.25/dist/unicornStudio.umd.js"
           strategy="afterInteractive"
         />
-        <Script
-          src="https://checkout.razorpay.com/v1/checkout.js"
-          strategy="lazyOnload"
-        />
         {children}
         <Analytics />
         <Toaster />

@@ -559,7 +559,9 @@ export function MovieTeamLoginForm() {
             >
               {isLoading ? (
                 <>
-                  <Spinner className="mr-2 h-4 w-4 text-white" />
+                  <span className="mr-2 inline-flex h-4 w-4 items-center justify-center text-white">
+                    <Spinner />
+                  </span>
                   {isSignUp ? 'Creating account...' : 'Signing in...'}
                 </>
               ) : (

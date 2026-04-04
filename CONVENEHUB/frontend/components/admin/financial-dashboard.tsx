@@ -34,7 +34,7 @@ interface FinancialSummary {
   total_bookings: number;
   total_tickets_sold: number;
   gross_revenue: string;
-  razorpay_fees: string;
+  processing_fees: string;
   platform_commission: string;
   platform_commission_percentage: number;
   net_payout_to_movie_team: string;
@@ -77,14 +77,14 @@ interface FinancialData {
     total_events: number;
     total_tickets_sold: number;
     total_gross_revenue: string;
-    total_razorpay_fees: string;
+    total_processing_fees: string;
     total_platform_commission: string;
     total_net_payout: string;
   };
   fee_structure: {
-    razorpay_fee_percentage: number;
+    processing_fee_percentage: number;
     platform_commission_note?: string;
-    razorpay_percentage?: number;
+    processing_percentage?: number;
     platform_percentage?: number;
   };
 }
@@ -185,7 +185,7 @@ export default function FinancialDashboard() {
     rows.push(['', '', '', '', '']); // Empty row for spacing
     rows.push(['Financial Summary', '', '', '', '']);
     rows.push(['Gross Revenue', '', parseFloat(event.financial_summary.gross_revenue).toFixed(2), '', '']);
-    rows.push(['Razorpay Fees (2%)', '', parseFloat(event.financial_summary.razorpay_fees).toFixed(2), '', '']);
+    rows.push(['Processing Fees', '', parseFloat(event.financial_summary.processing_fees).toFixed(2), '', '']);
     rows.push([`CONVENEHUB Commission (${event.financial_summary.platform_commission_percentage}%)`, '', parseFloat(event.financial_summary.platform_commission).toFixed(2), '', '']);
     rows.push(['NET PAYOUT', '', parseFloat(event.financial_summary.net_payout_to_movie_team).toFixed(2), '', '']);
 
@@ -220,7 +220,7 @@ export default function FinancialDashboard() {
     rows.push(['Total Events', data.summary.total_events.toString()]);
     rows.push(['Total Tickets Sold', data.summary.total_tickets_sold.toString()]);
     rows.push(['Total Gross Revenue', `₹${parseFloat(data.summary.total_gross_revenue).toFixed(2)}`]);
-    rows.push(['Total Razorpay Fees', `₹${parseFloat(data.summary.total_razorpay_fees).toFixed(2)}`]);
+    rows.push(['Total Processing Fees', `₹${parseFloat(data.summary.total_processing_fees).toFixed(2)}`]);
     rows.push(['Total CONVENEHUB Commission', `₹${parseFloat(data.summary.total_platform_commission).toFixed(2)}`]);
     rows.push(['Total Net Payout', `₹${parseFloat(data.summary.total_net_payout).toFixed(2)}`]);
     rows.push(['']);
@@ -240,7 +240,7 @@ export default function FinancialDashboard() {
       rows.push(['Financial Details', '']);
       rows.push(['Tickets Sold', event.financial_summary.total_tickets_sold.toString()]);
       rows.push(['Gross Revenue', `₹${parseFloat(event.financial_summary.gross_revenue).toFixed(2)}`]);
-      rows.push(['Razorpay Fees (2%)', `₹${parseFloat(event.financial_summary.razorpay_fees).toFixed(2)}`]);
+      rows.push(['Processing Fees', `₹${parseFloat(event.financial_summary.processing_fees).toFixed(2)}`]);
       rows.push([`CONVENEHUB Commission (${event.financial_summary.platform_commission_percentage}%)`, `₹${parseFloat(event.financial_summary.platform_commission).toFixed(2)}`]);
       rows.push(['Net Payout', `₹${parseFloat(event.financial_summary.net_payout_to_movie_team).toFixed(2)}`]);
       rows.push(['']);
@@ -513,7 +513,7 @@ export default function FinancialDashboard() {
     ? data.summary.total_tickets_sold / data.summary.total_events 
     : 0;
   const effectiveFeePercentage = parseFloat(data.summary.total_gross_revenue) > 0
-    ? ((parseFloat(data.summary.total_razorpay_fees) + parseFloat(data.summary.total_platform_commission)) / parseFloat(data.summary.total_gross_revenue)) * 100
+    ? ((parseFloat(data.summary.total_processing_fees) + parseFloat(data.summary.total_platform_commission)) / parseFloat(data.summary.total_gross_revenue)) * 100
     : 0;
   
   // Calculate settlement status
@@ -535,7 +535,7 @@ export default function FinancialDashboard() {
             <div className="text-left sm:text-right">
               <div className="text-xs text-gray-500 mb-1">Fee Structure</div>
               <Badge variant="outline" className="font-mono text-xs">
-                {data.fee_structure.razorpay_fee_percentage}% Razorpay + Variable CONVENEHUB
+                {data.fee_structure.processing_fee_percentage}% processing + variable CONVENEHUB
               </Badge>
             </div>
           </div>
@@ -553,14 +553,14 @@ export default function FinancialDashboard() {
               </div>
             </div>
 
-            {/* Razorpay Fees */}
+            {/* Processing Fees */}
             <div className="bg-white rounded-lg p-3 sm:p-4 shadow-sm">
               <div className="flex items-center justify-between mb-1 sm:mb-2">
-                <span className="text-xs sm:text-sm text-gray-600">Razorpay Fees</span>
+                <span className="text-xs sm:text-sm text-gray-600">Processing Fees</span>
                 <TrendingDown className="h-3 w-3 sm:h-4 sm:w-4 text-red-600" />
               </div>
               <div className="text-lg sm:text-2xl font-bold text-red-600">
-                -{formatCurrency(parseFloat(data.summary.total_razorpay_fees))}
+                -{formatCurrency(parseFloat(data.summary.total_processing_fees))}
               </div>
             </div>
 
@@ -633,7 +633,7 @@ export default function FinancialDashboard() {
                   {effectiveFeePercentage.toFixed(2)}%
                 </div>
                 <div className="text-xs text-cyan-600 mt-1">
-                  Razorpay + CONVENEHUB
+                  Processing + CONVENEHUB
                 </div>
               </div>
             </div>
@@ -699,14 +699,14 @@ export default function FinancialDashboard() {
                       <td className="py-2 sm:py-3 px-2 sm:px-4 text-gray-700">
                         <span className="flex items-center gap-1 sm:gap-2">
                           <span className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"></span>
-                          <span className="truncate">Razorpay Fees</span>
+                          <span className="truncate">Processing Fees</span>
                         </span>
                       </td>
                       <td className="py-2 sm:py-3 px-2 sm:px-4 text-right font-medium text-red-600">
-                        -{formatCurrency(parseFloat(data.summary.total_razorpay_fees))}
+                        -{formatCurrency(parseFloat(data.summary.total_processing_fees))}
                       </td>
                       <td className="py-2 sm:py-3 px-2 sm:px-4 text-right text-gray-600">
-                        {data.fee_structure.razorpay_fee_percentage}%
+                        {data.fee_structure.processing_fee_percentage}%
                       </td>
                     </tr>
                     <tr className="hover:bg-gray-50">
@@ -821,9 +821,9 @@ export default function FinancialDashboard() {
                       </div>
                     </div>
                     <div className="bg-gray-50 rounded-lg p-4">
-                      <div className="text-xs text-gray-600 mb-1">Razorpay Fees (2%)</div>
+                      <div className="text-xs text-gray-600 mb-1">Processing Fees</div>
                       <div className="text-lg font-semibold text-red-600">
-                        -{formatCurrency(parseFloat(event.financial_summary.razorpay_fees))}
+                        -{formatCurrency(parseFloat(event.financial_summary.processing_fees))}
                       </div>
                     </div>
                     <div className="bg-gray-50 rounded-lg p-4">
@@ -993,9 +993,9 @@ export default function FinancialDashboard() {
               <h4 className="text-xs sm:text-sm font-semibold text-blue-900 mb-1">About Financial Calculations</h4>
               <p className="text-xs sm:text-sm text-blue-700 leading-relaxed">
                 All calculations use precise decimal arithmetic. 
-                Razorpay charges {data.fee_structure.razorpay_fee_percentage}% per transaction, 
+                Processing charges are {data.fee_structure.processing_fee_percentage}% per transaction, 
                 CONVENEHUB commission varies by event. 
-                Net payout = Gross - Razorpay fees - CONVENEHUB commission.
+                Net payout = Gross - processing fees - CONVENEHUB commission.
               </p>
             </div>
           </div>

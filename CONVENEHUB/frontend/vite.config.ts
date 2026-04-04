@@ -28,9 +28,6 @@ export default defineConfig(({ mode }) => {
       'process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY': JSON.stringify(
         env.NEXT_PUBLIC_SUPABASE_ANON_KEY || env.VITE_SUPABASE_ANON_KEY || ''
       ),
-      'process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID': JSON.stringify(
-        env.NEXT_PUBLIC_RAZORPAY_KEY_ID || env.VITE_RAZORPAY_KEY_ID || ''
-      ),
     },
     server: {
       port: 5173,

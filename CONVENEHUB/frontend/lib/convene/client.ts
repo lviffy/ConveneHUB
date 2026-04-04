@@ -1,3 +1,5 @@
+import { resolveAssetUrl, extractUploadPath } from '@/lib/storage';
+
 type BackendRole = 'admin' | 'organizer' | 'promoter' | 'attendee';
 type FrontendRole = 'admin_team' | 'organizer' | 'promoter' | 'user';
 
@@ -108,6 +110,11 @@ function getStoredRefreshToken() {
   return typeof window === 'undefined' ? null : localStorage.getItem(REFRESH_TOKEN_KEY);
 }
 
+function setStoredAccessToken(accessToken: string) {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+}
+
 function getStoredUser() {
   if (typeof window === 'undefined') return null;
   const parsed = safeJsonParse<any>(localStorage.getItem(USER_KEY));
@@ -148,8 +155,9 @@ function mapBackendEvent(event: any) {
     capacity: event?.capacity || 0,
     remaining: event?.remaining || 0,
     status: event?.status || 'draft',
-    event_image: event?.event_image || '',
-    entry_instructions: event?.entry_instructions || '',
+    event_image: resolveAssetUrl(event?.event_image || event?.eventImage || ''),
+    entry_instructions: event?.entry_instructions || event?.entryInstructions || '',
+    terms: event?.terms || '',
     ticket_price: event?.ticket_price ?? firstTier?.price ?? 0,
     created_at: event?.created_at || event?.createdAt,
   };
@@ -218,20 +226,49 @@ async function refreshAccessToken() {
 
     const payload = await response.json();
     const accessToken = payload?.accessToken as string | undefined;
-    const user = getStoredUser();
-
-    if (!accessToken || !user) {
+    if (!accessToken) {
       clearStoredSession();
       return null;
     }
 
-    setStoredSession(accessToken, refreshToken, user);
+    setStoredAccessToken(accessToken);
     return accessToken;
   })();
 
   const token = await refreshInFlight;
   refreshInFlight = null;
   return token;
+}
+
+async function ensureValidSession() {
+  const accessToken = getStoredAccessToken();
+  if (!accessToken) {
+    return null;
+  }
+
+  const response = await rawApiFetch('/auth/me', { method: 'GET', auth: true });
+  const payload = await response.json().catch(() => null);
+
+  if (!response.ok || !payload?.user) {
+    clearStoredSession();
+    return null;
+  }
+
+  const user = mapBackendUser(payload.user);
+  const nextAccessToken = getStoredAccessToken();
+
+  if (!nextAccessToken) {
+    clearStoredSession();
+    return null;
+  }
+
+  setStoredSession(nextAccessToken, getStoredRefreshToken() || undefined, user);
+
+  return {
+    accessToken: nextAccessToken,
+    refreshToken: getStoredRefreshToken() || undefined,
+    user,
+  };
 }
 
 class QueryBuilder {
@@ -550,6 +587,9 @@ class QueryBuilder {
           dateTime: body?.date_time ? new Date(body.date_time).toISOString() : new Date().toISOString(),
           capacity,
           status: body?.status || 'draft',
+          eventImage: body?.event_image || null,
+          entryInstructions: body?.entry_instructions || null,
+          terms: body?.terms || null,
           ticketTiers: [
             {
               name: 'General',
@@ -581,6 +621,9 @@ class QueryBuilder {
           city: this.payload?.city,
           status: this.payload?.status,
           dateTime: this.payload?.date_time,
+          eventImage: this.payload?.event_image || null,
+          entryInstructions: this.payload?.entry_instructions || null,
+          terms: this.payload?.terms || null,
         }),
       });
       const payload = await response.json();
@@ -659,28 +702,15 @@ class QueryBuilder {
 
 const auth = {
   async getSession() {
-    const accessToken = getStoredAccessToken();
-    if (!accessToken) {
+    const validatedSession = await ensureValidSession();
+    if (!validatedSession) {
       return { data: { session: null }, error: null };
     }
 
-    let user = getStoredUser();
-
-    if (!user) {
-      const response = await rawApiFetch('/auth/me', { method: 'GET', auth: true });
-      const payload = await response.json();
-      if (!response.ok || !payload?.user) {
-        clearStoredSession();
-        return { data: { session: null }, error: null };
-      }
-      user = mapBackendUser(payload.user);
-      setStoredSession(accessToken, getStoredRefreshToken() || undefined, user);
-    }
-
     const session: AuthSession = {
-      access_token: accessToken,
-      refresh_token: getStoredRefreshToken() || undefined,
-      user,
+      access_token: validatedSession.accessToken,
+      refresh_token: validatedSession.refreshToken,
+      user: validatedSession.user,
     };
 
     return { data: { session }, error: null };
@@ -893,17 +923,103 @@ const auth = {
 const storage = {
   from(_bucket: string) {
     return {
-      async upload(path: string, _file: File) {
-        return { data: { path }, error: null };
+      async upload(
+        path: string,
+        file: File,
+        _options?: { cacheControl?: string; upsert?: boolean }
+      ) {
+        try {
+          const session = await ensureValidSession();
+          if (!session) {
+            return {
+              data: null,
+              error: { message: 'Your session has expired. Please sign in again and retry the upload.' },
+            };
+          }
+
+          const buffer = await file.arrayBuffer();
+          const base64 = btoa(
+            Array.from(new Uint8Array(buffer), (byte) => String.fromCharCode(byte)).join('')
+          );
+
+          const response = await rawApiFetch('/uploads/images', {
+            method: 'POST',
+            auth: true,
+            body: JSON.stringify({
+              path,
+              fileName: file.name,
+              contentType: file.type,
+              data: base64,
+            }),
+          });
+          const payload = await response.json();
+
+          if (!response.ok) {
+            return {
+              data: null,
+              error: { message: payload?.message || payload?.error || 'Failed to upload image' },
+            };
+          }
+
+          return {
+            data: {
+              path: payload?.path || path,
+              publicUrl: resolveAssetUrl(payload?.publicUrl || payload?.path || path),
+            },
+            error: null,
+          };
+        } catch (error: any) {
+          return {
+            data: null,
+            error: { message: error?.message || 'Failed to upload image' },
+          };
+        }
       },
-      async remove(_paths: string[]) {
-        return { data: null, error: null };
+      async remove(paths: string[]) {
+        try {
+          const session = await ensureValidSession();
+          if (!session) {
+            return {
+              data: null,
+              error: { message: 'Your session has expired. Please sign in again and retry the delete.' },
+            };
+          }
+
+          const normalizedPaths = paths
+            .map((entry) => extractUploadPath(entry))
+            .filter(Boolean);
+
+          if (normalizedPaths.length === 0) {
+            return { data: { deletedPaths: [] }, error: null };
+          }
+
+          const response = await rawApiFetch('/uploads/images', {
+            method: 'DELETE',
+            auth: true,
+            body: JSON.stringify({ paths: normalizedPaths }),
+          });
+          const payload = await response.json();
+
+          if (!response.ok) {
+            return {
+              data: null,
+              error: { message: payload?.message || payload?.error || 'Failed to delete image' },
+            };
+          }
+
+          return { data: payload, error: null };
+        } catch (error: any) {
+          return {
+            data: null,
+            error: { message: error?.message || 'Failed to delete image' },
+          };
+        }
       },
       async list(_path?: string) {
         return { data: [], error: null };
       },
       getPublicUrl(path: string) {
-        return { data: { publicUrl: path || '' } };
+        return { data: { publicUrl: resolveAssetUrl(path || '') } };
       },
     };
   },

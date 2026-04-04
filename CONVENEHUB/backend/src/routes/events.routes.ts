@@ -20,8 +20,9 @@ function toLegacyEvent(event: any) {
     remaining: event.remaining,
     status: event.status,
     ticket_price: firstTier?.price ?? 0,
-    event_image: '',
-    entry_instructions: '',
+    event_image: event.eventImage || '',
+    entry_instructions: event.entryInstructions || '',
+    terms: event.terms || '',
     created_at: event.createdAt,
   };
 }
@@ -34,6 +35,9 @@ const eventSchema = z.object({
   dateTime: z.string().datetime(),
   capacity: z.number().int().positive(),
   status: z.enum(['draft', 'published', 'closed']).optional(),
+  eventImage: z.string().optional().nullable(),
+  entryInstructions: z.string().optional().nullable(),
+  terms: z.string().optional().nullable(),
   campusId: z.string().optional(),
   ticketTiers: z
     .array(
@@ -103,6 +107,9 @@ eventsRouter.post('/', requireAuth, requireRole('organizer', 'admin'), async (re
     capacity: parsed.data.capacity,
     remaining: parsed.data.capacity,
     status: parsed.data.status || 'draft',
+    eventImage: parsed.data.eventImage || undefined,
+    entryInstructions: parsed.data.entryInstructions || undefined,
+    terms: parsed.data.terms || undefined,
     ticketTiers: parsed.data.ticketTiers.map((tier) => ({ ...tier, soldCount: 0 })),
   });
 
@@ -132,6 +139,9 @@ eventsRouter.patch('/:id', requireAuth, requireRole('organizer', 'admin'), async
     city: string;
     status: 'draft' | 'published' | 'closed';
     dateTime: string;
+    eventImage: string | null;
+    entryInstructions: string | null;
+    terms: string | null;
   }>;
 
   if (payload.title !== undefined) event.title = payload.title;
@@ -140,6 +150,9 @@ eventsRouter.patch('/:id', requireAuth, requireRole('organizer', 'admin'), async
   if (payload.city !== undefined) event.city = payload.city;
   if (payload.status !== undefined) event.status = payload.status;
   if (payload.dateTime !== undefined) event.dateTime = new Date(payload.dateTime);
+  if (payload.eventImage !== undefined) event.eventImage = payload.eventImage || undefined;
+  if (payload.entryInstructions !== undefined) event.entryInstructions = payload.entryInstructions || undefined;
+  if (payload.terms !== undefined) event.terms = payload.terms || undefined;
 
   await event.save();
   return res.json({ success: true, event });

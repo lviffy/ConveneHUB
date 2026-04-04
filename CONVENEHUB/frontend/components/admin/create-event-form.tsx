@@ -38,6 +38,7 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { validateImageFile, generateSecureFilename } from '@/lib/validation/file';
 import { downloadCSV, generateCSVFilename } from '@/lib/csv-export';
+import { extractUploadPath, resolveAssetUrl } from '@/lib/storage';
 
 // Form validation schema
 const eventFormSchema = z.object({
@@ -177,12 +178,9 @@ export default function CreateEventForm({ userId }: CreateEventFormProps) {
       const currentImage = form.getValues('event_image');
       if (currentImage) {
         try {
-          const url = new URL(currentImage);
-          const pathParts = url.pathname.split('/');
-          const bucketIndex = pathParts.findIndex(part => part === 'event-images');
-          
-          if (bucketIndex !== -1) {
-            const filePath = pathParts.slice(bucketIndex + 1).join('/');
+          const filePath = extractUploadPath(currentImage);
+
+          if (filePath) {
             await supabase.storage
               .from('events')
               .remove([filePath]);
@@ -207,14 +205,8 @@ export default function CreateEventForm({ userId }: CreateEventFormProps) {
         throw error;
       }
 
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('events')
-        .getPublicUrl(filePath);
-
-
       // Update form field
-      form.setValue('event_image', publicUrl);
+      form.setValue('event_image', data?.publicUrl || resolveAssetUrl(data?.path || filePath));
 
       toast({
         title: 'Image uploaded!',
@@ -419,7 +411,7 @@ export default function CreateEventForm({ userId }: CreateEventFormProps) {
                   {field.value && (
                     <div className="relative w-full h-48 border-2 border-gray-200 rounded-lg overflow-hidden">
                       <img 
-                        src={field.value} 
+                        src={resolveAssetUrl(field.value)} 
                         alt="Event preview" 
                         className="w-full h-full object-cover"
                       />
@@ -439,8 +431,10 @@ export default function CreateEventForm({ userId }: CreateEventFormProps) {
                   <div className="flex gap-2">
                     <div className="relative flex-1">
                       <Input 
-                        type="url"
-                        placeholder="Or paste image URL here..." 
+                        type="text"
+                        inputMode="url"
+                        autoComplete="off"
+                        placeholder="Paste an image URL or use the uploaded poster..." 
                         className="border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
                         {...field} 
                       />

@@ -15,7 +15,7 @@ interface SettlementDetails {
   event_title: string;
   event_date: string;
   gross_revenue: number;
-  razorpay_fees: number;
+  processing_fees: number;
   convene_commission: number;
   net_payout: number;
   tickets_sold: number;
@@ -625,8 +625,8 @@ export const settlementReportTemplate = (details: SettlementDetails) => {
                   <span class="financial-value">${formatCurrency(details.gross_revenue)}</span>
                 </div>
                 <div class="financial-row deduction">
-                  <span class="financial-label">Razorpay Gateway Fees (2%)</span>
-                  <span class="financial-value">-${formatCurrency(details.razorpay_fees)}</span>
+                  <span class="financial-label">Processing Fees</span>
+                  <span class="financial-value">-${formatCurrency(details.processing_fees)}</span>
                 </div>
                 <div class="financial-row deduction">
                   <span class="financial-label">CONVENEHUB Commission (10%)</span>
@@ -698,7 +698,7 @@ Tickets Sold: ${details.tickets_sold}
 
 FINANCIAL BREAKDOWN
 Gross Revenue: ${formatCurrency(details.gross_revenue)}
-Razorpay Fees (2%): -${formatCurrency(details.razorpay_fees)}
+Processing Fees: -${formatCurrency(details.processing_fees)}
 CONVENEHUB Commission (10%): -${formatCurrency(details.convene_commission)}
 ─────────────────────────────────
 Net Payout: ${formatCurrency(details.net_payout)}

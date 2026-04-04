@@ -38,7 +38,7 @@
 
 ### ✅ Implemented
 - [x] **Hero Image/Video**: Event visual header
-- [x] **Booking Widget**: Quantity selection with Razorpay integration
+- [x] **Booking Widget**: Quantity selection with direct booking confirmation
 - [x] **Live Availability Counter**: Shows remaining bookings
 - [x] **Event Details**: Date, time, location, description
 - [x] **Entry Instructions**: Basic rules displayed

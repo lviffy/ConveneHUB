@@ -57,7 +57,7 @@ export default function PrivacyPolicy() {
             </p>
             <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
               <li><strong>Event Organizers:</strong> To verify your booking at the venue.</li>
-              <li><strong>Service Providers:</strong> Payment processors (Razorpay), email services, and analytics providers.</li>
+              <li><strong>Service Providers:</strong> Email services, hosting providers, and analytics tools that help us operate the platform.</li>
               <li><strong>Legal Authorities:</strong> When required by law or to protect our rights.</li>
             </ul>
           </section>

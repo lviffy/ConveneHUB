@@ -30,6 +30,7 @@ import { Save, Upload, X, ImageIcon } from 'lucide-react';
 import { Spinner } from '@/components/ui/spinner';
 import { format } from 'date-fns';
 import { validateImageFile, generateSecureFilename } from '@/lib/validation/file';
+import { extractUploadPath, resolveAssetUrl } from '@/lib/storage';
 
 // Form validation schema
 const eventFormSchema = z.object({
@@ -220,12 +221,9 @@ export default function EditEventForm({ event }: EditEventFormProps) {
       const currentImage = form.getValues('event_image');
       if (currentImage) {
         try {
-          const url = new URL(currentImage);
-          const pathParts = url.pathname.split('/');
-          const bucketIndex = pathParts.findIndex(part => part === 'event-images');
-          
-          if (bucketIndex !== -1) {
-            const filePath = pathParts.slice(bucketIndex + 1).join('/');
+          const filePath = extractUploadPath(currentImage);
+
+          if (filePath) {
             await supabase.storage
               .from('events')
               .remove([filePath]);
@@ -250,10 +248,7 @@ export default function EditEventForm({ event }: EditEventFormProps) {
         throw error;
       }
 
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('events')
-        .getPublicUrl(filePath);
+      const publicUrl = data?.publicUrl || resolveAssetUrl(data?.path || filePath);
 
       // Update form field and preview
       form.setValue('event_image', publicUrl);
@@ -280,21 +275,12 @@ export default function EditEventForm({ event }: EditEventFormProps) {
     // Delete from storage if image exists
     if (currentImage) {
       try {
-        // Extract the file path from the public URL
-        const url = new URL(currentImage);
-        const pathParts = url.pathname.split('/');
-        
-        // Find the position of 'event-images' in the path
-        const bucketIndex = pathParts.findIndex(part => part === 'event-images');
-        
-        if (bucketIndex !== -1 && pathParts.length > bucketIndex + 1) {
-          // Get the file path after the bucket name (everything after 'event-images/')
-          const filePath = pathParts.slice(bucketIndex + 1).join('/');
-          
-          
+        const filePath = extractUploadPath(currentImage);
+
+        if (filePath) {
           // Delete from storage
           const { data, error: storageError } = await supabase.storage
-            .from('event-images')
+            .from('events')
             .remove([filePath]);
           
           
@@ -308,7 +294,7 @@ export default function EditEventForm({ event }: EditEventFormProps) {
             
             // Verify deletion by trying to get the file (should fail)
             const { data: listData, error: listError } = await supabase.storage
-              .from('event-images')
+              .from('events')
               .list(filePath.split('/')[0], {
                 search: filePath.split('/').pop()
               });
@@ -322,7 +308,7 @@ export default function EditEventForm({ event }: EditEventFormProps) {
         } else {
           toast({
             title: 'Warning',
-            description: 'Could not parse image URL for storage deletion',
+            description: 'Could not determine the uploaded image path for deletion',
             variant: 'destructive',
           });
         }
@@ -388,7 +374,7 @@ export default function EditEventForm({ event }: EditEventFormProps) {
                   {imagePreview ? (
                     <div className="relative">
                       <img
-                        src={imagePreview}
+                        src={resolveAssetUrl(imagePreview)}
                         alt="Event poster preview"
                         className="w-full max-w-md h-64 object-cover rounded-lg"
                       />

@@ -19,7 +19,10 @@ import {
   AlertCircle,
   Plus,
   Minus,
-  X
+  X,
+  CreditCard,
+  Landmark,
+  Smartphone
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { EventsHeader } from '@/components/events-header'
@@ -27,7 +30,7 @@ import { cn } from '@/lib/utils'
 import type { Event } from '@/types/database.types'
 import { createClient } from '@/lib/convene/client'
 import { Spinner } from '@/components/ui/spinner'
-import RazorpayCheckout from '@/components/payments/RazorpayCheckout'
+import { resolveAssetUrl } from '@/lib/storage'
 
 const MAX_TICKETS_PER_USER = 10
 import Footer from '@/components/footer'
@@ -63,6 +66,8 @@ interface UserProfile {
   role: string
 }
 
+type MockPaymentMethod = 'upi' | 'card' | 'bank'
+
 export default function EventBookingPage({ eventId }: EventBookingPageProps) {
   const router = useRouter()
   const supabase = useMemo(() => createClient(), [])
@@ -80,11 +85,6 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
   // Modal states
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showQRModal, setShowQRModal] = useState(false)
-  const [showPaymentCancelledModal, setShowPaymentCancelledModal] = useState(false)
-  const [showPaymentSuccessModal, setShowPaymentSuccessModal] = useState(false)
-  const [showErrorModal, setShowErrorModal] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
-  const [successMessage, setSuccessMessage] = useState('')
   const [qrCodeData, setQrCodeData] = useState('')
   const [bookingCode, setBookingCode] = useState('')
   const [ticketsCount, setTicketsCount] = useState(1)
@@ -102,15 +102,12 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
   const [isValidatingCoupon, setIsValidatingCoupon] = useState(false)
   const [discount, setDiscount] = useState(0)
 
-  // Payment error state
-  const [paymentError, setPaymentError] = useState('')
-
   // T&C state
   const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [showTermsModal, setShowTermsModal] = useState(false)
   const [showPaymentConfirmModal, setShowPaymentConfirmModal] = useState(false)
-  const [proceedToPayment, setProceedToPayment] = useState(false)
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
+  const [mockPaymentMethod, setMockPaymentMethod] = useState<MockPaymentMethod>('upi')
 
   // Fetch event data with real-time booking count using public API
   const fetchEventData = useCallback(async () => {
@@ -130,9 +127,13 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
       }
 
       const { events: allEvents, timestamp } = await response.json()
+      const normalizedEvents = (allEvents || []).map((entry: Event) => ({
+        ...entry,
+        event_image: resolveAssetUrl(entry.event_image || ''),
+      }))
 
       // Find the specific event
-      const eventData = allEvents.find((e: any) => e.event_id === eventId)
+      const eventData = normalizedEvents.find((e: any) => e.event_id === eventId)
 
       if (!eventData) {
         setEvent(null)
@@ -350,15 +351,14 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
     setIsSubmitting(true)
 
     try {
-      const response = await fetch('/api/bookings', {
+      const response = await fetch('/api/v1/bookings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          event_id: event.event_id,
-          tickets_count: ticketsCount,
-          coupon_code: appliedCoupon?.code || undefined,
+          eventId: event.event_id,
+          ticketsCount,
         }),
       })
 
@@ -464,6 +464,7 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
   // Calculate final amount
   const originalAmount = event ? event.ticket_price * ticketsCount : 0
   const finalAmount = Math.max(0, originalAmount - discount)
+  const isPaidBooking = finalAmount > 0
 
   // Loading state
   if (isInitializing) {
@@ -1015,182 +1016,6 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
                       )}
                     </div>
 
-                    {/* Add More Tickets Section */}
-                    {existingBooking &&
-                      (existingBooking.booking_status === 'confirmed' || existingBooking.booking_status === 'checked_in') &&
-                      (existingBooking.payment_status === 'SUCCESSFUL' || existingBooking.payment_status === 'NOT_REQUIRED') &&
-                      existingBooking.tickets_count < MAX_TICKETS_PER_USER &&
-                      isBookingOpen && !isSoldOut && (
-                        <div className="pt-4 border-t border-gray-200 space-y-4">
-                          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                            <div className="flex items-start gap-2 mb-3">
-                              <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                              <div>
-                                <h4 className="text-sm font-semibold text-blue-900 mb-1">Add More Tickets</h4>
-                                <p className="text-xs text-blue-700">
-                                  You can add up to {Math.min(MAX_TICKETS_PER_USER - existingBooking.tickets_count, event.actualRemaining)} more ticket{Math.min(MAX_TICKETS_PER_USER - existingBooking.tickets_count, event.actualRemaining) !== 1 ? 's' : ''} to this booking (max {MAX_TICKETS_PER_USER} per user)
-                                </p>
-                              </div>
-                            </div>
-
-                            {/* Ticket Counter for Additional Tickets */}
-                            <div className="flex items-center justify-between bg-white rounded-lg p-3 mb-3">
-                              <span className="text-sm font-medium text-gray-700">Additional Tickets:</span>
-                              <div className="flex items-center gap-3">
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => setTicketsCount(Math.max(1, ticketsCount - 1))}
-                                  disabled={ticketsCount <= 1}
-                                  className="h-8 w-8 p-0 rounded-full"
-                                >
-                                  <Minus className="h-4 w-4" />
-                                </Button>
-                                <span className="text-lg font-bold text-gray-900 min-w-[2rem] text-center">
-                                  {ticketsCount}
-                                </span>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => setTicketsCount(Math.min(MAX_TICKETS_PER_USER - existingBooking.tickets_count, event.actualRemaining, ticketsCount + 1))}
-                                  disabled={ticketsCount >= Math.min(MAX_TICKETS_PER_USER - existingBooking.tickets_count, event.actualRemaining)}
-                                  className="h-8 w-8 p-0 rounded-full"
-                                >
-                                  <Plus className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </div>
-
-                            {event.ticket_price > 0 && (
-                              <div className="text-sm text-gray-700 bg-white rounded-lg p-2 mb-3">
-                                <div className="flex justify-between">
-                                  <span>Price per ticket:</span>
-                                  <span className="font-semibold">₹{event.ticket_price.toLocaleString('en-IN')}</span>
-                                </div>
-                                <div className="flex justify-between font-bold mt-1 pt-1 border-t">
-                                  <span>Additional cost:</span>
-                                  <span>₹{(event.ticket_price * ticketsCount).toLocaleString('en-IN')}</span>
-                                </div>
-                              </div>
-                            )}
-
-                            <Button
-                              onClick={async () => {
-                                if (isSubmitting) return
-                                setIsSubmitting(true)
-                                try {
-                                  const response = await fetch(`/api/bookings/${existingBooking.booking_id}/add-tickets`, {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ additional_tickets: ticketsCount })
-                                  })
-                                  const data = await response.json()
-
-                                  if (!response.ok) {
-                                    throw new Error(data.error || 'Failed to add tickets')
-                                  }
-
-                                  if (data.payment_required) {
-                                    // For paid events, initiate payment
-                                    const paymentResponse = await fetch(`/api/bookings/${existingBooking.booking_id}/add-tickets/create-payment`, {
-                                      method: 'POST',
-                                      headers: { 'Content-Type': 'application/json' },
-                                      body: JSON.stringify({
-                                        additional_tickets: ticketsCount,
-                                        additional_amount: data.additional_amount
-                                      })
-                                    })
-
-                                    const paymentData = await paymentResponse.json()
-
-                                    if (!paymentResponse.ok) {
-                                      throw new Error(paymentData.error || 'Failed to create payment')
-                                    }
-
-                                    // Open Razorpay checkout
-                                    const options = {
-                                      key: paymentData.key_id,
-                                      amount: paymentData.amount * 100,
-                                      currency: paymentData.currency,
-                                      name: 'ConveneHub',
-                                      description: `Add ${ticketsCount} ticket${ticketsCount > 1 ? 's' : ''} to ${paymentData.event.title}`,
-                                      order_id: paymentData.order_id,
-                                      handler: async (response: any) => {
-                                        try {
-                                          // Verify payment and add tickets
-                                          const verifyResponse = await fetch(`/api/bookings/${existingBooking.booking_id}/add-tickets/verify-payment`, {
-                                            method: 'POST',
-                                            headers: { 'Content-Type': 'application/json' },
-                                            body: JSON.stringify({
-                                              razorpay_order_id: response.razorpay_order_id,
-                                              razorpay_payment_id: response.razorpay_payment_id,
-                                              razorpay_signature: response.razorpay_signature,
-                                              additional_tickets: ticketsCount
-                                            })
-                                          })
-
-                                          const verifyData = await verifyResponse.json()
-
-                                          if (verifyResponse.ok) {
-                                            setSuccessMessage(verifyData.message)
-                                            setShowPaymentSuccessModal(true)
-                                            await fetchEventData()
-                                            await checkUserBooking(user.id)
-                                            setTicketsCount(1)
-                                          } else {
-                                            throw new Error(verifyData.error || 'Payment verification failed')
-                                          }
-                                        } catch (error: any) {
-                                          setErrorMessage(error.message || 'Failed to verify payment')
-                                          setShowErrorModal(true)
-                                        }
-                                      },
-                                      modal: {
-                                        ondismiss: () => {
-                                          setIsSubmitting(false)
-                                          setShowPaymentCancelledModal(true)
-                                        }
-                                      },
-                                      theme: {
-                                        color: '#2563eb'
-                                      }
-                                    }
-
-                                    const razorpay = new (window as any).Razorpay(options)
-                                    razorpay.open()
-                                  } else {
-                                    // Free event - tickets added
-                                    alert(data.message)
-                                    await fetchEventData()
-                                    await checkUserBooking(user.id)
-                                    setTicketsCount(1)
-                                  }
-                                } catch (error: any) {
-                                  alert(error.message || 'Failed to add tickets')
-                                } finally {
-                                  setIsSubmitting(false)
-                                }
-                              }}
-                              disabled={isSubmitting || ticketsCount < 1}
-                              className="w-full bg-blue-600 hover:bg-blue-700 text-white h-10 text-sm font-semibold rounded-lg"
-                            >
-                              {isSubmitting ? (
-                                <>
-                                  <Spinner className="w-4 h-4 mr-2" />
-                                  Adding...
-                                </>
-                              ) : (
-                                <>
-                                  <Plus className="w-4 h-4 mr-2" />
-                                  Add {ticketsCount} More Ticket{ticketsCount !== 1 ? 's' : ''}
-                                  {event.ticket_price > 0 && ` (₹${(event.ticket_price * ticketsCount).toLocaleString('en-IN')})`}
-                                </>
-                              )}
-                            </Button>
-                          </div>
-                        </div>
-                      )}
-
                     <div className="space-y-3 pt-3 border-t border-gray-200">
                       <Button
                         onClick={() => router.push('/bookings')}
@@ -1382,25 +1207,6 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
                           </div>
                         )}
 
-                        {/* Payment Error Alert */}
-                        {paymentError && (
-                          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                            <div className="flex items-start gap-3">
-                              <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                              <div className="flex-1">
-                                <h4 className="text-sm font-semibold text-red-900 mb-1">Payment Failed</h4>
-                                <p className="text-sm text-red-700">{paymentError}</p>
-                              </div>
-                              <button
-                                onClick={() => setPaymentError('')}
-                                className="text-red-400 hover:text-red-600"
-                              >
-                                <X className="w-4 h-4" />
-                              </button>
-                            </div>
-                          </div>
-                        )}
-
                         {/* Price Summary */}
                         {event.ticket_price > 0 && (
                           <div className="bg-blue-50 rounded-lg p-4 border border-blue-200 space-y-2">
@@ -1442,83 +1248,23 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
                           </div>
                         )}
 
-                        {/* Payment or Free Booking Button */}
-                        {event.ticket_price > 0 && finalAmount > 0 ? (
-                          // Paid Event - Show confirmation popup first
-                          <>
-                            <Button
-                              onClick={() => setShowPaymentConfirmModal(true)}
-                              disabled={isProcessingPayment}
-                              className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 text-base font-bold rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              {isProcessingPayment ? (
-                                <>
-                                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                  </svg>
-                                  Processing...
-                                </>
-                              ) : (
-                                <>
-                                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                                  </svg>
-                                  Pay ₹{finalAmount.toLocaleString('en-IN')}
-                                </>
-                              )}
-                            </Button>
-                            
-                            {/* Razorpay component - rendered when proceedToPayment is true */}
-                            {proceedToPayment && (
-                              <RazorpayCheckout
-                                eventId={event.event_id}
-                                ticketsCount={ticketsCount}
-                                couponCode={appliedCoupon?.code}
-                                autoTrigger={true}
-                                onReady={() => setIsProcessingPayment(false)}
-                                onSuccess={(bookingId, paymentId) => {
-                                  setBookingCode(bookingId)
-                                  setShowSuccessModal(true)
-                                  setPaymentError('')
-                                  setProceedToPayment(false)
-                                  setIsProcessingPayment(false)
-                                  fetchEventData()
-                                  if (user) {
-                                    checkUserBooking(user.id)
-                                  }
-                                }}
-                                onFailure={(error) => {
-                                  setPaymentError(error)
-                                  setProceedToPayment(false)
-                                  setIsProcessingPayment(false)
-                                  fetchEventData()
-                                  if (user) {
-                                    checkUserBooking(user.id)
-                                  }
-                                }}
-                              />
-                            )}
-                          </>
-                        ) : (
-                          // Free Event or Fully Discounted - Direct Booking
-                          <Button
-                            onClick={() => setShowPaymentConfirmModal(true)}
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 text-base font-bold rounded-xl"
-                          >
-                            {isSubmitting ? (
-                              <>
-                                <Spinner className="w-4 h-4 text-white mr-2" />
-                                Processing...
-                              </>
-                            ) : (
-                              <>
-                                Confirm Free Booking {ticketsCount > 1 && `(${ticketsCount} Tickets)`}
-                                <CheckCircle2 className="w-4 h-4 ml-2" />
-                              </>
-                            )}
-                          </Button>
-                        )}
+                        <Button
+                          onClick={() => setShowPaymentConfirmModal(true)}
+                          disabled={isProcessingPayment || isSubmitting}
+                          className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 text-base font-bold rounded-xl"
+                        >
+                          {(isProcessingPayment || isSubmitting) ? (
+                            <>
+                              <Spinner className="w-4 h-4 text-white mr-2" />
+                              Processing...
+                            </>
+                          ) : (
+                            <>
+                              {isPaidBooking ? `Open Mock Checkout${ticketsCount > 1 ? ` (${ticketsCount} Tickets)` : ''}` : `Confirm Booking${ticketsCount > 1 ? ` (${ticketsCount} Tickets)` : ''}`}
+                              <CheckCircle2 className="w-4 h-4 ml-2" />
+                            </>
+                          )}
+                        </Button>
 
                         <div className="flex items-center gap-2 text-xs text-gray-500 justify-center">
                           <Shield className="w-4 h-4" />
@@ -1642,102 +1388,6 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
         </div>
       )}
 
-      {/* Payment Cancelled Modal */}
-      {showPaymentCancelledModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4"
-          onClick={() => setShowPaymentCancelledModal(false)}
-        >
-          <div
-            className="bg-white rounded-2xl p-6 max-w-md w-full"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="text-center">
-              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <AlertCircle className="w-8 h-8 text-orange-600" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                Payment Cancelled
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Your payment was cancelled. No tickets were added to your booking.
-              </p>
-              <Button
-                onClick={() => setShowPaymentCancelledModal(false)}
-                className="w-full bg-gray-900 hover:bg-gray-800"
-              >
-                OK
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Payment Success Modal */}
-      {showPaymentSuccessModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4"
-          onClick={() => setShowPaymentSuccessModal(false)}
-        >
-          <div
-            className="bg-white rounded-2xl p-6 max-w-md w-full"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle2 className="w-8 h-8 text-green-600" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                Payment Successful!
-              </h3>
-              <p className="text-gray-600 mb-6">
-                {successMessage}
-              </p>
-              <Button
-                onClick={() => {
-                  setShowPaymentSuccessModal(false)
-                  router.push('/bookings')
-                }}
-                className="w-full bg-green-600 hover:bg-green-700"
-              >
-                View My Bookings
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Error Modal */}
-      {showErrorModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4"
-          onClick={() => setShowErrorModal(false)}
-        >
-          <div
-            className="bg-white rounded-2xl p-6 max-w-md w-full"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="text-center">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <AlertCircle className="w-8 h-8 text-red-600" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                Error
-              </h3>
-              <p className="text-gray-600 mb-6">
-                {errorMessage}
-              </p>
-              <Button
-                onClick={() => setShowErrorModal(false)}
-                className="w-full bg-gray-900 hover:bg-gray-800"
-              >
-                OK
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Event Specific Terms Modal */}
       {showTermsModal && event.terms && (
         <div 
@@ -1786,7 +1436,7 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
         </div>
       )}
 
-      {/* Payment Confirmation Modal - Shows T&C before Razorpay */}
+      {/* Booking Confirmation Modal */}
       {showPaymentConfirmModal && event && (
         <div 
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
@@ -1821,16 +1471,114 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
                 <span className="font-semibold text-gray-900">{ticketsCount}</span>
               </div>
               <div className="flex items-center justify-between text-sm mt-1">
-                <span className="text-gray-600">Amount:</span>
+                <span className="text-gray-600">{isPaidBooking ? 'Amount Due:' : 'Ticket Value:'}</span>
                 <span className="font-bold text-lg text-gray-900">₹{finalAmount.toLocaleString('en-IN')}</span>
               </div>
             </div>
 
             {/* Terms Content */}
             <div className="flex-1 overflow-y-auto p-6">
+              {isPaidBooking && (
+                <div className="mb-5 rounded-xl border border-blue-200 bg-blue-50 p-4">
+                  <div className="flex items-start gap-3">
+                    <CreditCard className="mt-0.5 h-5 w-5 text-blue-600" />
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-sm font-semibold text-blue-900">Mock Checkout</h4>
+                      <p className="mt-1 text-sm text-blue-700">
+                        This is a demo-only payment UI. No real money will be charged.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                    <button
+                      type="button"
+                      onClick={() => setMockPaymentMethod('upi')}
+                      className={cn(
+                        'rounded-xl border p-3 text-left transition-colors',
+                        mockPaymentMethod === 'upi'
+                          ? 'border-blue-500 bg-white shadow-sm'
+                          : 'border-blue-100 bg-white/70 hover:bg-white'
+                      )}
+                    >
+                      <div className="flex items-center gap-2 text-sm font-semibold text-gray-900">
+                        <Smartphone className="h-4 w-4 text-blue-600" />
+                        UPI
+                      </div>
+                      <p className="mt-1 text-xs text-gray-500">demo-attendee@mock</p>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setMockPaymentMethod('card')}
+                      className={cn(
+                        'rounded-xl border p-3 text-left transition-colors',
+                        mockPaymentMethod === 'card'
+                          ? 'border-blue-500 bg-white shadow-sm'
+                          : 'border-blue-100 bg-white/70 hover:bg-white'
+                      )}
+                    >
+                      <div className="flex items-center gap-2 text-sm font-semibold text-gray-900">
+                        <CreditCard className="h-4 w-4 text-blue-600" />
+                        Card
+                      </div>
+                      <p className="mt-1 text-xs text-gray-500">Visa ending in 4242</p>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setMockPaymentMethod('bank')}
+                      className={cn(
+                        'rounded-xl border p-3 text-left transition-colors',
+                        mockPaymentMethod === 'bank'
+                          ? 'border-blue-500 bg-white shadow-sm'
+                          : 'border-blue-100 bg-white/70 hover:bg-white'
+                      )}
+                    >
+                      <div className="flex items-center gap-2 text-sm font-semibold text-gray-900">
+                        <Landmark className="h-4 w-4 text-blue-600" />
+                        Net Banking
+                      </div>
+                      <p className="mt-1 text-xs text-gray-500">ConveneHub Demo Bank</p>
+                    </button>
+                  </div>
+
+                  <div className="mt-4 rounded-xl border border-dashed border-blue-200 bg-white p-4">
+                    {mockPaymentMethod === 'upi' && (
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-xs uppercase tracking-wide text-gray-500">
+                          <span>UPI ID</span>
+                          <span>Instant</span>
+                        </div>
+                        <div className="text-sm font-semibold text-gray-900">demo-attendee@mock</div>
+                        <p className="text-xs text-gray-500">Authorize this demo UPI payment to continue.</p>
+                      </div>
+                    )}
+                    {mockPaymentMethod === 'card' && (
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-xs uppercase tracking-wide text-gray-500">
+                          <span>Saved Card</span>
+                          <span>Visa</span>
+                        </div>
+                        <div className="text-sm font-semibold text-gray-900">4242 4242 4242 4242</div>
+                        <p className="text-xs text-gray-500">CVV and OTP are skipped in this mock experience.</p>
+                      </div>
+                    )}
+                    {mockPaymentMethod === 'bank' && (
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-xs uppercase tracking-wide text-gray-500">
+                          <span>Bank</span>
+                          <span>Demo</span>
+                        </div>
+                        <div className="text-sm font-semibold text-gray-900">ConveneHub Demo Bank</div>
+                        <p className="text-xs text-gray-500">You’ll be returned here immediately after simulated authorization.</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               <div className="flex items-center gap-2 mb-4">
                 <Shield className="w-5 h-5 text-blue-600" />
-                <h4 className="font-semibold text-gray-900">Terms & Conditions</h4>
+                <h4 className="font-semibold text-gray-900">{isPaidBooking ? 'Booking Terms' : 'Terms & Conditions'}</h4>
               </div>
               
               {event.terms ? (
@@ -1868,16 +1616,11 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
             <div className="p-6 border-t border-gray-100 bg-gray-50 rounded-b-2xl space-y-3">
               <Button 
                 onClick={() => {
-                  if (event.ticket_price <= 0 || finalAmount <= 0) {
-                    // Free event - call handleBooking directly
-                    setShowPaymentConfirmModal(false)
-                    handleBooking()
-                  } else {
-                    // Paid event - proceed to Razorpay
-                    setIsProcessingPayment(true)
-                    setShowPaymentConfirmModal(false)
-                    setProceedToPayment(true)
-                  }
+                  setIsProcessingPayment(true)
+                  setShowPaymentConfirmModal(false)
+                  Promise.resolve(handleBooking()).finally(() => {
+                    setIsProcessingPayment(false)
+                  })
                 }}
                 disabled={isProcessingPayment || isSubmitting}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white h-11 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
@@ -1893,9 +1636,7 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
                 ) : (
                   <>
                     <CheckCircle2 className="w-4 h-4" />
-                    {event.ticket_price <= 0 || finalAmount <= 0
-                      ? 'I Agree & Confirm Booking'
-                      : `I Agree & Pay ₹${finalAmount.toLocaleString('en-IN')}`}
+                    {isPaidBooking ? `Simulate Payment & Confirm Booking` : 'I Agree & Confirm Booking'}
                   </>
                 )}
               </Button>
@@ -1916,7 +1657,7 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
         <div className="fixed inset-0 bg-black/40 z-[60] flex flex-col items-center justify-center gap-4">
           <div className="w-10 h-10 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
           <div className="text-white text-base font-medium flex items-center gap-1">
-            Please wait
+            {isPaidBooking ? 'Simulating payment' : 'Please wait'}
             <span className="inline-flex w-8 ml-1">
               <span className="animate-[pulse_1.4s_ease-in-out_infinite]">.</span>
               <span className="animate-[pulse_1.4s_ease-in-out_0.2s_infinite]">.</span>

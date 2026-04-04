@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 import type { Event } from '@/types/database.types'
 import { createClient } from '@/lib/convene/client'
 import { Spinner } from '@/components/ui/spinner'
+import { resolveAssetUrl } from '@/lib/storage'
 
 export default function EventsListSection() {
   const router = useRouter()
@@ -56,12 +57,16 @@ export default function EventsListSection() {
       }
 
       const { events: fetchedEvents, timestamp } = await response.json()
+      const normalizedEvents = (fetchedEvents || []).map((event: Event) => ({
+        ...event,
+        event_image: resolveAssetUrl(event.event_image || ''),
+      }))
 
-      if (fetchedEvents && fetchedEvents.length > 0) {
-        setEvents(fetchedEvents)
+      if (normalizedEvents.length > 0) {
+        setEvents(normalizedEvents)
 
         // Extract unique cities from events (with normalization)
-        const eventCities = fetchedEvents
+        const eventCities = normalizedEvents
           .map((event: Event) => event.city)
           .filter(Boolean)
           .map((city: string) => city.trim()) // Normalize whitespace

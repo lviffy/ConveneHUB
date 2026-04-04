@@ -34,21 +34,31 @@ function toLegacyBooking(booking: any, event?: any) {
           venue_address: event.venue,
           city: event.city || '',
           date_time: event.dateTime,
-          event_image: '',
+          event_image: event.eventImage || '',
           status: event.status,
-          entry_instructions: '',
+          entry_instructions: event.entryInstructions || '',
           ticket_price: event.ticketTiers?.[0]?.price ?? 0,
         }
       : undefined,
   };
 }
 
-const createBookingSchema = z.object({
-  eventId: z.string().min(1),
-  tierName: z.string().min(1),
-  ticketsCount: z.number().int().positive().max(10),
-  referralCode: z.string().optional(),
-});
+const createBookingSchema = z
+  .object({
+    eventId: z.string().min(1).optional(),
+    event_id: z.string().min(1).optional(),
+    tierName: z.string().min(1).optional(),
+    ticketsCount: z.number().int().positive().max(10).optional(),
+    tickets_count: z.number().int().positive().max(10).optional(),
+    referralCode: z.string().optional(),
+    referral_code: z.string().optional(),
+  })
+  .transform((data) => ({
+    eventId: data.eventId || data.event_id || '',
+    tierName: data.tierName,
+    ticketsCount: data.ticketsCount ?? data.tickets_count ?? 0,
+    referralCode: data.referralCode || data.referral_code,
+  }));
 
 async function syncAttendeeRecord(eventId: string, attendeeId: string) {
   const activeBookings = await BookingModel.find({
@@ -87,6 +97,9 @@ bookingsRouter.post('/', requireAuth, requireRole('attendee', 'admin'), async (r
   }
 
   const { eventId, tierName, ticketsCount, referralCode } = parsed.data;
+  if (!eventId || !ticketsCount) {
+    return res.status(400).json({ success: false, message: 'Event and ticket count are required' });
+  }
   const event = await EventModel.findById(eventId);
   if (!event) {
     return res.status(404).json({ success: false, message: 'Event not found' });
@@ -95,7 +108,10 @@ bookingsRouter.post('/', requireAuth, requireRole('attendee', 'admin'), async (r
     return res.status(400).json({ success: false, message: 'Event is not open for booking' });
   }
 
-  const tier = event.ticketTiers.find((t) => t.name.toLowerCase() === tierName.toLowerCase());
+  const tier =
+    (tierName
+      ? event.ticketTiers.find((t) => t.name.toLowerCase() === tierName.toLowerCase())
+      : null) || event.ticketTiers[0];
   if (!tier) {
     return res.status(400).json({ success: false, message: 'Invalid ticket tier' });
   }
@@ -168,7 +184,11 @@ bookingsRouter.post('/', requireAuth, requireRole('attendee', 'admin'), async (r
     });
   }
 
-  return res.status(201).json({ success: true, booking, ticketIds });
+  return res.status(201).json({
+    success: true,
+    booking: toLegacyBooking(booking.toObject(), event.toObject()),
+    ticketIds,
+  });
 });
 
 bookingsRouter.get('/', requireAuth, requireRole('attendee', 'admin'), async (req, res) => {

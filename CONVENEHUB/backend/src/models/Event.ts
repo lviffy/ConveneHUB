@@ -20,6 +20,9 @@ interface EventDocument {
   capacity: number;
   remaining: number;
   status: 'draft' | 'published' | 'closed';
+  eventImage?: string;
+  entryInstructions?: string;
+  terms?: string;
   ticketTiers: TicketTier[];
 }
 
@@ -47,6 +50,9 @@ const eventSchema = new Schema<EventDocument>(
     capacity: { type: Number, required: true, min: 1 },
     remaining: { type: Number, required: true, min: 0 },
     status: { type: String, enum: ['draft', 'published', 'closed'], default: 'draft' },
+    eventImage: { type: String },
+    entryInstructions: { type: String },
+    terms: { type: String },
     ticketTiers: { type: [ticketTierSchema], default: [] },
   },
   { timestamps: true }

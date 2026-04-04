@@ -19,6 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { downloadCSV, formatBookingsForCSV, formatCheckInsForCSV, generateCSVFilename } from '@/lib/csv-export';
+import { extractUploadPath } from '@/lib/storage';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -207,19 +208,12 @@ export default function EventsList() {
       // Delete image from storage if it exists
       if (eventToDelete.event_image) {
         try {
-          // Extract the file path from the public URL
-          const url = new URL(eventToDelete.event_image);
-          const pathParts = url.pathname.split('/');
-          const bucketIndex = pathParts.findIndex(part => part === 'event-images');
-          
-          if (bucketIndex !== -1 && pathParts.length > bucketIndex + 1) {
-            // Get the file path after the bucket name
-            const filePath = pathParts.slice(bucketIndex + 1).join('/');
-            
-            
+          const filePath = extractUploadPath(eventToDelete.event_image);
+
+          if (filePath) {
             // Delete from storage
             const { data, error: storageError } = await supabase.storage
-              .from('event-images')
+              .from('events')
               .remove([filePath]);
             
             

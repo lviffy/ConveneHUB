@@ -23,8 +23,6 @@ const SENSITIVE_KEYS = [
   'refresh_token',
   'sessionToken',
   'session_token',
-  'razorpay_key',
-  'razorpay_secret',
   'email', // Redact in production
   'phone', // Redact in production
 ];

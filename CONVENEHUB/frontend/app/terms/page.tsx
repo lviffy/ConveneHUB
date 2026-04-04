@@ -53,7 +53,7 @@ export default function TermsAndConditions() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">4. Bookings and Payments</h2>
             <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
               <li>All bookings are subject to availability and confirmation.</li>
-              <li>Payments are processed securely through our authorized payment gateways (e.g., Razorpay).</li>
+              <li>Bookings are confirmed through ConveneHub once the reservation workflow completes successfully.</li>
               <li>Prices are subject to change without notice, but changes will not affect confirmed bookings.</li>
               <li>A booking is only considered confirmed once payment is successfully processed and you receive a confirmation email.</li>
             </ul>

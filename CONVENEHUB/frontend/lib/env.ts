@@ -14,11 +14,6 @@ interface EnvConfig {
   NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
   SUPABASE_SERVICE_ROLE_KEY: string;
   
-  // Razorpay (Required for payments)
-  NEXT_PUBLIC_RAZORPAY_KEY_ID: string;
-  RAZORPAY_KEY_SECRET: string;
-  RAZORPAY_WEBHOOK_SECRET: string;
-  
   // QR Code Security (Required for bookings)
   QR_HMAC_SECRET: string;
   
@@ -65,23 +60,6 @@ const validationRules: Record<string, ValidationRule> = {
     minLength: 100,
     message: 'Must be a valid Supabase service role key (JWT token)',
     mustNotBeExposed: true, // Should never have NEXT_PUBLIC_ prefix
-  },
-  NEXT_PUBLIC_RAZORPAY_KEY_ID: {
-    required: true,
-    pattern: /^rzp_(test|live)_[A-Za-z0-9]+$/,
-    message: 'Must be a valid Razorpay key ID (rzp_test_xxx or rzp_live_xxx)',
-  },
-  RAZORPAY_KEY_SECRET: {
-    required: true,
-    minLength: 16,
-    message: 'Must be a valid Razorpay key secret',
-    mustNotBeExposed: true,
-  },
-  RAZORPAY_WEBHOOK_SECRET: {
-    required: true,
-    minLength: 16,
-    message: 'Must be a valid Razorpay webhook secret',
-    mustNotBeExposed: true,
   },
   QR_HMAC_SECRET: {
     required: true,
@@ -195,8 +173,6 @@ export function validateEnv(): EnvConfig {
   
   // 2. Check if any secret keys have NEXT_PUBLIC_ prefix
   const secretKeys = [
-    'RAZORPAY_KEY_SECRET',
-    'RAZORPAY_WEBHOOK_SECRET',
     'QR_HMAC_SECRET',
     'SMTP_PASSWORD',
     'CRON_SECRET',
@@ -220,17 +196,7 @@ export function validateEnv(): EnvConfig {
     );
   }
   
-  // 4. Warn if using test Razorpay keys in production
-  if (process.env.NODE_ENV === 'production') {
-    if (process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID?.startsWith('rzp_test_')) {
-      warnings.push(
-        '  ⚠️  Using Razorpay TEST keys in production. ' +
-        'Switch to live keys (rzp_live_xxx) for production!'
-      );
-    }
-  }
-  
-  // 5. Warn if CRON_SECRET not set in production
+  // 4. Warn if CRON_SECRET not set in production
   if (process.env.NODE_ENV === 'production' && !process.env.CRON_SECRET) {
     warnings.push(
       '  ⚠️  CRON_SECRET not set in production. ' +
@@ -293,13 +259,6 @@ export function isProduction(): boolean {
  */
 export function isDevelopment(): boolean {
   return process.env.NODE_ENV === 'development';
-}
-
-/**
- * Check if running in test mode (Razorpay)
- */
-export function isTestMode(): boolean {
-  return process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID?.startsWith('rzp_test_') ?? true;
 }
 
 // Auto-validate on import (only in server environment)
