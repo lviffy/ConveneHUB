@@ -15,6 +15,12 @@ function EditEventContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const eventId = searchParams.get('id');
+  const requestedReturnTo = searchParams.get('returnTo');
+  const returnTo =
+    requestedReturnTo && requestedReturnTo.startsWith('/') ? requestedReturnTo : '/admin';
+  const requestedActorRole = searchParams.get('actorRole');
+  const actorRole = requestedActorRole === 'organizer' ? 'organizer' : 'admin_team';
+  const isOrganizerFlow = returnTo.startsWith('/organizer');
   const { toast } = useToast();
   const supabase = createClient();
 
@@ -25,12 +31,12 @@ function EditEventContent() {
         description: 'No event ID provided',
         variant: 'destructive',
       });
-      router.push('/admin');
+      router.push(returnTo);
       return;
     }
 
     fetchEvent();
-  }, [eventId]);
+  }, [eventId, returnTo]);
 
   const fetchEvent = async () => {
     if (!eventId) return;
@@ -51,7 +57,7 @@ function EditEventContent() {
           description: 'Event not found',
           variant: 'destructive',
         });
-        router.push('/admin');
+        router.push(returnTo);
         return;
       }
 
@@ -62,6 +68,7 @@ function EditEventContent() {
         description: 'Failed to load event',
         variant: 'destructive',
       });
+      router.push(returnTo);
     } finally {
       setIsLoading(false);
     }
@@ -84,16 +91,21 @@ function EditEventContent() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <Button
           variant="ghost"
-          onClick={() => router.push('/admin')}
+          onClick={() => router.push(returnTo)}
           className="mb-6"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Dashboard
+          {isOrganizerFlow ? 'Back to Organizer Dashboard' : 'Back to Dashboard'}
         </Button>
 
         <div className="bg-white rounded-lg shadow-sm p-6">
           <h1 className="text-2xl font-bold mb-6">Edit Event</h1>
-          <EditEventForm event={event} />
+          <EditEventForm
+            event={event}
+            actorRole={actorRole}
+            successRedirectPath={returnTo}
+            cancelRedirectPath={returnTo}
+          />
         </div>
       </div>
     </div>

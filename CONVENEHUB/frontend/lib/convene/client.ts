@@ -144,6 +144,7 @@ function mapBackendUser(user: any): AuthUser {
 
 function mapBackendEvent(event: any) {
   const firstTier = Array.isArray(event?.ticketTiers) && event.ticketTiers.length > 0 ? event.ticketTiers[0] : null;
+  const status = event?.status === 'closed' ? 'ended' : event?.status || 'draft';
   return {
     event_id: String(event?.event_id || event?._id || ''),
     title: event?.title || '',
@@ -154,12 +155,13 @@ function mapBackendEvent(event: any) {
     date_time: event?.date_time || event?.dateTime,
     capacity: event?.capacity || 0,
     remaining: event?.remaining || 0,
-    status: event?.status || 'draft',
+    status,
     event_image: resolveAssetUrl(event?.event_image || event?.eventImage || ''),
     entry_instructions: event?.entry_instructions || event?.entryInstructions || '',
     terms: event?.terms || '',
     ticket_price: event?.ticket_price ?? firstTier?.price ?? 0,
     created_at: event?.created_at || event?.createdAt,
+    created_by: event?.created_by || event?.createdBy || event?.organizerId || '',
   };
 }
 
@@ -255,18 +257,19 @@ async function ensureValidSession() {
   }
 
   const user = mapBackendUser(payload.user);
-  const nextAccessToken = getStoredAccessToken();
+  const nextAccessToken = payload?.accessToken || getStoredAccessToken();
+  const nextRefreshToken = payload?.refreshToken || getStoredRefreshToken() || undefined;
 
   if (!nextAccessToken) {
     clearStoredSession();
     return null;
   }
 
-  setStoredSession(nextAccessToken, getStoredRefreshToken() || undefined, user);
+  setStoredSession(nextAccessToken, nextRefreshToken, user);
 
   return {
     accessToken: nextAccessToken,
-    refreshToken: getStoredRefreshToken() || undefined,
+    refreshToken: nextRefreshToken,
     user,
   };
 }

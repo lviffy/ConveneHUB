@@ -3,7 +3,7 @@
 import { Profile } from '@/types/database.types';
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ScanLine, ClipboardList, BarChart3, Calendar, MapPin, Users, LogOut, Home, StickyNote, Plus, Settings } from 'lucide-react';
+import { ScanLine, ClipboardList, BarChart3, Calendar, MapPin, Users, LogOut, Home, StickyNote, Plus, Settings, Pencil } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Spinner } from '@/components/ui/spinner';
@@ -140,6 +140,16 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
   const handleOpenCheckin = (event: OrganizerEvent) => {
     setSelectedEvent(event);
     setIsCheckinModalOpen(true);
+  };
+
+  const handleEditEvent = (eventId: string) => {
+    const params = new URLSearchParams({
+      id: eventId,
+      returnTo: '/organizer',
+      actorRole: 'organizer',
+    });
+
+    router.push(`/admin/events/edit?${params.toString()}`);
   };
 
   // Check if check-in is available (status is checkin_open/in_progress, OR 30 minutes before event)
@@ -527,7 +537,7 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
                                   </p>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-2">
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                   {isCheckinAvailable(event.date_time, event.status) ? (
                                     <Button 
                                       className="bg-[#195ADC] hover:bg-[#195ADC]/90"
@@ -551,6 +561,13 @@ export default function MovieTeamDashboard({ profile, userEmail }: MovieTeamDash
                                       </div>
                                     </div>
                                   )}
+                                  <Button
+                                    variant="outline"
+                                    onClick={() => handleEditEvent(event.event_id)}
+                                  >
+                                    <Pencil className="mr-2 h-4 w-4" />
+                                    Edit Event
+                                  </Button>
                                   <Button
                                     variant="outline"
                                     onClick={() => {

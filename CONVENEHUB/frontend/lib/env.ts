@@ -13,6 +13,10 @@ interface EnvConfig {
   NEXT_PUBLIC_SUPABASE_URL: string;
   NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
   SUPABASE_SERVICE_ROLE_KEY: string;
+
+  // Razorpay (Required for paid event checkout)
+  NEXT_PUBLIC_RAZORPAY_KEY_ID: string;
+  RAZORPAY_KEY_SECRET: string;
   
   // QR Code Security (Required for bookings)
   QR_HMAC_SECRET: string;
@@ -60,6 +64,17 @@ const validationRules: Record<string, ValidationRule> = {
     minLength: 100,
     message: 'Must be a valid Supabase service role key (JWT token)',
     mustNotBeExposed: true, // Should never have NEXT_PUBLIC_ prefix
+  },
+  NEXT_PUBLIC_RAZORPAY_KEY_ID: {
+    required: true,
+    pattern: /^rzp_(test|live)_[A-Za-z0-9]+$/,
+    message: 'Must be a valid Razorpay key ID (rzp_test_xxx or rzp_live_xxx)',
+  },
+  RAZORPAY_KEY_SECRET: {
+    required: true,
+    minLength: 16,
+    message: 'Must be a valid Razorpay key secret',
+    mustNotBeExposed: true,
   },
   QR_HMAC_SECRET: {
     required: true,
@@ -173,6 +188,7 @@ export function validateEnv(): EnvConfig {
   
   // 2. Check if any secret keys have NEXT_PUBLIC_ prefix
   const secretKeys = [
+    'RAZORPAY_KEY_SECRET',
     'QR_HMAC_SECRET',
     'SMTP_PASSWORD',
     'CRON_SECRET',
@@ -201,6 +217,16 @@ export function validateEnv(): EnvConfig {
     warnings.push(
       '  ⚠️  CRON_SECRET not set in production. ' +
       'Set this to secure your cron endpoints!'
+    );
+  }
+
+  // 5. Warn if test Razorpay keys are used in production
+  if (
+    process.env.NODE_ENV === 'production' &&
+    process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID?.startsWith('rzp_test_')
+  ) {
+    warnings.push(
+      '  ⚠️  Razorpay test keys are configured in production. Switch to live keys before launch.'
     );
   }
   

@@ -19,10 +19,7 @@ import {
   AlertCircle,
   Plus,
   Minus,
-  X,
-  CreditCard,
-  Landmark,
-  Smartphone
+  X
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { EventsHeader } from '@/components/events-header'
@@ -31,6 +28,7 @@ import type { Event } from '@/types/database.types'
 import { createClient } from '@/lib/convene/client'
 import { Spinner } from '@/components/ui/spinner'
 import { resolveAssetUrl } from '@/lib/storage'
+import RazorpayCheckout from '@/components/payments/RazorpayCheckout'
 
 const MAX_TICKETS_PER_USER = 10
 import Footer from '@/components/footer'
@@ -66,8 +64,6 @@ interface UserProfile {
   role: string
 }
 
-type MockPaymentMethod = 'upi' | 'card' | 'bank'
-
 export default function EventBookingPage({ eventId }: EventBookingPageProps) {
   const router = useRouter()
   const supabase = useMemo(() => createClient(), [])
@@ -100,14 +96,15 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
   const [showTermsModal, setShowTermsModal] = useState(false)
   const [showPaymentConfirmModal, setShowPaymentConfirmModal] = useState(false)
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
-  const [mockPaymentMethod, setMockPaymentMethod] = useState<MockPaymentMethod>('upi')
+  const [proceedToPayment, setProceedToPayment] = useState(false)
+  const [paymentError, setPaymentError] = useState('')
 
   // Fetch event data with real-time booking count using public API
   const fetchEventData = useCallback(async () => {
     try {
       // Use public API to get accurate booking count (bypasses RLS)
       // Add cache busting parameter to ensure fresh data
-      const response = await fetch(`/api/v1/events/public?t=${Date.now()}`, {
+      const response = await fetch(`/api/events/public?t=${Date.now()}`, {
         cache: 'no-store',
         headers: {
           'Cache-Control': 'no-cache'
@@ -256,7 +253,8 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
 
   // Set up real-time subscription for booking changes
   useEffect(() => {
-    const channel = supabase
+    const realtimeClient = supabase as any
+    const channel = realtimeClient
       .channel(`event-bookings-${eventId}`)
       .on(
         'postgres_changes',
@@ -344,14 +342,14 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
     setIsSubmitting(true)
 
     try {
-      const response = await fetch('/api/v1/bookings', {
+      const response = await fetch('/api/bookings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          eventId: event.event_id,
-          ticketsCount,
+          event_id: event.event_id,
+          tickets_count: ticketsCount,
         }),
       })
 
@@ -374,7 +372,7 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
           return
         }
 
-        throw new Error(data.error || 'Failed to create booking')
+        throw new Error(data.message || data.error || 'Failed to create booking')
       }
 
       // Success
@@ -1106,8 +1104,30 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
                           </div>
                         )}
 
+                        {paymentError && (
+                          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                            <div className="flex items-start gap-3">
+                              <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                              <div className="flex-1">
+                                <h4 className="text-sm font-semibold text-red-900 mb-1">Payment Failed</h4>
+                                <p className="text-sm text-red-700">{paymentError}</p>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => setPaymentError('')}
+                                className="text-red-400 hover:text-red-600"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                        )}
+
                         <Button
-                          onClick={() => setShowPaymentConfirmModal(true)}
+                          onClick={() => {
+                            setPaymentError('')
+                            setShowPaymentConfirmModal(true)
+                          }}
                           disabled={isProcessingPayment || isSubmitting}
                           className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 text-base font-bold rounded-xl"
                         >
@@ -1118,11 +1138,40 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
                             </>
                           ) : (
                             <>
-                              {isPaidBooking ? `Open Mock Checkout${ticketsCount > 1 ? ` (${ticketsCount} Tickets)` : ''}` : `Confirm Booking${ticketsCount > 1 ? ` (${ticketsCount} Tickets)` : ''}`}
+                              {isPaidBooking ? `Pay With Razorpay${ticketsCount > 1 ? ` (${ticketsCount} Tickets)` : ''}` : `Confirm Booking${ticketsCount > 1 ? ` (${ticketsCount} Tickets)` : ''}`}
                               <CheckCircle2 className="w-4 h-4 ml-2" />
                             </>
                           )}
                         </Button>
+
+                        {isPaidBooking && proceedToPayment && (
+                          <RazorpayCheckout
+                            eventId={event.event_id}
+                            ticketsCount={ticketsCount}
+                            autoTrigger={true}
+                            onReady={() => setIsProcessingPayment(false)}
+                            onSuccess={(paidBookingId, paymentId, paidBookingCode) => {
+                              setBookingCode(paidBookingCode || paidBookingId)
+                              setProceedToPayment(false)
+                              setPaymentError('')
+                              setIsProcessingPayment(false)
+                              setShowSuccessModal(true)
+                              void fetchEventData()
+                              if (user) {
+                                void checkUserBooking(user.id)
+                              }
+                            }}
+                            onFailure={(errorMessage) => {
+                              setProceedToPayment(false)
+                              setIsProcessingPayment(false)
+                              setPaymentError(errorMessage)
+                              void fetchEventData()
+                              if (user) {
+                                void checkUserBooking(user.id)
+                              }
+                            }}
+                          />
+                        )}
 
                         <div className="flex items-center gap-2 text-xs text-gray-500 justify-center">
                           <Shield className="w-4 h-4" />
@@ -1339,97 +1388,28 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
               {isPaidBooking && (
                 <div className="mb-5 rounded-xl border border-blue-200 bg-blue-50 p-4">
                   <div className="flex items-start gap-3">
-                    <CreditCard className="mt-0.5 h-5 w-5 text-blue-600" />
+                    <Shield className="mt-0.5 h-5 w-5 text-blue-600" />
                     <div className="min-w-0 flex-1">
-                      <h4 className="text-sm font-semibold text-blue-900">Mock Checkout</h4>
+                      <h4 className="text-sm font-semibold text-blue-900">Razorpay Checkout</h4>
                       <p className="mt-1 text-sm text-blue-700">
-                        This is a demo-only payment UI. No real money will be charged.
+                        You’ll be redirected to Razorpay to complete this payment securely.
                       </p>
                     </div>
                   </div>
 
-                  <div className="mt-4 grid gap-2 sm:grid-cols-3">
-                    <button
-                      type="button"
-                      onClick={() => setMockPaymentMethod('upi')}
-                      className={cn(
-                        'rounded-xl border p-3 text-left transition-colors',
-                        mockPaymentMethod === 'upi'
-                          ? 'border-blue-500 bg-white shadow-sm'
-                          : 'border-blue-100 bg-white/70 hover:bg-white'
-                      )}
-                    >
-                      <div className="flex items-center gap-2 text-sm font-semibold text-gray-900">
-                        <Smartphone className="h-4 w-4 text-blue-600" />
-                        UPI
-                      </div>
-                      <p className="mt-1 text-xs text-gray-500">demo-attendee@mock</p>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setMockPaymentMethod('card')}
-                      className={cn(
-                        'rounded-xl border p-3 text-left transition-colors',
-                        mockPaymentMethod === 'card'
-                          ? 'border-blue-500 bg-white shadow-sm'
-                          : 'border-blue-100 bg-white/70 hover:bg-white'
-                      )}
-                    >
-                      <div className="flex items-center gap-2 text-sm font-semibold text-gray-900">
-                        <CreditCard className="h-4 w-4 text-blue-600" />
-                        Card
-                      </div>
-                      <p className="mt-1 text-xs text-gray-500">Visa ending in 4242</p>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setMockPaymentMethod('bank')}
-                      className={cn(
-                        'rounded-xl border p-3 text-left transition-colors',
-                        mockPaymentMethod === 'bank'
-                          ? 'border-blue-500 bg-white shadow-sm'
-                          : 'border-blue-100 bg-white/70 hover:bg-white'
-                      )}
-                    >
-                      <div className="flex items-center gap-2 text-sm font-semibold text-gray-900">
-                        <Landmark className="h-4 w-4 text-blue-600" />
-                        Net Banking
-                      </div>
-                      <p className="mt-1 text-xs text-gray-500">ConveneHub Demo Bank</p>
-                    </button>
-                  </div>
-
                   <div className="mt-4 rounded-xl border border-dashed border-blue-200 bg-white p-4">
-                    {mockPaymentMethod === 'upi' && (
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between text-xs uppercase tracking-wide text-gray-500">
-                          <span>UPI ID</span>
-                          <span>Instant</span>
-                        </div>
-                        <div className="text-sm font-semibold text-gray-900">demo-attendee@mock</div>
-                        <p className="text-xs text-gray-500">Authorize this demo UPI payment to continue.</p>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-xs uppercase tracking-wide text-gray-500">
+                        <span>Supported Modes</span>
+                        <span>Live</span>
                       </div>
-                    )}
-                    {mockPaymentMethod === 'card' && (
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between text-xs uppercase tracking-wide text-gray-500">
-                          <span>Saved Card</span>
-                          <span>Visa</span>
-                        </div>
-                        <div className="text-sm font-semibold text-gray-900">4242 4242 4242 4242</div>
-                        <p className="text-xs text-gray-500">CVV and OTP are skipped in this mock experience.</p>
+                      <div className="text-sm font-semibold text-gray-900">
+                        UPI, Cards, Net Banking, Wallets
                       </div>
-                    )}
-                    {mockPaymentMethod === 'bank' && (
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between text-xs uppercase tracking-wide text-gray-500">
-                          <span>Bank</span>
-                          <span>Demo</span>
-                        </div>
-                        <div className="text-sm font-semibold text-gray-900">ConveneHub Demo Bank</div>
-                        <p className="text-xs text-gray-500">You’ll be returned here immediately after simulated authorization.</p>
-                      </div>
-                    )}
+                      <p className="text-xs text-gray-500">
+                        ConveneHub will create a pending booking first, then confirm it after Razorpay verifies the payment.
+                      </p>
+                    </div>
                   </div>
                 </div>
               )}
@@ -1474,8 +1454,16 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
             <div className="p-6 border-t border-gray-100 bg-gray-50 rounded-b-2xl space-y-3">
               <Button 
                 onClick={() => {
-                  setIsProcessingPayment(true)
+                  setPaymentError('')
                   setShowPaymentConfirmModal(false)
+
+                  if (isPaidBooking) {
+                    setProceedToPayment(true)
+                    setIsProcessingPayment(true)
+                    return
+                  }
+
+                  setIsProcessingPayment(true)
                   Promise.resolve(handleBooking()).finally(() => {
                     setIsProcessingPayment(false)
                   })
@@ -1494,7 +1482,7 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
                 ) : (
                   <>
                     <CheckCircle2 className="w-4 h-4" />
-                    {isPaidBooking ? `Simulate Payment & Confirm Booking` : 'I Agree & Confirm Booking'}
+                    {isPaidBooking ? 'Continue To Razorpay' : 'I Agree & Confirm Booking'}
                   </>
                 )}
               </Button>
@@ -1515,7 +1503,7 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
         <div className="fixed inset-0 bg-black/40 z-[60] flex flex-col items-center justify-center gap-4">
           <div className="w-10 h-10 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
           <div className="text-white text-base font-medium flex items-center gap-1">
-            {isPaidBooking ? 'Simulating payment' : 'Please wait'}
+            {isPaidBooking ? 'Opening Razorpay' : 'Please wait'}
             <span className="inline-flex w-8 ml-1">
               <span className="animate-[pulse_1.4s_ease-in-out_infinite]">.</span>
               <span className="animate-[pulse_1.4s_ease-in-out_0.2s_infinite]">.</span>

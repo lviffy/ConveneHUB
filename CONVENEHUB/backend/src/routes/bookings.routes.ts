@@ -11,6 +11,7 @@ import { generateCode } from '../utils/codes';
 import QRCode from 'qrcode';
 
 export const bookingsRouter = Router();
+const BOOKING_ALLOWED_ROLES = ['attendee', 'admin', 'organizer', 'promoter'] as const;
 
 function toLegacyBooking(booking: any, event?: any) {
   return {
@@ -90,7 +91,7 @@ async function syncAttendeeRecord(eventId: string, attendeeId: string) {
   );
 }
 
-bookingsRouter.post('/', requireAuth, requireRole('attendee', 'admin'), async (req, res) => {
+bookingsRouter.post('/', requireAuth, requireRole(...BOOKING_ALLOWED_ROLES), async (req, res) => {
   const parsed = createBookingSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ success: false, message: parsed.error.issues[0]?.message || 'Invalid input' });
@@ -191,7 +192,7 @@ bookingsRouter.post('/', requireAuth, requireRole('attendee', 'admin'), async (r
   });
 });
 
-bookingsRouter.get('/', requireAuth, requireRole('attendee', 'admin'), async (req, res) => {
+bookingsRouter.get('/', requireAuth, requireRole(...BOOKING_ALLOWED_ROLES), async (req, res) => {
   const bookings = await BookingModel.find({ attendeeId: req.user?.sub }).sort({ createdAt: -1 }).lean();
   const eventIds = bookings.map((booking) => booking.eventId);
   const events = await EventModel.find({ _id: { $in: eventIds } }).lean();
@@ -201,12 +202,12 @@ bookingsRouter.get('/', requireAuth, requireRole('attendee', 'admin'), async (re
   return res.json({ success: true, bookings: legacyBookings });
 });
 
-bookingsRouter.get('/me', requireAuth, requireRole('attendee', 'admin'), async (req, res) => {
+bookingsRouter.get('/me', requireAuth, requireRole(...BOOKING_ALLOWED_ROLES), async (req, res) => {
   const bookings = await BookingModel.find({ attendeeId: req.user?.sub }).sort({ createdAt: -1 }).lean();
   return res.json({ success: true, bookings });
 });
 
-bookingsRouter.get('/:id/tickets', requireAuth, requireRole('attendee', 'admin'), async (req, res) => {
+bookingsRouter.get('/:id/tickets', requireAuth, requireRole(...BOOKING_ALLOWED_ROLES), async (req, res) => {
   const booking = await BookingModel.findById(req.params.id).lean();
   if (!booking) {
     return res.status(404).json({ success: false, message: 'Booking not found' });
@@ -230,7 +231,7 @@ bookingsRouter.get('/:id/tickets', requireAuth, requireRole('attendee', 'admin')
   return res.json({ success: true, tickets: mappedTickets, booking: toLegacyBooking(booking) });
 });
 
-bookingsRouter.get('/:id/qr', requireAuth, requireRole('attendee', 'admin'), async (req, res) => {
+bookingsRouter.get('/:id/qr', requireAuth, requireRole(...BOOKING_ALLOWED_ROLES), async (req, res) => {
   const booking = await BookingModel.findById(req.params.id).lean();
   if (!booking) {
     return res.status(404).json({ success: false, message: 'Booking not found' });
@@ -249,7 +250,7 @@ bookingsRouter.get('/:id/qr', requireAuth, requireRole('attendee', 'admin'), asy
   return res.json({ success: true, qr_code: qrCode });
 });
 
-bookingsRouter.get('/:id', requireAuth, requireRole('attendee', 'admin'), async (req, res) => {
+bookingsRouter.get('/:id', requireAuth, requireRole(...BOOKING_ALLOWED_ROLES), async (req, res) => {
   const booking = await BookingModel.findById(req.params.id).lean();
   if (!booking) {
     return res.status(404).json({ success: false, message: 'Booking not found' });
@@ -263,7 +264,7 @@ bookingsRouter.get('/:id', requireAuth, requireRole('attendee', 'admin'), async 
   return res.json({ success: true, booking, tickets });
 });
 
-bookingsRouter.post('/:id/cancel', requireAuth, requireRole('attendee', 'admin'), async (req, res) => {
+bookingsRouter.post('/:id/cancel', requireAuth, requireRole(...BOOKING_ALLOWED_ROLES), async (req, res) => {
   const booking = await BookingModel.findById(req.params.id);
   if (!booking) {
     return res.status(404).json({ success: false, message: 'Booking not found' });

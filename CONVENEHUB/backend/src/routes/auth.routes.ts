@@ -7,23 +7,13 @@ import { z } from 'zod';
 import { UserModel } from '../models/User';
 import { signAccessToken, signRefreshToken } from '../utils/tokens';
 import { env } from '../config/env';
-import { requireAuth } from '../middlewares/auth.middleware';
+import { normalizeAuthRole, requireAuth } from '../middlewares/auth.middleware';
 import { syncTenantRecord } from '../utils/tenants';
 
 export const authRouter = Router();
 
-const frontendToBackendRole: Record<string, 'admin' | 'organizer' | 'promoter' | 'attendee'> = {
-  admin_team: 'admin',
-  movie_team: 'organizer',
-  user: 'attendee',
-  admin: 'admin',
-  organizer: 'organizer',
-  promoter: 'promoter',
-  attendee: 'attendee',
-};
-
 function normalizeRole(role?: string): 'admin' | 'organizer' | 'promoter' | 'attendee' {
-  return frontendToBackendRole[role || 'attendee'] || 'attendee';
+  return normalizeAuthRole(role);
 }
 
 function resolveTenantId(role: 'admin' | 'organizer' | 'promoter' | 'attendee', tenantId?: string) {
@@ -43,13 +33,15 @@ function toFrontendUser(user: {
   _id: unknown;
   fullName: string;
   email: string;
-  role: 'admin' | 'organizer' | 'promoter' | 'attendee';
+  role?: string;
   tenantId?: string;
   campusId?: string;
   phone?: string;
   city?: string;
   createdAt?: Date;
 }) {
+  const normalizedRole = normalizeRole(user.role);
+
   return {
     id: String(user._id),
     fullName: user.fullName,
@@ -57,8 +49,8 @@ function toFrontendUser(user: {
     email: user.email,
     phone: user.phone,
     city: user.city,
-    role: user.role,
-    canonical_role: user.role,
+    role: normalizedRole,
+    canonical_role: normalizedRole,
     tenantId: user.tenantId,
     campusId: user.campusId,
     created_at: user.createdAt,
@@ -480,7 +472,8 @@ authRouter.post('/login', async (req, res) => {
     return res.status(401).json({ success: false, code: 'INVALID_CREDENTIALS', message: 'Incorrect email or password. Please try again.' });
   }
 
-  const payload = { sub: String(user._id), role: user.role, tenantId: user.tenantId };
+  const normalizedRole = normalizeRole(user.role);
+  const payload = { sub: String(user._id), role: normalizedRole, tenantId: user.tenantId };
   const accessToken = signAccessToken(payload);
   const refreshToken = signRefreshToken(payload);
 
@@ -499,8 +492,12 @@ authRouter.post('/refresh', async (req, res) => {
   }
 
   try {
-    const decoded = jwt.verify(token, env.JWT_REFRESH_SECRET) as { sub: string; role: 'admin' | 'organizer' | 'promoter' | 'attendee'; tenantId?: string };
-    const accessToken = signAccessToken({ sub: decoded.sub, role: decoded.role, tenantId: decoded.tenantId });
+    const decoded = jwt.verify(token, env.JWT_REFRESH_SECRET) as { sub: string; role?: string; tenantId?: string };
+    const accessToken = signAccessToken({
+      sub: decoded.sub,
+      role: normalizeRole(decoded.role),
+      tenantId: decoded.tenantId,
+    });
     return res.json({ success: true, accessToken });
   } catch {
     return res.status(401).json({ success: false, message: 'Invalid refresh token' });
@@ -602,7 +599,8 @@ authRouter.post('/verify-otp', async (req, res) => {
   user.otpVerifiedAt = new Date();
   await user.save();
 
-  const payload = { sub: String(user._id), role: user.role, tenantId: user.tenantId };
+  const normalizedRole = normalizeRole(user.role);
+  const payload = { sub: String(user._id), role: normalizedRole, tenantId: user.tenantId };
   const accessToken = signAccessToken(payload);
   const refreshToken = signRefreshToken(payload);
 
@@ -644,7 +642,7 @@ authRouter.post('/complete-profile', requireAuth, async (req, res) => {
     return res.status(404).json({ success: false, message: 'User not found' });
   }
 
-  const resolvedTenantId = resolveTenantId(currentUser.role, tenantId || currentUser.tenantId);
+  const resolvedTenantId = resolveTenantId(normalizeRole(currentUser.role), tenantId || currentUser.tenantId);
 
   const user = await UserModel.findByIdAndUpdate(
     req.user?.sub,
@@ -664,8 +662,8 @@ authRouter.post('/complete-profile', requireAuth, async (req, res) => {
   await syncTenantRecord({
     tenantId: user.tenantId,
     campusId: user.campusId,
-    adminId: user.role === 'admin' ? String(user._id) : undefined,
-    organizerId: user.role === 'organizer' ? String(user._id) : undefined,
+    adminId: normalizeRole(user.role) === 'admin' ? String(user._id) : undefined,
+    organizerId: normalizeRole(user.role) === 'organizer' ? String(user._id) : undefined,
   });
 
   return res.json({ success: true, user: toFrontendUser(user as any) });
@@ -676,5 +674,23 @@ authRouter.get('/me', requireAuth, async (req, res) => {
   if (!user) {
     return res.status(404).json({ success: false, message: 'User not found' });
   }
-  return res.json({ success: true, user: toFrontendUser(user as any) });
+
+  const normalizedRole = normalizeRole(user.role);
+  const accessToken = signAccessToken({
+    sub: String(user._id),
+    role: normalizedRole,
+    tenantId: user.tenantId,
+  });
+  const refreshToken = signRefreshToken({
+    sub: String(user._id),
+    role: normalizedRole,
+    tenantId: user.tenantId,
+  });
+
+  return res.json({
+    success: true,
+    user: toFrontendUser(user as any),
+    accessToken,
+    refreshToken,
+  });
 });

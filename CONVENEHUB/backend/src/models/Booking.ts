@@ -14,6 +14,8 @@ interface BookingDocument {
   paymentStatus?: 'pending' | 'paid' | 'failed' | 'refunded';
   referralCode?: string;
   promoterId?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 const bookingSchema = new Schema<BookingDocument>(

@@ -78,6 +78,7 @@
     "nodemailer": "^7.0.10",
     "postcss": "8.4.30",
     "qrcode": "^1.5.4",
+    "razorpay": "^2.9.6",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",

@@ -125,7 +125,7 @@ adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (
   const PROCESSING_FEE_PERCENTAGE = 0;
   const PLATFORM_COMMISSION_PERCENTAGE = 10;
 
-  const events = await EventModel.find({ status: { $in: ['published', 'closed'] } })
+  const events = await EventModel.find({ status: { $in: ['published', 'checkin_open', 'in_progress', 'ended', 'closed'] } })
     .sort({ dateTime: -1 })
     .lean();
 
@@ -234,7 +234,7 @@ adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (
 });
 
 adminRouter.get('/reconciliation', requireAuth, requireRole('admin'), async (_req, res) => {
-  const events = await EventModel.find({ status: { $in: ['published', 'closed'] } })
+  const events = await EventModel.find({ status: { $in: ['published', 'checkin_open', 'in_progress', 'ended', 'closed'] } })
     .sort({ dateTime: -1 })
     .lean();
 

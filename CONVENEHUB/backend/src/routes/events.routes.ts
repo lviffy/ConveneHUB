@@ -34,7 +34,7 @@ const eventSchema = z.object({
   city: z.string().optional(),
   dateTime: z.string().datetime(),
   capacity: z.number().int().positive(),
-  status: z.enum(['draft', 'published', 'closed']).optional(),
+  status: z.enum(['draft', 'published', 'checkin_open', 'in_progress', 'ended']).optional(),
   eventImage: z.string().optional().nullable(),
   entryInstructions: z.string().optional().nullable(),
   terms: z.string().optional().nullable(),
@@ -82,7 +82,7 @@ eventsRouter.get('/public', async (req, res) => {
   try {
     const city = typeof req.query.city === 'string' ? req.query.city : undefined;
 
-    const query: Record<string, unknown> = { status: { $in: ['published', 'draft'] } };
+    const query: Record<string, unknown> = { status: 'published' };
     if (city) query.city = city;
 
     const events = await EventModel.find(query).sort({ dateTime: 1 }).lean();
@@ -153,7 +153,7 @@ eventsRouter.patch('/:id', requireAuth, requireRole('organizer', 'admin'), async
     description: string;
     venue: string;
     city: string;
-    status: 'draft' | 'published' | 'closed';
+    status: 'draft' | 'published' | 'checkin_open' | 'in_progress' | 'ended';
     dateTime: string;
     eventImage: string | null;
     entryInstructions: string | null;

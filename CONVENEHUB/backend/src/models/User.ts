@@ -17,6 +17,8 @@ interface UserDocument {
   otpType?: 'signup' | 'email' | 'recovery';
   otpExpiresAt?: Date;
   otpVerifiedAt?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 const userSchema = new Schema<UserDocument>(

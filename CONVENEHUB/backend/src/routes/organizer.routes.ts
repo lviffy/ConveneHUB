@@ -80,10 +80,10 @@ organizerRouter.get('/events', requireAuth, requireRole('organizer', 'admin'), a
   const statusMap: Record<string, string> = {
     draft: 'draft',
     published: 'published',
-    checkin_open: 'published',
-    in_progress: 'published',
-    ended: 'closed',
-    closed: 'closed',
+    checkin_open: 'checkin_open',
+    in_progress: 'in_progress',
+    ended: 'ended',
+    closed: 'ended',
   };
 
   const mappedStatuses = Array.from(new Set(requested.map((s) => statusMap[s]).filter(Boolean)));
@@ -114,7 +114,7 @@ organizerRouter.get('/financial-summary', requireAuth, requireRole('organizer', 
   const PROCESSING_FEE_PERCENTAGE = 0;
   const PLATFORM_COMMISSION_PERCENTAGE = 10;
 
-  const events = await EventModel.find({ organizerId: actorId, status: { $in: ['published', 'closed'] } })
+  const events = await EventModel.find({ organizerId: actorId, status: { $in: ['published', 'checkin_open', 'in_progress', 'ended', 'closed'] } })
     .sort({ dateTime: -1 })
     .lean();
 
@@ -228,7 +228,7 @@ organizerRouter.get('/reconciliation', requireAuth, requireRole('organizer', 'ad
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const events = await EventModel.find({ organizerId: actorId, status: { $in: ['published', 'closed'] } })
+  const events = await EventModel.find({ organizerId: actorId, status: { $in: ['published', 'checkin_open', 'in_progress', 'ended', 'closed'] } })
     .sort({ dateTime: -1 })
     .lean();
 

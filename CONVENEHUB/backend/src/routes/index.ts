@@ -9,6 +9,7 @@ import { analyticsRouter } from './analytics.routes';
 import { adminRouter } from './admin.routes';
 import { uploadsRouter } from './uploads.routes';
 import { organizerRouter } from './organizer.routes';
+import { paymentsRouter } from './payments.routes';
 
 export const apiRouter = Router();
 
@@ -26,3 +27,4 @@ apiRouter.use('/analytics', analyticsRouter);
 apiRouter.use('/admin', adminRouter);
 apiRouter.use('/organizer', organizerRouter);
 apiRouter.use('/uploads', uploadsRouter);
+apiRouter.use('/payments', paymentsRouter);

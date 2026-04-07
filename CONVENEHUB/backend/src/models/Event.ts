@@ -19,11 +19,13 @@ interface EventDocument {
   date?: Date;
   capacity: number;
   remaining: number;
-  status: 'draft' | 'published' | 'closed';
+  status: 'draft' | 'published' | 'checkin_open' | 'in_progress' | 'ended';
   eventImage?: string;
   entryInstructions?: string;
   terms?: string;
   ticketTiers: TicketTier[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 const ticketTierSchema = new Schema<TicketTier>(
@@ -49,7 +51,7 @@ const eventSchema = new Schema<EventDocument>(
     dateTime: { type: Date, required: true, alias: 'date' },
     capacity: { type: Number, required: true, min: 1 },
     remaining: { type: Number, required: true, min: 0 },
-    status: { type: String, enum: ['draft', 'published', 'closed'], default: 'draft' },
+    status: { type: String, enum: ['draft', 'published', 'checkin_open', 'in_progress', 'ended'], default: 'draft' },
     eventImage: { type: String },
     entryInstructions: { type: String },
     terms: { type: String },

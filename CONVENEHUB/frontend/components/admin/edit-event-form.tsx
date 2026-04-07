@@ -55,32 +55,28 @@ type EventFormValues = z.infer<typeof eventFormSchema>;
 
 interface EditEventFormProps {
   event: any;
+  actorRole?: 'admin_team' | 'organizer';
+  successRedirectPath?: string;
+  cancelRedirectPath?: string;
 }
 
-export default function EditEventForm({ event }: EditEventFormProps) {
+export default function EditEventForm({
+  event,
+  actorRole = 'admin_team',
+  successRedirectPath = '/admin',
+  cancelRedirectPath = '/admin',
+}: EditEventFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string>(event.event_image || '');
-  const [bookedTickets, setBookedTickets] = useState(0);
+  const [bookedTickets] = useState(() => {
+    const capacity = Number(event.capacity || 0);
+    const remaining = Number(event.remaining || 0);
+    return Math.max(0, capacity - remaining);
+  });
   const router = useRouter();
   const { toast } = useToast();
   const supabase = createClient();
-
-  // Fetch actual booked tickets count
-  useEffect(() => {
-    const fetchBookedTickets = async () => {
-      const { data: bookings } = await supabase
-        .from('bookings')
-        .select('tickets_count')
-        .eq('event_id', event.event_id)
-        .neq('booking_status', 'cancelled');
-      
-      const total = bookings?.reduce((sum: number, booking: any) => sum + (booking.tickets_count || 1), 0) ?? 0;
-      setBookedTickets(total);
-    };
-    
-    fetchBookedTickets();
-  }, [event.event_id, supabase]);
 
   // Format date_time for input (YYYY-MM-DDTHH:MM format)
   const formatDateTimeForInput = (dateString: string) => {
@@ -116,18 +112,7 @@ export default function EditEventForm({ event }: EditEventFormProps) {
   const onSubmit = async (data: EventFormValues) => {
     setIsSubmitting(true);
     try {
-      // Get current user
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Not authenticated');
-
-      // Calculate remaining slots based on actual tickets booked
-      const { data: bookings } = await supabase
-        .from('bookings')
-        .select('tickets_count')
-        .eq('event_id', event.event_id)
-        .neq('booking_status', 'cancelled');
-      
-      const totalTickets = bookings?.reduce((sum: number, booking: any) => sum + (booking.tickets_count || 1), 0) ?? 0;
+      const totalTickets = bookedTickets;
       const newRemaining = data.capacity - totalTickets;
 
       if (newRemaining < 0) {
@@ -172,8 +157,8 @@ export default function EditEventForm({ event }: EditEventFormProps) {
 
       // Log the action in audit logs
       await supabase.from('audit_logs').insert({
-        actor_id: user.id,
-        actor_role: 'admin_team',
+        actor_id: event.created_by || '',
+        actor_role: actorRole,
         action: 'UPDATE_EVENT',
         entity: 'events',
         entity_id: event.event_id,
@@ -184,8 +169,7 @@ export default function EditEventForm({ event }: EditEventFormProps) {
         description: `Event "${data.title}" has been updated.`,
       });
 
-      // Navigate back to admin dashboard
-      router.push('/admin');
+      router.push(successRedirectPath);
       router.refresh();
     } catch (error: any) {
       toast({
@@ -673,7 +657,7 @@ export default function EditEventForm({ event }: EditEventFormProps) {
           <Button
             type="button"
             variant="outline"
-            onClick={() => router.push('/admin')}
+            onClick={() => router.push(cancelRedirectPath)}
             disabled={isSubmitting}
           >
             Cancel
