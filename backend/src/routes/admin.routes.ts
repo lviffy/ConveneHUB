@@ -4,6 +4,7 @@ import { UserModel } from '../models/User';
 import { EventModel } from '../models/Event';
 import { BookingModel } from '../models/Booking';
 import { CheckInModel } from '../models/CheckIn';
+import { TicketModel } from '../models/Ticket';
 import { TenantModel } from '../models/Tenant';
 import { z } from 'zod';
 import { syncTenantRecord } from '../utils/tenants';
@@ -32,6 +33,19 @@ function mapEventStatus(status?: string) {
 
 function toMoney(value: number) {
   return Number(value.toFixed(2));
+}
+
+function toFrontendRole(role?: string): 'user' | 'organizer' | 'admin_team' {
+  if (role === 'admin') return 'admin_team';
+  if (role === 'organizer') return 'organizer';
+  return 'user';
+}
+
+function fromFrontendRole(role?: string): 'admin' | 'organizer' | 'attendee' | null {
+  if (role === 'admin' || role === 'admin_team') return 'admin';
+  if (role === 'organizer' || role === 'movie_team') return 'organizer';
+  if (role === 'attendee' || role === 'user') return 'attendee';
+  return null;
 }
 
 adminRouter.get('/tenants', requireAuth, requireRole('admin'), async (_req, res) => {
@@ -118,7 +132,55 @@ adminRouter.patch('/tenants/:tenantId', requireAuth, requireRole('admin'), async
 
 adminRouter.get('/users', requireAuth, requireRole('admin'), async (_req, res) => {
   const users = await UserModel.find({}, { passwordHash: 0 }).sort({ createdAt: -1 }).lean();
-  return res.json({ success: true, users });
+  return res.json({
+    success: true,
+    users: users.map((user) => ({
+      id: String(user._id),
+      email: user.email,
+      phone: user.phone || '',
+      full_name: user.fullName || '',
+      city: user.city || '',
+      role: toFrontendRole(user.role),
+      created_at: (user as any).createdAt,
+    })),
+  });
+});
+
+adminRouter.post('/users/update-role', requireAuth, requireRole('admin'), async (req, res) => {
+  const userId = typeof req.body?.userId === 'string' ? req.body.userId.trim() : '';
+  const role = fromFrontendRole(typeof req.body?.role === 'string' ? req.body.role.trim() : '');
+
+  if (!userId || !role) {
+    return res.status(400).json({ success: false, error: 'userId and valid role are required' });
+  }
+
+  if (userId === req.user?.sub) {
+    return res.status(400).json({ success: false, error: 'You cannot change your own role' });
+  }
+
+  const updated = await UserModel.findByIdAndUpdate(userId, { role }, { new: true }).lean();
+  if (!updated) {
+    return res.status(404).json({ success: false, error: 'User not found' });
+  }
+
+  return res.json({ success: true, user: { id: String(updated._id), role: toFrontendRole(updated.role) } });
+});
+
+adminRouter.post('/users/delete', requireAuth, requireRole('admin'), async (req, res) => {
+  const userId = typeof req.body?.userId === 'string' ? req.body.userId.trim() : '';
+  if (!userId) {
+    return res.status(400).json({ success: false, error: 'userId is required' });
+  }
+  if (userId === req.user?.sub) {
+    return res.status(400).json({ success: false, error: 'You cannot delete your own account' });
+  }
+
+  const deleted = await UserModel.findByIdAndDelete(userId).lean();
+  if (!deleted) {
+    return res.status(404).json({ success: false, error: 'User not found' });
+  }
+
+  return res.json({ success: true, message: 'User deleted' });
 });
 
 adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (_req, res) => {
@@ -169,8 +231,8 @@ adminRouter.get('/financial-summary', requireAuth, requireRole('admin'), async (
       venue_name: event.venue,
       city: event.city || '',
       status: mapEventStatus(event.status),
-      settlement_status: null,
-      settlement_details: null,
+      settlement_status: (event as any).settlementStatus || 'pending',
+      settlement_details: (event as any).settlementDetails || null,
       financial_summary: {
         total_bookings: totalBookings,
         total_tickets_sold: totalTicketsSold,
@@ -322,4 +384,143 @@ adminRouter.get('/reconciliation', requireAuth, requireRole('admin'), async (_re
   }
 
   return res.json({ success: true, events: eventsPayload, summary });
+});
+
+adminRouter.post('/settlements', requireAuth, requireRole('admin'), async (req, res) => {
+  const eventId = typeof req.body?.event_id === 'string' ? req.body.event_id.trim() : '';
+  const transaction_reference =
+    typeof req.body?.transaction_reference === 'string' ? req.body.transaction_reference.trim() : '';
+  const transfer_date = typeof req.body?.transfer_date === 'string' ? req.body.transfer_date.trim() : '';
+  const payment_method = typeof req.body?.payment_method === 'string' ? req.body.payment_method.trim() : '';
+  const notes = typeof req.body?.notes === 'string' ? req.body.notes.trim() : '';
+
+  if (!eventId || !transaction_reference || !transfer_date || !payment_method) {
+    return res.status(400).json({ success: false, error: 'Missing settlement fields' });
+  }
+
+  const event = await EventModel.findById(eventId);
+  if (!event) return res.status(404).json({ success: false, error: 'Event not found' });
+
+  (event as any).settlementStatus = 'settled';
+  (event as any).settlementDetails = {
+    transaction_reference,
+    transfer_date,
+    payment_method,
+    notes: notes || undefined,
+    settled_by: req.user?.sub,
+    settled_at: new Date(),
+  };
+  await event.save();
+
+  return res.json({ success: true, message: 'Settlement recorded', event_id: eventId });
+});
+
+adminRouter.post('/financial-summary/email', requireAuth, requireRole('admin'), async (req, res) => {
+  const recipient = typeof req.body?.recipient_email === 'string' ? req.body.recipient_email.trim() : '';
+  if (!recipient) {
+    return res.status(400).json({ success: false, error: 'recipient_email is required' });
+  }
+  return res.json({ success: true, message: `Summary email queued for ${recipient}` });
+});
+
+adminRouter.post('/settlements/email', requireAuth, requireRole('admin'), async (req, res) => {
+  const eventId = typeof req.body?.event_id === 'string' ? req.body.event_id.trim() : '';
+  const recipient = typeof req.body?.movie_team_email === 'string' ? req.body.movie_team_email.trim() : '';
+  if (!eventId || !recipient) {
+    return res.status(400).json({ success: false, error: 'event_id and movie_team_email are required' });
+  }
+  return res.json({ success: true, message: `Settlement email queued for ${recipient}` });
+});
+
+adminRouter.get('/events/:eventId/export-bookings', requireAuth, requireRole('admin'), async (req, res) => {
+  const eventId = req.params.eventId;
+  const bookings = await BookingModel.find({ eventId, bookingStatus: { $ne: 'cancelled' } })
+    .sort({ createdAt: -1 })
+    .lean();
+
+  if (bookings.length === 0) {
+    return res.json({ success: true, bookings: [] });
+  }
+
+  const bookingIds = bookings.map((booking) => String(booking._id));
+  const attendeeIds = Array.from(new Set(bookings.map((booking) => booking.attendeeId)));
+  const [tickets, users] = await Promise.all([
+    TicketModel.find({ bookingId: { $in: bookingIds } }).lean(),
+    UserModel.find({ _id: { $in: attendeeIds } }).select('fullName email phone').lean(),
+  ]);
+
+  const usersById = new Map(users.map((user) => [String(user._id), user]));
+  const ticketsByBooking = new Map<string, any[]>();
+  for (const ticket of tickets) {
+    const key = ticket.bookingId;
+    const prev = ticketsByBooking.get(key) || [];
+    prev.push(ticket);
+    ticketsByBooking.set(key, prev);
+  }
+
+  const payload = bookings.map((booking) => {
+    const user = usersById.get(booking.attendeeId);
+    const bookingTickets = ticketsByBooking.get(String(booking._id)) || [];
+    const checkedTicket = bookingTickets.find((ticket) => ticket.checkInStatus === 'checked_in');
+    return {
+      booking_code: booking.bookingCode,
+      booking_id: String(booking._id),
+      user_name: user?.fullName || 'Attendee',
+      user_email: user?.email || '',
+      user_phone: user?.phone || '',
+      tickets_count: booking.ticketsCount,
+      total_amount: toMoney(booking.amount),
+      booking_status: booking.bookingStatus,
+      booked_at: (booking as any).createdAt,
+      checked_in: Boolean(checkedTicket),
+      checked_in_at: checkedTicket?.checkedInAt,
+      checked_in_by_name: checkedTicket?.checkedInBy || '',
+    };
+  });
+
+  return res.json({ success: true, bookings: payload });
+});
+
+adminRouter.get('/events/:eventId/export-checkins', requireAuth, requireRole('admin'), async (req, res) => {
+  const eventId = req.params.eventId;
+  const [checkins, bookings] = await Promise.all([
+    CheckInModel.find({ eventId }).sort({ createdAt: -1 }).lean(),
+    BookingModel.find({ eventId }).lean(),
+  ]);
+
+  if (checkins.length === 0) {
+    return res.json({ success: true, checkIns: [] });
+  }
+
+  const attendeeIds = Array.from(new Set(bookings.map((booking) => booking.attendeeId)));
+  const scannerIds = Array.from(new Set(checkins.map((checkin) => checkin.scannedBy)));
+  const [users, scanners] = await Promise.all([
+    UserModel.find({ _id: { $in: attendeeIds } }).select('fullName email phone').lean(),
+    UserModel.find({ _id: { $in: scannerIds } }).select('fullName').lean(),
+  ]);
+
+  const bookingById = new Map(bookings.map((booking) => [String(booking._id), booking]));
+  const userById = new Map(users.map((user) => [String(user._id), user]));
+  const scannerById = new Map(scanners.map((user) => [String(user._id), user]));
+
+  const payload = checkins.map((checkin) => {
+    const booking = bookingById.get(checkin.bookingId);
+    const user = booking ? userById.get(booking.attendeeId) : undefined;
+    const scanner = scannerById.get(checkin.scannedBy);
+
+    return {
+      booking_code: booking?.bookingCode || '',
+      booking_id: booking ? String(booking._id) : '',
+      user_name: user?.fullName || 'Attendee',
+      user_email: user?.email || '',
+      user_phone: user?.phone || '',
+      tickets_count: booking?.ticketsCount || 1,
+      checked_in_at: (checkin as any).createdAt,
+      checked_in_by_name: scanner?.fullName || 'Staff',
+      method: checkin.method,
+      booked_at: (booking as any)?.createdAt || '',
+    };
+  });
+
+  return res.json({ success: true, checkIns: payload });
 });

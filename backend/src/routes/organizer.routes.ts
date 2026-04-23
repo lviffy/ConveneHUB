@@ -3,6 +3,8 @@ import { requireAuth, requireRole } from '../middlewares/auth.middleware';
 import { EventModel } from '../models/Event';
 import { BookingModel } from '../models/Booking';
 import { CheckInModel } from '../models/CheckIn';
+import { TicketModel } from '../models/Ticket';
+import { UserModel } from '../models/User';
 
 export const organizerRouter = Router();
 
@@ -13,6 +15,19 @@ function mapEventStatus(status?: string) {
 
 function toMoney(value: number) {
   return Number(value.toFixed(2));
+}
+
+async function loadOrganizerEvent(actorId: string, eventId: string) {
+  const event = await EventModel.findById(eventId);
+  if (!event) return null;
+  if (event.organizerId !== actorId) return 'forbidden';
+  return event;
+}
+
+function mapCheckinStatus(status: string) {
+  if (status === 'published') return 'checkin_open';
+  if (status === 'checkin_open' || status === 'in_progress' || status === 'ended') return status;
+  return null;
 }
 
 organizerRouter.get('/my-events', requireAuth, requireRole('organizer', 'admin'), async (req, res) => {
@@ -316,4 +331,310 @@ organizerRouter.get('/reconciliation', requireAuth, requireRole('organizer', 'ad
   }
 
   return res.json({ success: true, events: eventsPayload, summary });
+});
+
+organizerRouter.get('/events/:eventId/notes', requireAuth, requireRole('organizer', 'admin'), async (req, res) => {
+  const actorId = req.user?.sub;
+  if (!actorId) return res.status(401).json({ error: 'Unauthorized' });
+
+  const event = await loadOrganizerEvent(actorId, req.params.eventId);
+  if (!event) return res.status(404).json({ error: 'Event not found' });
+  if (event === 'forbidden') return res.status(403).json({ error: 'Forbidden' });
+
+  return res.json({ success: true, notes: event.notes || '' });
+});
+
+organizerRouter.post('/events/:eventId/notes', requireAuth, requireRole('organizer', 'admin'), async (req, res) => {
+  const actorId = req.user?.sub;
+  if (!actorId) return res.status(401).json({ error: 'Unauthorized' });
+
+  const event = await loadOrganizerEvent(actorId, req.params.eventId);
+  if (!event) return res.status(404).json({ error: 'Event not found' });
+  if (event === 'forbidden') return res.status(403).json({ error: 'Forbidden' });
+
+  const notes = typeof req.body?.notes === 'string' ? req.body.notes : '';
+  event.notes = notes;
+  await event.save();
+
+  return res.json({ success: true, notes: event.notes || '' });
+});
+
+organizerRouter.get('/events/:eventId/stats', requireAuth, requireRole('organizer', 'admin'), async (req, res) => {
+  const actorId = req.user?.sub;
+  if (!actorId) return res.status(401).json({ error: 'Unauthorized' });
+
+  const event = await loadOrganizerEvent(actorId, req.params.eventId);
+  if (!event) return res.status(404).json({ error: 'Event not found' });
+  if (event === 'forbidden') return res.status(403).json({ error: 'Forbidden' });
+
+  const [bookings, checkedInTicketsCount] = await Promise.all([
+    BookingModel.find({
+      eventId: req.params.eventId,
+      bookingStatus: { $ne: 'cancelled' },
+    })
+      .select('ticketsCount')
+      .lean(),
+    TicketModel.countDocuments({
+      eventId: req.params.eventId,
+      checkInStatus: 'checked_in',
+    }),
+  ]);
+
+  const totalBooked = bookings.reduce((sum, booking) => sum + (booking.ticketsCount || 0), 0);
+  const remaining = Math.max(0, event.capacity - totalBooked);
+  const percentageFilled = event.capacity > 0 ? Number(((totalBooked / event.capacity) * 100).toFixed(2)) : 0;
+  const percentageCheckedIn = totalBooked > 0 ? Number(((checkedInTicketsCount / totalBooked) * 100).toFixed(2)) : 0;
+
+  return res.json({
+    success: true,
+    totalBooked,
+    checkedIn: checkedInTicketsCount,
+    remaining,
+    percentageFilled,
+    percentageCheckedIn,
+  });
+});
+
+organizerRouter.get('/events/:eventId/checked-in-users', requireAuth, requireRole('organizer', 'admin'), async (req, res) => {
+  const actorId = req.user?.sub;
+  if (!actorId) return res.status(401).json({ error: 'Unauthorized' });
+
+  const event = await loadOrganizerEvent(actorId, req.params.eventId);
+  if (!event) return res.status(404).json({ error: 'Event not found' });
+  if (event === 'forbidden') return res.status(403).json({ error: 'Forbidden' });
+
+  const tickets = await TicketModel.find({
+    eventId: req.params.eventId,
+    checkInStatus: 'checked_in',
+  })
+    .sort({ checkedInAt: -1 })
+    .lean();
+
+  if (tickets.length === 0) {
+    return res.json({ success: true, checkedInUsers: [] });
+  }
+
+  const bookingIds = Array.from(new Set(tickets.map((ticket) => ticket.bookingId)));
+  const userIds = Array.from(new Set(tickets.map((ticket) => ticket.attendeeId)));
+  const scannedByIds = Array.from(new Set(tickets.map((ticket) => ticket.checkedInBy).filter(Boolean) as string[]));
+
+  const [bookings, users, scanners] = await Promise.all([
+    BookingModel.find({ _id: { $in: bookingIds } }).select('bookingCode ticketsCount').lean(),
+    UserModel.find({ _id: { $in: userIds } }).select('fullName email phone city').lean(),
+    UserModel.find({ _id: { $in: scannedByIds } }).select('fullName').lean(),
+  ]);
+
+  const bookingById = new Map(bookings.map((booking) => [String(booking._id), booking]));
+  const userById = new Map(users.map((user) => [String(user._id), user]));
+  const scannerById = new Map(scanners.map((user) => [String(user._id), user]));
+
+  const ticketNumbersByBooking = new Map<string, number>();
+  const checkedInUsers = tickets.map((ticket) => {
+    const booking = bookingById.get(ticket.bookingId);
+    const user = userById.get(ticket.attendeeId);
+    const scanner = ticket.checkedInBy ? scannerById.get(ticket.checkedInBy) : null;
+    const ticketNumber = (ticketNumbersByBooking.get(ticket.bookingId) || 0) + 1;
+    ticketNumbersByBooking.set(ticket.bookingId, ticketNumber);
+
+    return {
+      ticketId: String(ticket._id),
+      ticketCode: String(ticket._id).slice(-8).toUpperCase(),
+      ticketNumber,
+      bookingId: ticket.bookingId,
+      bookingCode: booking?.bookingCode || '',
+      checkedInAt: ticket.checkedInAt || new Date(),
+      checkedInBy: scanner?.fullName || 'Staff',
+      ticketsCount: booking?.ticketsCount || 1,
+      user: {
+        id: ticket.attendeeId,
+        fullName: user?.fullName || 'Attendee',
+        email: user?.email || '',
+        phone: user?.phone || '',
+        city: user?.city || '',
+      },
+    };
+  });
+
+  return res.json({ success: true, checkedInUsers });
+});
+
+organizerRouter.post('/events/:eventId/status', requireAuth, requireRole('organizer', 'admin'), async (req, res) => {
+  const actorId = req.user?.sub;
+  if (!actorId) return res.status(401).json({ error: 'Unauthorized' });
+
+  const event = await loadOrganizerEvent(actorId, req.params.eventId);
+  if (!event) return res.status(404).json({ error: 'Event not found' });
+  if (event === 'forbidden') return res.status(403).json({ error: 'Forbidden' });
+
+  const nextStatus = mapCheckinStatus(typeof req.body?.status === 'string' ? req.body.status : '');
+  if (!nextStatus) {
+    return res.status(400).json({ error: 'Invalid status' });
+  }
+
+  event.status = nextStatus;
+  await event.save();
+  return res.json({ success: true, status: event.status });
+});
+
+organizerRouter.post('/checkin', requireAuth, requireRole('organizer', 'admin'), async (req, res) => {
+  const actorId = req.user?.sub;
+  if (!actorId) return res.status(401).json({ error: 'Unauthorized' });
+
+  const eventId = typeof req.body?.eventId === 'string' ? req.body.eventId : '';
+  if (!eventId) return res.status(400).json({ error: 'eventId is required' });
+
+  const event = await loadOrganizerEvent(actorId, eventId);
+  if (!event) return res.status(404).json({ error: 'Event not found' });
+  if (event === 'forbidden') return res.status(403).json({ error: 'Forbidden' });
+
+  const method = req.body?.method === 'manual' ? 'manual' : 'qr';
+
+  let booking: any = null;
+  let tickets: any[] = [];
+
+  if (method === 'qr') {
+    const qrCode = typeof req.body?.qrCode === 'string' ? req.body.qrCode : '';
+    if (!qrCode) return res.status(400).json({ error: 'qrCode is required' });
+
+    let parsedQr: any = null;
+    try {
+      parsedQr = JSON.parse(qrCode);
+    } catch {
+      parsedQr = null;
+    }
+
+    const ticket = parsedQr?.ticketId
+      ? await TicketModel.findById(parsedQr.ticketId)
+      : await TicketModel.findOne({ eventId, qrPayload: qrCode });
+
+    if (!ticket || ticket.eventId !== eventId) {
+      return res.status(404).json({ error: 'Ticket not found for this event' });
+    }
+
+    booking = await BookingModel.findById(ticket.bookingId);
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+
+    const attendee = await UserModel.findById(ticket.attendeeId).lean();
+    if (ticket.checkInStatus === 'checked_in') {
+      return res.status(409).json({
+        error: 'Ticket already checked in',
+        isDuplicate: true,
+        ticket: {
+          ticketCode: String(ticket._id).slice(-8).toUpperCase(),
+          ticketNumber: 1,
+          bookingCode: booking.bookingCode,
+          attendeeName: attendee?.fullName || 'Attendee',
+          checkInTime: ticket.checkedInAt || new Date(),
+        },
+      });
+    }
+
+    ticket.checkInStatus = 'checked_in';
+    ticket.checkedInAt = new Date();
+    ticket.checkedInBy = actorId;
+    await ticket.save();
+
+    await CheckInModel.create({
+      ticketId: String(ticket._id),
+      eventId,
+      bookingId: String(booking._id),
+      attendeeId: ticket.attendeeId,
+      scannedBy: actorId,
+      method: 'qr',
+    });
+
+    return res.json({
+      success: true,
+      message: 'Check-in successful!',
+      ticket: {
+        ticketCode: String(ticket._id).slice(-8).toUpperCase(),
+        ticketNumber: 1,
+        bookingCode: booking.bookingCode,
+        attendeeName: attendee?.fullName || 'Attendee',
+        checkInTime: ticket.checkedInAt,
+      },
+    });
+  }
+
+  const bookingInput = typeof req.body?.bookingId === 'string' ? req.body.bookingId.trim() : '';
+  const phoneInput = typeof req.body?.phoneNumber === 'string' ? req.body.phoneNumber.trim() : '';
+
+  if (!bookingInput && !phoneInput) {
+    return res.status(400).json({ error: 'bookingId or phoneNumber is required' });
+  }
+
+  if (bookingInput) {
+    booking =
+      (await BookingModel.findOne({ eventId, bookingCode: bookingInput, bookingStatus: { $ne: 'cancelled' } })) ||
+      (await BookingModel.findOne({ _id: bookingInput, eventId, bookingStatus: { $ne: 'cancelled' } }));
+  } else {
+    const user = await UserModel.findOne({ phone: phoneInput }).select('_id').lean();
+    if (user?._id) {
+      booking = await BookingModel.findOne({
+        eventId,
+        attendeeId: String(user._id),
+        bookingStatus: { $ne: 'cancelled' },
+      });
+    }
+  }
+
+  if (!booking) {
+    return res.status(404).json({ error: 'Booking not found for this event' });
+  }
+
+  tickets = await TicketModel.find({ bookingId: String(booking._id), eventId }).sort({ createdAt: 1 });
+  if (tickets.length === 0) {
+    return res.status(404).json({ error: 'No tickets found for this booking' });
+  }
+
+  const attendee = await UserModel.findById(booking.attendeeId).lean();
+  const alreadyChecked = tickets.every((ticket) => ticket.checkInStatus === 'checked_in');
+  if (alreadyChecked) {
+    const firstChecked = tickets.find((ticket) => ticket.checkedInAt) || tickets[0];
+    return res.status(409).json({
+      error: 'Booking already checked in',
+      isDuplicate: true,
+      booking: {
+        bookingId: String(booking._id),
+        bookingCode: booking.bookingCode,
+        attendeeName: attendee?.fullName || 'Attendee',
+        ticketsCount: booking.ticketsCount || tickets.length,
+        checkInTime: firstChecked.checkedInAt || new Date(),
+      },
+    });
+  }
+
+  const now = new Date();
+  const updates = tickets
+    .filter((ticket) => ticket.checkInStatus !== 'checked_in')
+    .map(async (ticket) => {
+      ticket.checkInStatus = 'checked_in';
+      ticket.checkedInAt = now;
+      ticket.checkedInBy = actorId;
+      await ticket.save();
+      await CheckInModel.create({
+        ticketId: String(ticket._id),
+        eventId,
+        bookingId: String(booking._id),
+        attendeeId: ticket.attendeeId,
+        scannedBy: actorId,
+        method: 'manual',
+      });
+    });
+
+  await Promise.all(updates);
+
+  return res.json({
+    success: true,
+    message: 'Check-in successful!',
+    booking: {
+      bookingId: String(booking._id),
+      bookingCode: booking.bookingCode,
+      attendeeName: attendee?.fullName || 'Attendee',
+      ticketsCount: booking.ticketsCount || tickets.length,
+      checkInTime: now,
+    },
+  });
 });

@@ -294,3 +294,39 @@ bookingsRouter.post('/:id/cancel', requireAuth, requireRole(...BOOKING_ALLOWED_R
 
   return res.json({ success: true, message: 'Booking cancelled' });
 });
+
+bookingsRouter.post('/:id/create-missing-tickets', requireAuth, requireRole(...BOOKING_ALLOWED_ROLES), async (req, res) => {
+  const booking = await BookingModel.findById(req.params.id).lean();
+  if (!booking) {
+    return res.status(404).json({ success: false, message: 'Booking not found' });
+  }
+  if (req.user?.role !== 'admin' && booking.attendeeId !== req.user?.sub) {
+    return res.status(403).json({ success: false, message: 'Forbidden' });
+  }
+
+  const existingTickets = await TicketModel.find({ bookingId: String(booking._id) }).lean();
+  const missingCount = Math.max(0, booking.ticketsCount - existingTickets.length);
+  if (missingCount === 0) {
+    return res.json({ success: true, created: 0, message: 'No missing tickets found' });
+  }
+
+  for (let i = 0; i < missingCount; i += 1) {
+    const ticket = new TicketModel({
+      bookingId: String(booking._id),
+      eventId: booking.eventId,
+      attendeeId: booking.attendeeId,
+      qrPayload: 'pending',
+      checkInStatus: 'pending',
+    });
+    ticket.qrPayload = JSON.stringify({
+      ticketId: String(ticket._id),
+      eventId: booking.eventId,
+      bookingId: String(booking._id),
+      attendeeId: booking.attendeeId,
+    });
+    await ticket.save();
+  }
+
+  await syncAttendeeRecord(booking.eventId, booking.attendeeId);
+  return res.json({ success: true, created: missingCount, message: `Created ${missingCount} missing tickets` });
+});

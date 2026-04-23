@@ -24,9 +24,11 @@ interface AdminDashboardProps {
 
 export default function AdminDashboard({ profile, userEmail }: AdminDashboardProps) {
   const searchParams = useSearchParams();
+  const validTabs = new Set(['events', 'create', 'financial', 'reconciliation', 'settings']);
   const normalizeTab = (tab: string | null) => {
     const nextTab = tab || 'events';
     if (nextTab === 'teams') return 'events';
+    if (!validTabs.has(nextTab)) return 'events';
     return nextTab;
   };
   const initialTab = normalizeTab(searchParams.get('tab'));
@@ -39,10 +41,20 @@ export default function AdminDashboard({ profile, userEmail }: AdminDashboardPro
   // Update active tab when URL changes
   useEffect(() => {
     const tab = normalizeTab(searchParams.get('tab'));
-    if (tab && tab !== activeTab) {
-      setActiveTab(tab);
+    setActiveTab((prev) => (prev === tab ? prev : tab));
+  }, [searchParams]);
+
+  const setActiveTabWithUrl = (tab: string) => {
+    setActiveTab(tab);
+    const params = new URLSearchParams(searchParams.toString());
+    if (tab === 'events') {
+      params.delete('tab');
+    } else {
+      params.set('tab', tab);
     }
-  }, [searchParams, activeTab]);
+    const query = params.toString();
+    router.replace(query ? `/admin?${query}` : '/admin');
+  };
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -80,7 +92,7 @@ export default function AdminDashboard({ profile, userEmail }: AdminDashboardPro
   const handleNavigation = (href: string) => {
     if (href.startsWith('#')) {
       const tab = href.replace('#', '');
-      setActiveTab(tab);
+      setActiveTabWithUrl(tab);
     } else {
       router.push(href);
     }
@@ -264,7 +276,7 @@ export default function AdminDashboard({ profile, userEmail }: AdminDashboardPro
                     <button
                       type="button"
                       key={tab.value}
-                      onClick={() => setActiveTab(tab.value)}
+                      onClick={() => setActiveTabWithUrl(tab.value)}
                       className={cn(
                         'relative flex-1 min-w-0 px-1 sm:px-6 py-2 sm:py-2.5 rounded-md text-sm font-medium transition-all duration-300 cursor-pointer',
                         'flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-2',

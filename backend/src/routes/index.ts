@@ -10,6 +10,7 @@ import { adminRouter } from './admin.routes';
 import { uploadsRouter } from './uploads.routes';
 import { organizerRouter } from './organizer.routes';
 import { paymentsRouter } from './payments.routes';
+import { miscRouter } from './misc.routes';
 
 export const apiRouter = Router();
 
@@ -28,3 +29,4 @@ apiRouter.use('/admin', adminRouter);
 apiRouter.use('/organizer', organizerRouter);
 apiRouter.use('/uploads', uploadsRouter);
 apiRouter.use('/payments', paymentsRouter);
+apiRouter.use('/', miscRouter);

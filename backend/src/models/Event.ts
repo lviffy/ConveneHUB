@@ -21,8 +21,18 @@ interface EventDocument {
   remaining: number;
   status: 'draft' | 'published' | 'checkin_open' | 'in_progress' | 'ended';
   eventImage?: string;
+  notes?: string;
   entryInstructions?: string;
   terms?: string;
+  settlementStatus?: 'pending' | 'settled';
+  settlementDetails?: {
+    transaction_reference: string;
+    transfer_date: string;
+    payment_method: string;
+    notes?: string;
+    settled_by?: string;
+    settled_at?: Date;
+  };
   ticketTiers: TicketTier[];
   createdAt?: Date;
   updatedAt?: Date;
@@ -53,8 +63,18 @@ const eventSchema = new Schema<EventDocument>(
     remaining: { type: Number, required: true, min: 0 },
     status: { type: String, enum: ['draft', 'published', 'checkin_open', 'in_progress', 'ended'], default: 'draft' },
     eventImage: { type: String },
+    notes: { type: String, default: '' },
     entryInstructions: { type: String },
     terms: { type: String },
+    settlementStatus: { type: String, enum: ['pending', 'settled'], default: 'pending' },
+    settlementDetails: {
+      transaction_reference: { type: String },
+      transfer_date: { type: String },
+      payment_method: { type: String },
+      notes: { type: String },
+      settled_by: { type: String },
+      settled_at: { type: Date },
+    },
     ticketTiers: { type: [ticketTierSchema], default: [] },
   },
   { timestamps: true }

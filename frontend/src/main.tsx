@@ -18,14 +18,17 @@ function resolveApiTarget(url: string) {
   const isSameOrigin = parsed.origin === window.location.origin;
   const isRelativeApiUrl = url.startsWith('/api/');
   const isApiCall = parsed.pathname.startsWith('/api/') && (isSameOrigin || isRelativeApiUrl);
+  const normalizedApiPath = parsed.pathname.startsWith('/api/v1/')
+    ? parsed.pathname
+    : parsed.pathname.replace(/^\/api\//, '/api/v1/');
 
   if (!isApiCall || !API_BASE_URL) {
-    return { isApiCall, targetUrl: `${parsed.pathname}${parsed.search}${parsed.hash}` };
+    return { isApiCall, targetUrl: `${normalizedApiPath}${parsed.search}${parsed.hash}` };
   }
 
   return {
     isApiCall,
-    targetUrl: `${API_BASE_URL}${parsed.pathname}${parsed.search}${parsed.hash}`,
+    targetUrl: `${API_BASE_URL}${normalizedApiPath}${parsed.search}${parsed.hash}`,
   };
 }
 
