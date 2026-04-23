@@ -44,7 +44,10 @@ const eventFormSchema = z.object({
   date_time: z.string().min(1, 'Date and time are required'),
   capacity: z.coerce.number().min(1, 'Capacity must be at least 1'),
   ticket_price: z.coerce.number().min(0, 'Price must be 0 or greater'),
-  vip_ticket_price: z.coerce.number().min(0, 'VIP price must be 0 or greater'),
+  vip_ticket_price: z.preprocess(
+    (value) => (value === '' || value === null || value === undefined ? undefined : Number(value)),
+    z.number().min(0, 'VIP price must be 0 or greater').optional()
+  ),
   platform_commission_percentage: z.coerce.number().min(0, 'Commission must be 0 or greater').max(100, 'Commission cannot exceed 100%'),
   event_image: z.string().optional(),
   entry_instructions: z.string().optional(),
@@ -102,7 +105,7 @@ export default function EditEventForm({
       date_time: formatDateTimeForInput(event.date_time),
       capacity: event.capacity || 50,
       ticket_price: event.ticket_price || 0,
-      vip_ticket_price: event.vip_ticket_price || 0,
+      vip_ticket_price: event.vip_ticket_price ?? undefined,
       platform_commission_percentage: event.platform_commission_percentage || 10,
       event_image: event.event_image || '',
       entry_instructions: event.entry_instructions || '',
@@ -140,7 +143,7 @@ export default function EditEventForm({
         capacity: data.capacity,
         remaining: newRemaining,
         ticket_price: data.ticket_price,
-        vip_ticket_price: data.vip_ticket_price,
+        ...(data.vip_ticket_price !== undefined ? { vip_ticket_price: data.vip_ticket_price } : {}),
         platform_commission_percentage: data.platform_commission_percentage,
         event_image: data.event_image || null,
         entry_instructions: data.entry_instructions || null,
@@ -554,11 +557,20 @@ export default function EditEventForm({
             name="vip_ticket_price"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>VIP Ticket Price (₹) *</FormLabel>
+                <FormLabel>VIP Ticket Price (₹) Optional</FormLabel>
                 <FormControl>
-                  <Input type="number" min="0" placeholder="0" {...field} />
+                  <Input
+                    type="number"
+                    min="0"
+                    placeholder="Leave blank to skip VIP tier"
+                    value={field.value ?? ''}
+                    onChange={(event) => field.onChange(event.target.value)}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    ref={field.ref}
+                  />
                 </FormControl>
-                <FormDescription>Set the VIP tier price in INR</FormDescription>
+                <FormDescription>Optional. Leave blank to keep only the General tier.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

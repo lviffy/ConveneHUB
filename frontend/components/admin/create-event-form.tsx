@@ -51,16 +51,19 @@ const eventFormSchema = z
     latitude: z.string().optional(),
     longitude: z.string().optional(),
     date_time: z.string().min(1, 'Date and time are required'),
-    capacity: z.coerce.number().min(2, 'Capacity must be at least 2 for VIP and General tiers'),
+    capacity: z.coerce.number().min(1, 'Capacity must be at least 1'),
     ticket_price: z.coerce.number().min(0, 'Price must be 0 or greater'),
-    vip_ticket_price: z.coerce.number().min(0, 'VIP price must be 0 or greater'),
+    vip_ticket_price: z.preprocess(
+      (value) => (value === '' || value === null || value === undefined ? undefined : Number(value)),
+      z.number().min(0, 'VIP price must be 0 or greater').optional()
+    ),
     platform_commission_percentage: z.coerce.number().min(0, 'Commission must be 0 or greater').max(100, 'Commission cannot exceed 100%'),
     event_image: z.string().optional(),
     entry_instructions: z.string().optional(),
     terms: z.string().optional(),
     status: z.enum(['draft', 'published', 'checkin_open', 'in_progress', 'ended']),
   })
-  .refine((data) => data.ticket_price !== data.vip_ticket_price, {
+  .refine((data) => data.vip_ticket_price === undefined || data.ticket_price !== data.vip_ticket_price, {
     message: 'General and VIP prices must be different',
     path: ['vip_ticket_price'],
   });
@@ -97,7 +100,7 @@ export default function CreateEventForm({
       date_time: '',
       capacity: 50,
       ticket_price: 0,
-      vip_ticket_price: 200,
+      vip_ticket_price: undefined,
       platform_commission_percentage: 10,
       event_image: '',
       entry_instructions: '',
@@ -124,7 +127,7 @@ export default function CreateEventForm({
           capacity: data.capacity,
           remaining: data.capacity, // Initialize remaining with capacity
           ticket_price: data.ticket_price,
-          vip_ticket_price: data.vip_ticket_price,
+          ...(data.vip_ticket_price !== undefined ? { vip_ticket_price: data.vip_ticket_price } : {}),
           platform_commission_percentage: data.platform_commission_percentage,
           event_image: data.event_image || null,
           entry_instructions: data.entry_instructions || null,
@@ -638,7 +641,7 @@ export default function CreateEventForm({
                   <FormControl>
                     <Input 
                       type="number" 
-                      min="2" 
+                      min="1" 
                       placeholder="50" 
                       className="border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
                       {...field} 
@@ -683,19 +686,23 @@ export default function CreateEventForm({
               name="vip_ticket_price"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-700 font-medium">VIP Ticket Price (₹) *</FormLabel>
+                  <FormLabel className="text-gray-700 font-medium">VIP Ticket Price (₹) Optional</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
                       min="0"
                       step="0.01"
-                      placeholder="200.00"
+                      placeholder="Leave blank to skip VIP tier"
                       className="border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
-                      {...field}
+                      value={field.value ?? ''}
+                      onChange={(event) => field.onChange(event.target.value)}
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
                     />
                   </FormControl>
                   <FormDescription className="text-xs text-gray-500">
-                    Must be different from the General price
+                    Optional. If provided, it must be different from the General price.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

@@ -56,19 +56,19 @@ const eventSchema = z.object({
         quantity: z.number().int().positive(),
       })
     )
-    .length(2, 'Events must include exactly two ticket tiers: VIP and General')
+    .min(1, 'At least one ticket tier is required')
     .refine(
       (tiers) => {
         const names = tiers.map((tier) => tier.name.trim().toLowerCase());
-        return names.includes('vip') && names.includes('general');
+        return names.includes('general');
       },
-      { message: 'Ticket tiers must include both VIP and General' }
+      { message: 'Ticket tiers must include General' }
     )
     .refine(
       (tiers) => {
         const general = tiers.find((tier) => tier.name.trim().toLowerCase() === 'general');
         const vip = tiers.find((tier) => tier.name.trim().toLowerCase() === 'vip');
-        if (!general || !vip) return false;
+        if (!general || !vip) return true;
         return general.price !== vip.price;
       },
       { message: 'VIP and General prices must be different' }
@@ -193,10 +193,10 @@ eventsRouter.patch('/:id', requireAuth, requireRole('organizer', 'admin'), async
     const nextGeneral = normalized.find((tier) => tier.name === 'general');
     const nextVip = normalized.find((tier) => tier.name === 'vip');
 
-    if (!nextGeneral || !nextVip) {
-      return res.status(400).json({ success: false, message: 'Ticket tiers must include both VIP and General' });
+    if (!nextGeneral) {
+      return res.status(400).json({ success: false, message: 'Ticket tiers must include General' });
     }
-    if (nextGeneral.price === nextVip.price) {
+    if (nextVip && nextGeneral.price === nextVip.price) {
       return res.status(400).json({ success: false, message: 'VIP and General prices must be different' });
     }
 
@@ -205,11 +205,22 @@ eventsRouter.patch('/:id', requireAuth, requireRole('organizer', 'admin'), async
       if (existingName === 'general') {
         existingTier.price = nextGeneral.price;
       }
-      if (existingName === 'vip') {
+      if (existingName === 'vip' && nextVip) {
         existingTier.price = nextVip.price;
       }
       return existingTier;
     });
+
+    // VIP tier is optional. If not provided in update payload, remove it only when nothing is sold.
+    if (!nextVip) {
+      const vipTier = event.ticketTiers.find((tier) => String(tier.name || '').trim().toLowerCase() === 'vip');
+      if (vipTier && Number(vipTier.soldCount || 0) > 0) {
+        return res.status(400).json({ success: false, message: 'Cannot remove VIP tier after VIP tickets are sold' });
+      }
+      event.ticketTiers = event.ticketTiers.filter(
+        (tier) => String(tier.name || '').trim().toLowerCase() !== 'vip'
+      );
+    }
   }
 
   await event.save();

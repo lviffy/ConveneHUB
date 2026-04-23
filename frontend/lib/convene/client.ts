@@ -592,15 +592,34 @@ class QueryBuilder {
       const body = Array.isArray(this.payload) ? this.payload[0] : this.payload;
       const capacity = Number(body?.capacity || 1);
       const ticketPrice = Number(body?.ticket_price || 0);
-      const vipTicketPrice = Number(body?.vip_ticket_price ?? ticketPrice);
+      const hasVipTier =
+        body?.vip_ticket_price !== undefined &&
+        body?.vip_ticket_price !== null &&
+        String(body?.vip_ticket_price).trim() !== '';
+      const vipTicketPrice = hasVipTier ? Number(body?.vip_ticket_price) : null;
 
-      if (capacity < 2) {
-        return this.makeResult(null, { message: 'Capacity must be at least 2 to support VIP and General tiers' });
+      if (capacity < 1) {
+        return this.makeResult(null, { message: 'Capacity must be at least 1' });
       }
 
-      // Keep General as default booking tier while ensuring both required tiers exist.
-      const vipQuantity = Math.max(1, Math.floor(capacity * 0.2));
+      const vipQuantity = hasVipTier ? Math.max(1, Math.floor(capacity * 0.2)) : 0;
       const generalQuantity = capacity - vipQuantity;
+      const ticketTiers = [
+        {
+          name: 'General',
+          price: ticketPrice,
+          quantity: generalQuantity,
+        },
+        ...(hasVipTier && vipTicketPrice !== null
+          ? [
+              {
+                name: 'VIP',
+                price: vipTicketPrice,
+                quantity: vipQuantity,
+              },
+            ]
+          : []),
+      ];
 
       const response = await rawApiFetch('/events', {
         method: 'POST',
@@ -616,18 +635,7 @@ class QueryBuilder {
           eventImage: body?.event_image || null,
           entryInstructions: body?.entry_instructions || null,
           terms: body?.terms || null,
-          ticketTiers: [
-            {
-              name: 'General',
-              price: ticketPrice,
-              quantity: generalQuantity,
-            },
-            {
-              name: 'VIP',
-              price: vipTicketPrice,
-              quantity: vipQuantity,
-            },
-          ],
+          ticketTiers,
         }),
       });
       const payload = await response.json();
@@ -646,7 +654,11 @@ class QueryBuilder {
         this.payload?.ticket_price !== undefined || this.payload?.vip_ticket_price !== undefined;
 
       const generalPrice = Number(this.payload?.ticket_price ?? 0);
-      const vipPrice = Number(this.payload?.vip_ticket_price ?? generalPrice);
+      const hasVipTier =
+        this.payload?.vip_ticket_price !== undefined &&
+        this.payload?.vip_ticket_price !== null &&
+        String(this.payload?.vip_ticket_price).trim() !== '';
+      const vipPrice = hasVipTier ? Number(this.payload?.vip_ticket_price) : null;
       const response = await rawApiFetch(`/events/${id}`, {
         method: 'PATCH',
         auth: true,
@@ -663,7 +675,7 @@ class QueryBuilder {
           ticketTiers: hasTierPriceUpdate
             ? [
                 { name: 'General', price: generalPrice },
-                { name: 'VIP', price: vipPrice },
+                ...(hasVipTier && vipPrice !== null ? [{ name: 'VIP', price: vipPrice }] : []),
               ]
             : undefined,
         }),
