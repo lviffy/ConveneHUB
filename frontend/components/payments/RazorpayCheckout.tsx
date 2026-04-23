@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 interface RazorpayCheckoutProps {
   eventId: string;
   ticketsCount: number;
+  tierName?: string;
+  referralCode?: string;
   autoTrigger?: boolean;
   onReady?: () => void;
   onSuccess?: (bookingId: string, paymentId: string, bookingCode?: string) => void;
@@ -22,6 +24,8 @@ declare global {
 export default function RazorpayCheckout({
   eventId,
   ticketsCount,
+  tierName,
+  referralCode,
   autoTrigger = false,
   onReady,
   onSuccess,
@@ -87,6 +91,8 @@ export default function RazorpayCheckout({
         body: JSON.stringify({
           eventId,
           ticketsCount,
+          tierName,
+          referralCode,
         }),
       });
 

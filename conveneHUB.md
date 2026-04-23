@@ -5,8 +5,7 @@
 ConveneHub is a web-based event management platform designed to help organizers manage the complete lifecycle of events, from ticketing to attendee check-in and analytics.
 
 Event organizers often rely on multiple tools for ticketing, promotions, attendee tracking, and analytics, which leads to inefficiencies, data inconsistencies, and increased operational complexity.
-
-ConveneHub provides a unified solution that integrates ticketing, RSVP management, promoter tracking, and analytics into a single platform. It also supports multi-campus or multi-tenant environments, making it ideal for colleges, organizations, and event agencies.
+ConveneHub provides a unified solution that integrates ticketing, ~~RSVP management~~, promoter tracking, and analytics into a single platform. It also supports multi-campus or multi-tenant environments, making it ideal for colleges, organizations, and event agencies.
 
 The project demonstrates concepts such as event management systems, multi-tenant architectures, analytics dashboards, and full-stack development.
 
@@ -17,7 +16,7 @@ ConveneHub enables organizers to create, manage, and analyze events efficiently.
 The application allows organizers to:
 
 - Create events with ticketing and seat tiers
-- Manage RSVPs and attendee registrations
+- ~~Manage RSVPs~~ and attendee registrations
 - Track attendance using QR-based check-ins
 - Manage promoters and commission structures
 - Analyze event performance through dashboards
@@ -48,7 +47,7 @@ This results in:
 
 The challenge is to build a platform that:
 
-- Provides integrated ticketing and RSVP management
+- Provides integrated ticketing and ~~RSVP management~~
 - Enables QR-based attendee check-in
 - Supports promoter tracking and commission flows
 - Offers analytics for revenue and attendance
@@ -87,13 +86,13 @@ The platform follows a three-tier architecture with multi-tenant support.
 
 - Event creation and management UI
 - Ticket booking interface
-- Promoter dashboards
+- ~~Promoter dashboards~~
 - Analytics dashboards
 - Developed using React.js
 
 ### Backend Layer
 
-- Handles event management, ticketing, and RSVPs
+- Handles event management, ticketing, and ~~RSVPs~~
 - QR code generation and check-in system
 - Promoter tracking and commission logic
 - Multi-tenant (multi-campus) handling
@@ -122,7 +121,7 @@ Organizers create accounts and set up their profiles.
 
 Organizers create events with details and ticket tiers.
 
-### Step 3: Ticket Sales and RSVP
+### Step 3: Ticket Sales and ~~RSVP~~
 
 Attendees register and purchase tickets.
 
@@ -233,9 +232,9 @@ Admin -> Monitor Platform -> Manage Tenants
 
 ### Integrations
 
-- Razorpay / Stripe (payments)
+- Razorpay (payments)
 - QR code generator libraries
-- Email/SMS APIs
+- Email 
 
 ### Tools
 
@@ -382,13 +381,13 @@ Admin -> Monitor Platform -> Manage Tenants
 
 ## 13. Optional Advanced Features
 
-- Dynamic pricing for tickets
-- AI-based demand prediction
-- Fraud detection in ticketing
-- Mobile app for check-in staff
-- Real-time event heatmaps
-- Social media integration for promotion
-- Automated marketing campaigns
+- ~~Dynamic pricing for tickets~~
+- ~~AI-based demand prediction~~
+- ~~Fraud detection in ticketing~~
+- ~~Mobile app for check-in staff~~
+- ~~Real-time event heatmaps~~
+- ~~Social media integration for promotion~~
+- ~~Automated marketing campaigns~~
 
 ## 14. Learning Outcomes
 

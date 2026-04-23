@@ -104,6 +104,13 @@ export interface Event {
   capacity: number
   remaining: number
   ticket_price: number // decimal(10,2) - Price in INR, 0 for free events
+  ticket_tiers?: Array<{
+    name: string
+    price: number
+    quantity: number
+    sold_count: number
+    remaining: number
+  }>
   platform_commission_percentage: number // decimal(5,2) - Commission rate (0-100), default 10%
   event_image?: string // Path to storage
   entry_instructions?: string
@@ -202,4 +209,3 @@ export interface CouponValidationResult {
   discount_amount?: number
   final_amount?: number
 }
-

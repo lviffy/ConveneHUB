@@ -92,6 +92,8 @@ export function LoginForm() {
         window.location.href = '/admin';
       } else if (role === 'organizer') {
         window.location.href = '/organizer';
+      } else if (role === 'promoter') {
+        window.location.href = '/promoter';
       } else {
         window.location.href = '/events';
       }
@@ -286,6 +288,8 @@ export function LoginForm() {
         window.location.href = '/admin';
       } else if (userRole === 'organizer') {
         window.location.href = '/organizer';
+      } else if (userRole === 'promoter') {
+        window.location.href = '/promoter';
       } else {
         window.location.href = '/events';
       }

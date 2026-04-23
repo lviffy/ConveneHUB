@@ -21,6 +21,7 @@ import NotFoundPage from '@/app/not-found';
 import EventBookingPage from '@/components/events/event-booking-page';
 import AdminPage from '@/src/pages/admin-page';
 import OrganizerTeamPage from '@/src/pages/organizer-team-page';
+import PromoterPage from '@/src/pages/promoter-page';
 import { Toaster } from '@/components/ui/toaster';
 
 function EventDetailsRoute() {
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="/organizer-login" element={<OrganizerLoginPage />} />
         <Route path="/organizer-forgot-password" element={<OrganizerForgotPasswordPage />} />
         <Route path="/organizer" element={<OrganizerTeamPage />} />
+        <Route path="/promoter" element={<PromoterPage />} />
 
         <Route path="/movie-team-login" element={<OrganizerLoginPage />} />
         <Route path="/movie-team-forgot-password" element={<OrganizerForgotPasswordPage />} />

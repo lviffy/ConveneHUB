@@ -8,6 +8,9 @@ interface PaymentAttemptDocument {
   ticketsCount: number;
   amount: number;
   bookingCode: string;
+  referralCode?: string;
+  promoterId?: string;
+  attributedAt?: Date;
   razorpayOrderId: string;
   razorpayPaymentId?: string;
   razorpaySignature?: string;
@@ -24,6 +27,9 @@ const paymentAttemptSchema = new Schema<PaymentAttemptDocument>(
     ticketsCount: { type: Number, required: true, min: 1 },
     amount: { type: Number, required: true, min: 0 },
     bookingCode: { type: String, required: true },
+    referralCode: { type: String },
+    promoterId: { type: String },
+    attributedAt: { type: Date },
     razorpayOrderId: { type: String, required: true, unique: true, index: true },
     razorpayPaymentId: { type: String },
     razorpaySignature: { type: String },

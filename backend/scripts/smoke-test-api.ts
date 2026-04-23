@@ -14,6 +14,7 @@ import { TicketModel } from '../src/models/Ticket';
 import { CheckInModel } from '../src/models/CheckIn';
 import { ReferralLinkModel } from '../src/models/ReferralLink';
 import { CommissionModel } from '../src/models/Commission';
+import { PaymentAttemptModel } from '../src/models/PaymentAttempt';
 import { AttendeeModel } from '../src/models/Attendee';
 import { TenantModel } from '../src/models/Tenant';
 
@@ -167,6 +168,7 @@ async function cleanup() {
     });
     await CommissionModel.deleteMany({ promoterId: { $in: Array.from(createdIds.userIds) } });
     await ReferralLinkModel.deleteMany({ promoterId: { $in: Array.from(createdIds.userIds) } });
+    await PaymentAttemptModel.deleteMany({ userId: { $in: Array.from(createdIds.userIds) } });
     await AttendeeModel.deleteMany({ attendeeId: { $in: Array.from(createdIds.userIds) } });
     await UserModel.deleteMany({ _id: { $in: Array.from(createdIds.userIds) } });
   }
@@ -186,6 +188,7 @@ async function purgePreviousSmokeData() {
     CheckInModel.deleteMany({ $or: [{ attendeeId: { $in: userIds } }, { scannedBy: { $in: userIds } }, { eventId: { $in: eventIds } }] }),
     CommissionModel.deleteMany({ $or: [{ promoterId: { $in: userIds } }, { eventId: { $in: eventIds } }] }),
     ReferralLinkModel.deleteMany({ $or: [{ promoterId: { $in: userIds } }, { eventId: { $in: eventIds } }] }),
+    PaymentAttemptModel.deleteMany({ $or: [{ userId: { $in: userIds } }, { eventId: { $in: eventIds } }] }),
     AttendeeModel.deleteMany({ $or: [{ attendeeId: { $in: userIds } }, { eventId: { $in: eventIds } }] }),
     TicketModel.deleteMany({ $or: [{ attendeeId: { $in: userIds } }, { eventId: { $in: eventIds } }] }),
     BookingModel.deleteMany({ $or: [{ attendeeId: { $in: userIds } }, { eventId: { $in: eventIds } }] }),
@@ -345,6 +348,40 @@ async function main() {
     token: promoter.accessToken,
     expectedStatuses: [200],
   });
+
+  const referralClickTrack = await callApi<{ tracked: boolean }>('promoter track click', 'POST', '/api/v1/promoters/track-click', {
+    expectedStatuses: [200],
+    body: {
+      eventId: organizerEvent.payload.event._id,
+      referralCode: promoterLink.payload.link.code,
+    },
+  });
+
+  if (!referralClickTrack.ok) {
+    throw new Error('Promoter referral click tracking failed');
+  }
+
+  const paidReferralOrder = await callApi<any>('payments create-order referred', 'POST', '/api/v1/payments/create-order', {
+    token: relogin.payload.accessToken,
+    expectedStatuses: [200, 500],
+    body: {
+      eventId: organizerEvent.payload.event._id,
+      ticketsCount: 1,
+      referralCode: promoterLink.payload.link.code,
+    },
+  });
+
+  if (paidReferralOrder.response.status === 200) {
+    const attempt = await PaymentAttemptModel.findOne({
+      razorpayOrderId: paidReferralOrder.payload.orderId,
+    })
+      .select('referralCode promoterId')
+      .lean();
+
+    if (!attempt || !attempt.referralCode || !attempt.promoterId) {
+      throw new Error('Referred payment attempt attribution was not persisted');
+    }
+  }
 
   const attendeeBooking = await callApi<{ booking: any; ticketIds: string[] }>('booking create referred', 'POST', '/api/v1/bookings', {
     token: relogin.payload.accessToken,

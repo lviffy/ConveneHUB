@@ -13,6 +13,41 @@ const createReferralSchema = z.object({
   eventId: z.string().min(1),
 });
 
+const trackClickSchema = z.object({
+  eventId: z.string().min(1),
+  referralCode: z.string().min(1).optional(),
+  referral_code: z.string().min(1).optional(),
+}).transform((data) => ({
+  eventId: data.eventId,
+  referralCode: (data.referralCode || data.referral_code || '').toUpperCase(),
+}));
+
+promotersRouter.post('/track-click', async (req, res) => {
+  const parsed = trackClickSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ success: false, message: 'Invalid referral tracking payload' });
+  }
+
+  if (!parsed.data.referralCode) {
+    return res.json({ success: true, tracked: false });
+  }
+
+  const updatedLink = await ReferralLinkModel.findOneAndUpdate(
+    {
+      eventId: parsed.data.eventId,
+      code: parsed.data.referralCode,
+    },
+    { $inc: { clicks: 1 } },
+    { new: true }
+  ).lean();
+
+  if (!updatedLink) {
+    return res.json({ success: true, tracked: false });
+  }
+
+  return res.json({ success: true, tracked: true, clicks: updatedLink.clicks });
+});
+
 promotersRouter.post('/links', requireAuth, requireRole('promoter', 'admin'), async (req, res) => {
   const parsed = createReferralSchema.safeParse(req.body);
   if (!parsed.success) {

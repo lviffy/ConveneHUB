@@ -10,6 +10,11 @@ import { TicketModel } from '../models/Ticket';
 import { UserModel } from '../models/User';
 import { PaymentAttemptModel } from '../models/PaymentAttempt';
 import { AttendeeModel } from '../models/Attendee';
+import {
+  ensureCommissionForBooking,
+  incrementReferralConversion,
+  resolveReferralAttribution,
+} from '../services/referrals.service';
 
 export const paymentsRouter = Router();
 const PAYMENT_ALLOWED_ROLES = ['attendee', 'admin', 'organizer', 'promoter'] as const;
@@ -21,7 +26,16 @@ const MAX_TICKETS_PER_USER = 10;
 const createOrderSchema = z.object({
   eventId: z.string().min(1),
   ticketsCount: z.number().int().min(1).max(MAX_TICKETS_PER_USER),
-});
+  tierName: z.string().min(1).optional(),
+  tier_name: z.string().min(1).optional(),
+  referralCode: z.string().optional(),
+  referral_code: z.string().optional(),
+}).transform((data) => ({
+  eventId: data.eventId,
+  ticketsCount: data.ticketsCount,
+  tierName: data.tierName || data.tier_name,
+  referralCode: data.referralCode || data.referral_code,
+}));
 
 const verifyPaymentSchema = z.object({
   razorpay_order_id: z.string().min(1),
@@ -115,7 +129,7 @@ paymentsRouter.post(
       return res.status(500).json({ error: 'Razorpay is not configured on the backend.' });
     }
 
-    const { eventId, ticketsCount } = parsed.data;
+    const { eventId, ticketsCount, tierName, referralCode } = parsed.data;
     const userId = req.user!.sub;
 
     const event = await EventModel.findById(eventId);
@@ -127,7 +141,10 @@ paymentsRouter.post(
       return res.status(400).json({ error: 'Event is not open for booking' });
     }
 
-    const tier = event.ticketTiers[0];
+    const tier =
+      (tierName
+        ? event.ticketTiers.find((entry) => entry.name.toLowerCase() === tierName.toLowerCase())
+        : null) || event.ticketTiers[0];
     if (!tier) {
       return res.status(400).json({ error: 'Event does not have a valid ticket tier' });
     }
@@ -136,6 +153,12 @@ paymentsRouter.post(
     if (tierRemaining < ticketsCount || event.remaining < ticketsCount) {
       return res.status(400).json({ error: 'Not enough tickets available' });
     }
+
+    const referralAttribution = await resolveReferralAttribution({
+      eventId: String(event._id),
+      referralCode,
+      bookingUserId: userId,
+    });
 
     const existingConfirmedBooking = await BookingModel.findOne({
       eventId,
@@ -161,34 +184,51 @@ paymentsRouter.post(
       eventId,
       status: 'created',
       expiresAt: { $gt: new Date() },
-    }).lean();
+    }).sort({ createdAt: -1 });
 
     const user = await UserModel.findById(userId).lean();
     const attendeeName = user?.fullName || user?.email?.split('@')[0] || 'Attendee';
+    const amount = Number((tier.price * ticketsCount).toFixed(2));
 
     if (existingPendingAttempt) {
-      return res.json({
-        success: true,
-        keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        orderId: existingPendingAttempt.razorpayOrderId,
-        amount: Math.round(existingPendingAttempt.amount * 100),
-        currency: PAYMENT_CURRENCY,
-        bookingDetails: {
-          booking_id: String(existingPendingAttempt._id),
-          booking_code: existingPendingAttempt.bookingCode,
-          name: attendeeName,
-          email: user?.email || '',
-          contact: user?.phone || '',
-          event: {
-            id: eventId,
-            title: event.title,
-            ticketsCount: existingPendingAttempt.ticketsCount,
-            totalAmount: existingPendingAttempt.amount,
+      const isSameRequest =
+        existingPendingAttempt.tierName === tier.name &&
+        existingPendingAttempt.ticketsCount === ticketsCount &&
+        Number(existingPendingAttempt.amount) === amount;
+
+      if (!isSameRequest) {
+        existingPendingAttempt.status = 'cancelled';
+        await existingPendingAttempt.save();
+      } else {
+        existingPendingAttempt.referralCode = referralAttribution?.referralCode;
+        existingPendingAttempt.promoterId = referralAttribution?.promoterId;
+        existingPendingAttempt.attributedAt = referralAttribution ? new Date() : undefined;
+        await existingPendingAttempt.save();
+
+        return res.json({
+          success: true,
+          keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+          orderId: existingPendingAttempt.razorpayOrderId,
+          amount: Math.round(existingPendingAttempt.amount * 100),
+          currency: PAYMENT_CURRENCY,
+          bookingDetails: {
+            booking_id: String(existingPendingAttempt._id),
+            booking_code: existingPendingAttempt.bookingCode,
+            name: attendeeName,
+            email: user?.email || '',
+            contact: user?.phone || '',
+            event: {
+              id: eventId,
+              title: event.title,
+              ticketsCount: existingPendingAttempt.ticketsCount,
+              totalAmount: existingPendingAttempt.amount,
+              tierName: existingPendingAttempt.tierName,
+            },
           },
-        },
-        expiresAt: existingPendingAttempt.expiresAt,
-        isExisting: true,
-      });
+          expiresAt: existingPendingAttempt.expiresAt,
+          isExisting: true,
+        });
+      }
     }
 
     await PaymentAttemptModel.updateMany(
@@ -196,7 +236,6 @@ paymentsRouter.post(
       { $set: { status: 'expired' } }
     );
 
-    const amount = Number((tier.price * ticketsCount).toFixed(2));
     const amountInPaise = Math.round(amount * 100);
     const bookingCode = generateBookingCode();
 
@@ -212,6 +251,8 @@ paymentsRouter.post(
           tickets_count: String(ticketsCount),
           booking_code: bookingCode,
           tier_name: tier.name,
+          referral_code: referralAttribution?.referralCode || '',
+          promoter_id: referralAttribution?.promoterId || '',
         },
       });
     } catch (error: any) {
@@ -230,6 +271,9 @@ paymentsRouter.post(
       ticketsCount,
       amount,
       bookingCode,
+      referralCode: referralAttribution?.referralCode,
+      promoterId: referralAttribution?.promoterId,
+      attributedAt: referralAttribution ? new Date() : undefined,
       razorpayOrderId: razorpayOrder.id,
       status: 'created',
       expiresAt,
@@ -252,6 +296,7 @@ paymentsRouter.post(
           title: event.title,
           ticketsCount,
           totalAmount: amount,
+          tierName: tier.name,
         },
       },
       expiresAt,
@@ -288,7 +333,27 @@ paymentsRouter.post(
         eventId: attempt.eventId,
         attendeeId: userId,
         bookingCode: attempt.bookingCode,
-      }).lean();
+      });
+
+      if (existingBooking && attempt.promoterId && attempt.referralCode) {
+        if (!existingBooking.promoterId || !existingBooking.referralCode) {
+          existingBooking.promoterId = attempt.promoterId;
+          existingBooking.referralCode = attempt.referralCode;
+          await existingBooking.save();
+        }
+
+        const commissionResult = await ensureCommissionForBooking({
+          promoterId: attempt.promoterId,
+          bookingId: String(existingBooking._id),
+          eventId: attempt.eventId,
+          referralCode: attempt.referralCode,
+          bookingAmount: existingBooking.amount,
+        });
+
+        if (commissionResult.created) {
+          await incrementReferralConversion(attempt.eventId, attempt.referralCode, attempt.promoterId);
+        }
+      }
 
       return res.json({
         success: true,
@@ -357,6 +422,8 @@ paymentsRouter.post(
         bookingCode: attempt.bookingCode,
         bookingStatus: 'confirmed',
         paymentStatus: 'paid',
+        referralCode: attempt.referralCode,
+        promoterId: attempt.promoterId,
       });
 
       event.remaining -= attempt.ticketsCount;
@@ -387,6 +454,24 @@ paymentsRouter.post(
       }
 
       await syncAttendeeRecord(attempt.eventId, userId);
+    } else if (attempt.promoterId && attempt.referralCode && (!booking.promoterId || !booking.referralCode)) {
+      booking.promoterId = attempt.promoterId;
+      booking.referralCode = attempt.referralCode;
+      await booking.save();
+    }
+
+    if (attempt.promoterId && attempt.referralCode) {
+      const commissionResult = await ensureCommissionForBooking({
+        promoterId: attempt.promoterId,
+        bookingId: String(booking._id),
+        eventId: attempt.eventId,
+        referralCode: attempt.referralCode,
+        bookingAmount: booking.amount,
+      });
+
+      if (commissionResult.created) {
+        await incrementReferralConversion(attempt.eventId, attempt.referralCode, attempt.promoterId);
+      }
     }
 
     attempt.status = 'paid';

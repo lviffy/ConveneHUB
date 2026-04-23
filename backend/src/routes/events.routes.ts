@@ -7,7 +7,9 @@ import { syncTenantRecord } from '../utils/tenants';
 export const eventsRouter = Router();
 
 function toLegacyEvent(event: any) {
-  const firstTier = Array.isArray(event.ticketTiers) && event.ticketTiers.length > 0 ? event.ticketTiers[0] : null;
+  const tiers = Array.isArray(event.ticketTiers) ? event.ticketTiers : [];
+  const minTierPrice =
+    tiers.length > 0 ? Math.min(...tiers.map((tier: any) => Number(tier.price || 0))) : 0;
   return {
     event_id: String(event._id),
     title: event.title,
@@ -19,7 +21,14 @@ function toLegacyEvent(event: any) {
     capacity: event.capacity,
     remaining: event.remaining,
     status: event.status,
-    ticket_price: firstTier?.price ?? 0,
+    ticket_price: minTierPrice,
+    ticket_tiers: tiers.map((tier: any) => ({
+      name: tier.name,
+      price: Number(tier.price || 0),
+      quantity: Number(tier.quantity || 0),
+      sold_count: Number(tier.soldCount || 0),
+      remaining: Math.max(0, Number(tier.quantity || 0) - Number(tier.soldCount || 0)),
+    })),
     event_image: event.eventImage || '',
     entry_instructions: event.entryInstructions || '',
     terms: event.terms || '',

@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { User, LogOut, Ticket } from 'lucide-react';
+import { User, LogOut, Ticket, Megaphone } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ProfileModal from '@/components/ui/profile-modal';
 
@@ -98,7 +98,8 @@ export function UserProfileDropdown() {
   const fullName = profile?.full_name || user.user_metadata?.full_name || 'User';
   const email = profile?.email || user.email || '';
   const phone = profile?.phone || user.user_metadata?.phone || user.phone || '';
-  const role = profile?.role || user.user_metadata?.role || 'user';
+  // Prefer authenticated session role first; profile role can be stale in mixed backend setups.
+  const role = user.role || user.user_metadata?.role || profile?.role || 'user';
   const city = profile?.city || user.user_metadata?.city || 'Unknown';
   
   const initials = fullName
@@ -129,11 +130,23 @@ export function UserProfileDropdown() {
             <p className="text-sm font-medium leading-none">{fullName}</p>
             <p className="text-xs leading-none text-muted-foreground">{email}</p>
             <p className="text-xs leading-none text-blue-600 capitalize mt-1">
-              {role === 'admin_team' ? 'ConveneHub Team' : role === 'organizer' ? 'Event Operations' : 'User'}
+              {role === 'admin_team'
+                ? 'ConveneHub Team'
+                : role === 'organizer'
+                ? 'Event Operations'
+                : role === 'promoter'
+                ? 'Promoter'
+                : 'User'}
             </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        {role === 'promoter' && (
+          <DropdownMenuItem onClick={() => router.push('/promoter')}>
+            <Megaphone className="mr-2 h-4 w-4" />
+            <span>Promoter Dashboard</span>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem onClick={() => router.push('/bookings')}>
           <Ticket className="mr-2 h-4 w-4" />
           <span>My Bookings</span>

@@ -22,4 +22,6 @@ const commissionSchema = new Schema<CommissionDocument>(
   { timestamps: true }
 );
 
+commissionSchema.index({ bookingId: 1 }, { unique: true });
+
 export const CommissionModel = model<CommissionDocument>('Commission', commissionSchema);

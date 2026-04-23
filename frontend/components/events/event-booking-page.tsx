@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -53,6 +53,13 @@ interface EventBookingPageProps {
 interface EventData extends Event {
   actualRemaining: number
   bookingCount: number
+  ticket_tiers?: Array<{
+    name: string
+    price: number
+    quantity: number
+    sold_count: number
+    remaining: number
+  }>
 }
 
 interface UserProfile {
@@ -64,8 +71,12 @@ interface UserProfile {
   role: string
 }
 
+const REFERRAL_STORAGE_KEY = 'convenehub_referral_last_click'
+const REFERRAL_CODE_PATTERN = /^[A-Z0-9-]{5,32}$/
+
 export default function EventBookingPage({ eventId }: EventBookingPageProps) {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const supabase = useMemo(() => createClient(), [])
 
   // Core state
@@ -84,6 +95,7 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
   const [qrCodeData, setQrCodeData] = useState('')
   const [bookingCode, setBookingCode] = useState('')
   const [ticketsCount, setTicketsCount] = useState(1)
+  const [selectedTierName, setSelectedTierName] = useState<string>('')
 
   // Tickets state
   const [tickets, setTickets] = useState<any[]>([])
@@ -98,6 +110,80 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
   const [proceedToPayment, setProceedToPayment] = useState(false)
   const [paymentError, setPaymentError] = useState('')
+  const [activeReferralCode, setActiveReferralCode] = useState<string | null>(null)
+
+  const persistReferralForEvent = useCallback((code: string) => {
+    if (typeof window === 'undefined') return
+    const now = Date.now()
+    const normalizedCode = code.toUpperCase()
+
+    let store: Record<string, { code: string; updatedAt: number }> = {}
+    try {
+      const raw = localStorage.getItem(REFERRAL_STORAGE_KEY)
+      store = raw ? JSON.parse(raw) : {}
+    } catch {
+      store = {}
+    }
+
+    store[eventId] = {
+      code: normalizedCode,
+      updatedAt: now,
+    }
+    localStorage.setItem(REFERRAL_STORAGE_KEY, JSON.stringify(store))
+    setActiveReferralCode(normalizedCode)
+  }, [eventId])
+
+  const loadStoredReferralForEvent = useCallback(() => {
+    if (typeof window === 'undefined') return null
+    try {
+      const raw = localStorage.getItem(REFERRAL_STORAGE_KEY)
+      if (!raw) return null
+      const store = JSON.parse(raw) as Record<string, { code: string; updatedAt: number }>
+      const entry = store[eventId]
+      if (!entry?.code) return null
+      const normalizedCode = String(entry.code).toUpperCase()
+      if (!REFERRAL_CODE_PATTERN.test(normalizedCode)) return null
+      return normalizedCode
+    } catch {
+      return null
+    }
+  }, [eventId])
+
+  useEffect(() => {
+    const refQuery = (searchParams.get('ref') || '').trim().toUpperCase()
+    if (refQuery && REFERRAL_CODE_PATTERN.test(refQuery)) {
+      persistReferralForEvent(refQuery)
+      return
+    }
+
+    const storedCode = loadStoredReferralForEvent()
+    if (storedCode) {
+      setActiveReferralCode(storedCode)
+      return
+    }
+
+    setActiveReferralCode(null)
+  }, [loadStoredReferralForEvent, persistReferralForEvent, searchParams])
+
+  useEffect(() => {
+    if (!activeReferralCode || !event) return
+
+    const clickTrackMarker = `convenehub_referral_click_tracked_${event.event_id}_${activeReferralCode}`
+    if (typeof window === 'undefined' || sessionStorage.getItem(clickTrackMarker)) {
+      return
+    }
+
+    void fetch('/api/promoters/track-click', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        eventId: event.event_id,
+        referralCode: activeReferralCode,
+      }),
+    }).finally(() => {
+      sessionStorage.setItem(clickTrackMarker, '1')
+    })
+  }, [activeReferralCode, event])
 
   // Fetch event data with real-time booking count using public API
   const fetchEventData = useCallback(async () => {
@@ -251,6 +337,26 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
     initializePageData()
   }, [initializePageData])
 
+  useEffect(() => {
+    if (!event) return
+    const tiers = (event.ticket_tiers || []).filter((tier) => tier.remaining > 0)
+    if (tiers.length === 0) {
+      setSelectedTierName('')
+      return
+    }
+
+    const hasSelectedTier = tiers.some((tier) => tier.name === selectedTierName)
+    if (!hasSelectedTier) {
+      setSelectedTierName(tiers[0].name)
+    }
+  }, [event, selectedTierName])
+
+  useEffect(() => {
+    if (ticketsCount > maxTicketsForSelection) {
+      setTicketsCount(maxTicketsForSelection)
+    }
+  }, [maxTicketsForSelection, ticketsCount])
+
   // Set up real-time subscription for booking changes
   useEffect(() => {
     const realtimeClient = supabase as any
@@ -349,7 +455,9 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
         },
         body: JSON.stringify({
           event_id: event.event_id,
+          tierName: selectedTierName || undefined,
           tickets_count: ticketsCount,
+          referralCode: activeReferralCode || undefined,
         }),
       })
 
@@ -393,8 +501,22 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
     }
   }
 
+  const availableTiers = (event?.ticket_tiers || []).filter((tier) => tier.remaining > 0)
+  const selectedTier =
+    availableTiers.find((tier) => tier.name === selectedTierName) ||
+    availableTiers[0] ||
+    null
+  const selectedTierPrice = selectedTier ? Number(selectedTier.price || 0) : Number(event?.ticket_price || 0)
+  const maxTicketsForSelection = Math.max(
+    1,
+    Math.min(
+      MAX_TICKETS_PER_USER,
+      event?.actualRemaining || 0,
+      selectedTier ? selectedTier.remaining : event?.actualRemaining || 0
+    )
+  )
   // Calculate final amount
-  const originalAmount = event ? event.ticket_price * ticketsCount : 0
+  const originalAmount = selectedTierPrice * ticketsCount
   const finalAmount = originalAmount
   const isPaidBooking = finalAmount > 0
 
@@ -456,7 +578,8 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
   const isSoldOut = event.actualRemaining === 0
   const isBookingOpen = event.status === 'published' || event.status === 'checkin_open'
   const isEventVisible = ['published', 'checkin_open'].includes(event.status)
-  const canBook = isBookingOpen && !isSoldOut && isEventVisible && !existingBooking
+  const hasAvailableTier = availableTiers.length > 0
+  const canBook = isBookingOpen && !isSoldOut && isEventVisible && !existingBooking && hasAvailableTier
   const booked = event.bookingCount
   const fillPercentage = (booked / event.capacity) * 100
   const eventDate = new Date(event.date_time)
@@ -978,13 +1101,13 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
                     <div className="flex items-baseline justify-between">
                       <div>
                         <span className="text-2xl font-bold text-gray-900">
-                          {event.ticket_price === 0 ? (
+                          {selectedTierPrice === 0 ? (
                             <span className="text-green-600">FREE</span>
                           ) : (
-                            <>₹{event.ticket_price.toLocaleString('en-IN')}</>
+                            <>₹{selectedTierPrice.toLocaleString('en-IN')}</>
                           )}
                         </span>
-                        {event.ticket_price > 0 && (
+                        {selectedTierPrice > 0 && (
                           <span className="ml-1 text-sm text-gray-500">onwards</span>
                         )}
                       </div>
@@ -1034,6 +1157,37 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
                       </div>
                     ) : canBook ? (
                       <div className="space-y-4">
+                        {/* Tier Selector */}
+                        {availableTiers.length > 0 && (
+                          <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                            <label className="block text-sm font-medium text-gray-700 mb-3">
+                              Ticket Type
+                            </label>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                              {availableTiers.map((tier) => {
+                                const isSelected = selectedTier?.name === tier.name
+                                return (
+                                  <button
+                                    key={tier.name}
+                                    type="button"
+                                    onClick={() => setSelectedTierName(tier.name)}
+                                    className={cn(
+                                      'rounded-lg border p-3 text-left transition-colors',
+                                      isSelected
+                                        ? 'border-blue-500 bg-blue-50'
+                                        : 'border-gray-200 bg-white hover:border-blue-300'
+                                    )}
+                                  >
+                                    <p className="text-sm font-semibold text-gray-900">{tier.name}</p>
+                                    <p className="text-sm text-gray-700">₹{tier.price.toLocaleString('en-IN')}</p>
+                                    <p className="text-xs text-gray-500">{tier.remaining} left</p>
+                                  </button>
+                                )
+                              })}
+                            </div>
+                          </div>
+                        )}
+
                         {/* Ticket Quantity Selector */}
                         <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                           <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -1060,8 +1214,8 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
                               type="button"
                               variant="outline"
                               size="sm"
-                              onClick={() => setTicketsCount(Math.min(MAX_TICKETS_PER_USER, event.actualRemaining, ticketsCount + 1))}
-                              disabled={ticketsCount >= Math.min(MAX_TICKETS_PER_USER, event.actualRemaining) || isSubmitting}
+                              onClick={() => setTicketsCount(Math.min(maxTicketsForSelection, ticketsCount + 1))}
+                              disabled={ticketsCount >= maxTicketsForSelection || isSubmitting}
                               className="h-10 w-10 p-0 rounded-lg"
                             >
                               +
@@ -1069,14 +1223,14 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
                           </div>
                           <div className="mt-3 text-xs text-gray-500 text-center">
                             <span className="text-orange-600 font-medium">
-                              {Math.min(MAX_TICKETS_PER_USER, event.actualRemaining)} ticket{Math.min(MAX_TICKETS_PER_USER, event.actualRemaining) !== 1 ? 's' : ''} available
+                              {maxTicketsForSelection} ticket{maxTicketsForSelection !== 1 ? 's' : ''} available
                             </span>
                             <span className="ml-1">(max {MAX_TICKETS_PER_USER} per user)</span>
                           </div>
                         </div>
 
                         {/* Price Summary */}
-                        {event.ticket_price > 0 && (
+                        {selectedTierPrice > 0 && (
                           <div className="bg-blue-50 rounded-lg p-4 border border-blue-200 space-y-2">
                             <div className="flex items-center justify-between">
                               <span className="text-sm text-gray-700">Subtotal:</span>
@@ -1085,7 +1239,7 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
                               </span>
                             </div>
                             <div className="text-xs text-gray-600 text-right">
-                              ₹{event.ticket_price.toLocaleString('en-IN')} × {ticketsCount} {ticketsCount === 1 ? 'ticket' : 'tickets'}
+                              {selectedTier?.name || 'Ticket'} • ₹{selectedTierPrice.toLocaleString('en-IN')} × {ticketsCount} {ticketsCount === 1 ? 'ticket' : 'tickets'}
                             </div>
 
                             <div className="border-t border-blue-200 pt-2"></div>
@@ -1148,6 +1302,8 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
                           <RazorpayCheckout
                             eventId={event.event_id}
                             ticketsCount={ticketsCount}
+                            tierName={selectedTierName || undefined}
+                            referralCode={activeReferralCode || undefined}
                             autoTrigger={true}
                             onReady={() => setIsProcessingPayment(false)}
                             onSuccess={(paidBookingId, paymentId, paidBookingCode) => {
@@ -1377,6 +1533,12 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
                 <span className="text-gray-600">Tickets:</span>
                 <span className="font-semibold text-gray-900">{ticketsCount}</span>
               </div>
+              {selectedTier && (
+                <div className="flex items-center justify-between text-sm mt-1">
+                  <span className="text-gray-600">Tier:</span>
+                  <span className="font-semibold text-gray-900">{selectedTier.name}</span>
+                </div>
+              )}
               <div className="flex items-center justify-between text-sm mt-1">
                 <span className="text-gray-600">{isPaidBooking ? 'Amount Due:' : 'Ticket Value:'}</span>
                 <span className="font-bold text-lg text-gray-900">₹{finalAmount.toLocaleString('en-IN')}</span>

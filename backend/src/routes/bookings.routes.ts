@@ -4,11 +4,14 @@ import { requireAuth, requireRole } from '../middlewares/auth.middleware';
 import { BookingModel } from '../models/Booking';
 import { EventModel } from '../models/Event';
 import { TicketModel } from '../models/Ticket';
-import { ReferralLinkModel } from '../models/ReferralLink';
-import { CommissionModel } from '../models/Commission';
 import { AttendeeModel } from '../models/Attendee';
 import { generateCode } from '../utils/codes';
 import QRCode from 'qrcode';
+import {
+  ensureCommissionForBooking,
+  incrementReferralConversion,
+  resolveReferralAttribution,
+} from '../services/referrals.service';
 
 export const bookingsRouter = Router();
 const BOOKING_ALLOWED_ROLES = ['attendee', 'admin', 'organizer', 'promoter'] as const;
@@ -125,15 +128,11 @@ bookingsRouter.post('/', requireAuth, requireRole(...BOOKING_ALLOWED_ROLES), asy
   const bookingCode = generateCode('CVH', 8);
   const amount = tier.price * ticketsCount;
 
-  let promoterId: string | undefined;
-  if (referralCode) {
-    const ref = await ReferralLinkModel.findOne({ code: referralCode, eventId: String(event._id) });
-    if (ref) {
-      promoterId = ref.promoterId;
-      ref.conversions += 1;
-      await ref.save();
-    }
-  }
+  const referralAttribution = await resolveReferralAttribution({
+    eventId: String(event._id),
+    referralCode,
+    bookingUserId: req.user!.sub,
+  });
 
   const booking = await BookingModel.create({
     eventId: String(event._id),
@@ -144,8 +143,8 @@ bookingsRouter.post('/', requireAuth, requireRole(...BOOKING_ALLOWED_ROLES), asy
     amount,
     bookingCode,
     bookingStatus: 'confirmed',
-    referralCode,
-    promoterId,
+    referralCode: referralAttribution?.referralCode,
+    promoterId: referralAttribution?.promoterId,
   });
 
   event.remaining -= ticketsCount;
@@ -173,16 +172,22 @@ bookingsRouter.post('/', requireAuth, requireRole(...BOOKING_ALLOWED_ROLES), asy
 
   await syncAttendeeRecord(String(event._id), req.user!.sub);
 
-  if (promoterId && referralCode) {
-    const commissionAmount = Number((amount * 0.1).toFixed(2));
-    await CommissionModel.create({
-      promoterId,
+  if (referralAttribution) {
+    const commissionResult = await ensureCommissionForBooking({
+      promoterId: referralAttribution.promoterId,
       bookingId: String(booking._id),
       eventId: String(event._id),
-      referralCode,
-      amount: commissionAmount,
-      status: 'pending',
+      referralCode: referralAttribution.referralCode,
+      bookingAmount: amount,
     });
+
+    if (commissionResult.created) {
+      await incrementReferralConversion(
+        String(event._id),
+        referralAttribution.referralCode,
+        referralAttribution.promoterId
+      );
+    }
   }
 
   return res.status(201).json({
