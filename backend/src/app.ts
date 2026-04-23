@@ -14,7 +14,11 @@ export function createApp() {
   const uploadsDir = path.resolve(__dirname, '..', 'uploads');
   const allowedOrigins = new Set(env.FRONTEND_ORIGINS);
 
-  app.use(helmet());
+  app.use(
+    helmet({
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+    })
+  );
   app.use(
     cors({
       origin(origin, callback) {

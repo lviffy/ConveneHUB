@@ -351,12 +351,6 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
     }
   }, [event, selectedTierName])
 
-  useEffect(() => {
-    if (ticketsCount > maxTicketsForSelection) {
-      setTicketsCount(maxTicketsForSelection)
-    }
-  }, [maxTicketsForSelection, ticketsCount])
-
   // Set up real-time subscription for booking changes
   useEffect(() => {
     const realtimeClient = supabase as any
@@ -519,6 +513,12 @@ export default function EventBookingPage({ eventId }: EventBookingPageProps) {
   const originalAmount = selectedTierPrice * ticketsCount
   const finalAmount = originalAmount
   const isPaidBooking = finalAmount > 0
+
+  useEffect(() => {
+    if (ticketsCount > maxTicketsForSelection) {
+      setTicketsCount(maxTicketsForSelection)
+    }
+  }, [maxTicketsForSelection, ticketsCount])
 
   // Loading state
   if (isInitializing) {
