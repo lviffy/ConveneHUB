@@ -144,7 +144,12 @@ function mapBackendUser(user: any): AuthUser {
 }
 
 function mapBackendEvent(event: any) {
-  const firstTier = Array.isArray(event?.ticketTiers) && event.ticketTiers.length > 0 ? event.ticketTiers[0] : null;
+  const tiers = Array.isArray(event?.ticketTiers) ? event.ticketTiers : [];
+  const firstTier = tiers.length > 0 ? tiers[0] : null;
+  const generalTier =
+    tiers.find((tier: any) => String(tier?.name || '').trim().toLowerCase() === 'general') || firstTier;
+  const vipTier =
+    tiers.find((tier: any) => String(tier?.name || '').trim().toLowerCase() === 'vip') || null;
   const status = event?.status === 'closed' ? 'ended' : event?.status || 'draft';
   return {
     event_id: String(event?.event_id || event?._id || ''),
@@ -160,7 +165,15 @@ function mapBackendEvent(event: any) {
     event_image: resolveAssetUrl(event?.event_image || event?.eventImage || ''),
     entry_instructions: event?.entry_instructions || event?.entryInstructions || '',
     terms: event?.terms || '',
-    ticket_price: event?.ticket_price ?? firstTier?.price ?? 0,
+    ticket_price: event?.ticket_price ?? generalTier?.price ?? firstTier?.price ?? 0,
+    vip_ticket_price: event?.vip_ticket_price ?? vipTier?.price ?? generalTier?.price ?? firstTier?.price ?? 0,
+    ticket_tiers: tiers.map((tier: any) => ({
+      name: tier?.name || '',
+      price: Number(tier?.price || 0),
+      quantity: Number(tier?.quantity || 0),
+      sold_count: Number(tier?.soldCount || 0),
+      remaining: Math.max(0, Number(tier?.quantity || 0) - Number(tier?.soldCount || 0)),
+    })),
     created_at: event?.created_at || event?.createdAt,
     created_by: event?.created_by || event?.createdBy || event?.organizerId || '',
   };
@@ -629,6 +642,11 @@ class QueryBuilder {
       if (!id) {
         return this.makeResult(null, { message: 'Missing event_id filter for update' });
       }
+      const hasTierPriceUpdate =
+        this.payload?.ticket_price !== undefined || this.payload?.vip_ticket_price !== undefined;
+
+      const generalPrice = Number(this.payload?.ticket_price ?? 0);
+      const vipPrice = Number(this.payload?.vip_ticket_price ?? generalPrice);
       const response = await rawApiFetch(`/events/${id}`, {
         method: 'PATCH',
         auth: true,
@@ -642,6 +660,12 @@ class QueryBuilder {
           eventImage: this.payload?.event_image || null,
           entryInstructions: this.payload?.entry_instructions || null,
           terms: this.payload?.terms || null,
+          ticketTiers: hasTierPriceUpdate
+            ? [
+                { name: 'General', price: generalPrice },
+                { name: 'VIP', price: vipPrice },
+              ]
+            : undefined,
         }),
       });
       const payload = await response.json();

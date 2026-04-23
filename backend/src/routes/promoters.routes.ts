@@ -48,7 +48,7 @@ promotersRouter.post('/track-click', async (req, res) => {
   return res.json({ success: true, tracked: true, clicks: updatedLink.clicks });
 });
 
-promotersRouter.post('/links', requireAuth, requireRole('promoter', 'admin'), async (req, res) => {
+promotersRouter.post('/links', requireAuth, requireRole('promoter', 'attendee', 'admin'), async (req, res) => {
   const parsed = createReferralSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ success: false, message: 'Invalid eventId' });
@@ -104,13 +104,13 @@ promotersRouter.post('/links', requireAuth, requireRole('promoter', 'admin'), as
   });
 });
 
-promotersRouter.get('/links', requireAuth, requireRole('promoter', 'admin'), async (req, res) => {
+promotersRouter.get('/links', requireAuth, requireRole('promoter', 'attendee', 'admin'), async (req, res) => {
   const query = req.user?.role === 'admin' ? {} : { promoterId: req.user?.sub };
   const links = await ReferralLinkModel.find(query).sort({ createdAt: -1 }).lean();
   return res.json({ success: true, links });
 });
 
-promotersRouter.get('/performance', requireAuth, requireRole('promoter', 'admin'), async (req, res) => {
+promotersRouter.get('/performance', requireAuth, requireRole('promoter', 'attendee', 'admin'), async (req, res) => {
   const query = req.user?.role === 'admin' ? { promoterId: { $ne: null } } : { promoterId: req.user?.sub };
   const bookings = await BookingModel.find(query).lean();
   const totalBookings = bookings.length;
@@ -127,7 +127,7 @@ promotersRouter.get('/performance', requireAuth, requireRole('promoter', 'admin'
   });
 });
 
-promotersRouter.get('/commissions', requireAuth, requireRole('promoter', 'admin'), async (req, res) => {
+promotersRouter.get('/commissions', requireAuth, requireRole('promoter', 'attendee', 'admin'), async (req, res) => {
   const query = req.user?.role === 'admin' ? {} : { promoterId: req.user?.sub };
   const commissions = await CommissionModel.find(query).sort({ createdAt: -1 }).lean();
 

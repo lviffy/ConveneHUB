@@ -167,6 +167,10 @@ eventsRouter.patch('/:id', requireAuth, requireRole('organizer', 'admin'), async
     eventImage: string | null;
     entryInstructions: string | null;
     terms: string | null;
+    ticketTiers: Array<{
+      name: string;
+      price: number;
+    }>;
   }>;
 
   if (payload.title !== undefined) event.title = payload.title;
@@ -178,6 +182,35 @@ eventsRouter.patch('/:id', requireAuth, requireRole('organizer', 'admin'), async
   if (payload.eventImage !== undefined) event.eventImage = payload.eventImage || undefined;
   if (payload.entryInstructions !== undefined) event.entryInstructions = payload.entryInstructions || undefined;
   if (payload.terms !== undefined) event.terms = payload.terms || undefined;
+  if (Array.isArray(payload.ticketTiers) && payload.ticketTiers.length > 0) {
+    const normalized = payload.ticketTiers
+      .filter((tier) => typeof tier?.name === 'string' && Number.isFinite(Number(tier?.price)))
+      .map((tier) => ({
+        name: String(tier.name).trim().toLowerCase(),
+        price: Number(tier.price),
+      }));
+
+    const nextGeneral = normalized.find((tier) => tier.name === 'general');
+    const nextVip = normalized.find((tier) => tier.name === 'vip');
+
+    if (!nextGeneral || !nextVip) {
+      return res.status(400).json({ success: false, message: 'Ticket tiers must include both VIP and General' });
+    }
+    if (nextGeneral.price === nextVip.price) {
+      return res.status(400).json({ success: false, message: 'VIP and General prices must be different' });
+    }
+
+    event.ticketTiers = event.ticketTiers.map((existingTier) => {
+      const existingName = String(existingTier.name || '').trim().toLowerCase();
+      if (existingName === 'general') {
+        existingTier.price = nextGeneral.price;
+      }
+      if (existingName === 'vip') {
+        existingTier.price = nextVip.price;
+      }
+      return existingTier;
+    });
+  }
 
   await event.save();
   return res.json({ success: true, event });

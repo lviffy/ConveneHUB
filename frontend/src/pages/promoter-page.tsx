@@ -127,7 +127,7 @@ export default function PromoterPage() {
       }
 
       const role = session.user.role || session.user.user_metadata?.role || 'user';
-      if (role !== 'promoter' && role !== 'admin_team') {
+      if (role !== 'promoter' && role !== 'admin_team' && role !== 'user') {
         setAccessDenied(true);
         setLoading(false);
         return;

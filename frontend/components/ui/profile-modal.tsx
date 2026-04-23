@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X, User, MapPin, Mail, Calendar, Award, Settings, Save, Phone } from 'lucide-react';
+import { X, User, MapPin, Mail, Calendar, Award, Settings, Save, Phone, Megaphone } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,6 +23,7 @@ interface ProfileModalProps {
   onEditProfile?: () => void;
   onProfileUpdated?: (name: string, city: string, phone: string) => void;
   totalEventsAttended?: number;
+  onOpenReferrals?: () => void;
 }
 
 export default function ProfileModal({
@@ -37,7 +38,8 @@ export default function ProfileModal({
   accentColor = '#195ADC',
   onEditProfile,
   onProfileUpdated,
-  totalEventsAttended = 0
+  totalEventsAttended = 0,
+  onOpenReferrals
 }: ProfileModalProps) {
   const [mounted, setMounted] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -76,6 +78,7 @@ export default function ProfileModal({
     movie_team: 'Event Operations',
     user: 'General User'
   };
+  const canAccessReferrals = userRole === 'user' || userRole === 'promoter' || userRole === 'admin_team';
 
   const handleSave = async () => {
     // Client-side name validation
@@ -335,6 +338,29 @@ export default function ProfileModal({
                 </div>
                 <p className="text-xs text-gray-600 break-all leading-relaxed">{displayPhone || 'Not provided'}</p>
               </div>
+
+              {canAccessReferrals && (
+                <div className="col-span-2 sm:col-span-1 bg-white rounded-xl p-3 border-2 border-gray-200 hover:border-gray-300 transition-colors">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <div className="h-6 w-6 rounded-lg flex items-center justify-center bg-gray-100">
+                      <Megaphone className="h-3 w-3 text-gray-700" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900 text-xs">Referrals</h3>
+                  </div>
+                  <p className="text-xs text-gray-600 mb-2.5">Create and share your referral links.</p>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-7 text-xs border-gray-300 hover:bg-gray-50"
+                    onClick={() => {
+                      if (onOpenReferrals) onOpenReferrals();
+                      onClose();
+                    }}
+                  >
+                    Open Referrals
+                  </Button>
+                </div>
+              )}
 
               {/* Stats Card 1 - Events */}
               <div className="bg-white rounded-xl p-3 sm:p-5 border-2 border-gray-200 hover:border-gray-300 transition-colors">

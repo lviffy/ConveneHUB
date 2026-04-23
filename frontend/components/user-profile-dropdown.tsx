@@ -101,6 +101,7 @@ export function UserProfileDropdown() {
   // Prefer authenticated session role first; profile role can be stale in mixed backend setups.
   const role = user.role || user.user_metadata?.role || profile?.role || 'user';
   const city = profile?.city || user.user_metadata?.city || 'Unknown';
+  const canAccessReferrals = role === 'user' || role === 'promoter' || role === 'admin_team';
   
   const initials = fullName
     .split(' ')
@@ -141,10 +142,10 @@ export function UserProfileDropdown() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {role === 'promoter' && (
+        {canAccessReferrals && (
           <DropdownMenuItem onClick={() => router.push('/promoter')}>
             <Megaphone className="mr-2 h-4 w-4" />
-            <span>Promoter Dashboard</span>
+            <span>Referrals</span>
           </DropdownMenuItem>
         )}
         <DropdownMenuItem onClick={() => router.push('/bookings')}>
@@ -173,6 +174,7 @@ export function UserProfileDropdown() {
         userRole={role}
         joinedDate={new Date(user.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
         totalEventsAttended={totalEventsAttended}
+        onOpenReferrals={() => router.push('/promoter')}
         onProfileUpdated={(name, newCity, newPhone) => {
           // Update local state when profile is updated via modal
           setProfile((prev: any) => ({
