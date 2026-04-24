@@ -11,7 +11,8 @@ import { env } from './config/env';
 
 export function createApp() {
   const app = express();
-  const uploadsDir = path.resolve(__dirname, '..', 'uploads');
+  const uploadsDir = env.UPLOAD_ROOT;
+  const legacyUploadsDir = path.resolve(__dirname, '..', 'uploads');
   const allowedOrigins = new Set(env.FRONTEND_ORIGINS);
 
   app.use(
@@ -36,6 +37,9 @@ export function createApp() {
   app.use(express.json({ limit: '10mb' }));
   app.use(cookieParser());
   app.use('/api/v1/uploads', express.static(uploadsDir, { maxAge: '1h' }));
+  if (legacyUploadsDir !== uploadsDir) {
+    app.use('/api/v1/uploads', express.static(legacyUploadsDir, { maxAge: '1h' }));
+  }
   app.use(
     rateLimit({
       windowMs: 15 * 60 * 1000,

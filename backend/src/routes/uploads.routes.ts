@@ -4,6 +4,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { z } from 'zod';
 import { requireAuth, requireRole } from '../middlewares/auth.middleware';
+import { env } from '../config/env';
 
 const ALLOWED_MIME_TYPES = new Set([
   'image/jpeg',
@@ -15,7 +16,7 @@ const ALLOWED_MIME_TYPES = new Set([
 
 const ALLOWED_EXTENSIONS = new Set(['jpg', 'jpeg', 'png', 'gif', 'webp']);
 const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
-const UPLOAD_ROOT = path.resolve(__dirname, '..', '..', 'uploads');
+const UPLOAD_ROOT = env.UPLOAD_ROOT;
 
 const uploadImageSchema = z.object({
   path: z.string().optional(),

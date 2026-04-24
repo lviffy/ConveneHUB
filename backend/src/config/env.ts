@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import path from 'node:path';
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
@@ -19,6 +20,7 @@ const envSchema = z.object({
   GOOGLE_REDIRECT_URI: z.string().url().optional(),
   NEXT_PUBLIC_RAZORPAY_KEY_ID: z.string().optional(),
   RAZORPAY_KEY_SECRET: z.string().optional(),
+  UPLOAD_ROOT: z.string().optional(),
 });
 
 const parsed = envSchema.parse(process.env);
@@ -31,4 +33,5 @@ export const env = {
   ...parsed,
   FRONTEND_ORIGIN: frontendOrigins[0] || 'http://localhost:5173',
   FRONTEND_ORIGINS: frontendOrigins.length > 0 ? frontendOrigins : ['http://localhost:5173'],
+  UPLOAD_ROOT: parsed.UPLOAD_ROOT?.trim() || path.resolve(process.cwd(), 'uploads'),
 };

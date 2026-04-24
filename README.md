@@ -78,6 +78,8 @@ cp backend/.env.example backend/.env
 
 Update `backend/.env` with your MongoDB URI, JWT secrets, SMTP config, and optional Google OAuth values.
 
+For image uploads in production, set `UPLOAD_ROOT` to a persistent directory (example on Railway: `/data/uploads`) so uploaded files remain available after restarts/redeploys.
+
 ### Run With Docker Compose
 
 This starts MongoDB and the backend:
