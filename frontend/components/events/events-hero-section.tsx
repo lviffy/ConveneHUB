@@ -83,7 +83,7 @@ export default function EventsHeroSection() {
           <div
             className="absolute inset-0 bg-cover bg-center transition-opacity duration-500"
             style={{
-              backgroundImage: 'url(/hero-poster.jpg)',
+              backgroundImage: 'url(/hero-bg-poster.webp)',
               opacity: isVideoLoaded ? 0 : 1
             }}
             aria-hidden="true"
@@ -98,7 +98,7 @@ export default function EventsHeroSection() {
               muted
               playsInline
               preload="auto"
-              poster="/hero-poster.jpg"
+              poster="/hero-bg-poster.webp"
               onCanPlayThrough={() => {
                 setIsVideoLoaded(true)
                 videoRef.current?.play().catch(err => console.log('Video play error:', err))
@@ -106,10 +106,8 @@ export default function EventsHeroSection() {
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'
                 }`}
             >
-              {/* MP4 first - better compatibility */}
-              <source src="/hero-bg.mp4" type="video/mp4" />
-              {/* WebM as alternative */}
               <source src="/hero-bg.webm" type="video/webm" />
+              <source src="/hero-bg.mp4" type="video/mp4" />
             </video>
           )}
         </div>

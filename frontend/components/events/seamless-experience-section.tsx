@@ -293,9 +293,10 @@ export default function SeamlessExperienceSection() {
                 loop
                 playsInline
                 preload="metadata"
+                poster="/hero-bg0-poster.webp"
                 aria-hidden="true"
             >
-                <source src="/hero-bg0.mp4" type="video/mp4" />
+                <source src="/hero-bg0.webm" type="video/webm" />
                 <source src="/hero-bg0.mp4" type="video/mp4" />
             </video>
             <div className="absolute inset-0 bg-black/20" />
