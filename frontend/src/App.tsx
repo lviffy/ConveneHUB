@@ -11,6 +11,7 @@ import ResetPasswordPage from '@/app/reset-password/page';
 import OrganizerLoginPage from '@/app/organizer-login/page';
 import OrganizerForgotPasswordPage from '@/app/organizer-forgot-password/page';
 import AdminUsersPage from '@/app/admin/users/page';
+import { Navigate } from 'react-router-dom';
 import AdminEditEventPage from '@/app/admin/events/edit/page';
 import AuthCallbackPage from '@/app/auth/callback/page';
 import AuthErrorPage from '@/app/auth/error/page';
@@ -58,6 +59,7 @@ export default function App() {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/users" element={<AdminUsersPage />} />
         <Route path="/admin/events/edit" element={<AdminEditEventPage />} />
+        <Route path="/admin/assignments" element={<Navigate to="/admin?tab=events" replace />} />
 
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/privacy" element={<PrivacyPolicyPage />} />
