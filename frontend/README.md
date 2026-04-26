@@ -593,59 +593,7 @@ Quick steps:
 
 ## 📞 Support
 
-For support, email: support@convenehub.com
-
----
-
-## 🎯 Roadmap
-
-### Current Status: 🎉 100% Complete - Production Ready!
-
-### ✅ All Core Features Completed (55/55 tasks)
-- [x] Authentication system (Email + Google OAuth)
-- [x] Three-tier role system (ConveneHub Team, Movie Team, Users)
-- [x] Event creation & management
-- [x] Event editing with full validation
-- [x] Booking system with QR codes
-- [x] Individual ticket generation
-- [x] Check-in system with QR scanner
-- [x] Movie team assignments
-- [x] CSV export functionality
-- [x] Email notifications with QR codes
-- [x] Image upload to Supabase Storage
-- [x] Responsive UI design
-- [x] Admin dashboard with analytics
-- [x] Movie team dashboard
-- [x] Public events page
-- [x] Real-time subscriptions for live updates
-- [x] Comprehensive testing suite (118+ tests)
-- [x] E2E tests with Playwright
-- [x] Security tests (RLS, RBAC, QR validation)
-- [x] Integration tests
-- [x] Performance optimization
-- [x] Image optimization (80% reduction)
-- [x] Code splitting (64% smaller bundles)
-- [x] Bundle analysis
-- [x] Database indexes (40+ indexes, 5-10x speedup)
-- [x] Full documentation suite
-- [x] User guides for all roles
-- [x] Admin manual with SQL queries
-- [x] Movie team operational guide
-- [x] Contributing guidelines
-- [x] API documentation
-- [x] Deployment guides
-
-### 📅 Future Enhancements
-- [ ] Payment gateway integration
-- [ ] Mobile app (React Native)
-- [ ] Event analytics dashboard v2
-- [ ] Advanced reporting features
-- [ ] Multi-language support
-- [ ] Social media integration
-- [ ] Calendar integrations (Google Calendar, iCal)
-- [ ] Waitlist functionality
-- [ ] Refund management
-- [ ] Event templates
+For support, email: rohan_mohanta@srmap.edu.in
 
 ---
 
