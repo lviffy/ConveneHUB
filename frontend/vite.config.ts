@@ -10,14 +10,7 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
-        'next/link': path.resolve(__dirname, 'src/compat/next/link.tsx'),
-        'next/image': path.resolve(__dirname, 'src/compat/next/image.tsx'),
-        'next/navigation': path.resolve(__dirname, 'src/compat/next/navigation.ts'),
-        'next/dynamic': path.resolve(__dirname, 'src/compat/next/dynamic.tsx'),
-        'next/script': path.resolve(__dirname, 'src/compat/next/script.tsx'),
-        'next/font/local': path.resolve(__dirname, 'src/compat/next/font-local.ts'),
-        '@vercel/analytics/next': path.resolve(__dirname, 'src/compat/vercel-analytics-next.tsx'),
+        '@': path.resolve(__dirname, '.')
       },
     },
     define: {

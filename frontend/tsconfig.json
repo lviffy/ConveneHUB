@@ -15,14 +15,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "next/link": ["./src/compat/next/link.tsx"],
-      "next/image": ["./src/compat/next/image.tsx"],
-      "next/navigation": ["./src/compat/next/navigation.ts"],
-      "next/dynamic": ["./src/compat/next/dynamic.tsx"],
-      "next/script": ["./src/compat/next/script.tsx"],
-      "next/font/local": ["./src/compat/next/font-local.ts"],
-      "@vercel/analytics/next": ["./src/compat/vercel-analytics-next.tsx"]
+      "@/*": ["./*"]
     }
   },
   "include": ["src", "app", "components", "hooks", "lib", "types", "utils"],
