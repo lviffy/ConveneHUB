@@ -599,4 +599,4 @@ For support, email: rohan_mohanta@srmap.edu.in
 
 **Built with ❤️ by the ConveneHub Team**
 
-*Last Updated: November 16, 2025*
+*Last Updated: April 26, 2026*
