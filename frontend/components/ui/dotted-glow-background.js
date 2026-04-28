@@ -23,7 +23,7 @@ export const DottedGlowBackground = ({
   backgroundOpacity = 0,
   speedMin = 0.4,
   speedMax = 1.3,
-  speedScale = 1,
+  speedScale = 1
 }) => {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
@@ -33,9 +33,7 @@ export const DottedGlowBackground = ({
   // Resolve CSS variable value from the container or root
   const resolveCssVariable = (el, variableName) => {
     if (!variableName) return null;
-    const normalized = variableName.startsWith("--")
-      ? variableName
-      : `--${variableName}`;
+    const normalized = variableName.startsWith("--") ? variableName : `--${variableName}`;
     const fromEl = getComputedStyle(el).getPropertyValue(normalized).trim();
     if (fromEl) return fromEl;
     const root = document.documentElement;
@@ -46,10 +44,7 @@ export const DottedGlowBackground = ({
     const root = document.documentElement;
     if (root.classList.contains("dark")) return true;
     if (root.classList.contains("light")) return false;
-    return (
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-    );
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
   };
 
   // Keep resolved colors in sync with theme changes and prop updates
@@ -74,30 +69,19 @@ export const DottedGlowBackground = ({
       setResolvedGlowColor(nextGlow);
     };
     compute();
-    const mql = window.matchMedia
-      ? window.matchMedia("(prefers-color-scheme: dark)")
-      : null;
+    const mql = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
     const handleMql = () => compute();
     mql?.addEventListener?.("change", handleMql);
     const mo = new MutationObserver(() => compute());
     mo.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["class", "style"],
+      attributeFilter: ["class", "style"]
     });
     return () => {
       mql?.removeEventListener?.("change", handleMql);
       mo.disconnect();
     };
-  }, [
-    color,
-    darkColor,
-    glowColor,
-    darkGlowColor,
-    colorLightVar,
-    colorDarkVar,
-    glowColorLightVar,
-    glowColorDarkVar,
-  ]);
+  }, [color, darkColor, glowColor, darkGlowColor, colorLightVar, colorDarkVar, glowColorLightVar, glowColorDarkVar]);
   useEffect(() => {
     const el = canvasRef.current;
     const container = containerRef.current;
@@ -108,7 +92,10 @@ export const DottedGlowBackground = ({
     let stopped = false;
     const dpr = Math.max(1, window.devicePixelRatio || 1);
     const resize = () => {
-      const { width, height } = container.getBoundingClientRect();
+      const {
+        width,
+        height
+      } = container.getBoundingClientRect();
       el.width = Math.max(1, Math.floor(width * dpr));
       el.height = Math.max(1, Math.floor(height * dpr));
       el.style.width = `${Math.floor(width)}px`;
@@ -123,7 +110,10 @@ export const DottedGlowBackground = ({
     let dots = [];
     const regenDots = () => {
       dots = [];
-      const { width, height } = container.getBoundingClientRect();
+      const {
+        width,
+        height
+      } = container.getBoundingClientRect();
       const cols = Math.ceil(width / gap) + 2;
       const rows = Math.ceil(height / gap) + 2;
       const min = Math.min(speedMin, speedMax);
@@ -140,7 +130,7 @@ export const DottedGlowBackground = ({
             x,
             y,
             phase,
-            speed,
+            speed
           });
         }
       }
@@ -150,29 +140,22 @@ export const DottedGlowBackground = ({
     };
     regenDots();
     let last = performance.now();
-    const draw = (now) => {
+    const draw = now => {
       if (stopped) return;
       const dt = (now - last) / 1000; // seconds
       last = now;
-      const { width, height } = container.getBoundingClientRect();
+      const {
+        width,
+        height
+      } = container.getBoundingClientRect();
       ctx.clearRect(0, 0, el.width, el.height);
       ctx.globalAlpha = opacity;
 
       // optional subtle background fade for depth (defaults to 0 = transparent)
       if (backgroundOpacity > 0) {
-        const grad = ctx.createRadialGradient(
-          width * 0.5,
-          height * 0.4,
-          Math.min(width, height) * 0.1,
-          width * 0.5,
-          height * 0.5,
-          Math.max(width, height) * 0.7,
-        );
+        const grad = ctx.createRadialGradient(width * 0.5, height * 0.4, Math.min(width, height) * 0.1, width * 0.5, height * 0.5, Math.max(width, height) * 0.7);
         grad.addColorStop(0, "rgba(0,0,0,0)");
-        grad.addColorStop(
-          1,
-          `rgba(0,0,0,${Math.min(Math.max(backgroundOpacity, 0), 1)})`,
-        );
+        grad.addColorStop(1, `rgba(0,0,0,${Math.min(Math.max(backgroundOpacity, 0), 1)})`);
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, width, height);
       }
@@ -180,7 +163,7 @@ export const DottedGlowBackground = ({
       // animate dots
       ctx.save();
       ctx.fillStyle = resolvedColor;
-      const time = (now / 1000) * Math.max(speedScale, 0);
+      const time = now / 1000 * Math.max(speedScale, 0);
       for (let i = 0; i < dots.length; i++) {
         const d = dots[i];
         // Linear triangle wave 0..1..0 for linear glow/dim
@@ -217,34 +200,20 @@ export const DottedGlowBackground = ({
       window.removeEventListener("resize", handleResize);
       ro.disconnect();
     };
-  }, [
-    gap,
-    radius,
-    resolvedColor,
-    resolvedGlowColor,
-    opacity,
-    backgroundOpacity,
-    speedMin,
-    speedMax,
-    speedScale,
-  ]);
-  return /*#__PURE__*/ React.createElement(
-    "div",
-    {
-      ref: containerRef,
-      className: className,
-      style: {
-        position: "absolute",
-        inset: 0,
-      },
-    },
-    /*#__PURE__*/ React.createElement("canvas", {
-      ref: canvasRef,
-      style: {
-        display: "block",
-        width: "100%",
-        height: "100%",
-      },
-    }),
-  );
+  }, [gap, radius, resolvedColor, resolvedGlowColor, opacity, backgroundOpacity, speedMin, speedMax, speedScale]);
+  return /*#__PURE__*/React.createElement("div", {
+    ref: containerRef,
+    className: className,
+    style: {
+      position: "absolute",
+      inset: 0
+    }
+  }, /*#__PURE__*/React.createElement("canvas", {
+    ref: canvasRef,
+    style: {
+      display: "block",
+      width: "100%",
+      height: "100%"
+    }
+  }));
 };

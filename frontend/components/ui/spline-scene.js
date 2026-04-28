@@ -3,8 +3,8 @@
 import React from "react";
 import Spline from "@splinetool/react-spline";
 export default function SplineScene() {
-  return /*#__PURE__*/ React.createElement(Spline, {
+  return /*#__PURE__*/React.createElement(Spline, {
     scene: "https://prod.spline.design/DXYfuxLv0cauZxsM/scene.splinecode",
-    className: "w-full h-full",
+    className: "w-full h-full"
   });
 }

@@ -4,7 +4,11 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/convene/client";
 import { Spinner } from "@/components/ui/spinner";
-export function ProtectedRoute({ children, allowedRoles, redirectTo = "/" }) {
+export function ProtectedRoute({
+  children,
+  allowedRoles,
+  redirectTo = "/"
+}) {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const router = useRouter();
@@ -13,8 +17,10 @@ export function ProtectedRoute({ children, allowedRoles, redirectTo = "/" }) {
     const checkAuth = async () => {
       try {
         const {
-          data: { user },
-          error,
+          data: {
+            user
+          },
+          error
         } = await supabase.auth.getUser();
         if (error || !user) {
           router.push("/login");
@@ -29,11 +35,10 @@ export function ProtectedRoute({ children, allowedRoles, redirectTo = "/" }) {
         }
 
         // Get role from profiles table (source of truth)
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("role")
-          .eq("id", user.id)
-          .single();
+        const {
+          data: profile,
+          error: profileError
+        } = await supabase.from("profiles").select("role").eq("id", user.id).single();
 
         // SECURITY: Only use role from profiles table, never from user_metadata
         // If profile doesn't exist, redirect to complete-profile
@@ -57,18 +62,14 @@ export function ProtectedRoute({ children, allowedRoles, redirectTo = "/" }) {
     checkAuth();
   }, [router, supabase, allowedRoles, redirectTo]);
   if (isLoading) {
-    return /*#__PURE__*/ React.createElement(
-      "div",
-      {
-        className: "min-h-screen flex items-center justify-center",
-      },
-      /*#__PURE__*/ React.createElement(Spinner, {
-        className: "h-8 w-8 text-[#195ADC]",
-      }),
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      className: "min-h-screen flex items-center justify-center"
+    }, /*#__PURE__*/React.createElement(Spinner, {
+      className: "h-8 w-8 text-[#195ADC]"
+    }));
   }
   if (!isAuthorized) {
     return null;
   }
-  return /*#__PURE__*/ React.createElement(React.Fragment, null, children);
+  return /*#__PURE__*/React.createElement(React.Fragment, null, children);
 }

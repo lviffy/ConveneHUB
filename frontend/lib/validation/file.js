@@ -10,13 +10,7 @@ import { z } from "zod";
  * Allowed MIME types for image uploads
  * Whitelist approach for maximum security
  */
-const ALLOWED_MIME_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/gif",
-  "image/webp",
-];
+const ALLOWED_MIME_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"];
 
 /**
  * Allowed file extensions for image uploads
@@ -36,13 +30,10 @@ export const imageFileSchema = z.object({
   name: z.string().min(1, "Filename cannot be empty"),
   type: z.enum(ALLOWED_MIME_TYPES, {
     errorMap: () => ({
-      message: "Invalid image type. Only JPG, PNG, GIF, and WebP are allowed",
-    }),
+      message: "Invalid image type. Only JPG, PNG, GIF, and WebP are allowed"
+    })
   }),
-  size: z
-    .number()
-    .min(1, "File cannot be empty")
-    .max(MAX_FILE_SIZE, "File size must be less than 5MB"),
+  size: z.number().min(1, "File cannot be empty").max(MAX_FILE_SIZE, "File size must be less than 5MB")
 });
 
 /**
@@ -67,12 +58,12 @@ export function validateImageFile(file) {
   const metadataResult = imageFileSchema.safeParse({
     name: file.name,
     type: file.type,
-    size: file.size,
+    size: file.size
   });
   if (!metadataResult.success) {
     return {
       valid: false,
-      error: metadataResult.error.errors[0].message,
+      error: metadataResult.error.errors[0].message
     };
   }
 
@@ -82,7 +73,7 @@ export function validateImageFile(file) {
   if (!extension || !ALLOWED_EXTENSIONS.includes(extension)) {
     return {
       valid: false,
-      error: `Invalid file extension. Allowed: ${ALLOWED_EXTENSIONS.join(", ")}`,
+      error: `Invalid file extension. Allowed: ${ALLOWED_EXTENSIONS.join(", ")}`
     };
   }
 
@@ -91,7 +82,7 @@ export function validateImageFile(file) {
   if (parts.length > 2) {
     return {
       valid: false,
-      error: "Multiple file extensions are not allowed",
+      error: "Multiple file extensions are not allowed"
     };
   }
 
@@ -100,23 +91,19 @@ export function validateImageFile(file) {
   if (suspiciousChars.test(file.name)) {
     return {
       valid: false,
-      error: "Filename contains invalid characters",
+      error: "Filename contains invalid characters"
     };
   }
 
   // 5. Check for path traversal attempts (../)
-  if (
-    file.name.includes("..") ||
-    file.name.includes("/") ||
-    file.name.includes("\\")
-  ) {
+  if (file.name.includes("..") || file.name.includes("/") || file.name.includes("\\")) {
     return {
       valid: false,
-      error: "Filename cannot contain path separators",
+      error: "Filename cannot contain path separators"
     };
   }
   return {
-    valid: true,
+    valid: true
   };
 }
 
@@ -165,9 +152,9 @@ export function generateSecureFilename(originalFilename) {
  * @returns Promise resolving to true if valid image header
  */
 export async function validateImageHeader(file) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = e => {
       const arrayBuffer = e.target?.result;
       if (!arrayBuffer) {
         resolve(false);
@@ -184,26 +171,17 @@ export async function validateImageHeader(file) {
       // Magic numbers for valid image formats
       const magicNumbers = {
         // JPEG: FF D8 FF E0/E1/E2/E3/E8
-        jpeg: [
-          "ffd8ffe0",
-          "ffd8ffe1",
-          "ffd8ffe2",
-          "ffd8ffe3",
-          "ffd8ffe8",
-          "ffd8ffdb",
-        ],
+        jpeg: ["ffd8ffe0", "ffd8ffe1", "ffd8ffe2", "ffd8ffe3", "ffd8ffe8", "ffd8ffdb"],
         // PNG: 89 50 4E 47
         png: ["89504e47"],
         // GIF: 47 49 46 38
         gif: ["47494638"],
         // WebP: 52 49 46 46 (RIFF)
-        webp: ["52494646"],
+        webp: ["52494646"]
       };
 
       // Check if header matches any valid magic number
-      const isValid = Object.values(magicNumbers).some((numbers) =>
-        numbers.some((num) => header.startsWith(num)),
-      );
+      const isValid = Object.values(magicNumbers).some(numbers => numbers.some(num => header.startsWith(num)));
       resolve(isValid);
     };
     reader.onerror = () => resolve(false);
@@ -232,11 +210,11 @@ export async function validateImageFileFull(file) {
   if (!hasValidHeader) {
     return {
       valid: false,
-      error: "File does not appear to be a valid image (invalid file header)",
+      error: "File does not appear to be a valid image (invalid file header)"
     };
   }
   return {
-    valid: true,
+    valid: true
   };
 }
 
@@ -247,5 +225,5 @@ export const FILE_VALIDATION_CONSTANTS = {
   ALLOWED_MIME_TYPES,
   ALLOWED_EXTENSIONS,
   MAX_FILE_SIZE,
-  MAX_FILE_SIZE_MB: MAX_FILE_SIZE / (1024 * 1024),
+  MAX_FILE_SIZE_MB: MAX_FILE_SIZE / (1024 * 1024)
 };

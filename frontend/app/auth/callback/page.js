@@ -23,17 +23,13 @@ export default function AuthCallbackPage() {
   const router = useRouter();
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const hash = window.location.hash.startsWith("#")
-      ? window.location.hash.slice(1)
-      : window.location.hash;
+    const hash = window.location.hash.startsWith("#") ? window.location.hash.slice(1) : window.location.hash;
     const params = new URLSearchParams(hash);
     const accessToken = params.get("accessToken");
     const refreshToken = params.get("refreshToken");
     const userJson = params.get("user");
     if (!accessToken || !userJson) {
-      router.replace(
-        "/auth/error?error=invalid_callback&details=Missing OAuth callback payload",
-      );
+      router.replace("/auth/error?error=invalid_callback&details=Missing OAuth callback payload");
       return;
     }
     try {
@@ -43,47 +39,30 @@ export default function AuthCallbackPage() {
         localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
       }
       localStorage.setItem(USER_KEY, JSON.stringify(user));
-      window.dispatchEvent(
-        new CustomEvent(AUTH_EVENT, {
-          detail: {
-            event: "SIGNED_IN",
-            session: {
-              access_token: accessToken,
-              refresh_token: refreshToken,
-              user,
-            },
-          },
-        }),
-      );
+      window.dispatchEvent(new CustomEvent(AUTH_EVENT, {
+        detail: {
+          event: "SIGNED_IN",
+          session: {
+            access_token: accessToken,
+            refresh_token: refreshToken,
+            user
+          }
+        }
+      }));
       clearLegacyOAuthCookies();
       const role = params.get("role") || user.role;
       router.replace(getRedirectForRole(role || undefined));
     } catch {
-      router.replace(
-        "/auth/error?error=auth_failed&details=Invalid OAuth callback payload",
-      );
+      router.replace("/auth/error?error=auth_failed&details=Invalid OAuth callback payload");
     }
   }, [router]);
-  return /*#__PURE__*/ React.createElement(
-    "div",
-    {
-      className: "min-h-screen flex items-center justify-center",
-    },
-    /*#__PURE__*/ React.createElement(
-      "div",
-      {
-        className: "text-center",
-      },
-      /*#__PURE__*/ React.createElement(RefreshCw, {
-        className: "w-8 h-8 animate-spin text-slate-400 mx-auto mb-3",
-      }),
-      /*#__PURE__*/ React.createElement(
-        "p",
-        {
-          className: "text-slate-600",
-        },
-        "Finishing sign in...",
-      ),
-    ),
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: "min-h-screen flex items-center justify-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-center"
+  }, /*#__PURE__*/React.createElement(RefreshCw, {
+    className: "w-8 h-8 animate-spin text-slate-400 mx-auto mb-3"
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-600"
+  }, "Finishing sign in...")));
 }

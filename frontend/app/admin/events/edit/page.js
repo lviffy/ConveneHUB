@@ -15,22 +15,20 @@ function EditEventContent() {
   const searchParams = useSearchParams();
   const eventId = searchParams.get("id");
   const requestedReturnTo = searchParams.get("returnTo");
-  const returnTo =
-    requestedReturnTo && requestedReturnTo.startsWith("/")
-      ? requestedReturnTo
-      : "/admin";
+  const returnTo = requestedReturnTo && requestedReturnTo.startsWith("/") ? requestedReturnTo : "/admin";
   const requestedActorRole = searchParams.get("actorRole");
-  const actorRole =
-    requestedActorRole === "organizer" ? "organizer" : "admin_team";
+  const actorRole = requestedActorRole === "organizer" ? "organizer" : "admin_team";
   const isOrganizerFlow = returnTo.startsWith("/organizer");
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const supabase = createClient();
   useEffect(() => {
     if (!eventId) {
       toast({
         title: "Error",
         description: "No event ID provided",
-        variant: "destructive",
+        variant: "destructive"
       });
       router.push(returnTo);
       return;
@@ -41,17 +39,16 @@ function EditEventContent() {
     if (!eventId) return;
     try {
       setIsLoading(true);
-      const { data, error } = await supabase
-        .from("events")
-        .select("*")
-        .eq("event_id", eventId)
-        .single();
+      const {
+        data,
+        error
+      } = await supabase.from("events").select("*").eq("event_id", eventId).single();
       if (error) throw error;
       if (!data) {
         toast({
           title: "Error",
           description: "Event not found",
-          variant: "destructive",
+          variant: "destructive"
         });
         router.push(returnTo);
         return;
@@ -61,7 +58,7 @@ function EditEventContent() {
       toast({
         title: "Error",
         description: "Failed to load event",
-        variant: "destructive",
+        variant: "destructive"
       });
       router.push(returnTo);
     } finally {
@@ -69,77 +66,42 @@ function EditEventContent() {
     }
   };
   if (isLoading) {
-    return /*#__PURE__*/ React.createElement(
-      "div",
-      {
-        className: "flex items-center justify-center min-h-screen",
-      },
-      /*#__PURE__*/ React.createElement(Spinner, {
-        className: "h-8 w-8 text-[#195ADC]",
-      }),
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center justify-center min-h-screen"
+    }, /*#__PURE__*/React.createElement(Spinner, {
+      className: "h-8 w-8 text-[#195ADC]"
+    }));
   }
   if (!event) {
     return null;
   }
-  return /*#__PURE__*/ React.createElement(
-    "div",
-    {
-      className: "min-h-screen bg-gray-50 py-8",
-    },
-    /*#__PURE__*/ React.createElement(
-      "div",
-      {
-        className: "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8",
-      },
-      /*#__PURE__*/ React.createElement(
-        Button,
-        {
-          variant: "ghost",
-          onClick: () => router.push(returnTo),
-          className: "mb-6",
-        },
-        /*#__PURE__*/ React.createElement(ArrowLeft, {
-          className: "h-4 w-4 mr-2",
-        }),
-        isOrganizerFlow ? "Back to Organizer Dashboard" : "Back to Dashboard",
-      ),
-      /*#__PURE__*/ React.createElement(
-        "div",
-        {
-          className: "bg-white rounded-lg shadow-sm p-6",
-        },
-        /*#__PURE__*/ React.createElement(
-          "h1",
-          {
-            className: "text-2xl font-bold mb-6",
-          },
-          "Edit Event",
-        ),
-        /*#__PURE__*/ React.createElement(EditEventForm, {
-          event: event,
-          actorRole: actorRole,
-          successRedirectPath: returnTo,
-          cancelRedirectPath: returnTo,
-        }),
-      ),
-    ),
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: "min-h-screen bg-gray-50 py-8"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
+  }, /*#__PURE__*/React.createElement(Button, {
+    variant: "ghost",
+    onClick: () => router.push(returnTo),
+    className: "mb-6"
+  }, /*#__PURE__*/React.createElement(ArrowLeft, {
+    className: "h-4 w-4 mr-2"
+  }), isOrganizerFlow ? "Back to Organizer Dashboard" : "Back to Dashboard"), /*#__PURE__*/React.createElement("div", {
+    className: "bg-white rounded-lg shadow-sm p-6"
+  }, /*#__PURE__*/React.createElement("h1", {
+    className: "text-2xl font-bold mb-6"
+  }, "Edit Event"), /*#__PURE__*/React.createElement(EditEventForm, {
+    event: event,
+    actorRole: actorRole,
+    successRedirectPath: returnTo,
+    cancelRedirectPath: returnTo
+  }))));
 }
 export default function EditEventPage() {
-  return /*#__PURE__*/ React.createElement(
-    Suspense,
-    {
-      fallback: /*#__PURE__*/ React.createElement(
-        "div",
-        {
-          className: "flex items-center justify-center min-h-screen",
-        },
-        /*#__PURE__*/ React.createElement(Spinner, {
-          className: "h-8 w-8 text-[#195ADC]",
-        }),
-      ),
-    },
-    /*#__PURE__*/ React.createElement(EditEventContent, null),
-  );
+  return /*#__PURE__*/React.createElement(Suspense, {
+    fallback: /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center justify-center min-h-screen"
+    }, /*#__PURE__*/React.createElement(Spinner, {
+      className: "h-8 w-8 text-[#195ADC]"
+    }))
+  }, /*#__PURE__*/React.createElement(EditEventContent, null));
 }

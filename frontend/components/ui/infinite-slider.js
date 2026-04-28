@@ -1,18 +1,13 @@
 "use client";
 
 function _extends() {
-  return (
-    (_extends = Object.assign
-      ? Object.assign.bind()
-      : function (n) {
-          for (var e = 1; e < arguments.length; e++) {
-            var t = arguments[e];
-            for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
-          }
-          return n;
-        }),
-    _extends.apply(null, arguments)
-  );
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
 }
 import { cn } from "@/lib/utils";
 import { useMotionValue, animate, motion } from "motion/react";
@@ -25,10 +20,13 @@ export function InfiniteSlider({
   speedOnHover,
   direction = "horizontal",
   reverse = false,
-  className,
+  className
 }) {
   const [currentSpeed, setCurrentSpeed] = useState(speed);
-  const [ref, { width, height }] = useMeasure();
+  const [ref, {
+    width,
+    height
+  }] = useMeasure();
   const translation = useMotionValue(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [key, setKey] = useState(0);
@@ -48,8 +46,8 @@ export function InfiniteSlider({
         duration: transitionDuration,
         onComplete: () => {
           setIsTransitioning(false);
-          setKey((prevKey) => prevKey + 1);
-        },
+          setKey(prevKey => prevKey + 1);
+        }
       });
     } else {
       controls = animate(translation, [from, to], {
@@ -60,60 +58,34 @@ export function InfiniteSlider({
         repeatDelay: 0,
         onRepeat: () => {
           translation.set(from);
-        },
+        }
       });
     }
     return controls?.stop;
-  }, [
-    key,
-    translation,
-    currentSpeed,
-    width,
-    height,
-    gap,
-    isTransitioning,
-    direction,
-    reverse,
-  ]);
-  const hoverProps = speedOnHover
-    ? {
-        onHoverStart: () => {
-          setIsTransitioning(true);
-          setCurrentSpeed(speedOnHover);
-        },
-        onHoverEnd: () => {
-          setIsTransitioning(true);
-          setCurrentSpeed(speed);
-        },
-      }
-    : {};
-  return /*#__PURE__*/ React.createElement(
-    "div",
-    {
-      className: cn("overflow-hidden", className),
+  }, [key, translation, currentSpeed, width, height, gap, isTransitioning, direction, reverse]);
+  const hoverProps = speedOnHover ? {
+    onHoverStart: () => {
+      setIsTransitioning(true);
+      setCurrentSpeed(speedOnHover);
     },
-    /*#__PURE__*/ React.createElement(
-      motion.div,
-      _extends(
-        {
-          className: "flex w-max",
-          style: {
-            ...(direction === "horizontal"
-              ? {
-                  x: translation,
-                }
-              : {
-                  y: translation,
-                }),
-            gap: `${gap}px`,
-            flexDirection: direction === "horizontal" ? "row" : "column",
-          },
-          ref: ref,
-        },
-        hoverProps,
-      ),
-      children,
-      children,
-    ),
-  );
+    onHoverEnd: () => {
+      setIsTransitioning(true);
+      setCurrentSpeed(speed);
+    }
+  } : {};
+  return /*#__PURE__*/React.createElement("div", {
+    className: cn("overflow-hidden", className)
+  }, /*#__PURE__*/React.createElement(motion.div, _extends({
+    className: "flex w-max",
+    style: {
+      ...(direction === "horizontal" ? {
+        x: translation
+      } : {
+        y: translation
+      }),
+      gap: `${gap}px`,
+      flexDirection: direction === "horizontal" ? "row" : "column"
+    },
+    ref: ref
+  }, hoverProps), children, children));
 }

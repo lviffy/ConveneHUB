@@ -15,36 +15,28 @@ export function arrayToCSV(data, headers) {
   const csvHeaders = headers.join(",");
 
   // CSV data rows
-  const csvRows = data
-    .map((row) => {
-      return headers
-        .map((header) => {
-          const value = row[header];
+  const csvRows = data.map(row => {
+    return headers.map(header => {
+      const value = row[header];
 
-          // Handle null/undefined
-          if (value === null || value === undefined) {
-            return "";
-          }
+      // Handle null/undefined
+      if (value === null || value === undefined) {
+        return "";
+      }
 
-          // Convert to string and escape
-          let cellValue = String(value);
+      // Convert to string and escape
+      let cellValue = String(value);
 
-          // Escape quotes by doubling them
-          cellValue = cellValue.replace(/"/g, '""');
+      // Escape quotes by doubling them
+      cellValue = cellValue.replace(/"/g, '""');
 
-          // Wrap in quotes if contains comma, newline, or quote
-          if (
-            cellValue.includes(",") ||
-            cellValue.includes("\n") ||
-            cellValue.includes('"')
-          ) {
-            cellValue = `"${cellValue}"`;
-          }
-          return cellValue;
-        })
-        .join(",");
-    })
-    .join("\n");
+      // Wrap in quotes if contains comma, newline, or quote
+      if (cellValue.includes(",") || cellValue.includes("\n") || cellValue.includes('"')) {
+        cellValue = `"${cellValue}"`;
+      }
+      return cellValue;
+    }).join(",");
+  }).join("\n");
   return `${csvHeaders}\n${csvRows}`;
 }
 
@@ -55,7 +47,7 @@ export function downloadCSV(csvContent, filename) {
   // Add BOM for Excel UTF-8 support
   const BOM = "\uFEFF";
   const blob = new Blob([BOM + csvContent], {
-    type: "text/csv;charset=utf-8;",
+    type: "text/csv;charset=utf-8;"
   });
   const link = document.createElement("a");
   if (link.download !== undefined) {
@@ -75,21 +67,8 @@ export function downloadCSV(csvContent, filename) {
  * Format bookings data for CSV export
  */
 export function formatBookingsForCSV(bookings) {
-  const headers = [
-    "Booking Code",
-    "Booking ID",
-    "User Name",
-    "Email",
-    "Phone",
-    "Tickets",
-    "Amount (₹)",
-    "Status",
-    "Booked At",
-    "Checked In",
-    "Check-in Time",
-    "Checked In By",
-  ];
-  const data = bookings.map((b) => ({
+  const headers = ["Booking Code", "Booking ID", "User Name", "Email", "Phone", "Tickets", "Amount (₹)", "Status", "Booked At", "Checked In", "Check-in Time", "Checked In By"];
+  const data = bookings.map(b => ({
     "Booking Code": b.booking_code,
     "Booking ID": b.booking_id,
     "User Name": b.user_name,
@@ -101,7 +80,7 @@ export function formatBookingsForCSV(bookings) {
     "Booked At": b.booked_at,
     "Checked In": b.checked_in ? "Yes" : "No",
     "Check-in Time": b.checked_in_at || "-",
-    "Checked In By": b.checked_in_by_name || "-",
+    "Checked In By": b.checked_in_by_name || "-"
   }));
   return arrayToCSV(data, headers);
 }
@@ -110,18 +89,8 @@ export function formatBookingsForCSV(bookings) {
  * Format check-ins data for CSV export
  */
 export function formatCheckInsForCSV(checkIns) {
-  const headers = [
-    "Booking Code",
-    "Booking ID",
-    "User Name",
-    "Email",
-    "Phone",
-    "Tickets",
-    "Booked At",
-    "Check-in Time",
-    "Checked In By",
-  ];
-  const data = checkIns.map((c) => ({
+  const headers = ["Booking Code", "Booking ID", "User Name", "Email", "Phone", "Tickets", "Booked At", "Check-in Time", "Checked In By"];
+  const data = checkIns.map(c => ({
     "Booking Code": c.booking_code,
     "Booking ID": c.booking_id,
     "User Name": c.user_name,
@@ -130,7 +99,7 @@ export function formatCheckInsForCSV(checkIns) {
     Tickets: c.tickets_count,
     "Booked At": c.booked_at,
     "Check-in Time": c.checked_in_at,
-    "Checked In By": c.checked_in_by_name,
+    "Checked In By": c.checked_in_by_name
   }));
   return arrayToCSV(data, headers);
 }

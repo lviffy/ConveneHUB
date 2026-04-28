@@ -11,28 +11,12 @@ import SeamlessExperienceSection from "@/components/events/seamless-experience-s
 import Footer from "@/components/footer";
 export const metadata = {
   title: "ConveneHub | Event Booking Platform",
-  description:
-    "Discover, book, and manage live events with seamless ticketing, QR check-ins, and real-time updates.",
+  description: "Discover, book, and manage live events with seamless ticketing, QR check-ins, and real-time updates."
 };
 export default function Home() {
-  return /*#__PURE__*/ React.createElement(
-    "main",
-    {
-      className: "min-h-screen text-render-optimized",
-    },
-    /*#__PURE__*/ React.createElement(EventsHeader, null),
-    /*#__PURE__*/ React.createElement(EventsHeroSection, null),
-    /*#__PURE__*/ React.createElement(HowItWorksSection, null),
-    /*#__PURE__*/ React.createElement(UpcomingHighlights, null),
-    /*#__PURE__*/ React.createElement(
-      Suspense,
-      {
-        fallback: null,
-      },
-      /*#__PURE__*/ React.createElement(EventsListSection, null),
-    ),
-    /*#__PURE__*/ React.createElement(FeaturedExperiences, null),
-    /*#__PURE__*/ React.createElement(SeamlessExperienceSection, null),
-    /*#__PURE__*/ React.createElement(Footer, null),
-  );
+  return /*#__PURE__*/React.createElement("main", {
+    className: "min-h-screen text-render-optimized"
+  }, /*#__PURE__*/React.createElement(EventsHeader, null), /*#__PURE__*/React.createElement(EventsHeroSection, null), /*#__PURE__*/React.createElement(HowItWorksSection, null), /*#__PURE__*/React.createElement(UpcomingHighlights, null), /*#__PURE__*/React.createElement(Suspense, {
+    fallback: null
+  }, /*#__PURE__*/React.createElement(EventsListSection, null)), /*#__PURE__*/React.createElement(FeaturedExperiences, null), /*#__PURE__*/React.createElement(SeamlessExperienceSection, null), /*#__PURE__*/React.createElement(Footer, null));
 }

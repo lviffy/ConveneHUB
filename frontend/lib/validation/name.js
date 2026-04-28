@@ -17,38 +17,32 @@ const CONSECUTIVE_SEP_RE = /[-' ]{2}/;
 const EDGE_SEP_RE = /^[-' ]|[-' ]$/;
 export function validateName(raw) {
   const name = raw.trim();
-  if (!name)
-    return {
-      isValid: false,
-      error: "Name is required.",
-    };
-  if (name.length < 2)
-    return {
-      isValid: false,
-      error: "Name must be at least 2 characters.",
-    };
-  if (name.length > 50)
-    return {
-      isValid: false,
-      error: "Name cannot exceed 50 characters.",
-    };
-  if (!NAME_CHARS_RE.test(name))
-    return {
-      isValid: false,
-      error: "Name can only contain letters, spaces, hyphens, and apostrophes.",
-    };
-  if (CONSECUTIVE_SEP_RE.test(name))
-    return {
-      isValid: false,
-      error: "Name cannot have consecutive spaces, hyphens, or apostrophes.",
-    };
-  if (EDGE_SEP_RE.test(name))
-    return {
-      isValid: false,
-      error: "Name cannot start or end with a space, hyphen, or apostrophe.",
-    };
+  if (!name) return {
+    isValid: false,
+    error: "Name is required."
+  };
+  if (name.length < 2) return {
+    isValid: false,
+    error: "Name must be at least 2 characters."
+  };
+  if (name.length > 50) return {
+    isValid: false,
+    error: "Name cannot exceed 50 characters."
+  };
+  if (!NAME_CHARS_RE.test(name)) return {
+    isValid: false,
+    error: "Name can only contain letters, spaces, hyphens, and apostrophes."
+  };
+  if (CONSECUTIVE_SEP_RE.test(name)) return {
+    isValid: false,
+    error: "Name cannot have consecutive spaces, hyphens, or apostrophes."
+  };
+  if (EDGE_SEP_RE.test(name)) return {
+    isValid: false,
+    error: "Name cannot start or end with a space, hyphen, or apostrophe."
+  };
   return {
     isValid: true,
-    error: "",
+    error: ""
   };
 }

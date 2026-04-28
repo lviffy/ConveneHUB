@@ -45,14 +45,14 @@ ConveneHub is a comprehensive event management platform that supports multi-role
 
 ## Tech Stack
 
-| Component | Technology |
-|-----------|------------|
-| **Frontend** | React + Vite + TypeScript |
-| **Backend** | Express + TypeScript + MongoDB |
-| **Shared** | Shared contracts/types |
-| **Database** | MongoDB |
-| **Authentication** | JWT + Google OAuth (optional) |
-| **Email** | SMTP (configurable) |
+| Component          | Technology                     |
+| ------------------ | ------------------------------ |
+| **Frontend**       | React + Vite + TypeScript      |
+| **Backend**        | Express + TypeScript + MongoDB |
+| **Shared**         | Shared contracts/types         |
+| **Database**       | MongoDB                        |
+| **Authentication** | JWT + Google OAuth (optional)  |
+| **Email**          | SMTP (configurable)            |
 
 ---
 
@@ -177,19 +177,19 @@ npm run dev:frontend # Frontend on http://localhost:5173
 
 ## Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `MONGODB_URI` | MongoDB connection string | `mongodb://localhost:27017/convenehub` |
-| `JWT_SECRET` | Secret key for JWT tokens | (required) |
-| `JWT_EXPIRES_IN` | JWT token expiration time | `7d` |
-| `SMTP_HOST` | SMTP server host | - |
-| `SMTP_PORT` | SMTP server port | - |
-| `SMTP_USER` | SMTP username | - |
-| `SMTP_PASS` | SMTP password | - |
-| `GOOGLE_CLIENT_ID` | Google OAuth client ID | - |
-| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | - |
-| `GOOGLE_CALLBACK_URL` | Google OAuth callback URL | - |
-| `UPLOAD_ROOT` | Directory for file uploads | `./uploads` |
+| Variable               | Description                | Default                                |
+| ---------------------- | -------------------------- | -------------------------------------- |
+| `MONGODB_URI`          | MongoDB connection string  | `mongodb://localhost:27017/convenehub` |
+| `JWT_SECRET`           | Secret key for JWT tokens  | (required)                             |
+| `JWT_EXPIRES_IN`       | JWT token expiration time  | `7d`                                   |
+| `SMTP_HOST`            | SMTP server host           | -                                      |
+| `SMTP_PORT`            | SMTP server port           | -                                      |
+| `SMTP_USER`            | SMTP username              | -                                      |
+| `SMTP_PASS`            | SMTP password              | -                                      |
+| `GOOGLE_CLIENT_ID`     | Google OAuth client ID     | -                                      |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | -                                      |
+| `GOOGLE_CALLBACK_URL`  | Google OAuth callback URL  | -                                      |
+| `UPLOAD_ROOT`          | Directory for file uploads | `./uploads`                            |
 
 ---
 
@@ -210,17 +210,17 @@ CoveneHUB/
 
 The implementation uses these role-aligned collections:
 
-| Collection | Purpose |
-|------------|---------|
-| `users` | User accounts with role assignments |
-| `events` | Event details and metadata |
-| `bookings` | Booking records |
-| `tickets` | Ticket instances |
-| `attendees` | Attendee profiles and data |
-| `referrallinks` | Promoter referral links |
-| `commissions` | Commission records for promoters |
-| `tenants` | Tenant/organization records |
-| `checkins` | Check-in event logs |
+| Collection      | Purpose                             |
+| --------------- | ----------------------------------- |
+| `users`         | User accounts with role assignments |
+| `events`        | Event details and metadata          |
+| `bookings`      | Booking records                     |
+| `tickets`       | Ticket instances                    |
+| `attendees`     | Attendee profiles and data          |
+| `referrallinks` | Promoter referral links             |
+| `commissions`   | Commission records for promoters    |
+| `tenants`       | Tenant/organization records         |
+| `checkins`      | Check-in event logs                 |
 
 **Notes:**
 

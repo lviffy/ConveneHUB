@@ -44,7 +44,7 @@ export function sanitizeCSVValue(value) {
   // Detect formula characters at the start of the value
   // These characters can make spreadsheet applications interpret the cell as a formula
   const formulaChars = ["=", "+", "-", "@", "\t", "\r"];
-  if (formulaChars.some((char) => stringValue.startsWith(char))) {
+  if (formulaChars.some(char => stringValue.startsWith(char))) {
     // Prefix with single quote to force text interpretation
     // Excel/LibreOffice treat cells starting with ' as plain text
     // The quote itself is not displayed in the spreadsheet
@@ -55,12 +55,7 @@ export function sanitizeCSVValue(value) {
   stringValue = stringValue.replace(/"/g, '""');
 
   // Wrap in quotes if contains special CSV characters
-  if (
-    stringValue.includes(",") ||
-    stringValue.includes("\n") ||
-    stringValue.includes('"') ||
-    stringValue.includes("\r")
-  ) {
+  if (stringValue.includes(",") || stringValue.includes("\n") || stringValue.includes('"') || stringValue.includes("\r")) {
     return `"${stringValue}"`;
   }
   return stringValue;
@@ -85,7 +80,7 @@ export function sanitizeCSVRow(row) {
  */
 export function generateSafeCSV(headers, rows) {
   const headerLine = sanitizeCSVRow(headers);
-  const dataLines = rows.map((row) => sanitizeCSVRow(row));
+  const dataLines = rows.map(row => sanitizeCSVRow(row));
   return [headerLine, ...dataLines].join("\n");
 }
 
@@ -102,5 +97,5 @@ export function isFormulaLike(value) {
   }
   const stringValue = String(value).trim();
   const formulaChars = ["=", "+", "-", "@", "\t", "\r"];
-  return formulaChars.some((char) => stringValue.startsWith(char));
+  return formulaChars.some(char => stringValue.startsWith(char));
 }

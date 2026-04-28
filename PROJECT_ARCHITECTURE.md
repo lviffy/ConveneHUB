@@ -219,45 +219,56 @@ Both `admin.routes.ts` and `organizer.routes.ts` expose financial summary and re
 Primary models (`backend/src/models`):
 
 1. `User`
+
 - identity, role, tenant/campus, contact, OTP metadata
 - aliases: `name <-> fullName`, `password <-> passwordHash`
 
 2. `Event`
+
 - organizer + tenant context
 - lifecycle status
 - ticket tiers with `soldCount`
 - settlement metadata
 
 3. `Booking`
+
 - attendee, event, tier, amount, status, payment status
 - referral/promoter attribution
 - unique booking code
 
 4. `Ticket`
+
 - booking/event/attendee relation
 - QR payload, check-in metadata
 
 5. `CheckIn`
+
 - immutable scan records (qr/manual)
 
 6. `ReferralLink`
+
 - promoter-event code + click/conversion counters
 - unique index on `{ promoterId, eventId }`
 
 7. `Commission`
+
 - promoter payout record per booking
 - unique index on `bookingId`
 
 8. `PaymentAttempt`
+
 - Razorpay order/payment tracking and expiry state machine
 
 9. `Attendee`
+
 - attendee aggregate per event for quick lookup/status
 
 10. `Tenant`
+
 - multi-tenant grouping (adminIds, organizerIds)
 
 11. `Order`, `Promoter`, `Analytics`
+
 - compatibility/derived collections used by migration and legacy flows
 
 ## 4.7 File Upload Subsystem
@@ -521,12 +532,15 @@ Key groups:
 ## 10) Technical Inconsistencies and Drift Notes
 
 1. Test-runtime mismatch:
+
 - Playwright config defaults to port `3000` while Vite dev defaults to `5173`.
 
 2. Role naming translation complexity:
+
 - backend canonical roles and frontend display roles differ; mapping exists in multiple places.
 
 3. Multiple API calling layers:
+
 - `window.fetch` override in `src/main.tsx`
 - plus auth/data adapter in `lib/convene/client.ts`
 
