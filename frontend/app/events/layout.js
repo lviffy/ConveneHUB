@@ -1,3 +1,4 @@
+import React from "react";
 import { EventsHeader } from "@/components/events-header";
 export default function EventsLayout({
   children

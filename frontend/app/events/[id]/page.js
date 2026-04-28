@@ -1,3 +1,4 @@
+import React from "react";
 import EventBookingPage from "../../../components/events/event-booking-page";
 export const metadata = {
   title: "Book Event - CONVENEHUB",

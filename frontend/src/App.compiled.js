@@ -1,3 +1,4 @@
+import React from "react";
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

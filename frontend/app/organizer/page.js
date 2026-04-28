@@ -1,3 +1,4 @@
+import React from "react";
 import { createServerClient } from "@/lib/convene/server";
 import { redirect } from "next/navigation";
 import { OrganizerTeamDashboardLazy } from "@/components/lazy-components";

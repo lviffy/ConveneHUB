@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 
 function _extends() {
   return _extends = Object.assign ? Object.assign.bind() : function (n) {

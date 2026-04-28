@@ -1,3 +1,4 @@
+import React from "react";
 import { EventsHeader } from "@/components/events-header";
 import Footer from "@/components/footer";
 import FAQSection from "@/components/faq-section";
