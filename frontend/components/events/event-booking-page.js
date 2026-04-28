@@ -1413,9 +1413,8 @@ export default function EventBookingPage({ eventId }) {
                 {
                   className: "p-5 md:p-6",
                 },
-                existingBooking
-                  ? /*#__PURE__*/
-                    // User already has booking
+                existingBooking /*#__PURE__*/
+                  ? // User already has booking
                     React.createElement(
                       "div",
                       {
@@ -1767,9 +1766,8 @@ export default function EventBookingPage({ eventId }) {
                           ),
                         ),
                       ),
-                    )
-                  : /*#__PURE__*/
-                    // Booking form
+                    ) /*#__PURE__*/
+                  : // Booking form
                     React.createElement(
                       "div",
                       {
@@ -1863,9 +1861,8 @@ export default function EventBookingPage({ eventId }) {
                             ),
                           ),
                       ),
-                      !user
-                        ? /*#__PURE__*/
-                          // User not logged in - show login prompt
+                      !user /*#__PURE__*/
+                        ? // User not logged in - show login prompt
                           React.createElement(
                             "div",
                             {

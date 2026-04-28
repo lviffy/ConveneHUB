@@ -1121,9 +1121,8 @@ export default function EventsBrowsePage() {
                             ),
                           ),
                         ),
-                      )
-                    : /*#__PURE__*/
-                      // List View
+                      ) /*#__PURE__*/
+                    : // List View
                       React.createElement(
                         motion.div,
                         {

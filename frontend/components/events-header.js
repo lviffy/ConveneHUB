@@ -139,12 +139,10 @@ export const EventsHeader = () => {
               {
                 className: "flex items-center gap-3",
               },
-              user
-                ? /*#__PURE__*/
-                  // Show user profile dropdown if logged in
-                  React.createElement(UserProfileDropdown, null)
-                : /*#__PURE__*/
-                  // Show login button if not logged in
+              user /*#__PURE__*/
+                ? // Show user profile dropdown if logged in
+                  React.createElement(UserProfileDropdown, null) /*#__PURE__*/
+                : // Show login button if not logged in
                   React.createElement(
                     Link,
                     {

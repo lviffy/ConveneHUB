@@ -1,3 +1,27 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true,
+});
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule
+    ? obj
+    : {
+        default: obj,
+      };
+}
+function _objectWithoutProperties(obj, keys) {
+  var target = {};
+  for (var i in obj) {
+    if (keys.indexOf(i) >= 0) continue;
+    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
+    target[i] = obj[i];
+  }
+  return target;
+}
+var _react = require("react");
+var _react2 = _interopRequireDefault(_react);
+var _reactRouterDom = require("react-router-dom");
 function _extends() {
   return (
     (_extends = Object.assign
@@ -12,22 +36,29 @@ function _extends() {
     _extends.apply(null, arguments)
   );
 }
-import React from "react";
-import { Link as RouterLink } from "react-router-dom";
-const Link = /*#__PURE__*/ React.forwardRef(
-  ({ href, children, prefetch: _prefetch, scroll: _scroll, ...props }, ref) => {
-    return /*#__PURE__*/ React.createElement(
-      RouterLink,
-      _extends(
-        {
-          ref: ref,
-          to: href,
-        },
-        props,
-      ),
-      children,
-    );
-  },
-);
+var Link = /*#__PURE__*/ _react2["default"].forwardRef(function (_ref, ref) {
+  var href = _ref.href;
+  var children = _ref.children;
+  var _prefetch = _ref.prefetch;
+  var _scroll = _ref.scroll;
+  var props = _objectWithoutProperties(_ref, [
+    "href",
+    "children",
+    "prefetch",
+    "scroll",
+  ]);
+  return /*#__PURE__*/ _react2["default"].createElement(
+    _reactRouterDom.Link,
+    _extends(
+      {
+        ref: ref,
+        to: href,
+      },
+      props,
+    ),
+    children,
+  );
+});
 Link.displayName = "Link";
-export default Link;
+exports["default"] = Link;
+module.exports = exports["default"];

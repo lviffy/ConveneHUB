@@ -101,18 +101,18 @@ export function WaitlistExperience() {
       new QuadraticBezierCurve3(
         new Vector3(-15, -3, 0),
         new Vector3(0, 1, 0),
-        new Vector3(12, -2, 0), // Reduced right side extension
-      ),
+        new Vector3(12, -2, 0),
+      ), // Reduced right side extension
       new QuadraticBezierCurve3(
         new Vector3(-14, -2, 0),
         new Vector3(1, 2, 0),
-        new Vector3(10, -1, 0), // Reduced right side extension
-      ),
+        new Vector3(10, -1, 0),
+      ), // Reduced right side extension
       new QuadraticBezierCurve3(
         new Vector3(-16, -4, 0),
         new Vector3(-1, 0.5, 0),
-        new Vector3(11, -3, 0), // Reduced right side extension
-      ),
+        new Vector3(11, -3, 0),
+      ), // Reduced right side extension
     ];
 
     // Use ConveneHub brand colors
