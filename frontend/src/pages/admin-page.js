@@ -45,28 +45,28 @@ export default function AdminPage() {
     run();
   }, [navigate, supabase]);
   if (loading) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "min-h-screen flex items-center justify-center"
-    }, /*#__PURE__*/React.createElement(Spinner, {
+    }, React.createElement(Spinner, {
       className: "w-8 h-8"
     }));
   }
   if (accessDenied || !profile) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-red-100"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-center p-8 bg-white rounded-lg shadow-xl max-w-md"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-6xl mb-4"
-    }, "\uD83D\uDEAB"), /*#__PURE__*/React.createElement("h1", {
+    }, "\uD83D\uDEAB"), React.createElement("h1", {
       className: "text-3xl font-bold text-red-600 mb-2"
-    }, "Access Denied"), /*#__PURE__*/React.createElement("p", {
+    }, "Access Denied"), React.createElement("p", {
       className: "text-gray-600 mb-4"
-    }, "You don't have permission to access the admin panel."), /*#__PURE__*/React.createElement("p", {
+    }, "You don't have permission to access the admin panel."), React.createElement("p", {
       className: "text-sm text-gray-500"
     }, "Only CONVENEHUB team members can access this page.")));
   }
-  return /*#__PURE__*/React.createElement(AdminDashboardLazy, {
+  return React.createElement(AdminDashboardLazy, {
     profile: profile,
     userEmail: email
   });

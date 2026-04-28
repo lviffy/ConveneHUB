@@ -96,48 +96,48 @@ export function UserProfileDropdown() {
   const city = profile?.city || user.user_metadata?.city || "Unknown";
   const canAccessReferrals = role === "user" || role === "promoter" || role === "admin_team";
   const initials = fullName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
-  return /*#__PURE__*/React.createElement(DropdownMenu, null, /*#__PURE__*/React.createElement(DropdownMenuTrigger, {
+  return React.createElement(DropdownMenu, null, React.createElement(DropdownMenuTrigger, {
     asChild: true
-  }, /*#__PURE__*/React.createElement("button", {
+  }, React.createElement("button", {
     className: "relative flex items-center gap-2 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "hidden md:inline-block text-sm font-medium text-gray-700"
-  }, fullName.split(" ")[0]), /*#__PURE__*/React.createElement(Avatar, {
+  }, fullName.split(" ")[0]), React.createElement(Avatar, {
     className: "h-8 w-8 cursor-pointer border-2 border-gray-200"
-  }, /*#__PURE__*/React.createElement(AvatarImage, {
+  }, React.createElement(AvatarImage, {
     src: user.user_metadata?.avatar_url,
     alt: fullName
-  }), /*#__PURE__*/React.createElement(AvatarFallback, {
+  }), React.createElement(AvatarFallback, {
     className: "bg-gradient-to-br from-blue-500 to-purple-600 text-white text-xs font-semibold"
-  }, initials)))), /*#__PURE__*/React.createElement(DropdownMenuContent, {
+  }, initials)))), React.createElement(DropdownMenuContent, {
     align: "end",
     className: "w-56 z-[9999]"
-  }, /*#__PURE__*/React.createElement(DropdownMenuLabel, null, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(DropdownMenuLabel, null, React.createElement("div", {
     className: "flex flex-col space-y-1"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm font-medium leading-none"
-  }, fullName), /*#__PURE__*/React.createElement("p", {
+  }, fullName), React.createElement("p", {
     className: "text-xs leading-none text-muted-foreground"
-  }, email), /*#__PURE__*/React.createElement("p", {
+  }, email), React.createElement("p", {
     className: "text-xs leading-none text-blue-600 capitalize mt-1"
-  }, role === "admin_team" ? "ConveneHub Team" : role === "organizer" ? "Event Operations" : role === "promoter" ? "Promoter" : "User"))), /*#__PURE__*/React.createElement(DropdownMenuSeparator, null), canAccessReferrals && /*#__PURE__*/React.createElement(DropdownMenuItem, {
+  }, role === "admin_team" ? "ConveneHub Team" : role === "organizer" ? "Event Operations" : role === "promoter" ? "Promoter" : "User"))), React.createElement(DropdownMenuSeparator, null), canAccessReferrals && React.createElement(DropdownMenuItem, {
     onClick: () => router.push("/promoter")
-  }, /*#__PURE__*/React.createElement(Megaphone, {
+  }, React.createElement(Megaphone, {
     className: "mr-2 h-4 w-4"
-  }), /*#__PURE__*/React.createElement("span", null, "Referrals")), /*#__PURE__*/React.createElement(DropdownMenuItem, {
+  }), React.createElement("span", null, "Referrals")), React.createElement(DropdownMenuItem, {
     onClick: () => router.push("/bookings")
-  }, /*#__PURE__*/React.createElement(Ticket, {
+  }, React.createElement(Ticket, {
     className: "mr-2 h-4 w-4"
-  }), /*#__PURE__*/React.createElement("span", null, "My Bookings")), /*#__PURE__*/React.createElement(DropdownMenuItem, {
+  }), React.createElement("span", null, "My Bookings")), React.createElement(DropdownMenuItem, {
     onClick: () => setIsProfileModalOpen(true)
-  }, /*#__PURE__*/React.createElement(User, {
+  }, React.createElement(User, {
     className: "mr-2 h-4 w-4"
-  }), /*#__PURE__*/React.createElement("span", null, "Profile")), /*#__PURE__*/React.createElement(DropdownMenuSeparator, null), /*#__PURE__*/React.createElement(DropdownMenuItem, {
+  }), React.createElement("span", null, "Profile")), React.createElement(DropdownMenuSeparator, null), React.createElement(DropdownMenuItem, {
     onClick: handleSignOut,
     className: "text-red-600 focus:text-red-600"
-  }, /*#__PURE__*/React.createElement(LogOut, {
+  }, React.createElement(LogOut, {
     className: "mr-2 h-4 w-4"
-  }), /*#__PURE__*/React.createElement("span", null, "Sign Out"))), /*#__PURE__*/React.createElement(ProfileModal, {
+  }), React.createElement("span", null, "Sign Out"))), React.createElement(ProfileModal, {
     isOpen: isProfileModalOpen,
     onClose: () => setIsProfileModalOpen(false),
     userName: fullName,

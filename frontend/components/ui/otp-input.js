@@ -48,9 +48,9 @@ export function OTPInput({
     const nextIndex = Math.min(pastedData.length, length - 1);
     inputRefs.current[nextIndex]?.focus();
   };
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "flex gap-2 justify-center"
-  }, otp.map((digit, index) => /*#__PURE__*/React.createElement(Input, {
+  }, otp.map((digit, index) => React.createElement(Input, {
     key: index,
     ref: el => inputRefs.current[index] = el,
     type: "text",

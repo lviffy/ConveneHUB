@@ -44,9 +44,9 @@ export const EventsHeader = () => {
     });
     return () => subscription.unsubscribe();
   }, [supabase]);
-  return /*#__PURE__*/React.createElement("header", {
+  return React.createElement("header", {
     className: "fixed top-0 left-0 right-0 z-[999]"
-  }, /*#__PURE__*/React.createElement(motion.nav, {
+  }, React.createElement(motion.nav, {
     initial: {
       y: 0,
       opacity: 1
@@ -60,19 +60,19 @@ export const EventsHeader = () => {
       ease: [0.22, 1, 0.36, 1]
     },
     className: "fixed top-0 w-full transform-gpu"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: cn("transition-all duration-500 ease-out mx-auto px-4 xs:px-5 sm:px-6", "mt-4 mb-1 sm:mt-4 sm:mb-0", scrolled ? "max-w-6xl" : "max-w-7xl")
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: cn("relative overflow-hidden transition-all duration-700 ease-out", "border rounded-xl", scrolled ? "bg-white border-gray-200" : "bg-white border-gray-200")
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "absolute inset-0 bg-gradient-to-br from-gray-100/30 via-white/20 to-blue-100/20 opacity-50 hover:opacity-80 transition-all duration-1000"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: cn("absolute inset-0 transition-all duration-700", "bg-gradient-to-r from-blue-200/10 via-transparent to-purple-200/10", scrolled ? "opacity-40" : "opacity-20")
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-transparent"
-  }), /*#__PURE__*/React.createElement(motion.div, {
+  }), React.createElement(motion.div, {
     className: cn("relative flex items-center justify-between transition-all duration-300", scrolled ? "px-2 py-2 sm:px-3 sm:py-3 lg:px-4 lg:py-3" : "px-3 py-3 sm:px-4 sm:py-4 lg:px-6 lg:py-4")
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     whileHover: {
       scale: 1.05
     },
@@ -82,26 +82,26 @@ export const EventsHeader = () => {
     transition: {
       duration: 0.2
     }
-  }, /*#__PURE__*/React.createElement(Link, {
+  }, React.createElement(Link, {
     href: "/",
     "aria-label": "home",
     className: "flex items-center space-x-2 group"
-  }, /*#__PURE__*/React.createElement(Logo, {
+  }, React.createElement(Logo, {
     className: "[&_img]:rounded-lg",
     uniColor: true
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), React.createElement("div", {
     className: "flex-1"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "flex items-center gap-3"
-  }, user /*#__PURE__*/ ?
-  /*#__PURE__*/
+  }, user  ?
+  
   // Show user profile dropdown if logged in
-  React.createElement(UserProfileDropdown, null) /*#__PURE__*/ :
-  /*#__PURE__*/
+  React.createElement(UserProfileDropdown, null)  :
+  
   // Show login button if not logged in
   React.createElement(Link, {
     href: "/login"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     size: "sm",
     className: cn("bg-blue-600 text-white hover:bg-blue-700", "font-semibold px-4 sm:px-6 h-9 text-sm", "transition-all duration-300 border border-blue-500", "hover:border-blue-600 rounded-lg")
   }, "Login"))))))));

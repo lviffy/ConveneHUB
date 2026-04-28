@@ -93,7 +93,7 @@ export default function EventsList() {
       }
     };
     const config = statusConfig[status];
-    return /*#__PURE__*/React.createElement(Badge, {
+    return React.createElement(Badge, {
       variant: config.variant
     }, config.label);
   };
@@ -221,88 +221,88 @@ export default function EventsList() {
     }
   };
   if (isLoading) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "flex items-center justify-center py-12"
-    }, /*#__PURE__*/React.createElement(Spinner, {
+    }, React.createElement(Spinner, {
       className: "h-8 w-8 text-[#195ADC]"
     }));
   }
   if (events.length === 0) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "text-center py-12"
-    }, /*#__PURE__*/React.createElement(Calendar, {
+    }, React.createElement(Calendar, {
       className: "h-12 w-12 mx-auto mb-4 text-slate-400"
-    }), /*#__PURE__*/React.createElement("h3", {
+    }), React.createElement("h3", {
       className: "text-lg font-semibold text-slate-700 mb-2"
-    }, "No events yet"), /*#__PURE__*/React.createElement("p", {
+    }, "No events yet"), React.createElement("p", {
       className: "text-slate-500"
     }, "Create your first event to get started"));
   }
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "space-y-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex justify-between items-center"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm text-slate-600"
-  }, events.length, " ", events.length === 1 ? "event" : "events", " total"), /*#__PURE__*/React.createElement(Button, {
+  }, events.length, " ", events.length === 1 ? "event" : "events", " total"), React.createElement(Button, {
     variant: "outline",
     size: "sm",
     onClick: fetchEvents,
     disabled: isLoading,
     className: "gap-2"
-  }, /*#__PURE__*/React.createElement(RefreshCw, {
+  }, React.createElement(RefreshCw, {
     className: `h-4 w-4 ${isLoading ? "animate-spin" : ""}`
-  }), "Refresh")), /*#__PURE__*/React.createElement("div", {
+  }), "Refresh")), React.createElement("div", {
     className: "rounded-md border overflow-hidden"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "overflow-x-auto"
-  }, /*#__PURE__*/React.createElement(Table, {
+  }, React.createElement(Table, {
     className: "min-w-[800px]"
-  }, /*#__PURE__*/React.createElement(TableHeader, null, /*#__PURE__*/React.createElement(TableRow, null, /*#__PURE__*/React.createElement(TableHead, {
+  }, React.createElement(TableHeader, null, React.createElement(TableRow, null, React.createElement(TableHead, {
     className: "min-w-[180px]"
-  }, "Event"), /*#__PURE__*/React.createElement(TableHead, {
+  }, "Event"), React.createElement(TableHead, {
     className: "min-w-[80px]"
-  }, "City"), /*#__PURE__*/React.createElement(TableHead, {
+  }, "City"), React.createElement(TableHead, {
     className: "min-w-[120px]"
-  }, "Date & Time"), /*#__PURE__*/React.createElement(TableHead, {
+  }, "Date & Time"), React.createElement(TableHead, {
     className: "min-w-[90px]"
-  }, "Capacity"), /*#__PURE__*/React.createElement(TableHead, {
+  }, "Capacity"), React.createElement(TableHead, {
     className: "min-w-[80px]"
-  }, "Price"), /*#__PURE__*/React.createElement(TableHead, {
+  }, "Price"), React.createElement(TableHead, {
     className: "min-w-[100px]"
-  }, "Status"), /*#__PURE__*/React.createElement(TableHead, {
+  }, "Status"), React.createElement(TableHead, {
     className: "text-right min-w-[150px]"
-  }, "Actions"))), /*#__PURE__*/React.createElement(TableBody, null, events.map(event => /*#__PURE__*/React.createElement(TableRow, {
+  }, "Actions"))), React.createElement(TableBody, null, events.map(event => React.createElement(TableRow, {
     key: event.event_id
-  }, /*#__PURE__*/React.createElement(TableCell, null, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(TableCell, null, React.createElement("div", {
     className: "space-y-1"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "font-medium"
-  }, event.title), /*#__PURE__*/React.createElement("div", {
+  }, event.title), React.createElement("div", {
     className: "flex items-center gap-1 text-xs text-slate-500"
-  }, /*#__PURE__*/React.createElement(MapPin, {
+  }, React.createElement(MapPin, {
     className: "h-3 w-3"
-  }), event.venue_name))), /*#__PURE__*/React.createElement(TableCell, null, /*#__PURE__*/React.createElement(Badge, {
+  }), event.venue_name))), React.createElement(TableCell, null, React.createElement(Badge, {
     variant: "outline"
-  }, event.city)), /*#__PURE__*/React.createElement(TableCell, null, /*#__PURE__*/React.createElement("div", {
+  }, event.city)), React.createElement(TableCell, null, React.createElement("div", {
     className: "text-sm"
-  }, format(new Date(event.date_time), "MMM dd, yyyy"), /*#__PURE__*/React.createElement("div", {
+  }, format(new Date(event.date_time), "MMM dd, yyyy"), React.createElement("div", {
     className: "text-xs text-slate-500"
-  }, format(new Date(event.date_time), "hh:mm a")))), /*#__PURE__*/React.createElement(TableCell, null, /*#__PURE__*/React.createElement("div", {
+  }, format(new Date(event.date_time), "hh:mm a")))), React.createElement(TableCell, null, React.createElement("div", {
     className: "flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(Users, {
+  }, React.createElement(Users, {
     className: "h-4 w-4 text-slate-400"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "text-sm"
-  }, event.remaining, "/", event.capacity))), /*#__PURE__*/React.createElement(TableCell, null, /*#__PURE__*/React.createElement("div", {
+  }, event.remaining, "/", event.capacity))), React.createElement(TableCell, null, React.createElement("div", {
     className: "text-sm font-medium"
-  }, event.ticket_price === 0 ? /*#__PURE__*/React.createElement("span", {
+  }, event.ticket_price === 0 ? React.createElement("span", {
     className: "text-green-600"
-  }, "FREE") : /*#__PURE__*/React.createElement("span", null, "\u20B9", event.ticket_price.toLocaleString("en-IN")))), /*#__PURE__*/React.createElement(TableCell, null, getStatusBadge(event.status)), /*#__PURE__*/React.createElement(TableCell, {
+  }, "FREE") : React.createElement("span", null, "\u20B9", event.ticket_price.toLocaleString("en-IN")))), React.createElement(TableCell, null, getStatusBadge(event.status)), React.createElement(TableCell, {
     className: "text-right"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex justify-end gap-2"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     variant: "ghost",
     size: "sm",
     onClick: () => setSelectedEventNotes({
@@ -311,65 +311,65 @@ export default function EventsList() {
     }),
     title: "View notes",
     className: event.notes && event.notes.trim() !== "" ? "text-blue-600 hover:text-blue-700" : ""
-  }, /*#__PURE__*/React.createElement(FileText, {
+  }, React.createElement(FileText, {
     className: "h-4 w-4"
-  }), event.notes && event.notes.trim() !== "" && /*#__PURE__*/React.createElement("span", {
+  }), event.notes && event.notes.trim() !== "" && React.createElement("span", {
     className: "ml-1 text-xs"
-  }, "\u2022")), /*#__PURE__*/React.createElement(Button, {
+  }, "\u2022")), React.createElement(Button, {
     variant: "ghost",
     size: "sm",
     onClick: () => handleView(event.event_id),
     title: "View event"
-  }, /*#__PURE__*/React.createElement(Eye, {
+  }, React.createElement(Eye, {
     className: "h-4 w-4"
-  })), /*#__PURE__*/React.createElement(Button, {
+  })), React.createElement(Button, {
     variant: "ghost",
     size: "sm",
     onClick: () => handleEdit(event.event_id),
     title: "Edit event"
-  }, /*#__PURE__*/React.createElement(Edit, {
+  }, React.createElement(Edit, {
     className: "h-4 w-4"
-  })), /*#__PURE__*/React.createElement(DropdownMenu, null, /*#__PURE__*/React.createElement(DropdownMenuTrigger, {
+  })), React.createElement(DropdownMenu, null, React.createElement(DropdownMenuTrigger, {
     asChild: true
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     variant: "ghost",
     size: "sm",
     disabled: exportingEvent === `${event.event_id}-bookings` || exportingEvent === `${event.event_id}-checkins`,
     title: "Export data"
-  }, exportingEvent === `${event.event_id}-bookings` || exportingEvent === `${event.event_id}-checkins` ? /*#__PURE__*/React.createElement(Spinner, {
+  }, exportingEvent === `${event.event_id}-bookings` || exportingEvent === `${event.event_id}-checkins` ? React.createElement(Spinner, {
     className: "h-4 w-4"
-  }) : /*#__PURE__*/React.createElement(Download, {
+  }) : React.createElement(Download, {
     className: "h-4 w-4"
-  }))), /*#__PURE__*/React.createElement(DropdownMenuContent, {
+  }))), React.createElement(DropdownMenuContent, {
     align: "end"
-  }, /*#__PURE__*/React.createElement(DropdownMenuItem, {
+  }, React.createElement(DropdownMenuItem, {
     onClick: () => handleExportBookings(event.event_id, event.title),
     disabled: exportingEvent !== null
-  }, /*#__PURE__*/React.createElement(Download, {
+  }, React.createElement(Download, {
     className: "h-4 w-4 mr-2"
-  }), "Export All Bookings"), /*#__PURE__*/React.createElement(DropdownMenuItem, {
+  }), "Export All Bookings"), React.createElement(DropdownMenuItem, {
     onClick: () => handleExportCheckIns(event.event_id, event.title),
     disabled: exportingEvent !== null
-  }, /*#__PURE__*/React.createElement(Download, {
+  }, React.createElement(Download, {
     className: "h-4 w-4 mr-2"
-  }), "Export Check-ins"))), /*#__PURE__*/React.createElement(Button, {
+  }), "Export Check-ins"))), React.createElement(Button, {
     variant: "ghost",
     size: "sm",
     className: "text-red-600 hover:text-red-700",
     onClick: () => handleDeleteClick(event),
     title: "Delete event"
-  }, /*#__PURE__*/React.createElement(Trash2, {
+  }, React.createElement(Trash2, {
     className: "h-4 w-4"
-  })))))))))), /*#__PURE__*/React.createElement(AlertDialog, {
+  })))))))))), React.createElement(AlertDialog, {
     open: !!eventToDelete,
     onOpenChange: () => setEventToDelete(null)
-  }, /*#__PURE__*/React.createElement(AlertDialogContent, null, /*#__PURE__*/React.createElement(AlertDialogHeader, null, /*#__PURE__*/React.createElement(AlertDialogTitle, null, "Are you sure?"), /*#__PURE__*/React.createElement(AlertDialogDescription, null, 'This will permanently delete the event "', eventToDelete?.title, '". This action cannot be undone. All bookings and check-ins related to this event will also be deleted.')), /*#__PURE__*/React.createElement(AlertDialogFooter, null, /*#__PURE__*/React.createElement(AlertDialogCancel, {
+  }, React.createElement(AlertDialogContent, null, React.createElement(AlertDialogHeader, null, React.createElement(AlertDialogTitle, null, "Are you sure?"), React.createElement(AlertDialogDescription, null, 'This will permanently delete the event "', eventToDelete?.title, '". This action cannot be undone. All bookings and check-ins related to this event will also be deleted.')), React.createElement(AlertDialogFooter, null, React.createElement(AlertDialogCancel, {
     disabled: isDeleting
-  }, "Cancel"), /*#__PURE__*/React.createElement(AlertDialogAction, {
+  }, "Cancel"), React.createElement(AlertDialogAction, {
     onClick: handleDeleteConfirm,
     disabled: isDeleting,
     className: "bg-red-600 hover:bg-red-700"
-  }, isDeleting ? "Deleting..." : "Delete Event")))), selectedEventNotes && /*#__PURE__*/React.createElement(EventNotesModal, {
+  }, isDeleting ? "Deleting..." : "Delete Event")))), selectedEventNotes && React.createElement(EventNotesModal, {
     isOpen: true,
     onClose: () => setSelectedEventNotes(null),
     eventTitle: selectedEventNotes.title,

@@ -35,7 +35,7 @@ const buttonVariants = cva("inline-flex items-center justify-center gap-2 whites
     size: "default"
   }
 });
-const Button = /*#__PURE__*/React.forwardRef(({
+const Button = React.forwardRef(({
   className,
   variant,
   size,
@@ -43,7 +43,7 @@ const Button = /*#__PURE__*/React.forwardRef(({
   ...props
 }, ref) => {
   const Comp = asChild ? Slot : "button";
-  return /*#__PURE__*/React.createElement(Comp, _extends({
+  return React.createElement(Comp, _extends({
     className: cn(buttonVariants({
       variant,
       size,

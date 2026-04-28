@@ -261,7 +261,7 @@ export default function QRScanner({
   // Keep handleScanResultRef pointing to the latest version on every render
   handleScanResultRef.current = handleScanResult;
   if (!mounted || !isOpen) return null;
-  const modalContent = /*#__PURE__*/React.createElement(AnimatePresence, null, /*#__PURE__*/React.createElement(motion.div, {
+  const modalContent = React.createElement(AnimatePresence, null, React.createElement(motion.div, {
     initial: {
       opacity: 0
     },
@@ -273,7 +273,7 @@ export default function QRScanner({
     },
     className: "fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4",
     onClick: onClose
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       scale: 0.95,
       opacity: 0
@@ -291,76 +291,76 @@ export default function QRScanner({
     },
     onClick: e => e.stopPropagation(),
     className: "w-full max-w-2xl"
-  }, /*#__PURE__*/React.createElement(Card, {
+  }, React.createElement(Card, {
     className: "border-gray-200 shadow-2xl overflow-hidden"
-  }, /*#__PURE__*/React.createElement(CardHeader, {
+  }, React.createElement(CardHeader, {
     className: "border-b border-gray-100 bg-gray-50/50"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(Camera, {
+  }, React.createElement(Camera, {
     className: "h-5 w-5 text-[#195ADC]"
-  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(CardTitle, {
+  }), React.createElement("div", null, React.createElement(CardTitle, {
     className: "text-xl"
-  }, "QR Code Scanner"), /*#__PURE__*/React.createElement(CardDescription, {
+  }, "QR Code Scanner"), React.createElement(CardDescription, {
     className: "mt-1"
-  }, "Position the QR code within the frame"))), /*#__PURE__*/React.createElement("div", {
+  }, "Position the QR code within the frame"))), React.createElement("div", {
     className: "flex items-center gap-2 w-full sm:w-auto"
-  }, videoDevices.length > 1 && /*#__PURE__*/React.createElement("div", {
+  }, videoDevices.length > 1 && React.createElement("div", {
     className: "w-full sm:w-[200px]"
-  }, /*#__PURE__*/React.createElement(Select, {
+  }, React.createElement(Select, {
     value: selectedDeviceId,
     onValueChange: handleCameraChange
-  }, /*#__PURE__*/React.createElement(SelectTrigger, {
+  }, React.createElement(SelectTrigger, {
     className: "h-8 text-xs"
-  }, /*#__PURE__*/React.createElement(SelectValue, {
+  }, React.createElement(SelectValue, {
     placeholder: "Select Camera"
-  })), /*#__PURE__*/React.createElement(SelectContent, null, videoDevices.map((device, index) => /*#__PURE__*/React.createElement(SelectItem, {
+  })), React.createElement(SelectContent, null, videoDevices.map((device, index) => React.createElement(SelectItem, {
     key: device.deviceId,
     value: device.deviceId
-  }, device.label || `Camera ${index + 1}`))))), /*#__PURE__*/React.createElement(Button, {
+  }, device.label || `Camera ${index + 1}`))))), React.createElement(Button, {
     variant: "ghost",
     size: "sm",
     onClick: onClose,
     className: "h-8 w-8 p-0 hidden sm:flex"
-  }, /*#__PURE__*/React.createElement(X, {
+  }, React.createElement(X, {
     className: "h-4 w-4"
-  }))))), /*#__PURE__*/React.createElement(CardContent, {
+  }))))), React.createElement(CardContent, {
     className: "p-6"
-  }, !hasCamera ? /*#__PURE__*/React.createElement("div", {
+  }, !hasCamera ? React.createElement("div", {
     className: "text-center py-16"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 mb-4"
-  }, /*#__PURE__*/React.createElement(XCircle, {
+  }, React.createElement(XCircle, {
     className: "h-8 w-8 text-red-600"
-  })), /*#__PURE__*/React.createElement("h3", {
+  })), React.createElement("h3", {
     className: "text-lg font-semibold text-gray-900 mb-2"
-  }, "Camera Access Denied"), /*#__PURE__*/React.createElement("p", {
+  }, "Camera Access Denied"), React.createElement("p", {
     className: "text-gray-500 max-w-sm mx-auto"
-  }, "Please allow camera access in your browser settings to use the QR scanner.")) : /*#__PURE__*/React.createElement("div", {
+  }, "Please allow camera access in your browser settings to use the QR scanner.")) : React.createElement("div", {
     className: "relative"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "relative bg-black rounded-lg overflow-hidden aspect-video"
-  }, /*#__PURE__*/React.createElement("video", {
+  }, React.createElement("video", {
     ref: videoRef,
     autoPlay: true,
     playsInline: true,
     muted: true,
     className: "w-full h-full object-cover"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "absolute inset-0 flex items-center justify-center"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "relative w-64 h-64"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-[#195ADC]"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-[#195ADC]"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-[#195ADC]"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-[#195ADC]"
-  }), scanning && !scanResult && /*#__PURE__*/React.createElement(motion.div, {
+  }), scanning && !scanResult && React.createElement(motion.div, {
     className: "absolute left-0 right-0 h-0.5 bg-[#195ADC] shadow-[0_0_10px_rgba(25,90,220,0.8)]",
     initial: {
       top: 0
@@ -373,7 +373,7 @@ export default function QRScanner({
       repeat: Infinity,
       ease: "linear"
     }
-  }))), /*#__PURE__*/React.createElement(AnimatePresence, null, scanResult && /*#__PURE__*/React.createElement(motion.div, {
+  }))), React.createElement(AnimatePresence, null, scanResult && React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: 20
@@ -387,27 +387,27 @@ export default function QRScanner({
       y: -20
     },
     className: "absolute inset-0 flex items-center justify-center bg-black/70"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: cn("p-6 rounded-lg text-center max-w-sm", scanResult.success ? "bg-green-500/90" : "bg-red-500/90")
-  }, scanResult.success ? /*#__PURE__*/React.createElement(CheckCircle, {
+  }, scanResult.success ? React.createElement(CheckCircle, {
     className: "h-12 w-12 text-white mx-auto mb-3"
-  }) : /*#__PURE__*/React.createElement(XCircle, {
+  }) : React.createElement(XCircle, {
     className: "h-12 w-12 text-white mx-auto mb-3"
-  }), /*#__PURE__*/React.createElement("p", {
+  }), React.createElement("p", {
     className: "text-white font-semibold text-lg"
-  }, scanResult.message))))), /*#__PURE__*/React.createElement("canvas", {
+  }, scanResult.message))))), React.createElement("canvas", {
     ref: canvasRef,
     className: "hidden"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "mt-4 text-center"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm text-gray-600 mb-4"
-  }, scanning ? "Scanning for QR codes..." : "Initializing camera..."), /*#__PURE__*/React.createElement("div", {
+  }, scanning ? "Scanning for QR codes..." : "Initializing camera..."), React.createElement("div", {
     className: "flex flex-col gap-2 sm:hidden"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     variant: "outline",
     onClick: onClose,
     className: "w-full"
   }, "Close Scanner")))))))));
-  return /*#__PURE__*/createPortal(modalContent, document.body);
+  return createPortal(modalContent, document.body);
 }

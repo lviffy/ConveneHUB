@@ -36,21 +36,21 @@ export function VenueMap({
     window.open(url, "_blank");
   };
   if (!isMounted) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "w-full h-[300px] bg-gray-100 rounded-xl flex items-center justify-center"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-center text-gray-500"
-    }, /*#__PURE__*/React.createElement(MapPin, {
+    }, React.createElement(MapPin, {
       className: "w-8 h-8 mx-auto mb-2 opacity-50"
-    }), /*#__PURE__*/React.createElement("p", {
+    }), React.createElement("p", {
       className: "text-sm"
     }, "Loading map...")));
   }
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "space-y-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "relative w-full h-[300px] rounded-xl overflow-hidden border border-gray-200"
-  }, /*#__PURE__*/React.createElement(MapContainer, {
+  }, React.createElement(MapContainer, {
     center: [latitude, longitude],
     zoom: 15,
     scrollWheelZoom: false,
@@ -58,29 +58,29 @@ export function VenueMap({
     style: {
       borderRadius: "0.75rem"
     }
-  }, /*#__PURE__*/React.createElement(TileLayer, {
+  }, React.createElement(TileLayer, {
     attribution: '\xA9 <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-  }), /*#__PURE__*/React.createElement(Marker, {
+  }), React.createElement(Marker, {
     position: [latitude, longitude],
     icon: customIcon
-  }, /*#__PURE__*/React.createElement(Popup, null, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(Popup, null, React.createElement("div", {
     className: "text-center p-1"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "font-semibold text-gray-900"
-  }, venueName), venueAddress && /*#__PURE__*/React.createElement("p", {
+  }, venueName), venueAddress && React.createElement("p", {
     className: "text-xs text-gray-600 mt-1"
-  }, venueAddress)))))), /*#__PURE__*/React.createElement("div", {
+  }, venueAddress)))))), React.createElement("div", {
     className: "flex gap-3"
-  }, /*#__PURE__*/React.createElement("button", {
+  }, React.createElement("button", {
     onClick: openInGoogleMaps,
     className: "flex-1 flex items-center justify-center gap-2 h-11 px-4 rounded-lg  bg-gray-50 text-gray-700 text-sm font-medium border border-gray-200 hover:bg-gray-100 hover:border-gray-300 active:scale-[0.98] transition-all duration-150"
-  }, /*#__PURE__*/React.createElement(ExternalLink, {
+  }, React.createElement(ExternalLink, {
     className: "w-4 h-4"
-  }), "View on Maps"), /*#__PURE__*/React.createElement("button", {
+  }), "View on Maps"), React.createElement("button", {
     onClick: getDirections,
     className: "flex-1 flex items-center justify-center gap-2 h-11 px-4 rounded-lg  bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 active:scale-[0.98] transition-all duration-150"
-  }, /*#__PURE__*/React.createElement(Navigation, {
+  }, React.createElement(Navigation, {
     className: "w-4 h-4"
   }), "Directions")));
 }

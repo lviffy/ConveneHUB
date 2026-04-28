@@ -79,4 +79,4 @@ if (typeof window !== "undefined") {
     return response;
   };
 }
-createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(BrowserRouter, null, /*#__PURE__*/React.createElement(App, null)));
+createRoot(document.getElementById("root")).render(React.createElement(BrowserRouter, null, React.createElement(App, null)));

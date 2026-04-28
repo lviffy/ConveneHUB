@@ -331,44 +331,44 @@ export default function FinancialDashboard({
     }
   };
   if (loading) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "text-center py-16"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4"
-    }, /*#__PURE__*/React.createElement(Clock, {
+    }, React.createElement(Clock, {
       className: "h-8 w-8 text-gray-400 animate-spin"
-    })), /*#__PURE__*/React.createElement("h3", {
+    })), React.createElement("h3", {
       className: "text-lg font-semibold text-gray-900 mb-2"
-    }, "Loading Financial Data"), /*#__PURE__*/React.createElement("p", {
+    }, "Loading Financial Data"), React.createElement("p", {
       className: "text-gray-500 max-w-sm mx-auto"
     }, "Calculating revenue, fees, and settlements..."));
   }
   if (error) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "text-center py-16"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 mb-4"
-    }, /*#__PURE__*/React.createElement(AlertCircle, {
+    }, React.createElement(AlertCircle, {
       className: "h-8 w-8 text-red-500"
-    })), /*#__PURE__*/React.createElement("h3", {
+    })), React.createElement("h3", {
       className: "text-lg font-semibold text-gray-900 mb-2"
-    }, "Failed to Load Data"), /*#__PURE__*/React.createElement("p", {
+    }, "Failed to Load Data"), React.createElement("p", {
       className: "text-gray-500 max-w-sm mx-auto mb-4"
-    }, error), /*#__PURE__*/React.createElement(Button, {
+    }, error), React.createElement(Button, {
       onClick: fetchFinancialData,
       variant: "outline"
     }, "Try Again"));
   }
   if (!data || data.events.length === 0) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "text-center py-16"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4"
-    }, /*#__PURE__*/React.createElement(FileText, {
+    }, React.createElement(FileText, {
       className: "h-8 w-8 text-gray-400"
-    })), /*#__PURE__*/React.createElement("h3", {
+    })), React.createElement("h3", {
       className: "text-lg font-semibold text-gray-900 mb-2"
-    }, "No Financial Data"), /*#__PURE__*/React.createElement("p", {
+    }, "No Financial Data"), React.createElement("p", {
       className: "text-gray-500 max-w-sm mx-auto"
     }, "No completed events with paid bookings found. Financial data will appear here once events are completed."));
   }
@@ -381,524 +381,524 @@ export default function FinancialDashboard({
   // Calculate settlement status
   const settledEvents = data.events.filter(e => e.settlement_status === "settled").length;
   const pendingEvents = data.events.filter(e => e.settlement_status !== "settled").length;
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "space-y-6"
-  }, /*#__PURE__*/React.createElement(Card, {
+  }, React.createElement(Card, {
     className: "border-[#195ADC] bg-gradient-to-br from-blue-50 to-white"
-  }, /*#__PURE__*/React.createElement(CardHeader, {
+  }, React.createElement(CardHeader, {
     className: "pb-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(CardTitle, {
+  }, React.createElement("div", null, React.createElement(CardTitle, {
     className: "text-xl sm:text-2xl"
-  }, "Overall Financial Summary"), /*#__PURE__*/React.createElement(CardDescription, {
+  }, "Overall Financial Summary"), React.createElement(CardDescription, {
     className: "mt-1 text-xs sm:text-sm"
-  }, data.summary.total_events, " event", data.summary.total_events !== 1 ? "s" : "", " \u2022 ", data.summary.total_tickets_sold, " tickets sold")), /*#__PURE__*/React.createElement("div", {
+  }, data.summary.total_events, " event", data.summary.total_events !== 1 ? "s" : "", " \u2022 ", data.summary.total_tickets_sold, " tickets sold")), React.createElement("div", {
     className: "text-left sm:text-right"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-xs text-gray-500 mb-1"
-  }, "Fee Structure"), /*#__PURE__*/React.createElement(Badge, {
+  }, "Fee Structure"), React.createElement(Badge, {
     variant: "outline",
     className: "font-mono text-xs"
-  }, data.fee_structure.processing_fee_percentage, "% processing + variable CONVENEHUB")))), /*#__PURE__*/React.createElement(CardContent, null, /*#__PURE__*/React.createElement("div", {
+  }, data.fee_structure.processing_fee_percentage, "% processing + variable CONVENEHUB")))), React.createElement(CardContent, null, React.createElement("div", {
     className: "grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bg-white rounded-lg p-3 sm:p-4 shadow-sm"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between mb-1 sm:mb-2"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-xs sm:text-sm text-gray-600"
-  }, "Gross Revenue"), /*#__PURE__*/React.createElement(TrendingUp, {
+  }, "Gross Revenue"), React.createElement(TrendingUp, {
     className: "h-3 w-3 sm:h-4 sm:w-4 text-green-600"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "text-lg sm:text-2xl font-bold text-gray-900"
-  }, formatCurrency(parseFloat(data.summary.total_gross_revenue)))), /*#__PURE__*/React.createElement("div", {
+  }, formatCurrency(parseFloat(data.summary.total_gross_revenue)))), React.createElement("div", {
     className: "bg-white rounded-lg p-3 sm:p-4 shadow-sm"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between mb-1 sm:mb-2"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-xs sm:text-sm text-gray-600"
-  }, "Processing Fees"), /*#__PURE__*/React.createElement(TrendingDown, {
+  }, "Processing Fees"), React.createElement(TrendingDown, {
     className: "h-3 w-3 sm:h-4 sm:w-4 text-red-600"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "text-lg sm:text-2xl font-bold text-red-600"
-  }, "-", formatCurrency(parseFloat(data.summary.total_processing_fees)))), /*#__PURE__*/React.createElement("div", {
+  }, "-", formatCurrency(parseFloat(data.summary.total_processing_fees)))), React.createElement("div", {
     className: "bg-white rounded-lg p-3 sm:p-4 shadow-sm"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between mb-1 sm:mb-2"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-xs sm:text-sm text-gray-600"
-  }, "CONVENEHUB"), /*#__PURE__*/React.createElement(TrendingDown, {
+  }, "CONVENEHUB"), React.createElement(TrendingDown, {
     className: "h-3 w-3 sm:h-4 sm:w-4 text-green-600"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "text-lg sm:text-2xl font-bold text-green-600"
-  }, "-", formatCurrency(parseFloat(data.summary.total_platform_commission)))), /*#__PURE__*/React.createElement("div", {
+  }, "-", formatCurrency(parseFloat(data.summary.total_platform_commission)))), React.createElement("div", {
     className: "bg-white rounded-lg p-3 sm:p-4 shadow-sm border-2 border-[#195ADC]"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between mb-1 sm:mb-2"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-xs sm:text-sm text-gray-600 font-medium"
-  }, "Net Payout"), /*#__PURE__*/React.createElement(DollarSign, {
+  }, "Net Payout"), React.createElement(DollarSign, {
     className: "h-3 w-3 sm:h-4 sm:w-4 text-[#195ADC]"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "text-lg sm:text-2xl font-bold text-[#195ADC]"
-  }, formatCurrency(parseFloat(data.summary.total_net_payout))))))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(CardHeader, null, /*#__PURE__*/React.createElement(CardTitle, {
+  }, formatCurrency(parseFloat(data.summary.total_net_payout))))))), React.createElement(Card, null, React.createElement(CardHeader, null, React.createElement(CardTitle, {
     className: "flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(FileText, {
+  }, React.createElement(FileText, {
     className: "h-5 w-5"
-  }), "Detailed Summary Report"), /*#__PURE__*/React.createElement(CardDescription, null, "Comprehensive financial insights and performance metrics")), /*#__PURE__*/React.createElement(CardContent, null, /*#__PURE__*/React.createElement("div", {
+  }), "Detailed Summary Report"), React.createElement(CardDescription, null, "Comprehensive financial insights and performance metrics")), React.createElement(CardContent, null, React.createElement("div", {
     className: "space-y-6"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "grid grid-cols-1 sm:grid-cols-3 gap-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bg-gradient-to-br from-purple-50 to-white border border-purple-200 rounded-lg p-3 sm:p-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-xs font-medium text-purple-600 mb-1"
-  }, "Avg Revenue/Event"), /*#__PURE__*/React.createElement("div", {
+  }, "Avg Revenue/Event"), React.createElement("div", {
     className: "text-xl sm:text-2xl font-bold text-purple-900"
-  }, formatCurrency(averageRevenuePerEvent)), /*#__PURE__*/React.createElement("div", {
+  }, formatCurrency(averageRevenuePerEvent)), React.createElement("div", {
     className: "text-xs text-purple-600 mt-1"
-  }, data.summary.total_events, " event", data.summary.total_events !== 1 ? "s" : "")), /*#__PURE__*/React.createElement("div", {
+  }, data.summary.total_events, " event", data.summary.total_events !== 1 ? "s" : "")), React.createElement("div", {
     className: "bg-gradient-to-br from-orange-50 to-white border border-orange-200 rounded-lg p-3 sm:p-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-xs font-medium text-orange-600 mb-1"
-  }, "Avg Tickets/Event"), /*#__PURE__*/React.createElement("div", {
+  }, "Avg Tickets/Event"), React.createElement("div", {
     className: "text-xl sm:text-2xl font-bold text-orange-900"
-  }, averageTicketsPerEvent.toFixed(1)), /*#__PURE__*/React.createElement("div", {
+  }, averageTicketsPerEvent.toFixed(1)), React.createElement("div", {
     className: "text-xs text-orange-600 mt-1"
-  }, data.summary.total_tickets_sold, " total")), /*#__PURE__*/React.createElement("div", {
+  }, data.summary.total_tickets_sold, " total")), React.createElement("div", {
     className: "bg-gradient-to-br from-cyan-50 to-white border border-cyan-200 rounded-lg p-3 sm:p-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-xs font-medium text-cyan-600 mb-1"
-  }, "Effective Fee"), /*#__PURE__*/React.createElement("div", {
+  }, "Effective Fee"), React.createElement("div", {
     className: "text-xl sm:text-2xl font-bold text-cyan-900"
-  }, effectiveFeePercentage.toFixed(2), "%"), /*#__PURE__*/React.createElement("div", {
+  }, effectiveFeePercentage.toFixed(2), "%"), React.createElement("div", {
     className: "text-xs text-cyan-600 mt-1"
-  }, "Processing + CONVENEHUB"))), /*#__PURE__*/React.createElement("div", {
+  }, "Processing + CONVENEHUB"))), React.createElement("div", {
     className: "border-t border-gray-200 pt-4"
-  }, /*#__PURE__*/React.createElement("h4", {
+  }, React.createElement("h4", {
     className: "text-sm font-semibold text-gray-900 mb-3"
-  }, "Settlement Status"), /*#__PURE__*/React.createElement("div", {
+  }, "Settlement Status"), React.createElement("div", {
     className: "grid grid-cols-2 gap-2 sm:gap-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between p-3 sm:p-4 bg-green-50 border border-green-200 rounded-lg"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-2 sm:gap-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-100 flex items-center justify-center"
-  }, /*#__PURE__*/React.createElement(CheckCircle2, {
+  }, React.createElement(CheckCircle2, {
     className: "h-4 w-4 sm:h-5 sm:w-5 text-green-600"
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", null, React.createElement("div", {
     className: "text-xs sm:text-sm text-gray-600"
-  }, "Settled"), /*#__PURE__*/React.createElement("div", {
+  }, "Settled"), React.createElement("div", {
     className: "text-xl sm:text-2xl font-bold text-green-900"
-  }, settledEvents))), /*#__PURE__*/React.createElement(Badge, {
+  }, settledEvents))), React.createElement(Badge, {
     variant: "outline",
     className: "bg-green-100 text-green-700 border-green-300 text-xs hidden sm:inline-flex"
-  }, data.summary.total_events > 0 ? (settledEvents / data.summary.total_events * 100).toFixed(0) : 0, "%")), /*#__PURE__*/React.createElement("div", {
+  }, data.summary.total_events > 0 ? (settledEvents / data.summary.total_events * 100).toFixed(0) : 0, "%")), React.createElement("div", {
     className: "flex items-center justify-between p-3 sm:p-4 bg-yellow-50 border border-yellow-200 rounded-lg"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-2 sm:gap-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-yellow-100 flex items-center justify-center"
-  }, /*#__PURE__*/React.createElement(Clock, {
+  }, React.createElement(Clock, {
     className: "h-4 w-4 sm:h-5 sm:w-5 text-yellow-600"
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", null, React.createElement("div", {
     className: "text-xs sm:text-sm text-gray-600"
-  }, "Pending"), /*#__PURE__*/React.createElement("div", {
+  }, "Pending"), React.createElement("div", {
     className: "text-xl sm:text-2xl font-bold text-yellow-900"
-  }, pendingEvents))), /*#__PURE__*/React.createElement(Badge, {
+  }, pendingEvents))), React.createElement(Badge, {
     variant: "outline",
     className: "bg-yellow-100 text-yellow-700 border-yellow-300 text-xs hidden sm:inline-flex"
-  }, data.summary.total_events > 0 ? (pendingEvents / data.summary.total_events * 100).toFixed(0) : 0, "%")))), /*#__PURE__*/React.createElement("div", {
+  }, data.summary.total_events > 0 ? (pendingEvents / data.summary.total_events * 100).toFixed(0) : 0, "%")))), React.createElement("div", {
     className: "border-t border-gray-200 pt-4"
-  }, /*#__PURE__*/React.createElement("h4", {
+  }, React.createElement("h4", {
     className: "text-sm font-semibold text-gray-900 mb-3"
-  }, "Financial Breakdown"), /*#__PURE__*/React.createElement("div", {
+  }, "Financial Breakdown"), React.createElement("div", {
     className: "overflow-x-auto -mx-4 sm:mx-0"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "inline-block min-w-full align-middle px-4 sm:px-0"
-  }, /*#__PURE__*/React.createElement("table", {
+  }, React.createElement("table", {
     className: "w-full text-xs sm:text-sm"
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", {
+  }, React.createElement("thead", null, React.createElement("tr", {
     className: "border-b border-gray-200"
-  }, /*#__PURE__*/React.createElement("th", {
+  }, React.createElement("th", {
     className: "text-left py-2 sm:py-3 px-2 sm:px-4 font-medium text-gray-900"
-  }, "Category"), /*#__PURE__*/React.createElement("th", {
+  }, "Category"), React.createElement("th", {
     className: "text-right py-2 sm:py-3 px-2 sm:px-4 font-medium text-gray-900"
-  }, "Amount"), /*#__PURE__*/React.createElement("th", {
+  }, "Amount"), React.createElement("th", {
     className: "text-right py-2 sm:py-3 px-2 sm:px-4 font-medium text-gray-900"
-  }, "%"))), /*#__PURE__*/React.createElement("tbody", {
+  }, "%"))), React.createElement("tbody", {
     className: "divide-y divide-gray-200"
-  }, /*#__PURE__*/React.createElement("tr", {
+  }, React.createElement("tr", {
     className: "hover:bg-gray-50"
-  }, /*#__PURE__*/React.createElement("td", {
+  }, React.createElement("td", {
     className: "py-2 sm:py-3 px-2 sm:px-4 text-gray-900"
-  }, "Gross Revenue"), /*#__PURE__*/React.createElement("td", {
+  }, "Gross Revenue"), React.createElement("td", {
     className: "py-2 sm:py-3 px-2 sm:px-4 text-right font-semibold text-gray-900"
-  }, formatCurrency(parseFloat(data.summary.total_gross_revenue))), /*#__PURE__*/React.createElement("td", {
+  }, formatCurrency(parseFloat(data.summary.total_gross_revenue))), React.createElement("td", {
     className: "py-2 sm:py-3 px-2 sm:px-4 text-right text-gray-600"
-  }, "100%")), /*#__PURE__*/React.createElement("tr", {
+  }, "100%")), React.createElement("tr", {
     className: "hover:bg-gray-50"
-  }, /*#__PURE__*/React.createElement("td", {
+  }, React.createElement("td", {
     className: "py-2 sm:py-3 px-2 sm:px-4 text-gray-700"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "flex items-center gap-1 sm:gap-2"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "truncate"
-  }, "Processing Fees"))), /*#__PURE__*/React.createElement("td", {
+  }, "Processing Fees"))), React.createElement("td", {
     className: "py-2 sm:py-3 px-2 sm:px-4 text-right font-medium text-red-600"
-  }, "-", formatCurrency(parseFloat(data.summary.total_processing_fees))), /*#__PURE__*/React.createElement("td", {
+  }, "-", formatCurrency(parseFloat(data.summary.total_processing_fees))), React.createElement("td", {
     className: "py-2 sm:py-3 px-2 sm:px-4 text-right text-gray-600"
-  }, data.fee_structure.processing_fee_percentage, "%")), /*#__PURE__*/React.createElement("tr", {
+  }, data.fee_structure.processing_fee_percentage, "%")), React.createElement("tr", {
     className: "hover:bg-gray-50"
-  }, /*#__PURE__*/React.createElement("td", {
+  }, React.createElement("td", {
     className: "py-2 sm:py-3 px-2 sm:px-4 text-gray-700"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "flex items-center gap-1 sm:gap-2"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "w-2 h-2 rounded-full bg-green-500 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "truncate"
-  }, "CONVENEHUB"))), /*#__PURE__*/React.createElement("td", {
+  }, "CONVENEHUB"))), React.createElement("td", {
     className: "py-2 sm:py-3 px-2 sm:px-4 text-right font-medium text-green-600"
-  }, "-", formatCurrency(parseFloat(data.summary.total_platform_commission))), /*#__PURE__*/React.createElement("td", {
+  }, "-", formatCurrency(parseFloat(data.summary.total_platform_commission))), React.createElement("td", {
     className: "py-2 sm:py-3 px-2 sm:px-4 text-right text-gray-600"
-  }, parseFloat(data.summary.total_gross_revenue) > 0 ? (parseFloat(data.summary.total_platform_commission) / parseFloat(data.summary.total_gross_revenue) * 100).toFixed(1) : 0, "%")), /*#__PURE__*/React.createElement("tr", {
+  }, parseFloat(data.summary.total_gross_revenue) > 0 ? (parseFloat(data.summary.total_platform_commission) / parseFloat(data.summary.total_gross_revenue) * 100).toFixed(1) : 0, "%")), React.createElement("tr", {
     className: "bg-blue-50 font-semibold border-t-2 border-blue-200"
-  }, /*#__PURE__*/React.createElement("td", {
+  }, React.createElement("td", {
     className: "py-2 sm:py-3 px-2 sm:px-4 text-[#195ADC]"
-  }, "Net Payout"), /*#__PURE__*/React.createElement("td", {
+  }, "Net Payout"), React.createElement("td", {
     className: "py-2 sm:py-3 px-2 sm:px-4 text-right text-[#195ADC]"
-  }, formatCurrency(parseFloat(data.summary.total_net_payout))), /*#__PURE__*/React.createElement("td", {
+  }, formatCurrency(parseFloat(data.summary.total_net_payout))), React.createElement("td", {
     className: "py-2 sm:py-3 px-2 sm:px-4 text-right text-[#195ADC]"
-  }, parseFloat(data.summary.total_gross_revenue) > 0 ? (parseFloat(data.summary.total_net_payout) / parseFloat(data.summary.total_gross_revenue) * 100).toFixed(1) : 0, "%"))))))), /*#__PURE__*/React.createElement("div", {
+  }, parseFloat(data.summary.total_gross_revenue) > 0 ? (parseFloat(data.summary.total_net_payout) / parseFloat(data.summary.total_gross_revenue) * 100).toFixed(1) : 0, "%"))))))), React.createElement("div", {
     className: "border-t border-gray-200 pt-4 flex flex-col gap-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex flex-wrap gap-2"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     onClick: downloadAllData,
     variant: "outline",
     size: "sm",
     className: "gap-2 flex-1 sm:flex-none"
-  }, /*#__PURE__*/React.createElement(Download, {
+  }, React.createElement(Download, {
     className: "h-4 w-4"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "hidden sm:inline"
-  }, "Export Full Report"), /*#__PURE__*/React.createElement("span", {
+  }, "Export Full Report"), React.createElement("span", {
     className: "sm:hidden"
-  }, "Export")), showAdminActions && /*#__PURE__*/React.createElement(Button, {
+  }, "Export")), showAdminActions && React.createElement(Button, {
     onClick: openSummaryEmailModal,
     variant: "outline",
     size: "sm",
     className: "gap-2 flex-1 sm:flex-none"
-  }, /*#__PURE__*/React.createElement(Mail, {
+  }, React.createElement(Mail, {
     className: "h-4 w-4"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "hidden sm:inline"
-  }, "Email Summary"), /*#__PURE__*/React.createElement("span", {
+  }, "Email Summary"), React.createElement("span", {
     className: "sm:hidden"
-  }, "Email"))), /*#__PURE__*/React.createElement("div", {
+  }, "Email"))), React.createElement("div", {
     className: "text-xs text-gray-500 text-center sm:text-left"
-  }, data.summary.total_events, " event", data.summary.total_events !== 1 ? "s" : "", " \u2022 ", data.summary.total_tickets_sold, " tickets"))))), /*#__PURE__*/React.createElement("div", {
+  }, data.summary.total_events, " event", data.summary.total_events !== 1 ? "s" : "", " \u2022 ", data.summary.total_tickets_sold, " tickets"))))), React.createElement("div", {
     className: "space-y-3 sm:space-y-4"
-  }, /*#__PURE__*/React.createElement("h3", {
+  }, React.createElement("h3", {
     className: "text-base sm:text-lg font-semibold text-gray-900"
   }, "Event-wise Breakdown"), data.events.map(event => {
     const isExpanded = expandedEvents.has(event.event_id);
     const netPayout = parseFloat(event.financial_summary.net_payout_to_movie_team);
-    return /*#__PURE__*/React.createElement(Card, {
+    return React.createElement(Card, {
       key: event.event_id,
       className: "border-gray-200"
-    }, /*#__PURE__*/React.createElement(CardHeader, {
+    }, React.createElement(CardHeader, {
       className: "cursor-pointer hover:bg-gray-50 transition-colors p-3 sm:p-6",
       onClick: () => toggleEventExpanded(event.event_id)
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "flex-1 min-w-0"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "flex flex-wrap items-center gap-2 mb-1 sm:mb-2"
-    }, /*#__PURE__*/React.createElement(CardTitle, {
+    }, React.createElement(CardTitle, {
       className: "text-base sm:text-lg truncate"
-    }, event.title), /*#__PURE__*/React.createElement(Badge, {
+    }, event.title), React.createElement(Badge, {
       variant: event.status === "ended" ? "secondary" : "outline",
       className: "text-xs flex-shrink-0"
-    }, event.status)), /*#__PURE__*/React.createElement(CardDescription, {
+    }, event.status)), React.createElement(CardDescription, {
       className: "text-xs sm:text-sm"
     }, new Date(event.date_time).toLocaleDateString("en-US", {
       weekday: "long",
       year: "numeric",
       month: "long",
       day: "numeric"
-    }), " \u2022 ", event.bookings.length, " booking", event.bookings.length !== 1 ? "s" : "")), /*#__PURE__*/React.createElement("div", {
+    }), " \u2022 ", event.bookings.length, " booking", event.bookings.length !== 1 ? "s" : "")), React.createElement("div", {
       className: "text-left sm:text-right flex-shrink-0"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-xs text-gray-500 mb-0.5"
-    }, "Net Payout"), /*#__PURE__*/React.createElement("div", {
+    }, "Net Payout"), React.createElement("div", {
       className: "text-lg sm:text-xl font-bold text-[#195ADC]"
-    }, formatCurrency(netPayout))))), isExpanded && /*#__PURE__*/React.createElement(CardContent, {
+    }, formatCurrency(netPayout))))), isExpanded && React.createElement(CardContent, {
       className: "border-t border-gray-100 pt-4 sm:pt-6"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "bg-gray-50 rounded-lg p-4"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-xs text-gray-600 mb-1"
-    }, "Gross Revenue"), /*#__PURE__*/React.createElement("div", {
+    }, "Gross Revenue"), React.createElement("div", {
       className: "text-lg font-semibold text-gray-900"
-    }, formatCurrency(parseFloat(event.financial_summary.gross_revenue)))), /*#__PURE__*/React.createElement("div", {
+    }, formatCurrency(parseFloat(event.financial_summary.gross_revenue)))), React.createElement("div", {
       className: "bg-gray-50 rounded-lg p-4"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-xs text-gray-600 mb-1"
-    }, "Processing Fees"), /*#__PURE__*/React.createElement("div", {
+    }, "Processing Fees"), React.createElement("div", {
       className: "text-lg font-semibold text-red-600"
-    }, "-", formatCurrency(parseFloat(event.financial_summary.processing_fees)))), /*#__PURE__*/React.createElement("div", {
+    }, "-", formatCurrency(parseFloat(event.financial_summary.processing_fees)))), React.createElement("div", {
       className: "bg-gray-50 rounded-lg p-4"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-xs text-gray-600 mb-1"
-    }, "CONVENEHUB Commission (", event.financial_summary.platform_commission_percentage, "%)"), /*#__PURE__*/React.createElement("div", {
+    }, "CONVENEHUB Commission (", event.financial_summary.platform_commission_percentage, "%)"), React.createElement("div", {
       className: "text-lg font-semibold text-green-600"
-    }, "-", formatCurrency(parseFloat(event.financial_summary.platform_commission)))), /*#__PURE__*/React.createElement("div", {
+    }, "-", formatCurrency(parseFloat(event.financial_summary.platform_commission)))), React.createElement("div", {
       className: "bg-blue-50 rounded-lg p-4 border-2 border-[#195ADC]"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-xs text-[#195ADC] font-medium mb-1"
-    }, "Net Payout"), /*#__PURE__*/React.createElement("div", {
+    }, "Net Payout"), React.createElement("div", {
       className: "text-lg font-semibold text-[#195ADC]"
-    }, formatCurrency(netPayout)))), /*#__PURE__*/React.createElement("div", {
+    }, formatCurrency(netPayout)))), React.createElement("div", {
       className: "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-gray-100"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "flex flex-wrap items-center gap-2 sm:gap-3"
-    }, /*#__PURE__*/React.createElement(Button, {
+    }, React.createElement(Button, {
       onClick: () => downloadCSV(event),
       variant: "outline",
       size: "sm",
       className: "gap-2"
-    }, /*#__PURE__*/React.createElement(Download, {
+    }, React.createElement(Download, {
       className: "h-4 w-4"
-    }), "Download Report"), showAdminActions && (event.settlement_status === "settled" ? /*#__PURE__*/React.createElement(Button, {
+    }), "Download Report"), showAdminActions && (event.settlement_status === "settled" ? React.createElement(Button, {
       disabled: true,
       variant: "default",
       size: "sm",
       className: "gap-2 bg-green-600 hover:bg-green-600 cursor-default"
-    }, /*#__PURE__*/React.createElement(CheckCircle2, {
+    }, React.createElement(CheckCircle2, {
       className: "h-4 w-4"
-    }), "\u2713 Settled") : /*#__PURE__*/React.createElement(Button, {
+    }), "\u2713 Settled") : React.createElement(Button, {
       onClick: () => openSettlementModal(event),
       variant: "default",
       size: "sm",
       className: "gap-2 bg-[#195ADC] hover:bg-[#1451c4]"
-    }, /*#__PURE__*/React.createElement(CheckCircle2, {
+    }, React.createElement(CheckCircle2, {
       className: "h-4 w-4"
-    }), "Mark as Paid"))), showAdminActions && /*#__PURE__*/React.createElement(Button, {
+    }), "Mark as Paid"))), showAdminActions && React.createElement(Button, {
       onClick: () => openEmailModal(event),
       variant: "outline",
       size: "sm",
       className: "gap-2"
-    }, /*#__PURE__*/React.createElement(Mail, {
+    }, React.createElement(Mail, {
       className: "h-4 w-4"
     }), "Send Email")), (() => {
       // Debug logging
       if (event.settlement_status === "settled") {}
       return null;
-    })(), event.settlement_status === "settled" && event.settlement_details && /*#__PURE__*/React.createElement("div", {
+    })(), event.settlement_status === "settled" && event.settlement_details && React.createElement("div", {
       className: "mb-6 pb-6 border-b border-gray-100"
-    }, /*#__PURE__*/React.createElement("h4", {
+    }, React.createElement("h4", {
       className: "text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2"
-    }, /*#__PURE__*/React.createElement(CheckCircle2, {
+    }, React.createElement(CheckCircle2, {
       className: "h-4 w-4 text-green-600"
-    }), "Settlement Details"), /*#__PURE__*/React.createElement("div", {
+    }), "Settlement Details"), React.createElement("div", {
       className: "bg-green-50 border border-green-200 rounded-lg p-4"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "grid grid-cols-1 md:grid-cols-2 gap-4"
-    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", null, React.createElement("div", {
       className: "text-xs text-green-700 font-medium mb-1"
-    }, "Transaction Reference"), /*#__PURE__*/React.createElement("div", {
+    }, "Transaction Reference"), React.createElement("div", {
       className: "text-sm font-mono text-green-900"
-    }, event.settlement_details.transaction_reference)), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    }, event.settlement_details.transaction_reference)), React.createElement("div", null, React.createElement("div", {
       className: "text-xs text-green-700 font-medium mb-1"
-    }, "Transfer Date"), /*#__PURE__*/React.createElement("div", {
+    }, "Transfer Date"), React.createElement("div", {
       className: "text-sm text-green-900"
     }, new Date(event.settlement_details.transfer_date).toLocaleDateString("en-IN", {
       weekday: "short",
       year: "numeric",
       month: "short",
       day: "numeric"
-    }))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    }))), React.createElement("div", null, React.createElement("div", {
       className: "text-xs text-green-700 font-medium mb-1"
-    }, "Payment Method"), /*#__PURE__*/React.createElement("div", {
+    }, "Payment Method"), React.createElement("div", {
       className: "text-sm text-green-900"
-    }, event.settlement_details.payment_method.replace(/_/g, " ").toUpperCase())), event.settlement_details.notes && /*#__PURE__*/React.createElement("div", {
+    }, event.settlement_details.payment_method.replace(/_/g, " ").toUpperCase())), event.settlement_details.notes && React.createElement("div", {
       className: "md:col-span-2"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-xs text-green-700 font-medium mb-1"
-    }, "Notes"), /*#__PURE__*/React.createElement("div", {
+    }, "Notes"), React.createElement("div", {
       className: "text-sm text-green-900"
-    }, event.settlement_details.notes))))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", {
+    }, event.settlement_details.notes))))), React.createElement("div", null, React.createElement("h4", {
       className: "text-sm font-semibold text-gray-900 mb-3"
-    }, "Bookings"), /*#__PURE__*/React.createElement("div", {
+    }, "Bookings"), React.createElement("div", {
       className: "overflow-x-auto"
-    }, /*#__PURE__*/React.createElement("table", {
+    }, React.createElement("table", {
       className: "w-full text-sm"
-    }, /*#__PURE__*/React.createElement("thead", {
+    }, React.createElement("thead", {
       className: "bg-gray-50 border-y border-gray-200"
-    }, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
+    }, React.createElement("tr", null, React.createElement("th", {
       className: "px-4 py-3 text-left font-medium text-gray-600"
-    }, "Booking ID"), /*#__PURE__*/React.createElement("th", {
+    }, "Booking ID"), React.createElement("th", {
       className: "px-4 py-3 text-center font-medium text-gray-600"
-    }, "Tickets"), /*#__PURE__*/React.createElement("th", {
+    }, "Tickets"), React.createElement("th", {
       className: "px-4 py-3 text-right font-medium text-gray-600"
-    }, "Total"), /*#__PURE__*/React.createElement("th", {
+    }, "Total"), React.createElement("th", {
       className: "px-4 py-3 text-center font-medium text-gray-600"
-    }, "Status"), /*#__PURE__*/React.createElement("th", {
+    }, "Status"), React.createElement("th", {
       className: "px-4 py-3 text-center font-medium text-gray-600"
-    }, "Date"))), /*#__PURE__*/React.createElement("tbody", {
+    }, "Date"))), React.createElement("tbody", {
       className: "divide-y divide-gray-100"
-    }, event.bookings.map(booking => /*#__PURE__*/React.createElement("tr", {
+    }, event.bookings.map(booking => React.createElement("tr", {
       key: booking.booking_id,
       className: "hover:bg-gray-50"
-    }, /*#__PURE__*/React.createElement("td", {
+    }, React.createElement("td", {
       className: "px-4 py-3 text-gray-900 font-mono text-sm"
-    }, booking.booking_id.slice(0, 8)), /*#__PURE__*/React.createElement("td", {
+    }, booking.booking_id.slice(0, 8)), React.createElement("td", {
       className: "px-4 py-3 text-center text-gray-900"
-    }, booking.tickets_count), /*#__PURE__*/React.createElement("td", {
+    }, booking.tickets_count), React.createElement("td", {
       className: "px-4 py-3 text-right font-mono font-semibold text-gray-900"
-    }, formatCurrency(parseFloat(booking.total_amount))), /*#__PURE__*/React.createElement("td", {
+    }, formatCurrency(parseFloat(booking.total_amount))), React.createElement("td", {
       className: "px-4 py-3 text-center"
-    }, /*#__PURE__*/React.createElement(Badge, {
+    }, React.createElement(Badge, {
       variant: booking.payment_status === "paid" ? "default" : "outline",
       className: "font-medium"
-    }, booking.payment_status)), /*#__PURE__*/React.createElement("td", {
+    }, booking.payment_status)), React.createElement("td", {
       className: "px-4 py-3 text-center text-gray-600"
     }, new Date(booking.booked_at).toLocaleDateString())))))))));
-  })), /*#__PURE__*/React.createElement(Card, {
+  })), React.createElement(Card, {
     className: "border-blue-200 bg-blue-50"
-  }, /*#__PURE__*/React.createElement(CardContent, {
+  }, React.createElement(CardContent, {
     className: "p-4 sm:pt-6"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex gap-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex-shrink-0"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-100"
-  }, /*#__PURE__*/React.createElement(AlertCircle, {
+  }, React.createElement(AlertCircle, {
     className: "h-4 w-4 sm:h-5 sm:w-5 text-blue-600"
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), React.createElement("div", {
     className: "min-w-0"
-  }, /*#__PURE__*/React.createElement("h4", {
+  }, React.createElement("h4", {
     className: "text-xs sm:text-sm font-semibold text-blue-900 mb-1"
-  }, "About Financial Calculations"), /*#__PURE__*/React.createElement("p", {
+  }, "About Financial Calculations"), React.createElement("p", {
     className: "text-xs sm:text-sm text-blue-700 leading-relaxed"
-  }, "All calculations use precise decimal arithmetic. Processing charges are ", data.fee_structure.processing_fee_percentage, "% per transaction, CONVENEHUB commission varies by event. Net payout = Gross - processing fees - CONVENEHUB commission."))))), showAdminActions && settlementModal.event && /*#__PURE__*/React.createElement(SettlementModal, {
+  }, "All calculations use precise decimal arithmetic. Processing charges are ", data.fee_structure.processing_fee_percentage, "% per transaction, CONVENEHUB commission varies by event. Net payout = Gross - processing fees - CONVENEHUB commission."))))), showAdminActions && settlementModal.event && React.createElement(SettlementModal, {
     isOpen: settlementModal.isOpen,
     onClose: closeSettlementModal,
     onSuccess: handleSettlementSuccess,
     event: settlementModal.event
-  }), /*#__PURE__*/React.createElement(Dialog, {
+  }), React.createElement(Dialog, {
     open: showAdminActions && emailModal.isOpen,
     onOpenChange: closeEmailModal
-  }, /*#__PURE__*/React.createElement(DialogContent, {
+  }, React.createElement(DialogContent, {
     className: "sm:max-w-[450px]"
-  }, emailModal.success ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(DialogHeader, null, /*#__PURE__*/React.createElement(DialogTitle, {
+  }, emailModal.success ? React.createElement(React.Fragment, null, React.createElement(DialogHeader, null, React.createElement(DialogTitle, {
     className: "text-center"
-  }, "Email Sent Successfully")), /*#__PURE__*/React.createElement("div", {
+  }, "Email Sent Successfully")), React.createElement("div", {
     className: "py-8 text-center"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "mx-auto mb-4 h-12 w-12 rounded-full bg-green-100 flex items-center justify-center"
-  }, /*#__PURE__*/React.createElement(CheckCircle2, {
+  }, React.createElement(CheckCircle2, {
     className: "h-6 w-6 text-green-600"
-  })), /*#__PURE__*/React.createElement("p", {
+  })), React.createElement("p", {
     className: "text-sm text-gray-600 mb-2"
-  }, "Settlement report has been sent to"), /*#__PURE__*/React.createElement("p", {
+  }, "Settlement report has been sent to"), React.createElement("p", {
     className: "font-medium text-gray-900 break-all"
-  }, movieTeamEmail), /*#__PURE__*/React.createElement("p", {
+  }, movieTeamEmail), React.createElement("p", {
     className: "text-xs text-gray-500 mt-4"
-  }, "The CSV report and financial details have been attached"))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(DialogHeader, null, /*#__PURE__*/React.createElement(DialogTitle, null, "Send Settlement Report"), /*#__PURE__*/React.createElement(DialogDescription, null, "Send the financial settlement report for ", /*#__PURE__*/React.createElement("strong", null, emailModal.event?.title), " to the event operations team.")), /*#__PURE__*/React.createElement("div", {
+  }, "The CSV report and financial details have been attached"))) : React.createElement(React.Fragment, null, React.createElement(DialogHeader, null, React.createElement(DialogTitle, null, "Send Settlement Report"), React.createElement(DialogDescription, null, "Send the financial settlement report for ", React.createElement("strong", null, emailModal.event?.title), " to the event operations team.")), React.createElement("div", {
     className: "space-y-4 py-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "movie_team_email"
-  }, "Event Operations Email Address ", /*#__PURE__*/React.createElement("span", {
+  }, "Event Operations Email Address ", React.createElement("span", {
     className: "text-red-500"
-  }, "*")), /*#__PURE__*/React.createElement(Input, {
+  }, "*")), React.createElement(Input, {
     id: "movie_team_email",
     type: "email",
     placeholder: "ops@convenehub.com",
     value: movieTeamEmail,
     onChange: e => setMovieTeamEmail(e.target.value),
     disabled: emailModal.loading
-  }), /*#__PURE__*/React.createElement("p", {
+  }), React.createElement("p", {
     className: "text-xs text-gray-500"
-  }, "The settlement report will be sent to this email address with CSV attachment")), emailModal.error && /*#__PURE__*/React.createElement(Alert, {
+  }, "The settlement report will be sent to this email address with CSV attachment")), emailModal.error && React.createElement(Alert, {
     variant: "destructive"
-  }, /*#__PURE__*/React.createElement(AlertCircle, {
+  }, React.createElement(AlertCircle, {
     className: "h-4 w-4"
-  }), /*#__PURE__*/React.createElement(AlertDescription, null, emailModal.error)), /*#__PURE__*/React.createElement(Alert, null, /*#__PURE__*/React.createElement(AlertCircle, {
+  }), React.createElement(AlertDescription, null, emailModal.error)), React.createElement(Alert, null, React.createElement(AlertCircle, {
     className: "h-4 w-4"
-  }), /*#__PURE__*/React.createElement(AlertDescription, null, /*#__PURE__*/React.createElement("strong", null, "Details included:"), " Financial breakdown, CSV report attachment, gross revenue, fees, and net payout."))), /*#__PURE__*/React.createElement(DialogFooter, null, /*#__PURE__*/React.createElement(Button, {
+  }), React.createElement(AlertDescription, null, React.createElement("strong", null, "Details included:"), " Financial breakdown, CSV report attachment, gross revenue, fees, and net payout."))), React.createElement(DialogFooter, null, React.createElement(Button, {
     type: "button",
     variant: "outline",
     onClick: closeEmailModal,
     disabled: emailModal.loading
-  }, "Cancel"), /*#__PURE__*/React.createElement(Button, {
+  }, "Cancel"), React.createElement(Button, {
     onClick: handleSendEmail,
     disabled: emailModal.loading || !movieTeamEmail.trim(),
     className: "bg-[#195ADC] hover:bg-[#1451c4]"
-  }, emailModal.loading ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Clock, {
+  }, emailModal.loading ? React.createElement(React.Fragment, null, React.createElement(Clock, {
     className: "mr-2 h-4 w-4 animate-spin"
-  }), "Sending...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Mail, {
+  }), "Sending...") : React.createElement(React.Fragment, null, React.createElement(Mail, {
     className: "mr-2 h-4 w-4"
-  }), "Send Report")))))), /*#__PURE__*/React.createElement(Dialog, {
+  }), "Send Report")))))), React.createElement(Dialog, {
     open: showAdminActions && summaryEmailModal.isOpen,
     onOpenChange: closeSummaryEmailModal
-  }, /*#__PURE__*/React.createElement(DialogContent, {
+  }, React.createElement(DialogContent, {
     className: "sm:max-w-[500px]"
-  }, summaryEmailModal.success ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(DialogHeader, null, /*#__PURE__*/React.createElement(DialogTitle, {
+  }, summaryEmailModal.success ? React.createElement(React.Fragment, null, React.createElement(DialogHeader, null, React.createElement(DialogTitle, {
     className: "flex items-center gap-2 text-green-600"
-  }, /*#__PURE__*/React.createElement(CheckCircle2, {
+  }, React.createElement(CheckCircle2, {
     className: "h-5 w-5"
-  }), "Email Sent Successfully!"), /*#__PURE__*/React.createElement(DialogDescription, null, "The overall financial summary report has been sent successfully."))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(DialogHeader, null, /*#__PURE__*/React.createElement(DialogTitle, {
+  }), "Email Sent Successfully!"), React.createElement(DialogDescription, null, "The overall financial summary report has been sent successfully."))) : React.createElement(React.Fragment, null, React.createElement(DialogHeader, null, React.createElement(DialogTitle, {
     className: "flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(Mail, {
+  }, React.createElement(Mail, {
     className: "h-5 w-5"
-  }), "Email Overall Summary Report"), /*#__PURE__*/React.createElement(DialogDescription, null, "Send a comprehensive financial summary report via email")), /*#__PURE__*/React.createElement("div", {
+  }), "Email Overall Summary Report"), React.createElement(DialogDescription, null, "Send a comprehensive financial summary report via email")), React.createElement("div", {
     className: "space-y-4 py-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "summary_recipient_email"
-  }, "Recipient Email Address *"), /*#__PURE__*/React.createElement(Input, {
+  }, "Recipient Email Address *"), React.createElement(Input, {
     id: "summary_recipient_email",
     type: "email",
     placeholder: "admin@example.com",
     value: summaryRecipientEmail,
     onChange: e => setSummaryRecipientEmail(e.target.value),
     disabled: summaryEmailModal.loading
-  }), /*#__PURE__*/React.createElement("p", {
+  }), React.createElement("p", {
     className: "text-xs text-gray-500"
-  }, "The complete financial summary with all events will be sent to this email")), summaryEmailModal.error && /*#__PURE__*/React.createElement(Alert, {
+  }, "The complete financial summary with all events will be sent to this email")), summaryEmailModal.error && React.createElement(Alert, {
     variant: "destructive"
-  }, /*#__PURE__*/React.createElement(AlertCircle, {
+  }, React.createElement(AlertCircle, {
     className: "h-4 w-4"
-  }), /*#__PURE__*/React.createElement(AlertDescription, null, summaryEmailModal.error)), /*#__PURE__*/React.createElement(Alert, null, /*#__PURE__*/React.createElement(AlertCircle, {
+  }), React.createElement(AlertDescription, null, summaryEmailModal.error)), React.createElement(Alert, null, React.createElement(AlertCircle, {
     className: "h-4 w-4"
-  }), /*#__PURE__*/React.createElement(AlertDescription, null, /*#__PURE__*/React.createElement("strong", null, "Report includes:"), /*#__PURE__*/React.createElement("ul", {
+  }), React.createElement(AlertDescription, null, React.createElement("strong", null, "Report includes:"), React.createElement("ul", {
     className: "list-disc list-inside mt-2 text-sm space-y-1"
-  }, /*#__PURE__*/React.createElement("li", null, "Overall financial summary"), /*#__PURE__*/React.createElement("li", null, "Event-wise breakdown with commission rates"), /*#__PURE__*/React.createElement("li", null, "Settlement status for all events"), /*#__PURE__*/React.createElement("li", null, "Complete booking details"), /*#__PURE__*/React.createElement("li", null, "CSV attachment for offline analysis"))))), /*#__PURE__*/React.createElement(DialogFooter, null, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement("li", null, "Overall financial summary"), React.createElement("li", null, "Event-wise breakdown with commission rates"), React.createElement("li", null, "Settlement status for all events"), React.createElement("li", null, "Complete booking details"), React.createElement("li", null, "CSV attachment for offline analysis"))))), React.createElement(DialogFooter, null, React.createElement(Button, {
     type: "button",
     variant: "outline",
     onClick: closeSummaryEmailModal,
     disabled: summaryEmailModal.loading
-  }, "Cancel"), /*#__PURE__*/React.createElement(Button, {
+  }, "Cancel"), React.createElement(Button, {
     onClick: handleSendSummaryEmail,
     disabled: summaryEmailModal.loading || !summaryRecipientEmail.trim(),
     className: "bg-[#195ADC] hover:bg-[#1451c4]"
-  }, summaryEmailModal.loading ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Clock, {
+  }, summaryEmailModal.loading ? React.createElement(React.Fragment, null, React.createElement(Clock, {
     className: "mr-2 h-4 w-4 animate-spin"
-  }), "Sending...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Mail, {
+  }), "Sending...") : React.createElement(React.Fragment, null, React.createElement(Mail, {
     className: "mr-2 h-4 w-4"
   }), "Send Summary Report")))))));
 }

@@ -201,14 +201,14 @@ export const DottedGlowBackground = ({
       ro.disconnect();
     };
   }, [gap, radius, resolvedColor, resolvedGlowColor, opacity, backgroundOpacity, speedMin, speedMax, speedScale]);
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     ref: containerRef,
     className: className,
     style: {
       position: "absolute",
       inset: 0
     }
-  }, /*#__PURE__*/React.createElement("canvas", {
+  }, React.createElement("canvas", {
     ref: canvasRef,
     style: {
       display: "block",

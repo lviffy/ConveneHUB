@@ -10,24 +10,24 @@ function _extends() {
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { Scene, PerspectiveCamera, WebGLRenderer, QuadraticBezierCurve3, Vector3, TubeGeometry, ShaderMaterial, Mesh, AdditiveBlending, DoubleSide, Color, PlaneGeometry } from "three";
-const Input = /*#__PURE__*/React.forwardRef(({
+const Input = React.forwardRef(({
   className,
   type,
   ...props
 }, ref) => {
-  return /*#__PURE__*/React.createElement("input", _extends({
+  return React.createElement("input", _extends({
     type: type,
     className: `flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`,
     ref: ref
   }, props));
 });
 Input.displayName = "Input";
-const Button = /*#__PURE__*/React.forwardRef(({
+const Button = React.forwardRef(({
   className,
   children,
   ...props
 }, ref) => {
-  return /*#__PURE__*/React.createElement("button", _extends({
+  return React.createElement("button", _extends({
     className: `inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50  text-primary-foreground h-10 px-4 py-2 ${className}`,
     ref: ref
   }, props), children);
@@ -301,104 +301,104 @@ export function WaitlistExperience() {
       setIsSubmitted(true);
     }
   };
-  return /*#__PURE__*/React.createElement("main", {
+  return React.createElement("main", {
     className: "relative min-h-screen w-full overflow-hidden bg-white"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     ref: mountRef,
     className: "fixed inset-0 w-full h-screen",
     style: {
       zIndex: 0
     }
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "relative z-10 min-h-screen"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-center min-h-screen px-4 pt-8"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "relative"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "relative backdrop-blur-xl bg-white/40 border border-[#C6BEF4]/60 rounded-3xl p-8 w-[420px] shadow-2xl"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "absolute inset-0 rounded-3xl bg-gradient-to-br from-[#F5F4FE]/80 to-transparent pointer-events-none"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "relative z-10"
-  }, !isSubmitted ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, !isSubmitted ? React.createElement(React.Fragment, null, React.createElement("div", {
     className: "mb-8 text-center"
-  }, /*#__PURE__*/React.createElement("h1", {
+  }, React.createElement("h1", {
     className: "text-4xl font-bold text-[#010101] mb-4 tracking-tight"
-  }, "Join the waitlist"), /*#__PURE__*/React.createElement("p", {
+  }, "Join the waitlist"), React.createElement("p", {
     className: "text-[#010101]/70 text-base leading-relaxed font-normal"
-  }, "Get early access to ConveneHub - the ultimate ecosystem", /*#__PURE__*/React.createElement("br", null), "for the entertainment industry")), /*#__PURE__*/React.createElement("form", {
+  }, "Get early access to ConveneHub - the ultimate ecosystem", React.createElement("br", null), "for the entertainment industry")), React.createElement("form", {
     onSubmit: handleSubmit,
     className: "mb-6"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex gap-3"
-  }, /*#__PURE__*/React.createElement(Input, {
+  }, React.createElement(Input, {
     type: "email",
     placeholder: "your.email@example.com",
     value: email,
     onChange: e => setEmail(e.target.value),
     required: true,
     className: "flex-1 bg-white/70 border-[#C6BEF4] text-[#010101] placeholder:text-[#010101]/50 focus:border-[#195ADC] focus:ring-[#195ADC]/30 h-12 rounded-xl backdrop-blur-sm"
-  }), /*#__PURE__*/React.createElement(Button, {
+  }), React.createElement(Button, {
     type: "submit",
     className: "h-12 px-6 bg-[#195ADC] hover:bg-[#378FFA] text-white font-semibold cursor-pointer rounded-xl transition-all duration-300 shadow-lg hover:shadow-2xl shadow-[#195ADC]/25"
-  }, "Sign Up"))), /*#__PURE__*/React.createElement("div", {
+  }, "Sign Up"))), React.createElement("div", {
     className: "flex items-center justify-center gap-3 mb-6"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex -space-x-2"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "w-8 h-8 rounded-full bg-[#195ADC] border-2 border-white flex items-center justify-center text-white text-xs font-semibold"
-  }, "E"), /*#__PURE__*/React.createElement("div", {
+  }, "E"), React.createElement("div", {
     className: "w-8 h-8 rounded-full bg-[#7F56D9] border-2 border-white flex items-center justify-center text-white text-xs font-semibold"
-  }, "O"), /*#__PURE__*/React.createElement("div", {
+  }, "O"), React.createElement("div", {
     className: "w-8 h-8 rounded-full bg-[#378FFA] border-2 border-white flex items-center justify-center text-white text-xs font-semibold"
-  }, "N")), /*#__PURE__*/React.createElement("span", {
+  }, "N")), React.createElement("span", {
     className: "text-[#010101]/70 text-sm font-medium"
-  }, "~ 20+ Creators already joined")), /*#__PURE__*/React.createElement("div", {
+  }, "~ 20+ Creators already joined")), React.createElement("div", {
     className: "flex items-center justify-center gap-6 text-center"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", null, React.createElement("div", {
     className: "text-2xl font-bold text-[#195ADC]"
-  }, timeLeft.days), /*#__PURE__*/React.createElement("div", {
+  }, timeLeft.days), React.createElement("div", {
     className: "text-xs text-[#010101]/60 uppercase tracking-wide font-medium"
-  }, "days")), /*#__PURE__*/React.createElement("div", {
+  }, "days")), React.createElement("div", {
     className: "text-[#C6BEF4]"
-  }, "|"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }, "|"), React.createElement("div", null, React.createElement("div", {
     className: "text-2xl font-bold text-[#195ADC]"
-  }, timeLeft.hours), /*#__PURE__*/React.createElement("div", {
+  }, timeLeft.hours), React.createElement("div", {
     className: "text-xs text-[#010101]/60 uppercase tracking-wide font-medium"
-  }, "hours")), /*#__PURE__*/React.createElement("div", {
+  }, "hours")), React.createElement("div", {
     className: "text-[#C6BEF4]"
-  }, "|"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }, "|"), React.createElement("div", null, React.createElement("div", {
     className: "text-2xl font-bold text-[#195ADC]"
-  }, timeLeft.minutes), /*#__PURE__*/React.createElement("div", {
+  }, timeLeft.minutes), React.createElement("div", {
     className: "text-xs text-[#010101]/60 uppercase tracking-wide font-medium"
-  }, "minutes")), /*#__PURE__*/React.createElement("div", {
+  }, "minutes")), React.createElement("div", {
     className: "text-[#C6BEF4]"
-  }, "|"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }, "|"), React.createElement("div", null, React.createElement("div", {
     className: "text-2xl font-bold text-[#195ADC]"
-  }, timeLeft.seconds), /*#__PURE__*/React.createElement("div", {
+  }, timeLeft.seconds), React.createElement("div", {
     className: "text-xs text-[#010101]/60 uppercase tracking-wide font-medium"
-  }, "seconds")))) : /*#__PURE__*/React.createElement("div", {
+  }, "seconds")))) : React.createElement("div", {
     className: "text-center py-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-[#DAEDFF] to-[#BEE0FF] flex items-center justify-center border border-[#5DB0FD]"
-  }, /*#__PURE__*/React.createElement("svg", {
+  }, React.createElement("svg", {
     className: "w-8 h-8 text-[#195ADC]",
     fill: "none",
     stroke: "currentColor",
     viewBox: "0 0 24 24"
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     strokeLinecap: "round",
     strokeLinejoin: "round",
     strokeWidth: 2,
     d: "M5 13l4 4L19 7"
-  }))), /*#__PURE__*/React.createElement("h3", {
+  }))), React.createElement("h3", {
     className: "text-xl font-bold text-[#010101] mb-2"
-  }, "You're on the list!"), /*#__PURE__*/React.createElement("p", {
+  }, "You're on the list!"), React.createElement("p", {
     className: "text-[#010101]/70 text-sm font-normal"
-  }, "We'll notify you when we launch. Thanks for joining!"))), /*#__PURE__*/React.createElement("div", {
+  }, "We'll notify you when we launch. Thanks for joining!"))), React.createElement("div", {
     className: "absolute inset-0 rounded-3xl bg-gradient-to-t from-transparent via-white/10 to-white/20 pointer-events-none"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "absolute inset-0 rounded-3xl bg-gradient-to-r from-[#5DB0FD]/20 to-[#A998ED]/20 blur-xl scale-110 -z-10"
   })))));
 }

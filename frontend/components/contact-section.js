@@ -65,16 +65,16 @@ export default function ContactSection() {
       setTimeout(() => setSubmitStatus("idle"), 3000);
     }
   };
-  return /*#__PURE__*/React.createElement("section", {
+  return React.createElement("section", {
     ref: sectionRef,
     id: "contact",
     className: "w-full py-8 xs:py-12 sm:py-16 lg:py-24 px-4 xs:px-5 sm:px-6 bg-white"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     style: {
       y
     },
     className: "mx-auto max-w-2xl"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: -20
@@ -91,16 +91,16 @@ export default function ContactSection() {
       duration: 0.6
     },
     className: "text-center mb-8 xs:mb-10"
-  }, /*#__PURE__*/React.createElement(Badge, {
+  }, React.createElement(Badge, {
     variant: "outline",
     className: "text-xs mb-2"
-  }, "Get In Touch"), /*#__PURE__*/React.createElement("h2", {
+  }, "Get In Touch"), React.createElement("h2", {
     className: "text-2xl xs:text-3xl md:text-4xl font-bold text-gray-900 mb-3"
-  }, "Let's ", /*#__PURE__*/React.createElement("span", {
+  }, "Let's ", React.createElement("span", {
     className: "text-blue-600"
-  }, "Connect")), /*#__PURE__*/React.createElement("p", {
+  }, "Connect")), React.createElement("p", {
     className: "text-sm xs:text-base text-gray-600 max-w-xl mx-auto"
-  }, "Have questions? Get in touch with our team.")), /*#__PURE__*/React.createElement(motion.div, {
+  }, "Have questions? Get in touch with our team.")), React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: 30
@@ -117,29 +117,29 @@ export default function ContactSection() {
       duration: 0.6
     },
     className: "w-full max-w-xl mx-auto"
-  }, /*#__PURE__*/React.createElement("form", {
+  }, React.createElement("form", {
     onSubmit: handleSubmit(onSubmit),
     className: "space-y-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "space-y-1.5"
-  }, /*#__PURE__*/React.createElement("label", {
+  }, React.createElement("label", {
     htmlFor: "name",
     className: "block text-xs xs:text-sm font-semibold text-gray-900"
-  }, "Full Name"), /*#__PURE__*/React.createElement(Input, _extends({
+  }, "Full Name"), React.createElement(Input, _extends({
     id: "name",
     placeholder: "Your name"
   }, register("name", {
     required: "Name is required"
   }), {
     className: "w-full bg-white border border-gray-300 rounded-lg px-3 py-2 placeholder:text-gray-400 focus:border-blue-500 focus:ring-0 focus:outline-none transition-colors text-sm"
-  })), errors.name && /*#__PURE__*/React.createElement("p", {
+  })), errors.name && React.createElement("p", {
     className: "text-xs text-red-600"
-  }, errors.name.message)), /*#__PURE__*/React.createElement("div", {
+  }, errors.name.message)), React.createElement("div", {
     className: "space-y-1.5"
-  }, /*#__PURE__*/React.createElement("label", {
+  }, React.createElement("label", {
     htmlFor: "email",
     className: "block text-xs xs:text-sm font-semibold text-gray-900"
-  }, "Email Address"), /*#__PURE__*/React.createElement(Input, _extends({
+  }, "Email Address"), React.createElement(Input, _extends({
     id: "email",
     type: "email",
     placeholder: "your@email.com"
@@ -151,37 +151,37 @@ export default function ContactSection() {
     }
   }), {
     className: "w-full bg-white border border-gray-300 rounded-lg px-3 py-2 placeholder:text-gray-400 focus:border-blue-500 focus:ring-0 focus:outline-none transition-colors text-sm"
-  })), errors.email && /*#__PURE__*/React.createElement("p", {
+  })), errors.email && React.createElement("p", {
     className: "text-xs text-red-600"
-  }, errors.email.message)), /*#__PURE__*/React.createElement("div", {
+  }, errors.email.message)), React.createElement("div", {
     className: "space-y-1.5"
-  }, /*#__PURE__*/React.createElement("label", {
+  }, React.createElement("label", {
     htmlFor: "subject",
     className: "block text-xs xs:text-sm font-semibold text-gray-900"
-  }, "Subject"), /*#__PURE__*/React.createElement(Input, _extends({
+  }, "Subject"), React.createElement(Input, _extends({
     id: "subject",
     placeholder: "What is this about?"
   }, register("subject", {
     required: "Subject is required"
   }), {
     className: "w-full bg-white border border-gray-300 rounded-lg px-3 py-2 placeholder:text-gray-400 focus:border-blue-500 focus:ring-0 focus:outline-none transition-colors text-sm"
-  })), errors.subject && /*#__PURE__*/React.createElement("p", {
+  })), errors.subject && React.createElement("p", {
     className: "text-xs text-red-600"
-  }, errors.subject.message)), /*#__PURE__*/React.createElement("div", {
+  }, errors.subject.message)), React.createElement("div", {
     className: "space-y-1.5"
-  }, /*#__PURE__*/React.createElement("label", {
+  }, React.createElement("label", {
     htmlFor: "message",
     className: "block text-xs xs:text-sm font-semibold text-gray-900"
-  }, "Message"), /*#__PURE__*/React.createElement(Textarea, _extends({
+  }, "Message"), React.createElement(Textarea, _extends({
     id: "message",
     placeholder: "Tell us more about your inquiry..."
   }, register("message", {
     required: "Message is required"
   }), {
     className: "w-full min-h-28 bg-white border border-gray-300 rounded-lg px-3 py-2 placeholder:text-gray-400 focus:border-blue-500 focus:ring-0 focus:outline-none transition-colors resize-none text-sm"
-  })), errors.message && /*#__PURE__*/React.createElement("p", {
+  })), errors.message && React.createElement("p", {
     className: "text-xs text-red-600"
-  }, errors.message.message)), submitStatus === "success" && /*#__PURE__*/React.createElement(motion.div, {
+  }, errors.message.message)), submitStatus === "success" && React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: -10
@@ -191,7 +191,7 @@ export default function ContactSection() {
       y: 0
     },
     className: "p-3 rounded-lg bg-green-50 border border-green-200 text-green-800 text-xs text-center"
-  }, "Thank you! We'll get back to you soon."), submitStatus === "error" && /*#__PURE__*/React.createElement(motion.div, {
+  }, "Thank you! We'll get back to you soon."), submitStatus === "error" && React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: -10
@@ -201,15 +201,15 @@ export default function ContactSection() {
       y: 0
     },
     className: "p-3 rounded-lg bg-red-50 border border-red-200 text-red-800 text-xs text-center"
-  }, "Something went wrong. Please try again."), /*#__PURE__*/React.createElement(Button, {
+  }, "Something went wrong. Please try again."), React.createElement(Button, {
     type: "submit",
     disabled: isSubmitting,
     className: "w-full bg-blue-600 text-white hover:bg-blue-700 font-semibold py-2 h-10 rounded-lg transition-colors duration-300 flex items-center justify-center gap-2 group text-sm"
-  }, isSubmitting ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, isSubmitting ? React.createElement(React.Fragment, null, React.createElement("div", {
     className: "w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"
-  }), "Sending...") : /*#__PURE__*/React.createElement(React.Fragment, null, "Send Message", /*#__PURE__*/React.createElement(Send, {
+  }), "Sending...") : React.createElement(React.Fragment, null, "Send Message", React.createElement(Send, {
     className: "w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform"
-  }))), /*#__PURE__*/React.createElement("p", {
+  }))), React.createElement("p", {
     className: "text-xs text-center text-gray-600"
   }, "We typically respond within 24 hours.")))));
 }

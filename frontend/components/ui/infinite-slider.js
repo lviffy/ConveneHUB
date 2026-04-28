@@ -73,9 +73,9 @@ export function InfiniteSlider({
       setCurrentSpeed(speed);
     }
   } : {};
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: cn("overflow-hidden", className)
-  }, /*#__PURE__*/React.createElement(motion.div, _extends({
+  }, React.createElement(motion.div, _extends({
     className: "flex w-max",
     style: {
       ...(direction === "horizontal" ? {

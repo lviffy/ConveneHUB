@@ -20,7 +20,7 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }) {
-  return /*#__PURE__*/React.createElement(DayPicker, _extends({
+  return React.createElement(DayPicker, _extends({
     showOutsideDays: showOutsideDays,
     className: cn("p-3", className),
     classNames: {
@@ -54,12 +54,12 @@ function Calendar({
     components: {
       IconLeft: ({
         ...props
-      }) => /*#__PURE__*/React.createElement(ChevronLeft, {
+      }) => React.createElement(ChevronLeft, {
         className: "h-4 w-4"
       }),
       IconRight: ({
         ...props
-      }) => /*#__PURE__*/React.createElement(ChevronRight, {
+      }) => React.createElement(ChevronRight, {
         className: "h-4 w-4"
       })
     }

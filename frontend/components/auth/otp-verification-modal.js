@@ -118,70 +118,70 @@ export function OTPVerificationModal({
       setIsResending(false);
     }
   };
-  return /*#__PURE__*/React.createElement(Dialog, {
+  return React.createElement(Dialog, {
     open: open,
     onOpenChange: onClose
-  }, /*#__PURE__*/React.createElement(DialogContent, {
+  }, React.createElement(DialogContent, {
     className: "sm:max-w-md"
-  }, /*#__PURE__*/React.createElement(DialogHeader, {
+  }, React.createElement(DialogHeader, {
     className: "text-center"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "mx-auto mb-4 w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center"
-  }, /*#__PURE__*/React.createElement(Mail, {
+  }, React.createElement(Mail, {
     className: "w-8 h-8 text-[#195ADC]"
-  })), /*#__PURE__*/React.createElement(DialogTitle, {
+  })), React.createElement(DialogTitle, {
     className: "text-xl font-bold text-center"
-  }, "Enter Verification Code"), /*#__PURE__*/React.createElement(DialogDescription, {
+  }, "Enter Verification Code"), React.createElement(DialogDescription, {
     className: "text-center"
-  }, "We've sent a 6-digit code to", /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
+  }, "We've sent a 6-digit code to", React.createElement("br", null), React.createElement("span", {
     className: "font-medium text-[#010101]"
-  }, email), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
+  }, email), React.createElement("br", null), React.createElement("span", {
     className: "text-xs text-slate-500 mt-1 inline-block"
-  }, "Code expires in 10 minutes"))), /*#__PURE__*/React.createElement("div", {
+  }, "Code expires in 10 minutes"))), React.createElement("div", {
     className: "space-y-6 py-4"
-  }, error && /*#__PURE__*/React.createElement("div", {
+  }, error && React.createElement("div", {
     className: "flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700"
-  }, /*#__PURE__*/React.createElement(AlertCircle, {
+  }, React.createElement(AlertCircle, {
     className: "w-5 h-5 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+  }), React.createElement("div", null, React.createElement("p", {
     className: "text-sm font-medium"
-  }, "Verification Failed"), /*#__PURE__*/React.createElement("p", {
+  }, "Verification Failed"), React.createElement("p", {
     className: "text-xs"
-  }, error))), /*#__PURE__*/React.createElement(OTPInput, {
+  }, error))), React.createElement(OTPInput, {
     value: otp,
     onChange: val => {
       setOtp(val);
       if (error) setError(null);
     },
     disabled: isVerifying
-  }), isVerifying && /*#__PURE__*/React.createElement("div", {
+  }), isVerifying && React.createElement("div", {
     className: "flex items-center justify-center gap-2 text-sm text-slate-600"
-  }, /*#__PURE__*/React.createElement(Spinner, {
+  }, React.createElement(Spinner, {
     className: "h-4 w-4"
-  }), /*#__PURE__*/React.createElement("span", null, "Verifying...")), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("span", null, "Verifying...")), React.createElement("div", {
     className: "text-center space-y-2"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm text-slate-600"
-  }, "Didn't receive the code?"), countdown > 0 ? /*#__PURE__*/React.createElement("p", {
+  }, "Didn't receive the code?"), countdown > 0 ? React.createElement("p", {
     className: "text-sm text-slate-500"
-  }, "Resend in ", countdown, "s") : /*#__PURE__*/React.createElement(Button, {
+  }, "Resend in ", countdown, "s") : React.createElement(Button, {
     type: "button",
     variant: "link",
     onClick: handleResend,
     disabled: isResending,
     className: "text-[#195ADC] hover:text-[#195ADC]/80"
-  }, isResending ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Spinner, {
+  }, isResending ? React.createElement(React.Fragment, null, React.createElement(Spinner, {
     className: "mr-2 h-3 w-3"
-  }), "Sending...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(RefreshCw, {
+  }), "Sending...") : React.createElement(React.Fragment, null, React.createElement(RefreshCw, {
     className: "mr-2 h-3 w-3"
-  }), "Resend Code"))), /*#__PURE__*/React.createElement("div", {
+  }), "Resend Code"))), React.createElement("div", {
     className: "text-center"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     type: "button",
     onClick: handleVerify,
     disabled: otp.length !== 6 || isVerifying,
     className: "w-full bg-[#195ADC] hover:bg-[#195ADC]/90 text-white"
-  }, isVerifying ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Spinner, {
+  }, isVerifying ? React.createElement(React.Fragment, null, React.createElement(Spinner, {
     className: "mr-2 h-4 w-4"
   }), "Verifying...") : "Verify")))));
 }

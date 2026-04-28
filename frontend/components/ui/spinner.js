@@ -13,15 +13,15 @@ function Spinner({
   className,
   ...props
 }) {
-  return /*#__PURE__*/React.createElement(LoaderIcon, _extends({
+  return React.createElement(LoaderIcon, _extends({
     role: "status",
     "aria-label": "Loading",
     className: cn("size-4 animate-spin", className)
   }, props));
 }
 export function SpinnerCustom() {
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "flex items-center gap-4"
-  }, /*#__PURE__*/React.createElement(Spinner, null));
+  }, React.createElement(Spinner, null));
 }
 export { Spinner };

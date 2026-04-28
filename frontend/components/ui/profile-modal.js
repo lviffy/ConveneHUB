@@ -126,7 +126,7 @@ export default function ProfileModal({
     setNameError("");
     setIsEditing(false);
   };
-  const modalContent = /*#__PURE__*/React.createElement(AnimatePresence, null, /*#__PURE__*/React.createElement(motion.div, {
+  const modalContent = React.createElement(AnimatePresence, null, React.createElement(motion.div, {
     initial: {
       opacity: 0
     },
@@ -138,7 +138,7 @@ export default function ProfileModal({
     },
     className: "fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4",
     onClick: onClose
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       scale: 0.9,
       opacity: 0,
@@ -160,47 +160,47 @@ export default function ProfileModal({
     },
     onClick: e => e.stopPropagation(),
     className: "w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-xl sm:rounded-2xl shadow-2xl"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: `relative px-4 sm:px-6 pt-4 sm:pt-5 pb-3 sm:pb-4 bg-gradient-to-br from-gray-50 to-white ${!isEditing ? "sticky top-0 z-10" : ""}`
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     variant: "ghost",
     size: "sm",
     onClick: onClose,
     className: "absolute top-3 sm:top-4 right-3 sm:right-4 h-8 w-8 p-0 hover:bg-white rounded-lg z-10 border border-gray-200"
-  }, /*#__PURE__*/React.createElement(X, {
+  }, React.createElement(X, {
     className: "h-3.5 w-3.5"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "flex flex-col items-center text-center"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "h-14 w-14 sm:h-16 sm:w-16 rounded-full flex items-center justify-center border-2 mb-2 sm:mb-3",
     style: {
       backgroundColor: `${accentColor}08`,
       borderColor: `${accentColor}20`
     }
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-xl sm:text-2xl font-bold",
     style: {
       color: accentColor
     }
-  }, userInitial)), /*#__PURE__*/React.createElement("div", {
+  }, userInitial)), React.createElement("div", {
     className: "mb-2 sm:mb-3"
-  }, !isEditing ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h2", {
+  }, !isEditing ? React.createElement(React.Fragment, null, React.createElement("h2", {
     className: "text-lg sm:text-xl font-bold text-gray-900 mb-0.5"
-  }, displayName), /*#__PURE__*/React.createElement("p", {
+  }, displayName), React.createElement("p", {
     className: "text-xs font-medium",
     style: {
       color: accentColor
     }
-  }, roleLabels[userRole] || userRole), /*#__PURE__*/React.createElement("div", {
+  }, roleLabels[userRole] || userRole), React.createElement("div", {
     className: "flex items-center justify-center gap-1 text-xs text-gray-500 mt-1"
-  }, /*#__PURE__*/React.createElement(MapPin, {
+  }, React.createElement(MapPin, {
     className: "h-3 w-3"
-  }), /*#__PURE__*/React.createElement("span", null, displayCity))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("span", null, displayCity))) : React.createElement(React.Fragment, null, React.createElement("div", {
     className: "space-y-2 mb-2 w-full max-w-xs mx-auto"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement("div", null, React.createElement(Label, {
     htmlFor: "edit-name",
     className: "text-xs text-gray-600 mb-1"
-  }, "Full Name"), /*#__PURE__*/React.createElement(Input, {
+  }, "Full Name"), React.createElement(Input, {
     id: "edit-name",
     value: editedName,
     onChange: e => {
@@ -208,36 +208,36 @@ export default function ProfileModal({
       setNameError("");
     },
     className: `h-8 text-sm text-center ${nameError ? "border-red-500" : ""}`
-  }), nameError && /*#__PURE__*/React.createElement("p", {
+  }), nameError && React.createElement("p", {
     className: "text-xs text-red-500 mt-1 text-left"
-  }, nameError)), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Label, {
+  }, nameError)), React.createElement("div", null, React.createElement(Label, {
     htmlFor: "edit-city",
     className: "text-xs text-gray-600 mb-1"
-  }, "City"), /*#__PURE__*/React.createElement(Input, {
+  }, "City"), React.createElement(Input, {
     id: "edit-city",
     value: editedCity,
     onChange: e => setEditedCity(e.target.value),
     className: "h-8 text-sm text-center"
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Label, {
+  })), React.createElement("div", null, React.createElement(Label, {
     htmlFor: "edit-phone",
     className: "text-xs text-gray-600 mb-1"
-  }, "Phone Number"), /*#__PURE__*/React.createElement(Input, {
+  }, "Phone Number"), React.createElement(Input, {
     id: "edit-phone",
     type: "tel",
     value: editedPhone,
     onChange: e => setEditedPhone(e.target.value),
     placeholder: "Enter phone number",
     className: "h-8 text-sm text-center"
-  }))))), !isEditing ? /*#__PURE__*/React.createElement(Button, {
+  }))))), !isEditing ? React.createElement(Button, {
     variant: "outline",
     size: "sm",
     onClick: () => setIsEditing(true),
     className: "border-gray-300 hover:bg-white h-8 text-xs"
-  }, /*#__PURE__*/React.createElement(Settings, {
+  }, React.createElement(Settings, {
     className: "h-3.5 w-3.5 mr-1.5"
-  }), "Edit Profile") : /*#__PURE__*/React.createElement("div", {
+  }), "Edit Profile") : React.createElement("div", {
     className: "flex gap-2"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     size: "sm",
     onClick: handleSave,
     disabled: isSaving,
@@ -245,91 +245,91 @@ export default function ProfileModal({
       backgroundColor: accentColor
     },
     className: "text-white hover:opacity-90 h-8 text-xs disabled:opacity-50"
-  }, /*#__PURE__*/React.createElement(Save, {
+  }, React.createElement(Save, {
     className: "h-3.5 w-3.5 mr-1.5"
-  }), isSaving ? "Saving..." : "Save"), /*#__PURE__*/React.createElement(Button, {
+  }), isSaving ? "Saving..." : "Save"), React.createElement(Button, {
     variant: "outline",
     size: "sm",
     onClick: handleCancel,
     disabled: isSaving,
     className: "border-gray-300 hover:bg-white h-8 text-xs disabled:opacity-50"
-  }, "Cancel")))), /*#__PURE__*/React.createElement("div", {
+  }, "Cancel")))), React.createElement("div", {
     className: "p-4 sm:p-8"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "col-span-2 bg-white rounded-xl p-4 sm:p-6 border-2 border-gray-200 hover:border-gray-300 transition-colors"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-2 mb-3 sm:mb-5"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "h-7 w-7 sm:h-8 sm:w-8 rounded-lg flex items-center justify-center bg-gray-100"
-  }, /*#__PURE__*/React.createElement(User, {
+  }, React.createElement(User, {
     className: "h-3.5 w-3.5 sm:h-4 sm:w-4 text-gray-700"
-  })), /*#__PURE__*/React.createElement("h3", {
+  })), React.createElement("h3", {
     className: "font-semibold text-gray-900 text-sm sm:text-base"
-  }, "Account Information")), /*#__PURE__*/React.createElement("div", {
+  }, "Account Information")), React.createElement("div", {
     className: "grid grid-cols-2 gap-2 sm:gap-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "p-2.5 sm:p-4 rounded-lg bg-gray-50"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-[10px] sm:text-xs text-gray-500 mb-0.5 sm:mb-1"
-  }, "Full Name"), /*#__PURE__*/React.createElement("p", {
+  }, "Full Name"), React.createElement("p", {
     className: "text-xs sm:text-sm font-medium text-gray-900 truncate"
-  }, displayName)), /*#__PURE__*/React.createElement("div", {
+  }, displayName)), React.createElement("div", {
     className: "p-2.5 sm:p-4 rounded-lg bg-gray-50"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-[10px] sm:text-xs text-gray-500 mb-0.5 sm:mb-1"
-  }, "Role"), /*#__PURE__*/React.createElement("p", {
+  }, "Role"), React.createElement("p", {
     className: "text-xs sm:text-sm font-medium text-gray-900 truncate"
-  }, roleLabels[userRole])), /*#__PURE__*/React.createElement("div", {
+  }, roleLabels[userRole])), React.createElement("div", {
     className: "p-2.5 sm:p-4 rounded-lg bg-gray-50"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-[10px] sm:text-xs text-gray-500 mb-0.5 sm:mb-1"
-  }, "Location"), /*#__PURE__*/React.createElement("p", {
+  }, "Location"), React.createElement("p", {
     className: "text-xs sm:text-sm font-medium text-gray-900 truncate"
-  }, displayCity)), /*#__PURE__*/React.createElement("div", {
+  }, displayCity)), React.createElement("div", {
     className: "p-2.5 sm:p-4 rounded-lg bg-gray-50"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-[10px] sm:text-xs text-gray-500 mb-0.5 sm:mb-1"
-  }, "Member Since"), /*#__PURE__*/React.createElement("p", {
+  }, "Member Since"), React.createElement("p", {
     className: "text-xs sm:text-sm font-medium text-gray-900 truncate"
-  }, joinedDate)))), /*#__PURE__*/React.createElement("div", {
+  }, joinedDate)))), React.createElement("div", {
     className: "col-span-2 sm:col-span-1 bg-white rounded-xl p-3 border-2 border-gray-200 hover:border-gray-300 transition-colors"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-1.5 mb-1"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "h-6 w-6 rounded-lg flex items-center justify-center bg-gray-100"
-  }, /*#__PURE__*/React.createElement(Mail, {
+  }, React.createElement(Mail, {
     className: "h-3 w-3 text-gray-700"
-  })), /*#__PURE__*/React.createElement("h3", {
+  })), React.createElement("h3", {
     className: "font-semibold text-gray-900 text-xs"
-  }, "Email")), /*#__PURE__*/React.createElement("p", {
+  }, "Email")), React.createElement("p", {
     className: "text-xs text-gray-600 break-all leading-relaxed"
-  }, userEmail)), /*#__PURE__*/React.createElement("div", {
+  }, userEmail)), React.createElement("div", {
     className: "bg-white rounded-xl p-3 border-2 border-gray-200 hover:border-gray-300 transition-colors"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-1.5 mb-1"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "h-6 w-6 rounded-lg flex items-center justify-center bg-gray-100"
-  }, /*#__PURE__*/React.createElement(Phone, {
+  }, React.createElement(Phone, {
     className: "h-3 w-3 text-gray-700"
-  })), /*#__PURE__*/React.createElement("h3", {
+  })), React.createElement("h3", {
     className: "font-semibold text-gray-900 text-xs"
-  }, "Phone")), /*#__PURE__*/React.createElement("p", {
+  }, "Phone")), React.createElement("p", {
     className: "text-xs text-gray-600 break-all leading-relaxed"
-  }, displayPhone || "Not provided")), canAccessReferrals && /*#__PURE__*/React.createElement("div", {
+  }, displayPhone || "Not provided")), canAccessReferrals && React.createElement("div", {
     className: "col-span-2 sm:col-span-1 bg-white rounded-xl p-3 border-2 border-gray-200 hover:border-gray-300 transition-colors"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-1.5 mb-2"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "h-6 w-6 rounded-lg flex items-center justify-center bg-gray-100"
-  }, /*#__PURE__*/React.createElement(Megaphone, {
+  }, React.createElement(Megaphone, {
     className: "h-3 w-3 text-gray-700"
-  })), /*#__PURE__*/React.createElement("h3", {
+  })), React.createElement("h3", {
     className: "font-semibold text-gray-900 text-xs"
-  }, "Referrals")), /*#__PURE__*/React.createElement("p", {
+  }, "Referrals")), React.createElement("p", {
     className: "text-xs text-gray-600 mb-2.5"
-  }, "Create and share your referral links."), /*#__PURE__*/React.createElement(Button, {
+  }, "Create and share your referral links."), React.createElement(Button, {
     size: "sm",
     variant: "outline",
     className: "h-7 text-xs border-gray-300 hover:bg-gray-50",
@@ -337,34 +337,34 @@ export default function ProfileModal({
       if (onOpenReferrals) onOpenReferrals();
       onClose();
     }
-  }, "Open Referrals")), /*#__PURE__*/React.createElement("div", {
+  }, "Open Referrals")), React.createElement("div", {
     className: "bg-white rounded-xl p-3 sm:p-5 border-2 border-gray-200 hover:border-gray-300 transition-colors"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "h-6 w-6 sm:h-8 sm:w-8 rounded-lg flex items-center justify-center bg-gray-100"
-  }, /*#__PURE__*/React.createElement(Award, {
+  }, React.createElement(Award, {
     className: "h-3 w-3 sm:h-4 sm:w-4 text-gray-700"
-  })), /*#__PURE__*/React.createElement("h3", {
+  })), React.createElement("h3", {
     className: "font-semibold text-gray-900 text-xs sm:text-sm"
-  }, "Events")), /*#__PURE__*/React.createElement("p", {
+  }, "Events")), React.createElement("p", {
     className: "text-2xl sm:text-3xl font-bold text-gray-900"
-  }, totalEventsAttended), /*#__PURE__*/React.createElement("p", {
+  }, totalEventsAttended), React.createElement("p", {
     className: "text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1"
-  }, "Total attended")), /*#__PURE__*/React.createElement("div", {
+  }, "Total attended")), React.createElement("div", {
     className: "bg-white rounded-xl p-3 sm:p-5 border-2 border-gray-200 hover:border-gray-300 transition-colors"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "h-6 w-6 sm:h-8 sm:w-8 rounded-lg flex items-center justify-center bg-gray-100"
-  }, /*#__PURE__*/React.createElement(Calendar, {
+  }, React.createElement(Calendar, {
     className: "h-3 w-3 sm:h-4 sm:w-4 text-gray-700"
-  })), /*#__PURE__*/React.createElement("h3", {
+  })), React.createElement("h3", {
     className: "font-semibold text-gray-900 text-xs sm:text-sm"
-  }, "Joined")), /*#__PURE__*/React.createElement("p", {
+  }, "Joined")), React.createElement("p", {
     className: "text-xs sm:text-sm font-medium text-gray-900"
-  }, joinedDate), /*#__PURE__*/React.createElement("p", {
+  }, joinedDate), React.createElement("p", {
     className: "text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1"
   }, "Member since")))))));
-  return /*#__PURE__*/createPortal(modalContent, document.body);
+  return createPortal(modalContent, document.body);
 }

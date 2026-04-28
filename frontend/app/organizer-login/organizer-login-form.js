@@ -349,48 +349,48 @@ export function OrganizerLoginForm() {
       });
     }
   };
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-white p-4"
-  }, /*#__PURE__*/React.createElement(OTPVerificationModal, {
+  }, React.createElement(OTPVerificationModal, {
     open: showOTPModal,
     onClose: () => setShowOTPModal(false),
     email: pendingVerificationEmail,
     type: "signup",
     onVerified: handleOTPVerified
-  }), /*#__PURE__*/React.createElement(Card, {
+  }), React.createElement(Card, {
     className: "w-full max-w-md border border-purple-200 shadow-lg"
-  }, /*#__PURE__*/React.createElement(CardHeader, {
+  }, React.createElement(CardHeader, {
     className: "space-y-6 text-center pb-8"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "mx-auto"
-  }, /*#__PURE__*/React.createElement(Image, {
+  }, React.createElement(Image, {
     src: "/logo/logo.jpg",
     alt: "ConveneHub",
     width: 80,
     height: 80,
     className: "mx-auto",
     priority: true
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(CardTitle, {
+  }, React.createElement(CardTitle, {
     className: "text-2xl font-bold text-[#010101]"
-  }, isSignUp ? "Join Event Operations" : "Event Operations Portal"), /*#__PURE__*/React.createElement(CardDescription, {
+  }, isSignUp ? "Join Event Operations" : "Event Operations Portal"), React.createElement(CardDescription, {
     className: "text-sm text-slate-600"
-  }, isSignUp ? "Create your event operations account" : "Sign in to access your dashboard"))), /*#__PURE__*/React.createElement(CardContent, {
+  }, isSignUp ? "Create your event operations account" : "Sign in to access your dashboard"))), React.createElement(CardContent, {
     className: "space-y-6"
-  }, authNotice && /*#__PURE__*/React.createElement("div", {
+  }, authNotice && React.createElement("div", {
     className: "rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700"
-  }, authNotice), /*#__PURE__*/React.createElement("form", {
+  }, authNotice), React.createElement("form", {
     onSubmit: isSignUp ? handleSignUp : handleLogin,
     className: "space-y-4"
-  }, isSignUp && /*#__PURE__*/React.createElement("div", {
+  }, isSignUp && React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "fullName",
     className: "text-sm font-medium text-[#010101]"
-  }, "Full Name ", /*#__PURE__*/React.createElement("span", {
+  }, "Full Name ", React.createElement("span", {
     className: "text-red-500"
-  }, "*")), /*#__PURE__*/React.createElement(Input, {
+  }, "*")), React.createElement(Input, {
     id: "fullName",
     type: "text",
     placeholder: "John Doe",
@@ -399,14 +399,14 @@ export function OrganizerLoginForm() {
     required: true,
     disabled: isLoading,
     className: "h-11 border-2 border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "email",
     className: "text-sm font-medium text-[#010101]"
-  }, "Email ", /*#__PURE__*/React.createElement("span", {
+  }, "Email ", React.createElement("span", {
     className: "text-red-500"
-  }, "*")), /*#__PURE__*/React.createElement(Input, {
+  }, "*")), React.createElement(Input, {
     id: "email",
     type: "email",
     placeholder: "you@example.com",
@@ -415,16 +415,16 @@ export function OrganizerLoginForm() {
     required: true,
     disabled: isLoading,
     className: "h-11 border-2 border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "password",
     className: "text-sm font-medium text-[#010101]"
-  }, "Password ", /*#__PURE__*/React.createElement("span", {
+  }, "Password ", React.createElement("span", {
     className: "text-red-500"
-  }, "*")), !isSignUp && /*#__PURE__*/React.createElement("button", {
+  }, "*")), !isSignUp && React.createElement("button", {
     type: "button",
     onClick: e => {
       e.preventDefault();
@@ -432,7 +432,7 @@ export function OrganizerLoginForm() {
       router.push("/organizer-forgot-password");
     },
     className: "text-xs text-purple-600 hover:text-purple-700 font-medium cursor-pointer"
-  }, "Forgot password?")), /*#__PURE__*/React.createElement(Input, {
+  }, "Forgot password?")), React.createElement(Input, {
     id: "password",
     type: "password",
     placeholder: "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
@@ -449,31 +449,31 @@ export function OrganizerLoginForm() {
     const {
       requirements
     } = validatePassword(password);
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "mt-2 p-3 bg-purple-50 rounded-lg border border-purple-200"
-    }, /*#__PURE__*/React.createElement("p", {
+    }, React.createElement("p", {
       className: "text-xs font-medium text-purple-700 mb-2"
-    }, "Password must contain:"), /*#__PURE__*/React.createElement("ul", {
+    }, "Password must contain:"), React.createElement("ul", {
       className: "text-xs space-y-1"
-    }, /*#__PURE__*/React.createElement("li", {
+    }, React.createElement("li", {
       className: `flex items-center gap-1.5 ${requirements.minLength ? "text-green-600" : "text-slate-500"}`
-    }, requirements.minLength ? "✓" : "○", " At least 8 characters"), /*#__PURE__*/React.createElement("li", {
+    }, requirements.minLength ? "✓" : "○", " At least 8 characters"), React.createElement("li", {
       className: `flex items-center gap-1.5 ${requirements.hasLowercase ? "text-green-600" : "text-slate-500"}`
-    }, requirements.hasLowercase ? "✓" : "○", " Lowercase letter (a-z)"), /*#__PURE__*/React.createElement("li", {
+    }, requirements.hasLowercase ? "✓" : "○", " Lowercase letter (a-z)"), React.createElement("li", {
       className: `flex items-center gap-1.5 ${requirements.hasUppercase ? "text-green-600" : "text-slate-500"}`
-    }, requirements.hasUppercase ? "✓" : "○", " Uppercase letter (A-Z)"), /*#__PURE__*/React.createElement("li", {
+    }, requirements.hasUppercase ? "✓" : "○", " Uppercase letter (A-Z)"), React.createElement("li", {
       className: `flex items-center gap-1.5 ${requirements.hasDigit ? "text-green-600" : "text-slate-500"}`
-    }, requirements.hasDigit ? "✓" : "○", " Number (0-9)"), /*#__PURE__*/React.createElement("li", {
+    }, requirements.hasDigit ? "✓" : "○", " Number (0-9)"), React.createElement("li", {
       className: `flex items-center gap-1.5 ${requirements.hasSymbol ? "text-green-600" : "text-slate-500"}`
     }, requirements.hasSymbol ? "✓" : "○", " Symbol (!@#$%^&*...)")));
-  })()), isSignUp && /*#__PURE__*/React.createElement("div", {
+  })()), isSignUp && React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "phone",
     className: "text-sm font-medium text-[#010101]"
-  }, "Phone Number ", /*#__PURE__*/React.createElement("span", {
+  }, "Phone Number ", React.createElement("span", {
     className: "text-red-500"
-  }, "*")), /*#__PURE__*/React.createElement(Input, {
+  }, "*")), React.createElement(Input, {
     id: "phone",
     type: "tel",
     placeholder: "+91 98765 43210",
@@ -482,32 +482,32 @@ export function OrganizerLoginForm() {
     required: true,
     disabled: isLoading,
     className: "h-11 border-2 border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
-  })), isSignUp && /*#__PURE__*/React.createElement(CityInput, {
+  })), isSignUp && React.createElement(CityInput, {
     value: city,
     onChange: setCity,
     required: true,
     disabled: isLoading,
     label: "City",
     placeholder: "e.g., Mumbai, Delhi, Bangalore"
-  }), isSignUp && /*#__PURE__*/React.createElement("div", {
+  }), isSignUp && React.createElement("div", {
     className: "bg-purple-50 border border-purple-200 rounded-lg p-3"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm text-purple-700 flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(Film, {
+  }, React.createElement(Film, {
     className: "w-4 h-4"
-  }), "You are signing up as an ", /*#__PURE__*/React.createElement("strong", null, "Event Operations"), " member")), /*#__PURE__*/React.createElement(Button, {
+  }), "You are signing up as an ", React.createElement("strong", null, "Event Operations"), " member")), React.createElement(Button, {
     type: "submit",
     className: "w-full h-10 bg-purple-600 hover:bg-purple-700 text-white font-medium mt-6",
     disabled: isLoading
-  }, isLoading ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+  }, isLoading ? React.createElement(React.Fragment, null, React.createElement("span", {
     className: "mr-2 inline-flex h-4 w-4 items-center justify-center text-white"
-  }, /*#__PURE__*/React.createElement(Spinner, null)), isSignUp ? "Creating account..." : "Signing in...") : /*#__PURE__*/React.createElement(React.Fragment, null, isSignUp ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(UserPlus, {
+  }, React.createElement(Spinner, null)), isSignUp ? "Creating account..." : "Signing in...") : React.createElement(React.Fragment, null, isSignUp ? React.createElement(React.Fragment, null, React.createElement(UserPlus, {
     className: "mr-2 h-4 w-4"
-  }), "Create Account") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(LogIn, {
+  }), "Create Account") : React.createElement(React.Fragment, null, React.createElement(LogIn, {
     className: "mr-2 h-4 w-4"
-  }), "Sign In")))), /*#__PURE__*/React.createElement("div", {
+  }), "Sign In")))), React.createElement("div", {
     className: "text-center"
-  }, /*#__PURE__*/React.createElement("button", {
+  }, React.createElement("button", {
     type: "button",
     onClick: () => {
       setIsSignUp(!isSignUp);
@@ -521,84 +521,84 @@ export function OrganizerLoginForm() {
     },
     disabled: isLoading,
     className: "text-sm text-purple-600 hover:text-purple-700 font-medium transition-colors disabled:opacity-50"
-  }, isSignUp ? "Already have an account? Sign in" : "Don't have an account? Sign up")), isSignUp && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, isSignUp ? "Already have an account? Sign in" : "Don't have an account? Sign up")), isSignUp && React.createElement(React.Fragment, null, React.createElement("div", {
     className: "relative"
-  }, /*#__PURE__*/React.createElement(Separator, {
+  }, React.createElement(Separator, {
     className: "bg-slate-200"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 text-xs text-slate-500"
-  }, "or")), /*#__PURE__*/React.createElement(Button, {
+  }, "or")), React.createElement(Button, {
     type: "button",
     variant: "outline",
     className: "w-full h-10 border-slate-300 hover:bg-slate-50",
     onClick: handleGoogleSignUp,
     disabled: isLoading
-  }, /*#__PURE__*/React.createElement("svg", {
+  }, React.createElement("svg", {
     className: "mr-2 h-4 w-4",
     viewBox: "0 0 24 24"
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     fill: "#4285F4",
     d: "M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-  }), /*#__PURE__*/React.createElement("path", {
+  }), React.createElement("path", {
     fill: "#34A853",
     d: "M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-  }), /*#__PURE__*/React.createElement("path", {
+  }), React.createElement("path", {
     fill: "#FBBC05",
     d: "M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-  }), /*#__PURE__*/React.createElement("path", {
+  }), React.createElement("path", {
     fill: "#EA4335",
     d: "M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-  })), "Sign Up with Google")), !isSignUp && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  })), "Sign Up with Google")), !isSignUp && React.createElement(React.Fragment, null, React.createElement("div", {
     className: "relative"
-  }, /*#__PURE__*/React.createElement(Separator, {
+  }, React.createElement(Separator, {
     className: "bg-slate-200"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 text-xs text-slate-500"
-  }, "or")), /*#__PURE__*/React.createElement(Button, {
+  }, "or")), React.createElement(Button, {
     type: "button",
     variant: "outline",
     className: "w-full h-10 border-slate-300 hover:bg-slate-50",
     onClick: handleGoogleLogin,
     disabled: isLoading
-  }, /*#__PURE__*/React.createElement("svg", {
+  }, React.createElement("svg", {
     className: "mr-2 h-4 w-4",
     viewBox: "0 0 24 24"
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     fill: "#4285F4",
     d: "M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-  }), /*#__PURE__*/React.createElement("path", {
+  }), React.createElement("path", {
     fill: "#34A853",
     d: "M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-  }), /*#__PURE__*/React.createElement("path", {
+  }), React.createElement("path", {
     fill: "#FBBC05",
     d: "M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-  }), /*#__PURE__*/React.createElement("path", {
+  }), React.createElement("path", {
     fill: "#EA4335",
     d: "M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-  })), "Continue with Google")), /*#__PURE__*/React.createElement("div", {
+  })), "Continue with Google")), React.createElement("div", {
     className: "text-center pt-4 border-t border-slate-200"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm text-slate-600"
-  }, "Not an event operations member?", " ", /*#__PURE__*/React.createElement(Link, {
+  }, "Not an event operations member?", " ", React.createElement(Link, {
     href: "/login",
     className: "text-purple-600 hover:text-purple-700 font-medium"
-  }, "Go to regular login"))))), /*#__PURE__*/React.createElement(Dialog, {
+  }, "Go to regular login"))))), React.createElement(Dialog, {
     open: showGoogleSignupForm,
     onOpenChange: setShowGoogleSignupForm
-  }, /*#__PURE__*/React.createElement(DialogContent, {
+  }, React.createElement(DialogContent, {
     className: "sm:max-w-md"
-  }, /*#__PURE__*/React.createElement(DialogHeader, null, /*#__PURE__*/React.createElement(DialogTitle, {
+  }, React.createElement(DialogHeader, null, React.createElement(DialogTitle, {
     className: "text-xl font-bold text-[#010101]"
-  }, "Complete Your Profile"), /*#__PURE__*/React.createElement(DialogDescription, null, "Please provide the following details to continue with Google sign up")), /*#__PURE__*/React.createElement("div", {
+  }, "Complete Your Profile"), React.createElement(DialogDescription, null, "Please provide the following details to continue with Google sign up")), React.createElement("div", {
     className: "space-y-4 py-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "google-phone",
     className: "text-sm font-medium text-[#010101]"
-  }, "Phone Number ", /*#__PURE__*/React.createElement("span", {
+  }, "Phone Number ", React.createElement("span", {
     className: "text-red-500"
-  }, "*")), /*#__PURE__*/React.createElement(Input, {
+  }, "*")), React.createElement(Input, {
     id: "google-phone",
     type: "tel",
     placeholder: "+91 98765 43210",
@@ -609,7 +609,7 @@ export function OrganizerLoginForm() {
     }),
     required: true,
     className: "h-11 border-2 border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
-  })), /*#__PURE__*/React.createElement(CityInput, {
+  })), React.createElement(CityInput, {
     value: googleSignupData.city,
     onChange: val => setGoogleSignupData({
       ...googleSignupData,
@@ -619,20 +619,20 @@ export function OrganizerLoginForm() {
     label: "City",
     placeholder: "e.g., Mumbai, Delhi, Bangalore",
     id: "google-city"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "bg-purple-50 border border-purple-200 rounded-lg p-3"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm text-purple-700 flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(Film, {
+  }, React.createElement(Film, {
     className: "w-4 h-4"
-  }), "You will be registered as an ", /*#__PURE__*/React.createElement("strong", null, "Event Operations"), " member"))), /*#__PURE__*/React.createElement(DialogFooter, {
+  }), "You will be registered as an ", React.createElement("strong", null, "Event Operations"), " member"))), React.createElement(DialogFooter, {
     className: "sm:justify-between gap-2"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     type: "button",
     variant: "outline",
     onClick: () => setShowGoogleSignupForm(false),
     className: "flex-1"
-  }, "Cancel"), /*#__PURE__*/React.createElement(Button, {
+  }, "Cancel"), React.createElement(Button, {
     type: "button",
     onClick: proceedWithGoogleSignup,
     className: "flex-1 bg-purple-600 hover:bg-purple-700 text-white",

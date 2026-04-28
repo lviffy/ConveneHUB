@@ -13,7 +13,7 @@ import { Toaster as Sonner } from "sonner";
 const Toaster = ({
   ...props
 }) => {
-  return /*#__PURE__*/React.createElement(Sonner, _extends({
+  return React.createElement(Sonner, _extends({
     theme: "system",
     className: "toaster group",
     toastOptions: {

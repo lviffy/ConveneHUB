@@ -12,7 +12,7 @@ function Skeleton({
   className,
   ...props
 }) {
-  return /*#__PURE__*/React.createElement("div", _extends({
+  return React.createElement("div", _extends({
     className: cn("animate-pulse rounded-md bg-muted", className)
   }, props));
 }

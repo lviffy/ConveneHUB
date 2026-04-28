@@ -32,7 +32,7 @@ function Badge({
   variant,
   ...props
 }) {
-  return /*#__PURE__*/React.createElement("div", _extends({
+  return React.createElement("div", _extends({
     className: cn(badgeVariants({
       variant
     }), className)

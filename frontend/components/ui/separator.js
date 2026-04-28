@@ -12,12 +12,12 @@ function _extends() {
 import * as React from "react";
 import * as SeparatorPrimitive from "@radix-ui/react-separator";
 import { cn } from "@/lib/utils";
-const Separator = /*#__PURE__*/React.forwardRef(({
+const Separator = React.forwardRef(({
   className,
   orientation = "horizontal",
   decorative = true,
   ...props
-}, ref) => /*#__PURE__*/React.createElement(SeparatorPrimitive.Root, _extends({
+}, ref) => React.createElement(SeparatorPrimitive.Root, _extends({
   ref: ref,
   decorative: decorative,
   orientation: orientation,

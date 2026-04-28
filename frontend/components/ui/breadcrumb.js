@@ -11,45 +11,45 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
-const Breadcrumb = /*#__PURE__*/React.forwardRef(({
+const Breadcrumb = React.forwardRef(({
   ...props
-}, ref) => /*#__PURE__*/React.createElement("nav", _extends({
+}, ref) => React.createElement("nav", _extends({
   ref: ref,
   "aria-label": "breadcrumb"
 }, props)));
 Breadcrumb.displayName = "Breadcrumb";
-const BreadcrumbList = /*#__PURE__*/React.forwardRef(({
+const BreadcrumbList = React.forwardRef(({
   className,
   ...props
-}, ref) => /*#__PURE__*/React.createElement("ol", _extends({
+}, ref) => React.createElement("ol", _extends({
   ref: ref,
   className: cn("flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5", className)
 }, props)));
 BreadcrumbList.displayName = "BreadcrumbList";
-const BreadcrumbItem = /*#__PURE__*/React.forwardRef(({
+const BreadcrumbItem = React.forwardRef(({
   className,
   ...props
-}, ref) => /*#__PURE__*/React.createElement("li", _extends({
+}, ref) => React.createElement("li", _extends({
   ref: ref,
   className: cn("inline-flex items-center gap-1.5", className)
 }, props)));
 BreadcrumbItem.displayName = "BreadcrumbItem";
-const BreadcrumbLink = /*#__PURE__*/React.forwardRef(({
+const BreadcrumbLink = React.forwardRef(({
   asChild,
   className,
   ...props
 }, ref) => {
   const Comp = asChild ? Slot : "a";
-  return /*#__PURE__*/React.createElement(Comp, _extends({
+  return React.createElement(Comp, _extends({
     ref: ref,
     className: cn("transition-colors hover:text-foreground", className)
   }, props));
 });
 BreadcrumbLink.displayName = "BreadcrumbLink";
-const BreadcrumbPage = /*#__PURE__*/React.forwardRef(({
+const BreadcrumbPage = React.forwardRef(({
   className,
   ...props
-}, ref) => /*#__PURE__*/React.createElement("span", _extends({
+}, ref) => React.createElement("span", _extends({
   ref: ref,
   role: "link",
   "aria-disabled": "true",
@@ -61,22 +61,22 @@ const BreadcrumbSeparator = ({
   children,
   className,
   ...props
-}) => /*#__PURE__*/React.createElement("li", _extends({
+}) => React.createElement("li", _extends({
   role: "presentation",
   "aria-hidden": "true",
   className: cn("[&>svg]:size-3.5", className)
-}, props), children ?? /*#__PURE__*/React.createElement(ChevronRight, null));
+}, props), children ?? React.createElement(ChevronRight, null));
 BreadcrumbSeparator.displayName = "BreadcrumbSeparator";
 const BreadcrumbEllipsis = ({
   className,
   ...props
-}) => /*#__PURE__*/React.createElement("span", _extends({
+}) => React.createElement("span", _extends({
   role: "presentation",
   "aria-hidden": "true",
   className: cn("flex h-9 w-9 items-center justify-center", className)
-}, props), /*#__PURE__*/React.createElement(MoreHorizontal, {
+}, props), React.createElement(MoreHorizontal, {
   className: "h-4 w-4"
-}), /*#__PURE__*/React.createElement("span", {
+}), React.createElement("span", {
   className: "sr-only"
 }, "More"));
 BreadcrumbEllipsis.displayName = "BreadcrumbElipssis";

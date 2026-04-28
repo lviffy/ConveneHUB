@@ -66,30 +66,30 @@ function EditEventContent() {
     }
   };
   if (isLoading) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "flex items-center justify-center min-h-screen"
-    }, /*#__PURE__*/React.createElement(Spinner, {
+    }, React.createElement(Spinner, {
       className: "h-8 w-8 text-[#195ADC]"
     }));
   }
   if (!event) {
     return null;
   }
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "min-h-screen bg-gray-50 py-8"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     variant: "ghost",
     onClick: () => router.push(returnTo),
     className: "mb-6"
-  }, /*#__PURE__*/React.createElement(ArrowLeft, {
+  }, React.createElement(ArrowLeft, {
     className: "h-4 w-4 mr-2"
-  }), isOrganizerFlow ? "Back to Organizer Dashboard" : "Back to Dashboard"), /*#__PURE__*/React.createElement("div", {
+  }), isOrganizerFlow ? "Back to Organizer Dashboard" : "Back to Dashboard"), React.createElement("div", {
     className: "bg-white rounded-lg shadow-sm p-6"
-  }, /*#__PURE__*/React.createElement("h1", {
+  }, React.createElement("h1", {
     className: "text-2xl font-bold mb-6"
-  }, "Edit Event"), /*#__PURE__*/React.createElement(EditEventForm, {
+  }, "Edit Event"), React.createElement(EditEventForm, {
     event: event,
     actorRole: actorRole,
     successRedirectPath: returnTo,
@@ -97,11 +97,11 @@ function EditEventContent() {
   }))));
 }
 export default function EditEventPage() {
-  return /*#__PURE__*/React.createElement(Suspense, {
-    fallback: /*#__PURE__*/React.createElement("div", {
+  return React.createElement(Suspense, {
+    fallback: React.createElement("div", {
       className: "flex items-center justify-center min-h-screen"
-    }, /*#__PURE__*/React.createElement(Spinner, {
+    }, React.createElement(Spinner, {
       className: "h-8 w-8 text-[#195ADC]"
     }))
-  }, /*#__PURE__*/React.createElement(EditEventContent, null));
+  }, React.createElement(EditEventContent, null));
 }

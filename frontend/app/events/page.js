@@ -9,22 +9,22 @@ export const metadata = {
   description: "Explore upcoming events, reserve your seat, and get instant digital tickets with QR access."
 };
 function LoadingFallback() {
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "min-h-screen bg-white flex items-center justify-center"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-center"
-  }, /*#__PURE__*/React.createElement(Spinner, {
+  }, React.createElement(Spinner, {
     className: "w-12 h-12 text-gray-900 mx-auto mb-4"
-  }), /*#__PURE__*/React.createElement("p", {
+  }), React.createElement("p", {
     className: "text-gray-500"
   }, "Loading events...")));
 }
 export default function EventsPage() {
-  return /*#__PURE__*/React.createElement("main", {
+  return React.createElement("main", {
     className: "min-h-screen text-render-optimized bg-white"
-  }, /*#__PURE__*/React.createElement(EventsHeader, null), /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(EventsHeader, null), React.createElement("div", {
     className: "pt-16"
-  }, /*#__PURE__*/React.createElement(Suspense, {
-    fallback: /*#__PURE__*/React.createElement(LoadingFallback, null)
-  }, /*#__PURE__*/React.createElement(EventsBrowsePage, null))), /*#__PURE__*/React.createElement(Footer, null));
+  }, React.createElement(Suspense, {
+    fallback: React.createElement(LoadingFallback, null)
+  }, React.createElement(EventsBrowsePage, null))), React.createElement(Footer, null));
 }

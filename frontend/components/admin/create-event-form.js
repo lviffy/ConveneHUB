@@ -206,38 +206,38 @@ export default function CreateEventForm({
       setIsUploading(false);
     }
   };
-  return /*#__PURE__*/React.createElement(Form, form, /*#__PURE__*/React.createElement("form", {
+  return React.createElement(Form, form, React.createElement("form", {
     onSubmit: form.handleSubmit(onSubmit),
     className: "space-y-8"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "space-y-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "pb-3 border-b border-gray-200"
-  }, /*#__PURE__*/React.createElement("h3", {
+  }, React.createElement("h3", {
     className: "text-lg font-semibold text-gray-900"
-  }, "Basic Information"), /*#__PURE__*/React.createElement("p", {
+  }, "Basic Information"), React.createElement("p", {
     className: "text-sm text-gray-500 mt-1"
-  }, "Essential details about your event")), /*#__PURE__*/React.createElement("div", {
+  }, "Essential details about your event")), React.createElement("div", {
     className: "grid grid-cols-1 md:grid-cols-2 gap-6"
-  }, /*#__PURE__*/React.createElement(FormField, {
+  }, React.createElement(FormField, {
     control: form.control,
     name: "title",
     render: ({
       field
-    }) => /*#__PURE__*/React.createElement(FormItem, null, /*#__PURE__*/React.createElement(FormLabel, {
+    }) => React.createElement(FormItem, null, React.createElement(FormLabel, {
       className: "text-gray-700 font-medium"
-    }, "Event Title *"), /*#__PURE__*/React.createElement(FormControl, null, /*#__PURE__*/React.createElement(Input, _extends({
+    }, "Event Title *"), React.createElement(FormControl, null, React.createElement(Input, _extends({
       placeholder: "e.g., TechFest 2026 - Main Stage",
       className: "border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
-    }, field))), /*#__PURE__*/React.createElement(FormMessage, null))
-  }), /*#__PURE__*/React.createElement(FormField, {
+    }, field))), React.createElement(FormMessage, null))
+  }), React.createElement(FormField, {
     control: form.control,
     name: "city",
     render: ({
       field
-    }) => /*#__PURE__*/React.createElement(FormItem, null, /*#__PURE__*/React.createElement(FormLabel, {
+    }) => React.createElement(FormItem, null, React.createElement(FormLabel, {
       className: "text-gray-700 font-medium"
-    }, "City *"), /*#__PURE__*/React.createElement(FormControl, null, /*#__PURE__*/React.createElement(Input, _extends({
+    }, "City *"), React.createElement(FormControl, null, React.createElement(Input, _extends({
       placeholder: "e.g., Mumbai, Hyderabad, Bangalore",
       className: "border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
     }, field, {
@@ -246,171 +246,171 @@ export default function CreateEventForm({
         const formatted = e.target.value.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ");
         field.onChange(formatted);
       }
-    }))), /*#__PURE__*/React.createElement(FormMessage, null))
-  })), /*#__PURE__*/React.createElement(FormField, {
+    }))), React.createElement(FormMessage, null))
+  })), React.createElement(FormField, {
     control: form.control,
     name: "description",
     render: ({
       field
-    }) => /*#__PURE__*/React.createElement(FormItem, null, /*#__PURE__*/React.createElement(FormLabel, {
+    }) => React.createElement(FormItem, null, React.createElement(FormLabel, {
       className: "text-gray-700 font-medium"
-    }, "Description *"), /*#__PURE__*/React.createElement(FormControl, null, /*#__PURE__*/React.createElement(Textarea, _extends({
+    }, "Description *"), React.createElement(FormControl, null, React.createElement(Textarea, _extends({
       placeholder: "Describe the event, what attendees can expect...",
       className: "min-h-[120px] border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC] resize-none"
-    }, field))), /*#__PURE__*/React.createElement(FormMessage, null))
-  })), /*#__PURE__*/React.createElement("div", {
+    }, field))), React.createElement(FormMessage, null))
+  })), React.createElement("div", {
     className: "space-y-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "pb-3 border-b border-gray-200"
-  }, /*#__PURE__*/React.createElement("h3", {
+  }, React.createElement("h3", {
     className: "text-lg font-semibold text-gray-900"
-  }, "Venue Details"), /*#__PURE__*/React.createElement("p", {
+  }, "Venue Details"), React.createElement("p", {
     className: "text-sm text-gray-500 mt-1"
-  }, "Location information for the event")), /*#__PURE__*/React.createElement("div", {
+  }, "Location information for the event")), React.createElement("div", {
     className: "grid grid-cols-1 md:grid-cols-2 gap-6"
-  }, /*#__PURE__*/React.createElement(FormField, {
+  }, React.createElement(FormField, {
     control: form.control,
     name: "venue_name",
     render: ({
       field
-    }) => /*#__PURE__*/React.createElement(FormItem, null, /*#__PURE__*/React.createElement(FormLabel, {
+    }) => React.createElement(FormItem, null, React.createElement(FormLabel, {
       className: "text-gray-700 font-medium"
-    }, "Venue Name *"), /*#__PURE__*/React.createElement(FormControl, null, /*#__PURE__*/React.createElement(Input, _extends({
+    }, "Venue Name *"), React.createElement(FormControl, null, React.createElement(Input, _extends({
       placeholder: "e.g., Film City Studio 5",
       className: "border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
-    }, field))), /*#__PURE__*/React.createElement(FormMessage, null))
-  }), /*#__PURE__*/React.createElement(FormField, {
+    }, field))), React.createElement(FormMessage, null))
+  }), React.createElement(FormField, {
     control: form.control,
     name: "venue_address",
     render: ({
       field
-    }) => /*#__PURE__*/React.createElement(FormItem, null, /*#__PURE__*/React.createElement(FormLabel, {
+    }) => React.createElement(FormItem, null, React.createElement(FormLabel, {
       className: "text-gray-700 font-medium"
-    }, "Venue Address *"), /*#__PURE__*/React.createElement(FormControl, null, /*#__PURE__*/React.createElement(Input, _extends({
+    }, "Venue Address *"), React.createElement(FormControl, null, React.createElement(Input, _extends({
       placeholder: "Complete venue address",
       className: "border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
-    }, field))), /*#__PURE__*/React.createElement(FormMessage, null))
-  })), /*#__PURE__*/React.createElement("div", {
+    }, field))), React.createElement(FormMessage, null))
+  })), React.createElement("div", {
     className: "grid grid-cols-1 md:grid-cols-2 gap-6"
-  }, /*#__PURE__*/React.createElement(FormField, {
+  }, React.createElement(FormField, {
     control: form.control,
     name: "latitude",
     render: ({
       field
-    }) => /*#__PURE__*/React.createElement(FormItem, null, /*#__PURE__*/React.createElement(FormLabel, {
+    }) => React.createElement(FormItem, null, React.createElement(FormLabel, {
       className: "text-gray-700 font-medium"
-    }, "Latitude (Optional)"), /*#__PURE__*/React.createElement(FormControl, null, /*#__PURE__*/React.createElement(Input, _extends({
+    }, "Latitude (Optional)"), React.createElement(FormControl, null, React.createElement(Input, _extends({
       type: "number",
       step: "any",
       placeholder: "e.g., 19.076090",
       className: "border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
-    }, field))), /*#__PURE__*/React.createElement(FormDescription, {
+    }, field))), React.createElement(FormDescription, {
       className: "text-xs text-gray-500"
-    }, "GPS latitude for map display"), /*#__PURE__*/React.createElement(FormMessage, null))
-  }), /*#__PURE__*/React.createElement(FormField, {
+    }, "GPS latitude for map display"), React.createElement(FormMessage, null))
+  }), React.createElement(FormField, {
     control: form.control,
     name: "longitude",
     render: ({
       field
-    }) => /*#__PURE__*/React.createElement(FormItem, null, /*#__PURE__*/React.createElement(FormLabel, {
+    }) => React.createElement(FormItem, null, React.createElement(FormLabel, {
       className: "text-gray-700 font-medium"
-    }, "Longitude (Optional)"), /*#__PURE__*/React.createElement(FormControl, null, /*#__PURE__*/React.createElement(Input, _extends({
+    }, "Longitude (Optional)"), React.createElement(FormControl, null, React.createElement(Input, _extends({
       type: "number",
       step: "any",
       placeholder: "e.g., 72.877426",
       className: "border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
-    }, field))), /*#__PURE__*/React.createElement(FormDescription, {
+    }, field))), React.createElement(FormDescription, {
       className: "text-xs text-gray-500"
-    }, "GPS longitude for map display"), /*#__PURE__*/React.createElement(FormMessage, null))
-  })), /*#__PURE__*/React.createElement(FormField, {
+    }, "GPS longitude for map display"), React.createElement(FormMessage, null))
+  })), React.createElement(FormField, {
     control: form.control,
     name: "event_image",
     render: ({
       field
-    }) => /*#__PURE__*/React.createElement(FormItem, null, /*#__PURE__*/React.createElement(FormLabel, {
+    }) => React.createElement(FormItem, null, React.createElement(FormLabel, {
       className: "text-gray-700 font-medium"
-    }, "Event Image (Optional)"), /*#__PURE__*/React.createElement("div", {
+    }, "Event Image (Optional)"), React.createElement("div", {
       className: "space-y-3"
-    }, field.value && /*#__PURE__*/React.createElement("div", {
+    }, field.value && React.createElement("div", {
       className: "relative w-full h-48 border-2 border-gray-200 rounded-lg overflow-hidden"
-    }, /*#__PURE__*/React.createElement("img", {
+    }, React.createElement("img", {
       src: resolveAssetUrl(field.value),
       alt: "Event preview",
       className: "w-full h-full object-cover"
-    }), /*#__PURE__*/React.createElement(Button, {
+    }), React.createElement(Button, {
       type: "button",
       variant: "destructive",
       size: "sm",
       className: "absolute top-2 right-2",
       onClick: () => form.setValue("event_image", "")
-    }, /*#__PURE__*/React.createElement(X, {
+    }, React.createElement(X, {
       className: "h-4 w-4"
-    }))), /*#__PURE__*/React.createElement("div", {
+    }))), React.createElement("div", {
       className: "flex gap-2"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "relative flex-1"
-    }, /*#__PURE__*/React.createElement(Input, _extends({
+    }, React.createElement(Input, _extends({
       type: "text",
       inputMode: "url",
       autoComplete: "off",
       placeholder: "Paste an image URL or use the uploaded poster...",
       className: "border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
-    }, field))), /*#__PURE__*/React.createElement("div", {
+    }, field))), React.createElement("div", {
       className: "relative"
-    }, /*#__PURE__*/React.createElement("input", {
+    }, React.createElement("input", {
       type: "file",
       accept: "image/*",
       onChange: handleImageUpload,
       className: "hidden",
       id: "image-upload",
       disabled: isUploading
-    }), /*#__PURE__*/React.createElement(Button, {
+    }), React.createElement(Button, {
       type: "button",
       variant: "outline",
       onClick: () => document.getElementById("image-upload")?.click(),
       disabled: isUploading,
       className: "whitespace-nowrap"
-    }, isUploading ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Spinner, {
+    }, isUploading ? React.createElement(React.Fragment, null, React.createElement(Spinner, {
       className: "mr-2 h-4 w-4 text-[#195ADC]"
-    }), "Uploading...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Upload, {
+    }), "Uploading...") : React.createElement(React.Fragment, null, React.createElement(Upload, {
       className: "mr-2 h-4 w-4"
-    }), "Upload"))))), /*#__PURE__*/React.createElement(FormDescription, {
+    }), "Upload"))))), React.createElement(FormDescription, {
       className: "text-xs text-gray-500"
-    }, "Upload an image or paste URL to the event poster (max 5MB)"), /*#__PURE__*/React.createElement(FormMessage, null))
-  })), /*#__PURE__*/React.createElement("div", {
+    }, "Upload an image or paste URL to the event poster (max 5MB)"), React.createElement(FormMessage, null))
+  })), React.createElement("div", {
     className: "space-y-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "pb-3 border-b border-gray-200"
-  }, /*#__PURE__*/React.createElement("h3", {
+  }, React.createElement("h3", {
     className: "text-lg font-semibold text-gray-900"
-  }, "Event Details"), /*#__PURE__*/React.createElement("p", {
+  }, "Event Details"), React.createElement("p", {
     className: "text-sm text-gray-500 mt-1"
-  }, "Schedule and capacity information")), /*#__PURE__*/React.createElement("div", {
+  }, "Schedule and capacity information")), React.createElement("div", {
     className: "space-y-6"
-  }, /*#__PURE__*/React.createElement(FormField, {
+  }, React.createElement(FormField, {
     control: form.control,
     name: "date_time",
     render: ({
       field
     }) => {
       const dateValue = field.value ? new Date(field.value) : undefined;
-      return /*#__PURE__*/React.createElement(FormItem, {
+      return React.createElement(FormItem, {
         className: "flex flex-col"
-      }, /*#__PURE__*/React.createElement(FormLabel, {
+      }, React.createElement(FormLabel, {
         className: "text-gray-700 font-medium"
-      }, "Date & Time *"), /*#__PURE__*/React.createElement("div", {
+      }, "Date & Time *"), React.createElement("div", {
         className: "grid grid-cols-1 md:grid-cols-2 gap-4"
-      }, /*#__PURE__*/React.createElement(Popover, null, /*#__PURE__*/React.createElement(PopoverTrigger, {
+      }, React.createElement(Popover, null, React.createElement(PopoverTrigger, {
         asChild: true
-      }, /*#__PURE__*/React.createElement(FormControl, null, /*#__PURE__*/React.createElement(Button, {
+      }, React.createElement(FormControl, null, React.createElement(Button, {
         variant: "outline",
         className: cn("w-full pl-3 text-left font-normal border-gray-300 hover:bg-gray-50", !dateValue && "text-muted-foreground")
-      }, /*#__PURE__*/React.createElement(CalendarIcon, {
+      }, React.createElement(CalendarIcon, {
         className: "mr-2 h-4 w-4"
-      }), dateValue ? format(dateValue, "PPP") : /*#__PURE__*/React.createElement("span", null, "Pick a date")))), /*#__PURE__*/React.createElement(PopoverContent, {
+      }), dateValue ? format(dateValue, "PPP") : React.createElement("span", null, "Pick a date")))), React.createElement(PopoverContent, {
         className: "w-auto p-0",
         align: "start"
-      }, /*#__PURE__*/React.createElement(Calendar, {
+      }, React.createElement(Calendar, {
         mode: "single",
         selected: dateValue,
         onSelect: date => {
@@ -424,103 +424,103 @@ export default function CreateEventForm({
         },
         disabled: date => date < new Date(new Date().setHours(0, 0, 0, 0)),
         initialFocus: true
-      }))), /*#__PURE__*/React.createElement(Popover, null, /*#__PURE__*/React.createElement(PopoverTrigger, {
+      }))), React.createElement(Popover, null, React.createElement(PopoverTrigger, {
         asChild: true
-      }, /*#__PURE__*/React.createElement(Button, {
+      }, React.createElement(Button, {
         variant: "outline",
         className: cn("w-full pl-3 text-left font-normal border-gray-300 hover:bg-gray-50", !dateValue && "text-muted-foreground")
-      }, /*#__PURE__*/React.createElement(Clock, {
+      }, React.createElement(Clock, {
         className: "mr-2 h-4 w-4"
-      }), dateValue ? format(dateValue, "h:mm a") : /*#__PURE__*/React.createElement("span", null, "Pick a time"))), /*#__PURE__*/React.createElement(PopoverContent, {
+      }), dateValue ? format(dateValue, "h:mm a") : React.createElement("span", null, "Pick a time"))), React.createElement(PopoverContent, {
         className: "w-64 p-4",
         align: "start",
         side: "top",
         sideOffset: 4
-      }, /*#__PURE__*/React.createElement("div", {
+      }, React.createElement("div", {
         className: "space-y-3"
-      }, /*#__PURE__*/React.createElement("div", {
+      }, React.createElement("div", {
         className: "text-sm font-medium text-gray-700"
-      }, "Select Time"), /*#__PURE__*/React.createElement("div", {
+      }, "Select Time"), React.createElement("div", {
         className: "grid grid-cols-2 gap-3"
-      }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+      }, React.createElement("div", null, React.createElement("label", {
         className: "text-xs text-gray-500 mb-1 block"
-      }, "Hour"), /*#__PURE__*/React.createElement(Select, {
+      }, "Hour"), React.createElement(Select, {
         value: dateValue ? format(dateValue, "HH") : "12",
         onValueChange: hour => {
           const newDate = dateValue ? new Date(dateValue) : new Date();
           newDate.setHours(parseInt(hour));
           field.onChange(newDate.toISOString());
         }
-      }, /*#__PURE__*/React.createElement(SelectTrigger, {
+      }, React.createElement(SelectTrigger, {
         className: "border-gray-300"
-      }, /*#__PURE__*/React.createElement(SelectValue, null)), /*#__PURE__*/React.createElement(SelectContent, {
+      }, React.createElement(SelectValue, null)), React.createElement(SelectContent, {
         position: "popper",
         sideOffset: 5
       }, Array.from({
         length: 24
-      }, (_, i) => /*#__PURE__*/React.createElement(SelectItem, {
+      }, (_, i) => React.createElement(SelectItem, {
         key: i,
         value: i.toString().padStart(2, "0")
-      }, i.toString().padStart(2, "0")))))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+      }, i.toString().padStart(2, "0")))))), React.createElement("div", null, React.createElement("label", {
         className: "text-xs text-gray-500 mb-1 block"
-      }, "Minute"), /*#__PURE__*/React.createElement(Select, {
+      }, "Minute"), React.createElement(Select, {
         value: dateValue ? format(dateValue, "mm") : "00",
         onValueChange: minute => {
           const newDate = dateValue ? new Date(dateValue) : new Date();
           newDate.setMinutes(parseInt(minute));
           field.onChange(newDate.toISOString());
         }
-      }, /*#__PURE__*/React.createElement(SelectTrigger, {
+      }, React.createElement(SelectTrigger, {
         className: "border-gray-300"
-      }, /*#__PURE__*/React.createElement(SelectValue, null)), /*#__PURE__*/React.createElement(SelectContent, {
+      }, React.createElement(SelectValue, null)), React.createElement(SelectContent, {
         position: "popper",
         sideOffset: 5
       }, Array.from({
         length: 60
-      }, (_, i) => /*#__PURE__*/React.createElement(SelectItem, {
+      }, (_, i) => React.createElement(SelectItem, {
         key: i,
         value: i.toString().padStart(2, "0")
-      }, i.toString().padStart(2, "0"))))))))))), /*#__PURE__*/React.createElement(FormMessage, null));
+      }, i.toString().padStart(2, "0"))))))))))), React.createElement(FormMessage, null));
     }
-  }), /*#__PURE__*/React.createElement(FormField, {
+  }), React.createElement(FormField, {
     control: form.control,
     name: "capacity",
     render: ({
       field
-    }) => /*#__PURE__*/React.createElement(FormItem, null, /*#__PURE__*/React.createElement(FormLabel, {
+    }) => React.createElement(FormItem, null, React.createElement(FormLabel, {
       className: "text-gray-700 font-medium"
-    }, "Capacity *"), /*#__PURE__*/React.createElement(FormControl, null, /*#__PURE__*/React.createElement(Input, _extends({
+    }, "Capacity *"), React.createElement(FormControl, null, React.createElement(Input, _extends({
       type: "number",
       min: "1",
       placeholder: "50",
       className: "border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
-    }, field))), /*#__PURE__*/React.createElement(FormDescription, {
+    }, field))), React.createElement(FormDescription, {
       className: "text-xs text-gray-500"
-    }, "Total number of available slots"), /*#__PURE__*/React.createElement(FormMessage, null))
-  }), /*#__PURE__*/React.createElement(FormField, {
+    }, "Total number of available slots"), React.createElement(FormMessage, null))
+  }), React.createElement(FormField, {
     control: form.control,
     name: "ticket_price",
     render: ({
       field
-    }) => /*#__PURE__*/React.createElement(FormItem, null, /*#__PURE__*/React.createElement(FormLabel, {
+    }) => React.createElement(FormItem, null, React.createElement(FormLabel, {
       className: "text-gray-700 font-medium"
-    }, "General Ticket Price (\u20B9) *"), /*#__PURE__*/React.createElement(FormControl, null, /*#__PURE__*/React.createElement(Input, _extends({
+    }, "General Ticket Price (\u20B9) *"), React.createElement(FormControl, null, React.createElement(Input, _extends({
       type: "number",
       min: "0",
       step: "0.01",
       placeholder: "0.00",
       className: "border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
-    }, field))), /*#__PURE__*/React.createElement(FormDescription, {
+    }, field))), React.createElement(FormDescription, {
       className: "text-xs text-gray-500"
-    }, "Price for the General tier in INR"), /*#__PURE__*/React.createElement(FormMessage, null))
-  }), /*#__PURE__*/React.createElement(FormField, {
+    }, "Price for the General tier in INR"), React.createElement(FormMessage, null))
+  }), React.createElement(FormField, {
     control: form.control,
     name: "vip_ticket_price",
     render: ({
       field
-    }) => /*#__PURE__*/React.createElement(FormItem, null, /*#__PURE__*/React.createElement(FormLabel, {
+    }) => React.createElement(FormItem, null, React.createElement(FormLabel, {
       className: "text-gray-700 font-medium"
-    }, "VIP Ticket Price (\u20B9) Optional"), /*#__PURE__*/React.createElement(FormControl, null, /*#__PURE__*/React.createElement(Input, {
+    }, "VIP Ticket Price (\u20B9) Optional"), React.createElement(FormControl, null, React.createElement(Input, {
       type: "number",
       min: "0",
       step: "0.01",
@@ -531,94 +531,94 @@ export default function CreateEventForm({
       onBlur: field.onBlur,
       name: field.name,
       ref: field.ref
-    })), /*#__PURE__*/React.createElement(FormDescription, {
+    })), React.createElement(FormDescription, {
       className: "text-xs text-gray-500"
-    }, "Optional. If provided, it must be different from the General price."), /*#__PURE__*/React.createElement(FormMessage, null))
-  }), /*#__PURE__*/React.createElement(FormField, {
+    }, "Optional. If provided, it must be different from the General price."), React.createElement(FormMessage, null))
+  }), React.createElement(FormField, {
     control: form.control,
     name: "platform_commission_percentage",
     render: ({
       field
-    }) => /*#__PURE__*/React.createElement(FormItem, null, /*#__PURE__*/React.createElement(FormLabel, {
+    }) => React.createElement(FormItem, null, React.createElement(FormLabel, {
       className: "text-gray-700 font-medium"
-    }, "CONVENEHUB Commission (%) *"), /*#__PURE__*/React.createElement(FormControl, null, /*#__PURE__*/React.createElement(Input, _extends({
+    }, "CONVENEHUB Commission (%) *"), React.createElement(FormControl, null, React.createElement(Input, _extends({
       type: "number",
       min: "0",
       max: "100",
       step: "0.01",
       placeholder: "10.00",
       className: "border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
-    }, field))), /*#__PURE__*/React.createElement(FormDescription, {
+    }, field))), React.createElement(FormDescription, {
       className: "text-xs text-gray-500"
-    }, "Platform commission percentage (0-100). Default: 10%"), /*#__PURE__*/React.createElement(FormMessage, null))
-  }))), /*#__PURE__*/React.createElement("div", {
+    }, "Platform commission percentage (0-100). Default: 10%"), React.createElement(FormMessage, null))
+  }))), React.createElement("div", {
     className: "space-y-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "pb-3 border-b border-gray-200"
-  }, /*#__PURE__*/React.createElement("h3", {
+  }, React.createElement("h3", {
     className: "text-lg font-semibold text-gray-900"
-  }, "Additional Information"), /*#__PURE__*/React.createElement("p", {
+  }, "Additional Information"), React.createElement("p", {
     className: "text-sm text-gray-500 mt-1"
-  }, "Optional instructions and publishing options")), /*#__PURE__*/React.createElement(FormField, {
+  }, "Optional instructions and publishing options")), React.createElement(FormField, {
     control: form.control,
     name: "entry_instructions",
     render: ({
       field
-    }) => /*#__PURE__*/React.createElement(FormItem, null, /*#__PURE__*/React.createElement(FormLabel, {
+    }) => React.createElement(FormItem, null, React.createElement(FormLabel, {
       className: "text-gray-700 font-medium"
-    }, "Entry Instructions"), /*#__PURE__*/React.createElement(FormControl, null, /*#__PURE__*/React.createElement(Textarea, _extends({
+    }, "Entry Instructions"), React.createElement(FormControl, null, React.createElement(Textarea, _extends({
       placeholder: "Special instructions for attendees (optional)",
       className: "min-h-[100px] border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC] resize-none"
-    }, field))), /*#__PURE__*/React.createElement(FormDescription, {
+    }, field))), React.createElement(FormDescription, {
       className: "text-xs text-gray-500"
-    }, "Any special requirements or rules for entry"), /*#__PURE__*/React.createElement(FormMessage, null))
-  }), /*#__PURE__*/React.createElement(FormField, {
+    }, "Any special requirements or rules for entry"), React.createElement(FormMessage, null))
+  }), React.createElement(FormField, {
     control: form.control,
     name: "terms",
     render: ({
       field
-    }) => /*#__PURE__*/React.createElement(FormItem, null, /*#__PURE__*/React.createElement(FormLabel, {
+    }) => React.createElement(FormItem, null, React.createElement(FormLabel, {
       className: "text-gray-700 font-medium"
-    }, "Event Specific Terms & Conditions"), /*#__PURE__*/React.createElement(FormControl, null, /*#__PURE__*/React.createElement(Textarea, _extends({
+    }, "Event Specific Terms & Conditions"), React.createElement(FormControl, null, React.createElement(Textarea, _extends({
       placeholder: "Enter specific rules, NDA clauses, or terms for this event...",
       className: "min-h-[120px] border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC] resize-none"
-    }, field))), /*#__PURE__*/React.createElement(FormDescription, {
+    }, field))), React.createElement(FormDescription, {
       className: "text-xs text-gray-500"
-    }, "These terms will be shown to the user in a popup and they must agree before booking."), /*#__PURE__*/React.createElement(FormMessage, null))
-  }), /*#__PURE__*/React.createElement(FormField, {
+    }, "These terms will be shown to the user in a popup and they must agree before booking."), React.createElement(FormMessage, null))
+  }), React.createElement(FormField, {
     control: form.control,
     name: "status",
     render: ({
       field
-    }) => /*#__PURE__*/React.createElement(FormItem, null, /*#__PURE__*/React.createElement(FormLabel, {
+    }) => React.createElement(FormItem, null, React.createElement(FormLabel, {
       className: "text-gray-700 font-medium"
-    }, "Event Status *"), /*#__PURE__*/React.createElement(Select, {
+    }, "Event Status *"), React.createElement(Select, {
       onValueChange: field.onChange,
       defaultValue: field.value
-    }, /*#__PURE__*/React.createElement(FormControl, null, /*#__PURE__*/React.createElement(SelectTrigger, {
+    }, React.createElement(FormControl, null, React.createElement(SelectTrigger, {
       className: "border-gray-300 focus:border-[#195ADC] focus:ring-[#195ADC]"
-    }, /*#__PURE__*/React.createElement(SelectValue, null))), /*#__PURE__*/React.createElement(SelectContent, null, /*#__PURE__*/React.createElement(SelectItem, {
+    }, React.createElement(SelectValue, null))), React.createElement(SelectContent, null, React.createElement(SelectItem, {
       value: "draft"
-    }, "Draft - Not visible to public"), /*#__PURE__*/React.createElement(SelectItem, {
+    }, "Draft - Not visible to public"), React.createElement(SelectItem, {
       value: "published"
-    }, "Published - Visible, bookings open"), /*#__PURE__*/React.createElement(SelectItem, {
+    }, "Published - Visible, bookings open"), React.createElement(SelectItem, {
       value: "checkin_open"
-    }, "Check-in Open - Visible, bookings closed"), /*#__PURE__*/React.createElement(SelectItem, {
+    }, "Check-in Open - Visible, bookings closed"), React.createElement(SelectItem, {
       value: "in_progress"
-    }, "In Progress - Not visible, event ongoing"), /*#__PURE__*/React.createElement(SelectItem, {
+    }, "In Progress - Not visible, event ongoing"), React.createElement(SelectItem, {
       value: "ended"
-    }, "Ended - Not visible, event completed"))), /*#__PURE__*/React.createElement(FormDescription, {
+    }, "Ended - Not visible, event completed"))), React.createElement(FormDescription, {
       className: "text-xs text-gray-500"
-    }, "Select the current status of the event. Use Draft for new events."), /*#__PURE__*/React.createElement(FormMessage, null))
-  })), /*#__PURE__*/React.createElement("div", {
+    }, "Select the current status of the event. Use Draft for new events."), React.createElement(FormMessage, null))
+  })), React.createElement("div", {
     className: "pt-6 border-t border-gray-200"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     type: "submit",
     disabled: isSubmitting,
     className: "w-full md:w-auto min-w-[200px] bg-[#195ADC] hover:bg-[#378FFA] text-white shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed h-11"
-  }, isSubmitting ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Spinner, {
+  }, isSubmitting ? React.createElement(React.Fragment, null, React.createElement(Spinner, {
     className: "mr-2 h-4 w-4 text-white"
-  }), "Creating Event...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Send, {
+  }), "Creating Event...") : React.createElement(React.Fragment, null, React.createElement(Send, {
     className: "mr-2 h-4 w-4"
   }), "Create Event")))));
 }

@@ -62,14 +62,14 @@ export function ProtectedRoute({
     checkAuth();
   }, [router, supabase, allowedRoles, redirectTo]);
   if (isLoading) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "min-h-screen flex items-center justify-center"
-    }, /*#__PURE__*/React.createElement(Spinner, {
+    }, React.createElement(Spinner, {
       className: "h-8 w-8 text-[#195ADC]"
     }));
   }
   if (!isAuthorized) {
     return null;
   }
-  return /*#__PURE__*/React.createElement(React.Fragment, null, children);
+  return React.createElement(React.Fragment, null, children);
 }

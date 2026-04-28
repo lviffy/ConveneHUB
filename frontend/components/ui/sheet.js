@@ -18,10 +18,10 @@ const Sheet = SheetPrimitive.Root;
 const SheetTrigger = SheetPrimitive.Trigger;
 const SheetClose = SheetPrimitive.Close;
 const SheetPortal = SheetPrimitive.Portal;
-const SheetOverlay = /*#__PURE__*/React.forwardRef(({
+const SheetOverlay = React.forwardRef(({
   className,
   ...props
-}, ref) => /*#__PURE__*/React.createElement(SheetPrimitive.Overlay, _extends({
+}, ref) => React.createElement(SheetPrimitive.Overlay, _extends({
   className: cn("fixed inset-0 z-50 bg-gray-900/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className)
 }, props, {
   ref: ref
@@ -40,50 +40,50 @@ const sheetVariants = cva("fixed z-50 gap-4 bg-background p-6 shadow-lg transiti
     side: "right"
   }
 });
-const SheetContent = /*#__PURE__*/React.forwardRef(({
+const SheetContent = React.forwardRef(({
   side = "right",
   className,
   children,
   ...props
-}, ref) => /*#__PURE__*/React.createElement(SheetPortal, null, /*#__PURE__*/React.createElement(SheetOverlay, null), /*#__PURE__*/React.createElement(SheetPrimitive.Content, _extends({
+}, ref) => React.createElement(SheetPortal, null, React.createElement(SheetOverlay, null), React.createElement(SheetPrimitive.Content, _extends({
   ref: ref,
   className: cn(sheetVariants({
     side
   }), className)
-}, props), children, /*#__PURE__*/React.createElement(SheetPrimitive.Close, {
+}, props), children, React.createElement(SheetPrimitive.Close, {
   className: "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary"
-}, /*#__PURE__*/React.createElement(X, {
+}, React.createElement(X, {
   className: "h-4 w-4"
-}), /*#__PURE__*/React.createElement("span", {
+}), React.createElement("span", {
   className: "sr-only"
 }, "Close")))));
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 const SheetHeader = ({
   className,
   ...props
-}) => /*#__PURE__*/React.createElement("div", _extends({
+}) => React.createElement("div", _extends({
   className: cn("flex flex-col space-y-2 text-center sm:text-left", className)
 }, props));
 SheetHeader.displayName = "SheetHeader";
 const SheetFooter = ({
   className,
   ...props
-}) => /*#__PURE__*/React.createElement("div", _extends({
+}) => React.createElement("div", _extends({
   className: cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className)
 }, props));
 SheetFooter.displayName = "SheetFooter";
-const SheetTitle = /*#__PURE__*/React.forwardRef(({
+const SheetTitle = React.forwardRef(({
   className,
   ...props
-}, ref) => /*#__PURE__*/React.createElement(SheetPrimitive.Title, _extends({
+}, ref) => React.createElement(SheetPrimitive.Title, _extends({
   ref: ref,
   className: cn("text-lg font-semibold text-foreground", className)
 }, props)));
 SheetTitle.displayName = SheetPrimitive.Title.displayName;
-const SheetDescription = /*#__PURE__*/React.forwardRef(({
+const SheetDescription = React.forwardRef(({
   className,
   ...props
-}, ref) => /*#__PURE__*/React.createElement(SheetPrimitive.Description, _extends({
+}, ref) => React.createElement(SheetPrimitive.Description, _extends({
   ref: ref,
   className: cn("text-sm text-muted-foreground", className)
 }, props)));

@@ -39,18 +39,18 @@ export default function FAQSection() {
     const message = encodeURIComponent("Hi! I have a question about ConveneHub.");
     window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
   };
-  return /*#__PURE__*/React.createElement("section", {
+  return React.createElement("section", {
     ref: sectionRef,
     id: "faq",
     className: "w-full py-12 xs:py-16 sm:py-20 lg:py-40 px-4 xs:px-5 sm:px-6"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     style: {
       y
     },
     className: "mx-auto max-w-6xl"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "grid lg:grid-cols-2 gap-8 xs:gap-10 lg:gap-10"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       opacity: 0,
       x: -30
@@ -67,28 +67,28 @@ export default function FAQSection() {
       duration: 0.6
     },
     className: "flex gap-6 xs:gap-8 lg:gap-10 flex-col"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex gap-3 xs:gap-4 flex-col"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Badge, {
+  }, React.createElement("div", null, React.createElement(Badge, {
     variant: "outline",
     className: "text-xs xs:text-sm"
-  }, "FAQ")), /*#__PURE__*/React.createElement("div", {
+  }, "FAQ")), React.createElement("div", {
     className: "flex gap-2 flex-col"
-  }, /*#__PURE__*/React.createElement("h4", {
+  }, React.createElement("h4", {
     className: "text-2xl xs:text-3xl md:text-4xl lg:text-5xl tracking-tighter max-w-xl text-left font-regular text-gray-900"
-  }, "Have Questions? ", /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
+  }, "Have Questions? ", React.createElement("br", null), React.createElement("span", {
     className: "text-blue-600"
-  }, "We Have Answers")), /*#__PURE__*/React.createElement("p", {
+  }, "We Have Answers")), React.createElement("p", {
     className: "text-base xs:text-lg max-w-xl lg:max-w-lg leading-relaxed tracking-tight text-muted-foreground text-left text-gray-600"
-  }, "Everything you need to know about ConveneHub and how it improves end-to-end event operations.")), /*#__PURE__*/React.createElement("div", {
+  }, "Everything you need to know about ConveneHub and how it improves end-to-end event operations.")), React.createElement("div", {
     className: "mt-2 xs:mt-0"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     className: "gap-3 xs:gap-4 text-sm xs:text-base",
     variant: "outline",
     onClick: handleWhatsAppClick
-  }, "Any questions? Reach out ", /*#__PURE__*/React.createElement(PhoneCall, {
+  }, "Any questions? Reach out ", React.createElement(PhoneCall, {
     className: "w-4 h-4"
-  }))))), /*#__PURE__*/React.createElement(motion.div, {
+  }))))), React.createElement(motion.div, {
     initial: {
       opacity: 0,
       x: 30
@@ -104,16 +104,16 @@ export default function FAQSection() {
     transition: {
       duration: 0.6
     }
-  }, /*#__PURE__*/React.createElement(Accordion, {
+  }, React.createElement(Accordion, {
     type: "single",
     collapsible: true,
     className: "w-full"
-  }, faqs.map((faq, index) => /*#__PURE__*/React.createElement(AccordionItem, {
+  }, faqs.map((faq, index) => React.createElement(AccordionItem, {
     key: index,
     value: `item-${index}`
-  }, /*#__PURE__*/React.createElement(AccordionTrigger, {
+  }, React.createElement(AccordionTrigger, {
     className: "text-left text-base xs:text-lg font-semibold text-gray-900 hover:text-blue-600"
-  }, faq.question), /*#__PURE__*/React.createElement(AccordionContent, {
+  }, faq.question), React.createElement(AccordionContent, {
     className: "text-sm xs:text-base text-gray-600 leading-relaxed"
   }, faq.answer))))))));
 }

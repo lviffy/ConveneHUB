@@ -442,7 +442,7 @@ export default function CheckinModal({
     onClose();
   };
   if (!mounted || !isOpen) return null;
-  const modalContent = /*#__PURE__*/React.createElement(AnimatePresence, null, /*#__PURE__*/React.createElement(motion.div, {
+  const modalContent = React.createElement(AnimatePresence, null, React.createElement(motion.div, {
     initial: {
       opacity: 0
     },
@@ -454,7 +454,7 @@ export default function CheckinModal({
     },
     className: "fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4",
     onClick: handleClose
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       scale: 0.95,
       opacity: 0
@@ -472,85 +472,85 @@ export default function CheckinModal({
     },
     onClick: e => e.stopPropagation(),
     className: "w-full max-w-3xl"
-  }, /*#__PURE__*/React.createElement(Card, {
+  }, React.createElement(Card, {
     className: "border-gray-200 shadow-2xl overflow-hidden"
-  }, /*#__PURE__*/React.createElement(CardHeader, {
+  }, React.createElement(CardHeader, {
     className: "border-b border-gray-100 bg-gradient-to-br from-[#195ADC]/5 to-white"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "h-10 w-10 rounded-full bg-[#195ADC]/10 flex items-center justify-center"
-  }, /*#__PURE__*/React.createElement(ScanLine, {
+  }, React.createElement(ScanLine, {
     className: "h-5 w-5 text-[#195ADC]"
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(CardTitle, {
+  })), React.createElement("div", null, React.createElement(CardTitle, {
     className: "text-xl"
-  }, "Event Check-in"), /*#__PURE__*/React.createElement(CardDescription, {
+  }, "Event Check-in"), React.createElement(CardDescription, {
     className: "mt-1 text-sm"
-  }, eventTitle))), /*#__PURE__*/React.createElement(Button, {
+  }, eventTitle))), React.createElement(Button, {
     variant: "ghost",
     size: "sm",
     onClick: handleClose,
     className: "h-8 w-8 p-0"
-  }, /*#__PURE__*/React.createElement(X, {
+  }, React.createElement(X, {
     className: "h-4 w-4"
-  })))), /*#__PURE__*/React.createElement(CardContent, {
+  })))), React.createElement(CardContent, {
     className: "p-4 sm:p-6"
-  }, /*#__PURE__*/React.createElement(Tabs, {
+  }, React.createElement(Tabs, {
     value: activeMethod,
     onValueChange: v => setActiveMethod(v),
     className: "w-full"
-  }, /*#__PURE__*/React.createElement(TabsList, {
+  }, React.createElement(TabsList, {
     className: "grid w-full grid-cols-2 mb-6"
-  }, /*#__PURE__*/React.createElement(TabsTrigger, {
+  }, React.createElement(TabsTrigger, {
     value: "qr",
     className: "flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(Camera, {
+  }, React.createElement(Camera, {
     className: "h-4 w-4"
-  }), /*#__PURE__*/React.createElement("span", null, "QR Scanner")), /*#__PURE__*/React.createElement(TabsTrigger, {
+  }), React.createElement("span", null, "QR Scanner")), React.createElement(TabsTrigger, {
     value: "manual",
     className: "flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(Search, {
+  }, React.createElement(Search, {
     className: "h-4 w-4"
-  }), /*#__PURE__*/React.createElement("span", null, "Manual Lookup"))), /*#__PURE__*/React.createElement(TabsContent, {
+  }), React.createElement("span", null, "Manual Lookup"))), React.createElement(TabsContent, {
     value: "qr",
     className: "mt-0"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "space-y-4 relative"
-  }, videoDevices.length > 1 && /*#__PURE__*/React.createElement("div", {
+  }, videoDevices.length > 1 && React.createElement("div", {
     className: "w-full"
-  }, /*#__PURE__*/React.createElement(Select, {
+  }, React.createElement(Select, {
     value: selectedDeviceId,
     onValueChange: handleCameraChange
-  }, /*#__PURE__*/React.createElement(SelectTrigger, {
+  }, React.createElement(SelectTrigger, {
     className: "w-full"
-  }, /*#__PURE__*/React.createElement(SelectValue, {
+  }, React.createElement(SelectValue, {
     placeholder: "Select Camera"
-  })), /*#__PURE__*/React.createElement(SelectContent, null, videoDevices.map((device, index) => /*#__PURE__*/React.createElement(SelectItem, {
+  })), React.createElement(SelectContent, null, videoDevices.map((device, index) => React.createElement(SelectItem, {
     key: device.deviceId,
     value: device.deviceId
-  }, device.label || `Camera ${index + 1}`))))), /*#__PURE__*/React.createElement("div", {
+  }, device.label || `Camera ${index + 1}`))))), React.createElement("div", {
     className: cn("relative bg-black rounded-lg overflow-hidden aspect-video transition-opacity duration-200", cameraState === "active" ? "opacity-100" : "opacity-0 absolute pointer-events-none")
-  }, /*#__PURE__*/React.createElement("video", {
+  }, React.createElement("video", {
     ref: videoRef,
     autoPlay: true,
     playsInline: true,
     muted: true,
     className: "w-full h-full object-cover"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "absolute inset-0 flex items-center justify-center"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "relative w-64 h-64"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-[#195ADC]"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-[#195ADC]"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-[#195ADC]"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-[#195ADC]"
-  }), scanning && /*#__PURE__*/React.createElement(motion.div, {
+  }), scanning && React.createElement(motion.div, {
     className: "absolute left-0 right-0 h-0.5 bg-[#195ADC]",
     animate: {
       top: ["0%", "100%", "0%"]
@@ -560,7 +560,7 @@ export default function CheckinModal({
       repeat: Infinity,
       ease: "linear"
     }
-  })), /*#__PURE__*/React.createElement(AnimatePresence, null, checkinResult && /*#__PURE__*/React.createElement(motion.div, {
+  })), React.createElement(AnimatePresence, null, checkinResult && React.createElement(motion.div, {
     initial: {
       opacity: 0,
       scale: 0.8
@@ -574,88 +574,88 @@ export default function CheckinModal({
       scale: 0.8
     },
     className: cn("absolute inset-0 flex items-center justify-center backdrop-blur-sm", checkinResult.success ? "bg-green-500/90" : checkinResult.type === "warning" ? "bg-yellow-500/90" : "bg-red-500/90")
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-center p-4 sm:p-6"
-  }, checkinResult.success ? /*#__PURE__*/React.createElement(CheckCircle, {
+  }, checkinResult.success ? React.createElement(CheckCircle, {
     className: "h-12 w-12 sm:h-16 sm:w-16 text-white mx-auto mb-3 sm:mb-4"
-  }) : checkinResult.type === "warning" ? /*#__PURE__*/React.createElement(AlertTriangle, {
+  }) : checkinResult.type === "warning" ? React.createElement(AlertTriangle, {
     className: "h-12 w-12 sm:h-16 sm:w-16 text-white mx-auto mb-3 sm:mb-4"
-  }) : /*#__PURE__*/React.createElement(XCircle, {
+  }) : React.createElement(XCircle, {
     className: "h-12 w-12 sm:h-16 sm:w-16 text-white mx-auto mb-3 sm:mb-4"
-  }), /*#__PURE__*/React.createElement("p", {
+  }), React.createElement("p", {
     className: "text-white font-bold text-lg sm:text-xl mb-2"
-  }, checkinResult.message), checkinResult.details && /*#__PURE__*/React.createElement("div", {
+  }, checkinResult.message), checkinResult.details && React.createElement("div", {
     className: "text-white text-xs sm:text-sm space-y-1 bg-white/10 rounded-lg p-2 sm:p-3 mt-2 sm:mt-3"
-  }, checkinResult.details.ticketCode && /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "Ticket:"), " ", checkinResult.details.ticketCode, " #", checkinResult.details.ticketNumber), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "Booking:"), " ", checkinResult.details.bookingCode), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "Name:"), " ", checkinResult.details.attendeeName), checkinResult.details.ticketsCount && /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "Total Tickets:"), " ", checkinResult.details.ticketsCount), checkinResult.details.checkInTime && /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "Checked in:"), " ", new Date(checkinResult.details.checkInTime).toLocaleString("en-US", {
+  }, checkinResult.details.ticketCode && React.createElement("p", null, React.createElement("strong", null, "Ticket:"), " ", checkinResult.details.ticketCode, " #", checkinResult.details.ticketNumber), React.createElement("p", null, React.createElement("strong", null, "Booking:"), " ", checkinResult.details.bookingCode), React.createElement("p", null, React.createElement("strong", null, "Name:"), " ", checkinResult.details.attendeeName), checkinResult.details.ticketsCount && React.createElement("p", null, React.createElement("strong", null, "Total Tickets:"), " ", checkinResult.details.ticketsCount), checkinResult.details.checkInTime && React.createElement("p", null, React.createElement("strong", null, "Checked in:"), " ", new Date(checkinResult.details.checkInTime).toLocaleString("en-US", {
     dateStyle: "medium",
     timeStyle: "short"
-  }))))))), /*#__PURE__*/React.createElement("canvas", {
+  }))))))), React.createElement("canvas", {
     ref: canvasRef,
     className: "hidden"
-  })), (cameraState === "idle" || cameraState === "requesting") && /*#__PURE__*/React.createElement("div", {
+  })), (cameraState === "idle" || cameraState === "requesting") && React.createElement("div", {
     className: "text-center py-16"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-4"
-  }, /*#__PURE__*/React.createElement(Loader2, {
+  }, React.createElement(Loader2, {
     className: "h-8 w-8 text-[#195ADC] animate-spin"
-  })), /*#__PURE__*/React.createElement("h3", {
+  })), React.createElement("h3", {
     className: "text-lg font-semibold text-gray-900 mb-2"
-  }, cameraState === "idle" ? "Starting Camera..." : "Requesting Camera Access"), /*#__PURE__*/React.createElement("p", {
+  }, cameraState === "idle" ? "Starting Camera..." : "Requesting Camera Access"), React.createElement("p", {
     className: "text-gray-500 max-w-sm mx-auto"
-  }, "Please allow camera access when prompted by your browser.")), cameraState === "denied" && /*#__PURE__*/React.createElement("div", {
+  }, "Please allow camera access when prompted by your browser.")), cameraState === "denied" && React.createElement("div", {
     className: "text-center py-16"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 mb-4"
-  }, /*#__PURE__*/React.createElement(XCircle, {
+  }, React.createElement(XCircle, {
     className: "h-8 w-8 text-red-600"
-  })), /*#__PURE__*/React.createElement("h3", {
+  })), React.createElement("h3", {
     className: "text-lg font-semibold text-gray-900 mb-2"
-  }, "Camera Access Denied"), /*#__PURE__*/React.createElement("p", {
+  }, "Camera Access Denied"), React.createElement("p", {
     className: "text-gray-500 max-w-sm mx-auto mb-4"
-  }, "Please allow camera access in your browser settings to use the QR scanner."), /*#__PURE__*/React.createElement("div", {
+  }, "Please allow camera access in your browser settings to use the QR scanner."), React.createElement("div", {
     className: "flex flex-col sm:flex-row gap-2 justify-center"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     variant: "outline",
     onClick: retryCamera
-  }, /*#__PURE__*/React.createElement(Camera, {
+  }, React.createElement(Camera, {
     className: "h-4 w-4 mr-2"
-  }), "Retry Camera Access"), /*#__PURE__*/React.createElement(Button, {
+  }), "Retry Camera Access"), React.createElement(Button, {
     variant: "ghost",
     onClick: () => setActiveMethod("manual"),
     className: "text-[#195ADC]"
-  }, "Use Manual Lookup Instead"))), cameraState === "active" && /*#__PURE__*/React.createElement("div", {
+  }, "Use Manual Lookup Instead"))), cameraState === "active" && React.createElement("div", {
     className: "bg-gray-50 rounded-lg p-4 border border-gray-200"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm text-gray-700 text-center"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "font-medium"
-  }, "Position the QR code within the frame."), /*#__PURE__*/React.createElement("br", null), "The scanner will automatically detect and validate the code.")))), /*#__PURE__*/React.createElement(TabsContent, {
+  }, "Position the QR code within the frame."), React.createElement("br", null), "The scanner will automatically detect and validate the code.")))), React.createElement(TabsContent, {
     value: "manual",
     className: "mt-0"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "space-y-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex gap-2"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     variant: lookupType === "booking" ? "default" : "outline",
     className: cn("flex-1", lookupType === "booking" && "bg-[#195ADC] hover:bg-[#195ADC]/90"),
     onClick: () => setLookupType("booking")
-  }, /*#__PURE__*/React.createElement(Hash, {
+  }, React.createElement(Hash, {
     className: "h-4 w-4 mr-2"
-  }), "Booking ID"), /*#__PURE__*/React.createElement(Button, {
+  }), "Booking ID"), React.createElement(Button, {
     variant: lookupType === "phone" ? "default" : "outline",
     className: cn("flex-1", lookupType === "phone" && "bg-[#195ADC] hover:bg-[#195ADC]/90"),
     onClick: () => setLookupType("phone")
-  }, /*#__PURE__*/React.createElement(Phone, {
+  }, React.createElement(Phone, {
     className: "h-4 w-4 mr-2"
-  }), "Phone Number")), /*#__PURE__*/React.createElement("div", {
+  }), "Phone Number")), React.createElement("div", {
     className: "space-y-3"
-  }, lookupType === "booking" ? /*#__PURE__*/React.createElement("div", {
+  }, lookupType === "booking" ? React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "bookingId",
     className: "text-sm font-medium"
-  }, "Booking ID"), /*#__PURE__*/React.createElement(Input, {
+  }, "Booking ID"), React.createElement(Input, {
     id: "bookingId",
     type: "text",
     placeholder: "Enter booking ID (e.g., BK123456)",
@@ -664,12 +664,12 @@ export default function CheckinModal({
     onKeyDown: e => e.key === "Enter" && handleManualLookup(),
     className: "h-11",
     disabled: lookupLoading
-  })) : /*#__PURE__*/React.createElement("div", {
+  })) : React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "phoneNumber",
     className: "text-sm font-medium"
-  }, "Phone Number"), /*#__PURE__*/React.createElement(Input, {
+  }, "Phone Number"), React.createElement(Input, {
     id: "phoneNumber",
     type: "tel",
     placeholder: "Enter phone number",
@@ -678,15 +678,15 @@ export default function CheckinModal({
     onKeyDown: e => e.key === "Enter" && handleManualLookup(),
     className: "h-11",
     disabled: lookupLoading
-  })), /*#__PURE__*/React.createElement(Button, {
+  })), React.createElement(Button, {
     className: "w-full h-11 bg-[#195ADC] hover:bg-[#195ADC]/90",
     onClick: handleManualLookup,
     disabled: lookupLoading
-  }, lookupLoading ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Loader2, {
+  }, lookupLoading ? React.createElement(React.Fragment, null, React.createElement(Loader2, {
     className: "h-4 w-4 mr-2 animate-spin"
-  }), "Processing...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Search, {
+  }), "Processing...") : React.createElement(React.Fragment, null, React.createElement(Search, {
     className: "h-4 w-4 mr-2"
-  }), "Check-in Attendee"))), /*#__PURE__*/React.createElement(AnimatePresence, null, checkinResult && /*#__PURE__*/React.createElement(motion.div, {
+  }), "Check-in Attendee"))), React.createElement(AnimatePresence, null, checkinResult && React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: 10
@@ -700,37 +700,37 @@ export default function CheckinModal({
       y: -10
     },
     className: cn("p-4 rounded-lg border-2", checkinResult.success ? "bg-green-50 border-green-200" : checkinResult.type === "warning" ? "bg-yellow-50 border-yellow-200" : "bg-red-50 border-red-200")
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-start gap-3"
-  }, checkinResult.success ? /*#__PURE__*/React.createElement(CheckCircle, {
+  }, checkinResult.success ? React.createElement(CheckCircle, {
     className: "h-5 w-5 text-green-600 flex-shrink-0 mt-0.5"
-  }) : checkinResult.type === "warning" ? /*#__PURE__*/React.createElement(AlertTriangle, {
+  }) : checkinResult.type === "warning" ? React.createElement(AlertTriangle, {
     className: "h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5"
-  }) : /*#__PURE__*/React.createElement(XCircle, {
+  }) : React.createElement(XCircle, {
     className: "h-5 w-5 text-red-600 flex-shrink-0 mt-0.5"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "flex-1"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: cn("font-medium mb-1", checkinResult.success ? "text-green-900" : checkinResult.type === "warning" ? "text-yellow-900" : "text-red-900")
-  }, checkinResult.message), checkinResult.details && /*#__PURE__*/React.createElement("div", {
+  }, checkinResult.message), checkinResult.details && React.createElement("div", {
     className: cn("text-sm space-y-1 mt-3 p-3 rounded-lg border", checkinResult.success ? "bg-green-100 border-green-300 text-green-900" : checkinResult.type === "warning" ? "bg-yellow-100 border-yellow-300 text-yellow-900" : "bg-red-100 border-red-300 text-red-900")
-  }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("p", null, React.createElement("span", {
     className: "font-semibold"
-  }, "Booking:"), " ", checkinResult.details.bookingCode), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("span", {
+  }, "Booking:"), " ", checkinResult.details.bookingCode), React.createElement("p", null, React.createElement("span", {
     className: "font-semibold"
-  }, "Name:"), " ", checkinResult.details.attendeeName), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("span", {
+  }, "Name:"), " ", checkinResult.details.attendeeName), React.createElement("p", null, React.createElement("span", {
     className: "font-semibold"
-  }, "Tickets:"), " ", checkinResult.details.ticketsCount), checkinResult.details.checkInTime && /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("span", {
+  }, "Tickets:"), " ", checkinResult.details.ticketsCount), checkinResult.details.checkInTime && React.createElement("p", null, React.createElement("span", {
     className: "font-semibold"
   }, "Checked in:"), " ", new Date(checkinResult.details.checkInTime).toLocaleString("en-US", {
     dateStyle: "medium",
     timeStyle: "short"
-  }))))))), /*#__PURE__*/React.createElement("div", {
+  }))))))), React.createElement("div", {
     className: "bg-gray-50 rounded-lg p-4 border border-gray-200"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm text-gray-700"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "font-medium"
-  }, "Manual Check-in:"), /*#__PURE__*/React.createElement("br", null), "Search by Booking ID or Phone Number to check in attendees when QR codes are unavailable."))))))))));
-  return /*#__PURE__*/createPortal(modalContent, document.body);
+  }, "Manual Check-in:"), React.createElement("br", null), "Search by Booking ID or Phone Number to check in attendees when QR codes are unavailable."))))))))));
+  return createPortal(modalContent, document.body);
 }

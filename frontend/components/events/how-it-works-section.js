@@ -20,9 +20,9 @@ export default function HowItWorksSection() {
     title: "Experience",
     description: "Check in and enjoy the event"
   }];
-  return /*#__PURE__*/React.createElement("section", {
+  return React.createElement("section", {
     className: "relative py-24 md:py-32 px-6 bg-white overflow-hidden"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     className: "relative mx-auto max-w-[1312px]",
     initial: {
       filter: "blur(10px)"
@@ -42,9 +42,9 @@ export default function HowItWorksSection() {
         duration: 0.6
       }
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-center mb-16 md:mb-24"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: 20,
@@ -65,7 +65,7 @@ export default function HowItWorksSection() {
       ease: [0.16, 1, 0.3, 1]
     },
     className: "flex items-center justify-center gap-3 mb-6"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       scaleX: 0,
       opacity: 0
@@ -83,9 +83,9 @@ export default function HowItWorksSection() {
       ease: [0.16, 1, 0.3, 1]
     },
     className: "w-12 h-[1px] bg-gray-300 origin-right"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "text-sm font-medium text-gray-500 uppercase tracking-wide"
-  }, "How It Works"), /*#__PURE__*/React.createElement(motion.div, {
+  }, "How It Works"), React.createElement(motion.div, {
     initial: {
       scaleX: 0,
       opacity: 0
@@ -103,7 +103,7 @@ export default function HowItWorksSection() {
       ease: [0.16, 1, 0.3, 1]
     },
     className: "w-12 h-[1px] bg-gray-300 origin-left"
-  })), /*#__PURE__*/React.createElement(motion.h2, {
+  })), React.createElement(motion.h2, {
     initial: {
       opacity: 0,
       y: 30,
@@ -128,7 +128,7 @@ export default function HowItWorksSection() {
       }
     },
     className: "text-5xl md:text-6xl lg:text-7xl font-semibold text-gray-900 mb-4 tracking-tight"
-  }, "Four Simple Steps"), /*#__PURE__*/React.createElement(motion.p, {
+  }, "Four Simple Steps"), React.createElement(motion.p, {
     initial: {
       opacity: 0,
       y: 20
@@ -147,9 +147,9 @@ export default function HowItWorksSection() {
       ease: [0.16, 1, 0.3, 1]
     },
     className: "text-gray-600 text-base md:text-lg max-w-2xl mx-auto"
-  }, "From discovery to check-in in just a few taps")), /*#__PURE__*/React.createElement(motion.div, {
+  }, "From discovery to check-in in just a few taps")), React.createElement(motion.div, {
     className: "grid grid-cols-1 md:grid-cols-4 gap-0 md:gap-0 origin-top"
-  }, steps.map((step, index) => /*#__PURE__*/React.createElement(motion.div, {
+  }, steps.map((step, index) => React.createElement(motion.div, {
     key: index,
     initial: {
       opacity: 0,
@@ -174,9 +174,9 @@ export default function HowItWorksSection() {
       }
     },
     className: "relative border-t border-gray-200 pt-8 pb-12 md:pb-8 group hover:bg-gray-50/50 transition-colors duration-300 md:px-6"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "relative mb-6"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       opacity: 0,
       scale: 0.8
@@ -195,13 +195,13 @@ export default function HowItWorksSection() {
       ease: [0.16, 1, 0.3, 1]
     },
     className: "text-[120px] md:text-[140px] font-bold text-gray-100 leading-none select-none transition-colors duration-300 group-hover:text-gray-200"
-  }, step.number)), /*#__PURE__*/React.createElement("div", {
+  }, step.number)), React.createElement("div", {
     className: "relative -mt-16 md:-mt-20"
-  }, /*#__PURE__*/React.createElement("h3", {
+  }, React.createElement("h3", {
     className: "text-xl md:text-2xl font-bold text-gray-900 mb-2 tracking-tight"
-  }, step.title), /*#__PURE__*/React.createElement("p", {
+  }, step.title), React.createElement("p", {
     className: "text-sm md:text-base text-gray-600 leading-relaxed"
-  }, step.description)), index < steps.length - 1 && /*#__PURE__*/React.createElement(motion.div, {
+  }, step.description)), index < steps.length - 1 && React.createElement(motion.div, {
     initial: {
       opacity: 0,
       x: -15,
@@ -225,7 +225,7 @@ export default function HowItWorksSection() {
       }
     },
     className: "hidden md:block absolute top-1/2 -right-3 -translate-y-1/2 text-gray-300 group-hover:text-gray-400 transition-colors duration-300"
-  }, /*#__PURE__*/React.createElement("svg", {
+  }, React.createElement("svg", {
     width: "24",
     height: "24",
     viewBox: "0 0 24 24",
@@ -234,7 +234,7 @@ export default function HowItWorksSection() {
     strokeWidth: "2",
     strokeLinecap: "round",
     strokeLinejoin: "round"
-  }, /*#__PURE__*/React.createElement("path", {
+  }, React.createElement("path", {
     d: "M5 12h14M12 5l7 7-7 7"
   }))))))));
 }

@@ -10,7 +10,7 @@ function _extends() {
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@/lib/utils";
-const ButtonGroupContext = /*#__PURE__*/React.createContext(undefined);
+const ButtonGroupContext = React.createContext(undefined);
 const useButtonGroup = () => {
   const context = React.useContext(ButtonGroupContext);
   if (!context) {
@@ -18,39 +18,39 @@ const useButtonGroup = () => {
   }
   return context;
 };
-const ButtonGroup = /*#__PURE__*/React.forwardRef(({
+const ButtonGroup = React.forwardRef(({
   className,
   orientation = "horizontal",
   ...props
-}, ref) => /*#__PURE__*/React.createElement(ButtonGroupContext.Provider, {
+}, ref) => React.createElement(ButtonGroupContext.Provider, {
   value: {
     orientation
   }
-}, /*#__PURE__*/React.createElement("div", _extends({
+}, React.createElement("div", _extends({
   ref: ref,
   className: cn("inline-flex items-center", orientation === "vertical" && "flex-col", className)
 }, props))));
 ButtonGroup.displayName = "ButtonGroup";
-const ButtonGroupSeparator = /*#__PURE__*/React.forwardRef(({
+const ButtonGroupSeparator = React.forwardRef(({
   className,
   orientation,
   ...props
 }, ref) => {
   const groupContext = React.useContext(ButtonGroupContext);
   const finalOrientation = orientation || groupContext?.orientation || "vertical";
-  return /*#__PURE__*/React.createElement("div", _extends({
+  return React.createElement("div", _extends({
     ref: ref,
     className: cn("bg-border", finalOrientation === "vertical" ? "h-6 w-px" : "h-px w-6", className)
   }, props));
 });
 ButtonGroupSeparator.displayName = "ButtonGroupSeparator";
-const ButtonGroupText = /*#__PURE__*/React.forwardRef(({
+const ButtonGroupText = React.forwardRef(({
   className,
   asChild = false,
   ...props
 }, ref) => {
   const Comp = asChild ? Slot : "div";
-  return /*#__PURE__*/React.createElement(Comp, _extends({
+  return React.createElement(Comp, _extends({
     ref: ref,
     className: cn("flex items-center justify-center px-3 py-2 text-sm font-medium", className)
   }, props));

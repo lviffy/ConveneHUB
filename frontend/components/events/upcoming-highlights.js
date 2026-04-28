@@ -43,24 +43,24 @@ export default function UpcomingHighlights() {
     }
   };
   if (loading) {
-    return /*#__PURE__*/React.createElement("section", {
+    return React.createElement("section", {
       className: "py-16 sm:py-20 bg-white"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "max-w-5xl mx-auto px-4 sm:px-6"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "animate-pulse"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "h-64 bg-gray-100 rounded-2xl"
     }))));
   }
   if (!event) return null;
-  return /*#__PURE__*/React.createElement("section", {
+  return React.createElement("section", {
     className: "py-16 sm:py-20 bg-white"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "max-w-5xl mx-auto px-4 sm:px-6"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "mb-8"
-  }, /*#__PURE__*/React.createElement(motion.p, {
+  }, React.createElement(motion.p, {
     initial: false,
     whileInView: {
       opacity: 1
@@ -69,7 +69,7 @@ export default function UpcomingHighlights() {
       once: true
     },
     className: "text-xs uppercase tracking-widest text-gray-500 mb-3"
-  }, "Coming up next"), /*#__PURE__*/React.createElement(motion.h2, {
+  }, "Coming up next"), React.createElement(motion.h2, {
     initial: false,
     whileInView: {
       opacity: 1,
@@ -82,7 +82,7 @@ export default function UpcomingHighlights() {
       delay: 0.05
     },
     className: "text-2xl sm:text-3xl font-bold text-gray-900"
-  }, "Upcoming Highlights")), /*#__PURE__*/React.createElement(motion.a, {
+  }, "Upcoming Highlights")), React.createElement(motion.a, {
     href: `/events/${event.event_id}`,
     initial: false,
     whileInView: {
@@ -96,36 +96,36 @@ export default function UpcomingHighlights() {
       delay: 0.1
     },
     className: "group block"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "relative bg-gray-50 rounded-2xl overflow-hidden border border-gray-100"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex flex-col lg:flex-row"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "relative w-full lg:w-1/2 h-64 lg:h-80"
-  }, /*#__PURE__*/React.createElement(Image, {
+  }, React.createElement(Image, {
     src: event.event_image || "/event-placeholder.jpg",
     alt: event.title,
     fill: true,
     className: "object-cover group-hover:scale-105 transition-transform duration-500"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "absolute top-4 left-4 bg-white text-gray-900 text-sm font-medium px-4 py-2 rounded-full flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(Calendar, {
+  }, React.createElement(Calendar, {
     className: "w-4 h-4"
-  }), getDateLabel(event.date_time))), /*#__PURE__*/React.createElement("div", {
+  }), getDateLabel(event.date_time))), React.createElement("div", {
     className: "flex-1 p-6 lg:p-10 flex flex-col justify-center"
-  }, /*#__PURE__*/React.createElement("h3", {
+  }, React.createElement("h3", {
     className: "text-xl sm:text-2xl font-bold text-gray-900 mb-3 group-hover:text-gray-700 transition-colors"
-  }, event.title), /*#__PURE__*/React.createElement("p", {
+  }, event.title), React.createElement("p", {
     className: "text-gray-600 mb-6 line-clamp-2"
-  }, event.description), /*#__PURE__*/React.createElement("div", {
+  }, event.description), React.createElement("div", {
     className: "flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("div", null, React.createElement("p", {
     className: "text-sm text-gray-500"
-  }, event.venue_name, ", ", event.city), /*#__PURE__*/React.createElement("p", {
+  }, event.venue_name, ", ", event.city), React.createElement("p", {
     className: "text-lg font-semibold text-gray-900 mt-1"
-  }, event.ticket_price === 0 ? "Free" : `₹${event.ticket_price}`)), /*#__PURE__*/React.createElement(Button, {
+  }, event.ticket_price === 0 ? "Free" : `₹${event.ticket_price}`)), React.createElement(Button, {
     className: "bg-gray-900 hover:bg-gray-800 text-white rounded-full px-6 group/btn"
-  }, "Book Now", /*#__PURE__*/React.createElement(ArrowRight, {
+  }, "Book Now", React.createElement(ArrowRight, {
     className: "w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform"
   })))))))));
 }

@@ -23,11 +23,11 @@ const VenueMap = dynamic(() => import("@/components/events/venue-map").then(mod 
   default: mod.VenueMap
 })), {
   ssr: false,
-  loading: () => /*#__PURE__*/React.createElement("div", {
+  loading: () => React.createElement("div", {
     className: "w-full h-[300px] bg-gray-100 rounded-xl flex items-center justify-center"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-center text-gray-500"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm"
   }, "Loading map...")))
 });
@@ -427,57 +427,57 @@ export default function EventBookingPage({
 
   // Loading state
   if (isInitializing) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "min-h-screen flex items-center justify-center bg-gray-50"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-center"
-    }, /*#__PURE__*/React.createElement(Spinner, {
+    }, React.createElement(Spinner, {
       className: "w-16 h-16 text-[#195ADC] mx-auto mb-4"
-    }), /*#__PURE__*/React.createElement("p", {
+    }), React.createElement("p", {
       className: "text-gray-600"
     }, "Loading event details...")));
   }
 
   // Event not found
   if (!event) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "min-h-screen flex items-center justify-center bg-gray-50"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-center max-w-md mx-auto px-6"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4"
-    }, /*#__PURE__*/React.createElement(AlertCircle, {
+    }, React.createElement(AlertCircle, {
       className: "w-8 h-8 text-red-600"
-    })), /*#__PURE__*/React.createElement("h1", {
+    })), React.createElement("h1", {
       className: "text-2xl font-bold mb-4 text-gray-900"
-    }, "Event Not Found"), /*#__PURE__*/React.createElement("p", {
+    }, "Event Not Found"), React.createElement("p", {
       className: "text-gray-600 mb-6"
-    }, "The event you're looking for doesn't exist or has been removed."), /*#__PURE__*/React.createElement(Button, {
+    }, "The event you're looking for doesn't exist or has been removed."), React.createElement(Button, {
       onClick: () => router.push("/events"),
       className: "rounded-full"
-    }, /*#__PURE__*/React.createElement(ArrowLeft, {
+    }, React.createElement(ArrowLeft, {
       className: "w-4 h-4 mr-2"
     }), "Back to Events")));
   }
 
   // Event not available
   if (!["published", "checkin_open", "draft"].includes(event.status)) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "min-h-screen flex items-center justify-center bg-gray-50"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-center max-w-md mx-auto px-6"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4"
-    }, /*#__PURE__*/React.createElement(AlertCircle, {
+    }, React.createElement(AlertCircle, {
       className: "w-8 h-8 text-yellow-600"
-    })), /*#__PURE__*/React.createElement("h1", {
+    })), React.createElement("h1", {
       className: "text-2xl font-bold mb-4 text-gray-900"
-    }, "Event Not Available"), /*#__PURE__*/React.createElement("p", {
+    }, "Event Not Available"), React.createElement("p", {
       className: "text-gray-600 mb-6"
-    }, event.status === "in_progress" ? "This event is currently in progress and not accepting new bookings." : "This event has ended and is no longer available for booking."), /*#__PURE__*/React.createElement(Button, {
+    }, event.status === "in_progress" ? "This event is currently in progress and not accepting new bookings." : "This event has ended and is no longer available for booking."), React.createElement(Button, {
       onClick: () => router.push("/events"),
       className: "rounded-full"
-    }, /*#__PURE__*/React.createElement(ArrowLeft, {
+    }, React.createElement(ArrowLeft, {
       className: "w-4 h-4 mr-2"
     }), "Back to Events")));
   }
@@ -491,11 +491,11 @@ export default function EventBookingPage({
   const booked = event.bookingCount;
   const fillPercentage = booked / event.capacity * 100;
   const eventDate = new Date(event.date_time);
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "min-h-screen bg-gray-50"
-  }, /*#__PURE__*/React.createElement(EventsHeader, null), showSuccessModal && /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(EventsHeader, null), showSuccessModal && React.createElement("div", {
     className: "fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       opacity: 0,
       scale: 0.95
@@ -505,124 +505,124 @@ export default function EventBookingPage({
       scale: 1
     },
     className: "bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-center"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
-  }, /*#__PURE__*/React.createElement(CheckCircle2, {
+  }, React.createElement(CheckCircle2, {
     className: "w-8 h-8 text-green-600"
-  })), /*#__PURE__*/React.createElement("h2", {
+  })), React.createElement("h2", {
     className: "text-2xl font-bold text-gray-900 mb-2"
-  }, "\uD83C\uDF89 Booking Confirmed!"), /*#__PURE__*/React.createElement("p", {
+  }, "\uD83C\uDF89 Booking Confirmed!"), React.createElement("p", {
     className: "text-gray-600 mb-6"
-  }, "Your ticket has been successfully booked"), /*#__PURE__*/React.createElement("div", {
+  }, "Your ticket has been successfully booked"), React.createElement("div", {
     className: "bg-gray-50 rounded-xl p-4 mb-6"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm text-gray-600 mb-1"
-  }, "Booking Code"), /*#__PURE__*/React.createElement("p", {
+  }, "Booking Code"), React.createElement("p", {
     className: "text-2xl font-bold text-gray-900 font-mono tracking-wider"
-  }, bookingCode)), /*#__PURE__*/React.createElement("div", {
+  }, bookingCode)), React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     onClick: () => {
       setShowSuccessModal(false);
       router.push("/bookings");
     },
     className: "w-full bg-gray-900 hover:bg-gray-800 text-white h-12 rounded-xl"
-  }, "View My Bookings"), /*#__PURE__*/React.createElement(Button, {
+  }, "View My Bookings"), React.createElement(Button, {
     onClick: () => setShowSuccessModal(false),
     variant: "outline",
     className: "w-full h-12 rounded-xl"
-  }, "Stay on This Page"))))), /*#__PURE__*/React.createElement("section", {
+  }, "Stay on This Page"))))), React.createElement("section", {
     className: "relative pt-20 pb-0 bg-gray-900 overflow-hidden"
-  }, event.event_image && /*#__PURE__*/React.createElement("div", {
+  }, event.event_image && React.createElement("div", {
     className: "absolute inset-0"
-  }, /*#__PURE__*/React.createElement(Image, {
+  }, React.createElement(Image, {
     src: event.event_image,
     alt: "",
     fill: true,
     priority: true,
     sizes: "100vw",
     className: "object-cover scale-110 blur-2xl opacity-30"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "absolute inset-0 bg-gradient-to-b from-gray-900/60 via-gray-900/80 to-gray-900"
-  })), !event.event_image && /*#__PURE__*/React.createElement("div", {
+  })), !event.event_image && React.createElement("div", {
     className: "absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "relative mx-auto max-w-7xl px-4 md:px-6"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "pt-4 pb-6"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     variant: "ghost",
     onClick: () => router.push("/events"),
     className: "text-white/80 hover:text-white hover:bg-white/10 pl-0"
-  }, /*#__PURE__*/React.createElement(ArrowLeft, {
+  }, React.createElement(ArrowLeft, {
     className: "w-4 h-4 mr-2"
-  }), "Back to Events")), /*#__PURE__*/React.createElement("div", {
+  }), "Back to Events")), React.createElement("div", {
     className: "flex flex-col md:flex-row gap-8 pb-10"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex-1 flex flex-col justify-end pb-2"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-2 flex-wrap mb-4"
-  }, /*#__PURE__*/React.createElement(Badge, {
+  }, React.createElement(Badge, {
     className: cn("text-xs font-semibold px-3 py-1", event.status === "published" ? "bg-green-500 hover:bg-green-600" : event.status === "checkin_open" ? "bg-blue-500 hover:bg-blue-600" : event.status === "in_progress" ? "bg-orange-500 hover:bg-orange-600" : "bg-gray-500 hover:bg-gray-600")
-  }, event.status.replace("_", " ").toUpperCase()), isSoldOut && /*#__PURE__*/React.createElement(Badge, {
+  }, event.status.replace("_", " ").toUpperCase()), isSoldOut && React.createElement(Badge, {
     variant: "destructive",
     className: "text-xs font-semibold px-3 py-1"
-  }, "SOLD OUT"), !isSoldOut && event.actualRemaining <= 10 && /*#__PURE__*/React.createElement(Badge, {
+  }, "SOLD OUT"), !isSoldOut && event.actualRemaining <= 10 && React.createElement(Badge, {
     className: "bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold px-3 py-1"
-  }, "ONLY ", event.actualRemaining, " LEFT")), /*#__PURE__*/React.createElement("h1", {
+  }, "ONLY ", event.actualRemaining, " LEFT")), React.createElement("h1", {
     className: "text-3xl md:text-5xl font-bold text-white mb-5 leading-tight"
-  }, event.title), /*#__PURE__*/React.createElement("div", {
+  }, event.title), React.createElement("div", {
     className: "space-y-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-3 text-gray-200"
-  }, /*#__PURE__*/React.createElement(Calendar, {
+  }, React.createElement(Calendar, {
     className: "w-5 h-5 text-gray-400 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "text-base"
   }, eventDate.toLocaleDateString("en-IN", {
     weekday: "short",
     day: "numeric",
     month: "short",
     year: "numeric"
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), React.createElement("div", {
     className: "flex items-center gap-3 text-gray-200"
-  }, /*#__PURE__*/React.createElement(Clock, {
+  }, React.createElement(Clock, {
     className: "w-5 h-5 text-gray-400 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "text-base"
   }, eventDate.toLocaleTimeString("en-IN", {
     hour: "numeric",
     minute: "2-digit",
     hour12: true
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), React.createElement("div", {
     className: "flex items-center gap-3 text-gray-200"
-  }, /*#__PURE__*/React.createElement(Users, {
+  }, React.createElement(Users, {
     className: "w-5 h-5 text-gray-400 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "text-base"
-  }, event.actualRemaining, " of ", event.capacity, " slots available")), /*#__PURE__*/React.createElement("div", {
+  }, event.actualRemaining, " of ", event.capacity, " slots available")), React.createElement("div", {
     className: "flex items-center gap-3 text-gray-200"
-  }, /*#__PURE__*/React.createElement(MapPin, {
+  }, React.createElement(MapPin, {
     className: "w-5 h-5 text-gray-400 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "text-base"
-  }, event.venue_name, ", ", event.city)), /*#__PURE__*/React.createElement("div", {
+  }, event.venue_name, ", ", event.city)), React.createElement("div", {
     className: "flex items-center gap-3 text-gray-200"
-  }, /*#__PURE__*/React.createElement(Film, {
+  }, React.createElement(Film, {
     className: "w-5 h-5 text-gray-400 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "text-base"
-  }, "Event Access Pass"))), /*#__PURE__*/React.createElement("div", {
+  }, "Event Access Pass"))), React.createElement("div", {
     className: "mt-6 max-w-md"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between text-xs text-gray-400 mb-1.5"
-  }, /*#__PURE__*/React.createElement("span", null, "Booking Progress"), /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", null, "Booking Progress"), React.createElement("span", {
     className: "font-medium"
-  }, Math.round(fillPercentage), "% filled")), /*#__PURE__*/React.createElement("div", {
+  }, Math.round(fillPercentage), "% filled")), React.createElement("div", {
     className: "h-1.5 bg-white/10 rounded-full overflow-hidden"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       width: 0
     },
@@ -634,30 +634,30 @@ export default function EventBookingPage({
       ease: "easeOut"
     },
     className: cn("h-full rounded-full", fillPercentage >= 90 ? "bg-red-500" : fillPercentage >= 70 ? "bg-orange-500" : "bg-green-500")
-  })))), /*#__PURE__*/React.createElement("div", {
+  })))), React.createElement("div", {
     className: "flex-shrink-0 mx-auto md:mx-0 w-full md:w-[600px] order-first md:order-last"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "rounded-2xl overflow-hidden shadow-2xl bg-gray-800"
-  }, event.event_image ? /*#__PURE__*/React.createElement(Image, {
+  }, event.event_image ? React.createElement(Image, {
     src: event.event_image,
     alt: event.title,
     width: 600,
     height: 340,
     priority: true,
     className: "w-full aspect-video object-cover"
-  }) : /*#__PURE__*/React.createElement("div", {
+  }) : React.createElement("div", {
     className: "w-full aspect-video flex items-center justify-center bg-gray-700"
-  }, /*#__PURE__*/React.createElement(Film, {
+  }, React.createElement(Film, {
     className: "w-16 h-16 text-gray-500"
-  }))))))), /*#__PURE__*/React.createElement("section", {
+  }))))))), React.createElement("section", {
     className: "py-10 bg-gray-50"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "mx-auto max-w-7xl px-4 md:px-6"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "grid lg:grid-cols-3 gap-8"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "lg:col-span-2 space-y-6"
-  }, event.description && /*#__PURE__*/React.createElement(motion.div, {
+  }, event.description && React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: 20
@@ -670,11 +670,11 @@ export default function EventBookingPage({
       duration: 0.4
     },
     className: "bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100"
-  }, /*#__PURE__*/React.createElement("h2", {
+  }, React.createElement("h2", {
     className: "text-xl font-bold text-gray-900 mb-4"
-  }, "About The Event"), /*#__PURE__*/React.createElement("p", {
+  }, "About The Event"), React.createElement("p", {
     className: "text-gray-700 leading-relaxed"
-  }, event.description)), /*#__PURE__*/React.createElement(motion.div, {
+  }, event.description)), React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: 20
@@ -688,23 +688,23 @@ export default function EventBookingPage({
       delay: 0.05
     },
     className: "bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100"
-  }, /*#__PURE__*/React.createElement("h2", {
+  }, React.createElement("h2", {
     className: "text-xl font-bold text-gray-900 mb-5 flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(MapPin, {
+  }, React.createElement(MapPin, {
     className: "w-5 h-5 text-gray-500"
-  }), "Venue Details"), /*#__PURE__*/React.createElement("div", {
+  }), "Venue Details"), React.createElement("div", {
     className: "space-y-3"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("div", null, React.createElement("p", {
     className: "text-xs text-gray-400 uppercase tracking-wide mb-0.5"
-  }, "Location"), /*#__PURE__*/React.createElement("p", {
+  }, "Location"), React.createElement("p", {
     className: "text-base font-semibold text-gray-900"
-  }, event.venue_name), /*#__PURE__*/React.createElement("p", {
+  }, event.venue_name), React.createElement("p", {
     className: "text-sm text-gray-500"
-  }, event.venue_address)), event.latitude && event.longitude && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+  }, event.venue_address)), event.latitude && event.longitude && React.createElement("div", null, React.createElement("p", {
     className: "text-xs text-gray-400 uppercase tracking-wide mb-0.5"
-  }, "Coordinates"), /*#__PURE__*/React.createElement("p", {
+  }, "Coordinates"), React.createElement("p", {
     className: "text-sm text-gray-500 font-mono"
-  }, event.latitude, ", ", event.longitude)))), event.entry_instructions && /*#__PURE__*/React.createElement(motion.div, {
+  }, event.latitude, ", ", event.longitude)))), event.entry_instructions && React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: 20
@@ -718,15 +718,15 @@ export default function EventBookingPage({
       delay: 0.1
     },
     className: "bg-blue-50 rounded-2xl p-6 md:p-8 border border-blue-100"
-  }, /*#__PURE__*/React.createElement("h2", {
+  }, React.createElement("h2", {
     className: "text-xl font-bold text-gray-900 mb-4 flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(Info, {
+  }, React.createElement(Info, {
     className: "w-5 h-5 text-blue-600"
-  }), "Important Information"), /*#__PURE__*/React.createElement("div", {
+  }), "Important Information"), React.createElement("div", {
     className: "prose prose-sm text-gray-700"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "whitespace-pre-wrap"
-  }, event.entry_instructions))), event.latitude && event.longitude && /*#__PURE__*/React.createElement(motion.div, {
+  }, event.entry_instructions))), event.latitude && event.longitude && React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: 20
@@ -740,18 +740,18 @@ export default function EventBookingPage({
       delay: 0.3
     },
     className: "bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100"
-  }, /*#__PURE__*/React.createElement("h2", {
+  }, React.createElement("h2", {
     className: "text-xl font-bold text-gray-900 mb-5 flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(MapPin, {
+  }, React.createElement(MapPin, {
     className: "w-5 h-5 text-gray-500"
-  }), "Venue Location"), /*#__PURE__*/React.createElement(VenueMap, {
+  }), "Venue Location"), React.createElement(VenueMap, {
     latitude: event.latitude,
     longitude: event.longitude,
     venueName: event.venue_name,
     venueAddress: event.venue_address
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), React.createElement("div", {
     className: "lg:col-span-1"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: 20
@@ -764,301 +764,301 @@ export default function EventBookingPage({
       duration: 0.4
     },
     className: "sticky top-24 bg-white rounded-2xl shadow-lg border border-gray-100 z-10 overflow-hidden"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "p-5 border-b border-gray-100 space-y-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-3 text-gray-700"
-  }, /*#__PURE__*/React.createElement(Calendar, {
+  }, React.createElement(Calendar, {
     className: "w-4 h-4 text-gray-400 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "text-sm"
   }, eventDate.toLocaleDateString("en-IN", {
     weekday: "short",
     day: "numeric",
     month: "short",
     year: "numeric"
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), React.createElement("div", {
     className: "flex items-center gap-3 text-gray-700"
-  }, /*#__PURE__*/React.createElement(Clock, {
+  }, React.createElement(Clock, {
     className: "w-4 h-4 text-gray-400 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "text-sm"
   }, eventDate.toLocaleTimeString("en-IN", {
     hour: "numeric",
     minute: "2-digit",
     hour12: true
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), React.createElement("div", {
     className: "flex items-center gap-3 text-gray-700"
-  }, /*#__PURE__*/React.createElement(MapPin, {
+  }, React.createElement(MapPin, {
     className: "w-4 h-4 text-gray-400 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "text-sm"
-  }, event.venue_name, ": ", event.city))), event.actualRemaining > 0 && event.actualRemaining <= 20 && /*#__PURE__*/React.createElement("div", {
+  }, event.venue_name, ": ", event.city))), event.actualRemaining > 0 && event.actualRemaining <= 20 && React.createElement("div", {
     className: "px-5 py-3 bg-orange-50 border-b border-orange-100 flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "relative flex-shrink-0"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "w-2.5 h-2.5 bg-orange-500 rounded-full"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "absolute inset-0 w-2.5 h-2.5 bg-orange-500 rounded-full animate-ping opacity-75"
-  })), /*#__PURE__*/React.createElement("p", {
+  })), React.createElement("p", {
     className: "text-xs font-semibold text-orange-800"
-  }, "Only ", event.actualRemaining, " ", event.actualRemaining === 1 ? "spot" : "spots", " left!", " ", /*#__PURE__*/React.createElement("span", {
+  }, "Only ", event.actualRemaining, " ", event.actualRemaining === 1 ? "spot" : "spots", " left!", " ", React.createElement("span", {
     className: "font-normal text-orange-700"
-  }, "Book now before they're gone"))), /*#__PURE__*/React.createElement("div", {
+  }, "Book now before they're gone"))), React.createElement("div", {
     className: "p-5 md:p-6"
-  }, existingBooking /*#__PURE__*/ ?
-  /*#__PURE__*/
+  }, existingBooking  ?
+  
   // User already has booking
   React.createElement("div", {
     className: "space-y-6"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-center"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
-  }, /*#__PURE__*/React.createElement(CheckCircle2, {
+  }, React.createElement(CheckCircle2, {
     className: "w-8 h-8 text-green-600"
-  })), /*#__PURE__*/React.createElement("h2", {
+  })), React.createElement("h2", {
     className: "text-2xl font-bold text-gray-900 mb-2"
-  }, "Your Booking"), /*#__PURE__*/React.createElement("p", {
+  }, "Your Booking"), React.createElement("p", {
     className: "text-gray-600"
-  }, "You have already booked this event")), /*#__PURE__*/React.createElement("div", {
+  }, "You have already booked this event")), React.createElement("div", {
     className: "bg-gray-50 rounded-xl p-5 space-y-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-sm text-gray-600"
-  }, "Booking Code:"), /*#__PURE__*/React.createElement("span", {
+  }, "Booking Code:"), React.createElement("span", {
     className: "text-base font-bold text-gray-900 font-mono"
-  }, existingBooking.booking_code)), /*#__PURE__*/React.createElement("div", {
+  }, existingBooking.booking_code)), React.createElement("div", {
     className: "flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-sm text-gray-600"
-  }, "Status:"), /*#__PURE__*/React.createElement(Badge, {
+  }, "Status:"), React.createElement(Badge, {
     className: "bg-green-100 text-green-800 hover:bg-green-200"
-  }, existingBooking.booking_status || "confirmed")), /*#__PURE__*/React.createElement("div", {
+  }, existingBooking.booking_status || "confirmed")), React.createElement("div", {
     className: "flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-sm text-gray-600"
-  }, "Tickets:"), /*#__PURE__*/React.createElement("span", {
+  }, "Tickets:"), React.createElement("span", {
     className: "text-base font-semibold text-gray-900"
-  }, existingBooking.tickets_count)), /*#__PURE__*/React.createElement("div", {
+  }, existingBooking.tickets_count)), React.createElement("div", {
     className: "flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-sm text-gray-600"
-  }, "Booked On:"), /*#__PURE__*/React.createElement("span", {
+  }, "Booked On:"), React.createElement("span", {
     className: "text-sm text-gray-900"
   }, new Date(existingBooking.booked_at).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric"
-  }))), existingBooking.checked_in && /*#__PURE__*/React.createElement("div", {
+  }))), existingBooking.checked_in && React.createElement("div", {
     className: "pt-3 border-t border-gray-200"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-2 text-green-700"
-  }, /*#__PURE__*/React.createElement(CheckCircle2, {
+  }, React.createElement(CheckCircle2, {
     className: "w-4 h-4"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "text-sm font-medium"
-  }, "Checked In")))), /*#__PURE__*/React.createElement("div", {
+  }, "Checked In")))), React.createElement("div", {
     className: "space-y-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between mb-2"
-  }, /*#__PURE__*/React.createElement("h3", {
+  }, React.createElement("h3", {
     className: "text-sm font-semibold text-gray-900"
-  }, "Your Tickets"), /*#__PURE__*/React.createElement("span", {
+  }, "Your Tickets"), React.createElement("span", {
     className: "text-xs text-gray-500"
-  }, tickets.filter(t => t.checked_in).length, "/", tickets.length, " checked in")), loadingTickets ? /*#__PURE__*/React.createElement("div", {
+  }, tickets.filter(t => t.checked_in).length, "/", tickets.length, " checked in")), loadingTickets ? React.createElement("div", {
     className: "text-center py-4"
-  }, /*#__PURE__*/React.createElement(Spinner, {
+  }, React.createElement(Spinner, {
     className: "mx-auto"
-  }), /*#__PURE__*/React.createElement("p", {
+  }), React.createElement("p", {
     className: "text-sm text-gray-500 mt-2"
-  }, "Loading tickets...")) : tickets.length > 0 ? /*#__PURE__*/React.createElement("div", {
+  }, "Loading tickets...")) : tickets.length > 0 ? React.createElement("div", {
     className: "space-y-2"
-  }, tickets.map(ticket => /*#__PURE__*/React.createElement("div", {
+  }, tickets.map(ticket => React.createElement("div", {
     key: ticket.ticket_id,
     className: "bg-gray-50 rounded-lg p-3 border border-gray-200"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between mb-2"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", null, React.createElement("div", {
     className: "text-sm font-semibold text-gray-900"
-  }, "Ticket ", ticket.ticket_number), /*#__PURE__*/React.createElement("div", {
+  }, "Ticket ", ticket.ticket_number), React.createElement("div", {
     className: "text-xs text-gray-500 font-mono"
-  }, ticket.ticket_code)), ticket.checked_in && /*#__PURE__*/React.createElement(Badge, {
+  }, ticket.ticket_code)), ticket.checked_in && React.createElement(Badge, {
     className: "bg-green-100 text-green-800 text-xs"
-  }, "\u2713 Checked In")), /*#__PURE__*/React.createElement(Button, {
+  }, "\u2713 Checked In")), React.createElement(Button, {
     onClick: () => handleShowTicketQR(ticket),
     disabled: ticket.checked_in || loadingQrTicketId === ticket.ticket_id,
     className: "w-full h-9 text-sm bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300"
-  }, loadingQrTicketId === ticket.ticket_id ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Spinner, {
+  }, loadingQrTicketId === ticket.ticket_id ? React.createElement(React.Fragment, null, React.createElement(Spinner, {
     className: "w-4 h-4 mr-2"
-  }), "Loading...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Ticket, {
+  }), "Loading...") : React.createElement(React.Fragment, null, React.createElement(Ticket, {
     className: "w-4 h-4 mr-2"
-  }), ticket.checked_in ? "Already Used" : "Show QR Code"))))) : /*#__PURE__*/React.createElement("div", {
+  }), ticket.checked_in ? "Already Used" : "Show QR Code"))))) : React.createElement("div", {
     className: "text-center py-4 bg-gray-50 rounded-lg"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm text-gray-500"
-  }, "No tickets found"))), /*#__PURE__*/React.createElement("div", {
+  }, "No tickets found"))), React.createElement("div", {
     className: "space-y-3 pt-3 border-t border-gray-200"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     onClick: () => router.push("/bookings"),
     className: "w-full bg-gray-900 hover:bg-gray-800 text-white h-12 rounded-xl"
-  }, "View My Bookings"), /*#__PURE__*/React.createElement(Button, {
+  }, "View My Bookings"), React.createElement(Button, {
     onClick: () => router.push("/events"),
     variant: "outline",
     className: "w-full h-12 rounded-xl"
-  }, "Browse Other Events")), /*#__PURE__*/React.createElement("div", {
+  }, "Browse Other Events")), React.createElement("div", {
     className: "pt-4 border-t border-gray-200"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-start gap-2 text-sm text-gray-600"
-  }, /*#__PURE__*/React.createElement(Info, {
+  }, React.createElement(Info, {
     className: "w-4 h-4 mt-0.5 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("p", null, "Your QR code ticket was sent to your email. Check your inbox or spam folder.")))) /*#__PURE__*/ :
-  /*#__PURE__*/
+  }), React.createElement("p", null, "Your QR code ticket was sent to your email. Check your inbox or spam folder."))))  :
+  
   // Booking form
   React.createElement("div", {
     className: "space-y-5"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-baseline justify-between"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("div", null, React.createElement("span", {
     className: "text-2xl font-bold text-gray-900"
-  }, selectedTierPrice === 0 ? /*#__PURE__*/React.createElement("span", {
+  }, selectedTierPrice === 0 ? React.createElement("span", {
     className: "text-green-600"
-  }, "FREE") : /*#__PURE__*/React.createElement(React.Fragment, null, "\u20B9", selectedTierPrice.toLocaleString("en-IN"))), selectedTierPrice > 0 && /*#__PURE__*/React.createElement("span", {
+  }, "FREE") : React.createElement(React.Fragment, null, "\u20B9", selectedTierPrice.toLocaleString("en-IN"))), selectedTierPrice > 0 && React.createElement("span", {
     className: "ml-1 text-sm text-gray-500"
-  }, "onwards")), /*#__PURE__*/React.createElement(Badge, {
+  }, "onwards")), React.createElement(Badge, {
     className: "bg-green-100 text-green-800 text-xs font-medium hover:bg-green-100"
-  }, event.actualRemaining > 0 ? "Available" : "Sold Out")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+  }, event.actualRemaining > 0 ? "Available" : "Sold Out")), React.createElement("div", null, React.createElement("h2", {
     className: "text-base font-semibold text-gray-900 mb-1 flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(Ticket, {
+  }, React.createElement(Ticket, {
     className: "w-4 h-4 text-gray-500"
-  }), "Book Your Slot"), !canBook && !isSoldOut && isEventVisible && /*#__PURE__*/React.createElement("div", {
+  }), "Book Your Slot"), !canBook && !isSoldOut && isEventVisible && React.createElement("div", {
     className: "bg-yellow-50 border border-yellow-200 rounded-lg p-3 mt-2"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm text-yellow-800 flex items-start gap-2"
-  }, /*#__PURE__*/React.createElement(AlertCircle, {
+  }, React.createElement(AlertCircle, {
     className: "w-4 h-4 mt-0.5 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", null, event.status === "checkin_open" ? "Bookings are now closed for this event. Check-in has started." : `Booking is currently not available. Event status: ${event.status.replace("_", " ")}`)))), !user /*#__PURE__*/ ?
-  /*#__PURE__*/
+  }), React.createElement("span", null, event.status === "checkin_open" ? "Bookings are now closed for this event. Check-in has started." : `Booking is currently not available. Event status: ${event.status.replace("_", " ")}`)))), !user  ?
+  
   // User not logged in - show login prompt
   React.createElement("div", {
     className: "space-y-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bg-blue-50 border border-blue-100 rounded-xl p-4"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm text-blue-800 flex items-start gap-2"
-  }, /*#__PURE__*/React.createElement(Info, {
+  }, React.createElement(Info, {
     className: "w-4 h-4 mt-0.5 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", null, "Please log in to book tickets for this event."))), /*#__PURE__*/React.createElement(Button, {
+  }), React.createElement("span", null, "Please log in to book tickets for this event."))), React.createElement(Button, {
     onClick: () => router.push(`/login?redirect=/events/${eventId}`),
     className: "w-full bg-blue-600 hover:bg-blue-700 text-white h-12 text-base font-bold rounded-xl"
-  }, "Login to Book"), /*#__PURE__*/React.createElement("p", {
+  }, "Login to Book"), React.createElement("p", {
     className: "text-xs text-center text-gray-400"
-  }, "Don't have an account? You can sign up during login.")) : canBook ? /*#__PURE__*/React.createElement("div", {
+  }, "Don't have an account? You can sign up during login.")) : canBook ? React.createElement("div", {
     className: "space-y-4"
-  }, availableTiers.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }, availableTiers.length > 0 && React.createElement("div", {
     className: "bg-gray-50 rounded-lg p-4 border border-gray-200"
-  }, /*#__PURE__*/React.createElement("label", {
+  }, React.createElement("label", {
     className: "block text-sm font-medium text-gray-700 mb-3"
-  }, "Ticket Type"), /*#__PURE__*/React.createElement("div", {
+  }, "Ticket Type"), React.createElement("div", {
     className: "grid grid-cols-1 sm:grid-cols-2 gap-2"
   }, availableTiers.map(tier => {
     const isSelected = selectedTier?.name === tier.name;
-    return /*#__PURE__*/React.createElement("button", {
+    return React.createElement("button", {
       key: tier.name,
       type: "button",
       onClick: () => setSelectedTierName(tier.name),
       className: cn("rounded-lg border p-3 text-left transition-colors", isSelected ? "border-blue-500 bg-blue-50" : "border-gray-200 bg-white hover:border-blue-300")
-    }, /*#__PURE__*/React.createElement("p", {
+    }, React.createElement("p", {
       className: "text-sm font-semibold text-gray-900"
-    }, tier.name), /*#__PURE__*/React.createElement("p", {
+    }, tier.name), React.createElement("p", {
       className: "text-sm text-gray-700"
-    }, "\u20B9", tier.price.toLocaleString("en-IN")), /*#__PURE__*/React.createElement("p", {
+    }, "\u20B9", tier.price.toLocaleString("en-IN")), React.createElement("p", {
       className: "text-xs text-gray-500"
     }, tier.remaining, " left"));
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), React.createElement("div", {
     className: "bg-gray-50 rounded-lg p-4 border border-gray-200"
-  }, /*#__PURE__*/React.createElement("label", {
+  }, React.createElement("label", {
     className: "block text-sm font-medium text-gray-700 mb-3"
-  }, "Number of Tickets"), /*#__PURE__*/React.createElement("div", {
+  }, "Number of Tickets"), React.createElement("div", {
     className: "flex items-center justify-between gap-4"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     type: "button",
     variant: "outline",
     size: "sm",
     onClick: () => setTicketsCount(Math.max(1, ticketsCount - 1)),
     disabled: ticketsCount <= 1 || isSubmitting,
     className: "h-10 w-10 p-0 rounded-lg"
-  }, "-"), /*#__PURE__*/React.createElement("div", {
+  }, "-"), React.createElement("div", {
     className: "text-center flex-1"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-3xl font-bold text-gray-900"
-  }, ticketsCount), /*#__PURE__*/React.createElement("div", {
+  }, ticketsCount), React.createElement("div", {
     className: "text-xs text-gray-500"
-  }, ticketsCount === 1 ? "ticket" : "tickets")), /*#__PURE__*/React.createElement(Button, {
+  }, ticketsCount === 1 ? "ticket" : "tickets")), React.createElement(Button, {
     type: "button",
     variant: "outline",
     size: "sm",
     onClick: () => setTicketsCount(Math.min(maxTicketsForSelection, ticketsCount + 1)),
     disabled: ticketsCount >= maxTicketsForSelection || isSubmitting,
     className: "h-10 w-10 p-0 rounded-lg"
-  }, "+")), /*#__PURE__*/React.createElement("div", {
+  }, "+")), React.createElement("div", {
     className: "mt-3 text-xs text-gray-500 text-center"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-orange-600 font-medium"
-  }, maxTicketsForSelection, " ticket", maxTicketsForSelection !== 1 ? "s" : "", " available"), /*#__PURE__*/React.createElement("span", {
+  }, maxTicketsForSelection, " ticket", maxTicketsForSelection !== 1 ? "s" : "", " available"), React.createElement("span", {
     className: "ml-1"
-  }, "(max ", MAX_TICKETS_PER_USER, " per user)"))), selectedTierPrice > 0 && /*#__PURE__*/React.createElement("div", {
+  }, "(max ", MAX_TICKETS_PER_USER, " per user)"))), selectedTierPrice > 0 && React.createElement("div", {
     className: "bg-blue-50 rounded-lg p-4 border border-blue-200 space-y-2"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-sm text-gray-700"
-  }, "Subtotal:"), /*#__PURE__*/React.createElement("span", {
+  }, "Subtotal:"), React.createElement("span", {
     className: "text-lg font-semibold text-gray-900"
-  }, "\u20B9", (originalAmount || 0).toLocaleString("en-IN"))), /*#__PURE__*/React.createElement("div", {
+  }, "\u20B9", (originalAmount || 0).toLocaleString("en-IN"))), React.createElement("div", {
     className: "text-xs text-gray-600 text-right"
-  }, selectedTier?.name || "Ticket", " \u2022 \u20B9", selectedTierPrice.toLocaleString("en-IN"), " \xD7 ", ticketsCount, " ", ticketsCount === 1 ? "ticket" : "tickets"), /*#__PURE__*/React.createElement("div", {
+  }, selectedTier?.name || "Ticket", " \u2022 \u20B9", selectedTierPrice.toLocaleString("en-IN"), " \xD7 ", ticketsCount, " ", ticketsCount === 1 ? "ticket" : "tickets"), React.createElement("div", {
     className: "border-t border-blue-200 pt-2"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-sm font-bold text-gray-900"
-  }, "Total Amount:"), /*#__PURE__*/React.createElement("span", {
+  }, "Total Amount:"), React.createElement("span", {
     className: "text-2xl font-bold text-gray-900"
-  }, isNaN(finalAmount) ? "₹0" : finalAmount === 0 ? /*#__PURE__*/React.createElement("span", {
+  }, isNaN(finalAmount) ? "₹0" : finalAmount === 0 ? React.createElement("span", {
     className: "text-green-600"
-  }, "FREE") : `₹${finalAmount.toLocaleString("en-IN")}`))), paymentError && /*#__PURE__*/React.createElement("div", {
+  }, "FREE") : `₹${finalAmount.toLocaleString("en-IN")}`))), paymentError && React.createElement("div", {
     className: "bg-red-50 border border-red-200 rounded-lg p-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-start gap-3"
-  }, /*#__PURE__*/React.createElement(AlertCircle, {
+  }, React.createElement(AlertCircle, {
     className: "w-5 h-5 text-red-600 flex-shrink-0 mt-0.5"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "flex-1"
-  }, /*#__PURE__*/React.createElement("h4", {
+  }, React.createElement("h4", {
     className: "text-sm font-semibold text-red-900 mb-1"
-  }, "Payment Failed"), /*#__PURE__*/React.createElement("p", {
+  }, "Payment Failed"), React.createElement("p", {
     className: "text-sm text-red-700"
-  }, paymentError)), /*#__PURE__*/React.createElement("button", {
+  }, paymentError)), React.createElement("button", {
     type: "button",
     onClick: () => setPaymentError(""),
     className: "text-red-400 hover:text-red-600"
-  }, /*#__PURE__*/React.createElement(X, {
+  }, React.createElement(X, {
     className: "w-4 h-4"
-  })))), /*#__PURE__*/React.createElement(Button, {
+  })))), React.createElement(Button, {
     onClick: () => {
       setPaymentError("");
       setShowPaymentConfirmModal(true);
     },
     disabled: isProcessingPayment || isSubmitting,
     className: "w-full bg-blue-600 hover:bg-blue-700 text-white h-12 text-base font-bold rounded-xl"
-  }, isProcessingPayment || isSubmitting ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Spinner, {
+  }, isProcessingPayment || isSubmitting ? React.createElement(React.Fragment, null, React.createElement(Spinner, {
     className: "w-4 h-4 text-white mr-2"
-  }), "Processing...") : /*#__PURE__*/React.createElement(React.Fragment, null, isPaidBooking ? `Pay With Razorpay${ticketsCount > 1 ? ` (${ticketsCount} Tickets)` : ""}` : `Confirm Booking${ticketsCount > 1 ? ` (${ticketsCount} Tickets)` : ""}`, /*#__PURE__*/React.createElement(CheckCircle2, {
+  }), "Processing...") : React.createElement(React.Fragment, null, isPaidBooking ? `Pay With Razorpay${ticketsCount > 1 ? ` (${ticketsCount} Tickets)` : ""}` : `Confirm Booking${ticketsCount > 1 ? ` (${ticketsCount} Tickets)` : ""}`, React.createElement(CheckCircle2, {
     className: "w-4 h-4 ml-2"
-  }))), isPaidBooking && proceedToPayment && /*#__PURE__*/React.createElement(RazorpayCheckout, {
+  }))), isPaidBooking && proceedToPayment && React.createElement(RazorpayCheckout, {
     eventId: event.event_id,
     ticketsCount: ticketsCount,
     tierName: selectedTierName || undefined,
@@ -1085,65 +1085,65 @@ export default function EventBookingPage({
         void checkUserBooking(user.id);
       }
     }
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "flex items-center gap-2 text-xs text-gray-500 justify-center"
-  }, /*#__PURE__*/React.createElement(Shield, {
+  }, React.createElement(Shield, {
     className: "w-4 h-4"
-  }), /*#__PURE__*/React.createElement("span", null, "Secure booking \u2022 Instant QR ticket via email")), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("span", null, "Secure booking \u2022 Instant QR ticket via email")), React.createElement("div", {
     className: "pt-4 border-t border-gray-200 text-xs text-gray-600 space-y-1"
-  }, /*#__PURE__*/React.createElement("p", null, "\u2022 QR code required for entry"), /*#__PURE__*/React.createElement("p", null, "\u2022 Check email spam folder if not received"))) : isSoldOut ? /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("p", null, "\u2022 QR code required for entry"), React.createElement("p", null, "\u2022 Check email spam folder if not received"))) : isSoldOut ? React.createElement("div", {
     className: "text-center py-8"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4"
-  }, /*#__PURE__*/React.createElement(Users, {
+  }, React.createElement(Users, {
     className: "w-8 h-8 text-gray-400"
-  })), /*#__PURE__*/React.createElement("p", {
+  })), React.createElement("p", {
     className: "text-lg font-semibold text-gray-900 mb-2"
-  }, "Event Sold Out"), /*#__PURE__*/React.createElement("p", {
+  }, "Event Sold Out"), React.createElement("p", {
     className: "text-sm text-gray-600 mb-6"
-  }, "This event has reached maximum capacity"), /*#__PURE__*/React.createElement(Button, {
+  }, "This event has reached maximum capacity"), React.createElement(Button, {
     onClick: () => router.push("/events"),
     variant: "outline",
     className: "w-full rounded-xl"
-  }, "Browse Other Events")) : /*#__PURE__*/React.createElement("div", {
+  }, "Browse Other Events")) : React.createElement("div", {
     className: "text-center py-8"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4"
-  }, /*#__PURE__*/React.createElement(AlertCircle, {
+  }, React.createElement(AlertCircle, {
     className: "w-8 h-8 text-gray-400"
-  })), /*#__PURE__*/React.createElement("p", {
+  })), React.createElement("p", {
     className: "text-lg font-semibold text-gray-900 mb-2"
-  }, "Booking Closed"), /*#__PURE__*/React.createElement("p", {
+  }, "Booking Closed"), React.createElement("p", {
     className: "text-sm text-gray-600 mb-6"
-  }, event.status === "checkin_open" ? "Bookings are now closed. Check-in has started for this event." : "This event is not currently accepting bookings."), /*#__PURE__*/React.createElement(Button, {
+  }, event.status === "checkin_open" ? "Bookings are now closed. Check-in has started for this event." : "This event is not currently accepting bookings."), React.createElement(Button, {
     onClick: () => router.push("/events"),
     variant: "outline",
     className: "w-full rounded-xl"
-  }, "Browse Other Events"))))))))), showQRModal && /*#__PURE__*/React.createElement("div", {
+  }, "Browse Other Events"))))))))), showQRModal && React.createElement("div", {
     className: "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4",
     onClick: () => setShowQRModal(false)
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bg-white rounded-2xl p-6 max-w-md w-full",
     onClick: e => e.stopPropagation()
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-center"
-  }, /*#__PURE__*/React.createElement("h3", {
+  }, React.createElement("h3", {
     className: "text-2xl font-bold text-gray-900 mb-2"
-  }, selectedTicketForQR ? `Ticket ${selectedTicketForQR.ticket_number}` : "Your QR Code"), selectedTicketForQR && /*#__PURE__*/React.createElement("p", {
+  }, selectedTicketForQR ? `Ticket ${selectedTicketForQR.ticket_number}` : "Your QR Code"), selectedTicketForQR && React.createElement("p", {
     className: "text-sm text-gray-600 font-mono mb-4"
-  }, selectedTicketForQR.ticket_code), qrCodeData ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, selectedTicketForQR.ticket_code), qrCodeData ? React.createElement(React.Fragment, null, React.createElement("div", {
     className: "bg-white p-6 rounded-xl border-2 border-gray-200 mb-4"
-  }, /*#__PURE__*/React.createElement("img", {
+  }, React.createElement("img", {
     src: qrCodeData,
     alt: "QR Code",
     className: "w-full max-w-[350px] mx-auto"
-  })), /*#__PURE__*/React.createElement("p", {
+  })), React.createElement("p", {
     className: "text-sm text-gray-600 mb-2"
-  }, "Show this QR code at the venue entrance"), /*#__PURE__*/React.createElement("p", {
+  }, "Show this QR code at the venue entrance"), React.createElement("p", {
     className: "text-xs text-gray-500 mb-4"
-  }, "Ticket ID: ", selectedTicketForQR?.ticket_id || "N/A"), /*#__PURE__*/React.createElement("div", {
+  }, "Ticket ID: ", selectedTicketForQR?.ticket_id || "N/A"), React.createElement("div", {
     className: "flex gap-3"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     onClick: () => {
       const link = document.createElement("a");
       link.href = qrCodeData;
@@ -1152,19 +1152,19 @@ export default function EventBookingPage({
     },
     variant: "outline",
     className: "flex-1"
-  }, "Download"), /*#__PURE__*/React.createElement(Button, {
+  }, "Download"), React.createElement(Button, {
     onClick: () => setShowQRModal(false),
     className: "flex-1 bg-blue-600 hover:bg-blue-700"
-  }, "Close"))) : /*#__PURE__*/React.createElement("div", {
+  }, "Close"))) : React.createElement("div", {
     className: "py-8"
-  }, /*#__PURE__*/React.createElement(Spinner, {
+  }, React.createElement(Spinner, {
     className: "mx-auto mb-4"
-  }), /*#__PURE__*/React.createElement("p", {
+  }), React.createElement("p", {
     className: "text-sm text-gray-600"
-  }, "Loading QR code..."))))), showTermsModal && event.terms && /*#__PURE__*/React.createElement("div", {
+  }, "Loading QR code..."))))), showTermsModal && event.terms && React.createElement("div", {
     className: "fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4",
     onClick: () => setShowTermsModal(false)
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       opacity: 0,
       scale: 0.95,
@@ -1177,37 +1177,37 @@ export default function EventBookingPage({
     },
     className: "bg-white rounded-2xl max-w-lg w-full max-h-[80vh] flex flex-col shadow-2xl",
     onClick: e => e.stopPropagation()
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "p-6 border-b border-gray-100 flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
+  }, React.createElement("div", null, React.createElement("h3", {
     className: "text-xl font-bold text-gray-900"
-  }, "Event Specific Terms"), /*#__PURE__*/React.createElement("p", {
+  }, "Event Specific Terms"), React.createElement("p", {
     className: "text-sm text-gray-500 mt-1"
-  }, event.title)), /*#__PURE__*/React.createElement(Button, {
+  }, event.title)), React.createElement(Button, {
     variant: "ghost",
     size: "icon",
     onClick: () => setShowTermsModal(false),
     className: "rounded-full hover:bg-gray-100"
-  }, /*#__PURE__*/React.createElement(X, {
+  }, React.createElement(X, {
     className: "w-5 h-5"
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), React.createElement("div", {
     className: "flex-1 overflow-y-auto p-6 md:p-8"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "prose prose-sm prose-blue max-w-none text-gray-700"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "whitespace-pre-wrap leading-relaxed"
-  }, event.terms))), /*#__PURE__*/React.createElement("div", {
+  }, event.terms))), React.createElement("div", {
     className: "p-6 border-t border-gray-100 bg-gray-50 rounded-b-2xl"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     onClick: () => {
       setAgreedToTerms(true);
       setShowTermsModal(false);
     },
     className: "w-full bg-blue-600 hover:bg-blue-700 text-white h-12 rounded-xl font-semibold shadow-lg shadow-blue-200"
-  }, "I Understand and Agree")))), showPaymentConfirmModal && event && /*#__PURE__*/React.createElement("div", {
+  }, "I Understand and Agree")))), showPaymentConfirmModal && event && React.createElement("div", {
     className: "fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4",
     onClick: () => setShowPaymentConfirmModal(false)
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       opacity: 0,
       scale: 0.95,
@@ -1220,98 +1220,98 @@ export default function EventBookingPage({
     },
     className: "bg-white rounded-2xl max-w-lg w-full max-h-[65vh] flex flex-col shadow-2xl",
     onClick: e => e.stopPropagation()
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "p-6 border-b border-gray-100 flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
+  }, React.createElement("div", null, React.createElement("h3", {
     className: "text-xl font-bold text-gray-900"
-  }, "Confirm Booking"), /*#__PURE__*/React.createElement("p", {
+  }, "Confirm Booking"), React.createElement("p", {
     className: "text-sm text-gray-500 mt-1"
-  }, event.title)), /*#__PURE__*/React.createElement(Button, {
+  }, event.title)), React.createElement(Button, {
     variant: "ghost",
     size: "icon",
     onClick: () => setShowPaymentConfirmModal(false),
     className: "rounded-full hover:bg-gray-100"
-  }, /*#__PURE__*/React.createElement(X, {
+  }, React.createElement(X, {
     className: "w-5 h-5"
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), React.createElement("div", {
     className: "p-4 bg-blue-50 border-b border-blue-100"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between text-sm"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-gray-600"
-  }, "Tickets:"), /*#__PURE__*/React.createElement("span", {
+  }, "Tickets:"), React.createElement("span", {
     className: "font-semibold text-gray-900"
-  }, ticketsCount)), selectedTier && /*#__PURE__*/React.createElement("div", {
+  }, ticketsCount)), selectedTier && React.createElement("div", {
     className: "flex items-center justify-between text-sm mt-1"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-gray-600"
-  }, "Tier:"), /*#__PURE__*/React.createElement("span", {
+  }, "Tier:"), React.createElement("span", {
     className: "font-semibold text-gray-900"
-  }, selectedTier.name)), /*#__PURE__*/React.createElement("div", {
+  }, selectedTier.name)), React.createElement("div", {
     className: "flex items-center justify-between text-sm mt-1"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-gray-600"
-  }, isPaidBooking ? "Amount Due:" : "Ticket Value:"), /*#__PURE__*/React.createElement("span", {
+  }, isPaidBooking ? "Amount Due:" : "Ticket Value:"), React.createElement("span", {
     className: "font-bold text-lg text-gray-900"
-  }, "\u20B9", finalAmount.toLocaleString("en-IN")))), /*#__PURE__*/React.createElement("div", {
+  }, "\u20B9", finalAmount.toLocaleString("en-IN")))), React.createElement("div", {
     className: "flex-1 overflow-y-auto p-6"
-  }, isPaidBooking && /*#__PURE__*/React.createElement("div", {
+  }, isPaidBooking && React.createElement("div", {
     className: "mb-5 rounded-xl border border-blue-200 bg-blue-50 p-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-start gap-3"
-  }, /*#__PURE__*/React.createElement(Shield, {
+  }, React.createElement(Shield, {
     className: "mt-0.5 h-5 w-5 text-blue-600"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "min-w-0 flex-1"
-  }, /*#__PURE__*/React.createElement("h4", {
+  }, React.createElement("h4", {
     className: "text-sm font-semibold text-blue-900"
-  }, "Razorpay Checkout"), /*#__PURE__*/React.createElement("p", {
+  }, "Razorpay Checkout"), React.createElement("p", {
     className: "mt-1 text-sm text-blue-700"
-  }, "You\u2019ll be redirected to Razorpay to complete this payment securely."))), /*#__PURE__*/React.createElement("div", {
+  }, "You\u2019ll be redirected to Razorpay to complete this payment securely."))), React.createElement("div", {
     className: "mt-4 rounded-xl border border-dashed border-blue-200 bg-white p-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between text-xs uppercase tracking-wide text-gray-500"
-  }, /*#__PURE__*/React.createElement("span", null, "Supported Modes"), /*#__PURE__*/React.createElement("span", null, "Live")), /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("span", null, "Supported Modes"), React.createElement("span", null, "Live")), React.createElement("div", {
     className: "text-sm font-semibold text-gray-900"
-  }, "UPI, Cards, Net Banking, Wallets"), /*#__PURE__*/React.createElement("p", {
+  }, "UPI, Cards, Net Banking, Wallets"), React.createElement("p", {
     className: "text-xs text-gray-500"
-  }, "ConveneHub will create a pending booking first, then confirm it after Razorpay verifies the payment.")))), /*#__PURE__*/React.createElement("div", {
+  }, "ConveneHub will create a pending booking first, then confirm it after Razorpay verifies the payment.")))), React.createElement("div", {
     className: "flex items-center gap-2 mb-4"
-  }, /*#__PURE__*/React.createElement(Shield, {
+  }, React.createElement(Shield, {
     className: "w-5 h-5 text-blue-600"
-  }), /*#__PURE__*/React.createElement("h4", {
+  }), React.createElement("h4", {
     className: "font-semibold text-gray-900"
-  }, isPaidBooking ? "Booking Terms" : "Terms & Conditions")), event.terms ? /*#__PURE__*/React.createElement("div", {
+  }, isPaidBooking ? "Booking Terms" : "Terms & Conditions")), event.terms ? React.createElement("div", {
     className: "prose prose-sm max-w-none text-gray-700 bg-gray-50 rounded-xl p-4 border border-gray-200"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "whitespace-pre-wrap leading-relaxed text-sm"
-  }, event.terms)) : /*#__PURE__*/React.createElement("div", {
+  }, event.terms)) : React.createElement("div", {
     className: "bg-gray-50 rounded-xl p-4 border border-gray-200"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm text-gray-600 leading-relaxed"
-  }, "By proceeding with this booking, you agree to our", " ", /*#__PURE__*/React.createElement(Link, {
+  }, "By proceeding with this booking, you agree to our", " ", React.createElement(Link, {
     href: "/terms",
     target: "_blank",
     className: "text-blue-600 hover:underline font-medium"
-  }, "Terms and Conditions"), ", including:"), /*#__PURE__*/React.createElement("ul", {
+  }, "Terms and Conditions"), ", including:"), React.createElement("ul", {
     className: "mt-3 space-y-2 text-sm text-gray-600"
-  }, /*#__PURE__*/React.createElement("li", {
+  }, React.createElement("li", {
     className: "flex items-start gap-2"
-  }, /*#__PURE__*/React.createElement(CheckCircle2, {
+  }, React.createElement(CheckCircle2, {
     className: "w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", null, "QR code ticket is required for entry")), /*#__PURE__*/React.createElement("li", {
+  }), React.createElement("span", null, "QR code ticket is required for entry")), React.createElement("li", {
     className: "flex items-start gap-2"
-  }, /*#__PURE__*/React.createElement(CheckCircle2, {
+  }, React.createElement(CheckCircle2, {
     className: "w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", null, "All bookings are final and non-transferable")), /*#__PURE__*/React.createElement("li", {
+  }), React.createElement("span", null, "All bookings are final and non-transferable")), React.createElement("li", {
     className: "flex items-start gap-2"
-  }, /*#__PURE__*/React.createElement(CheckCircle2, {
+  }, React.createElement(CheckCircle2, {
     className: "w-4 h-4 text-green-500 mt-0.5 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", null, "Follow all venue and safety guidelines"))))), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("span", null, "Follow all venue and safety guidelines"))))), React.createElement("div", {
     className: "p-6 border-t border-gray-100 bg-gray-50 rounded-b-2xl space-y-3"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     onClick: () => {
       setPaymentError("");
       setShowPaymentConfirmModal(false);
@@ -1327,41 +1327,41 @@ export default function EventBookingPage({
     },
     disabled: isProcessingPayment || isSubmitting,
     className: "w-full bg-blue-600 hover:bg-blue-700 text-white h-11 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
-  }, isProcessingPayment || isSubmitting ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("svg", {
+  }, isProcessingPayment || isSubmitting ? React.createElement(React.Fragment, null, React.createElement("svg", {
     className: "animate-spin h-5 w-5 text-white",
     xmlns: "http://www.w3.org/2000/svg",
     fill: "none",
     viewBox: "0 0 24 24"
-  }, /*#__PURE__*/React.createElement("circle", {
+  }, React.createElement("circle", {
     className: "opacity-25",
     cx: "12",
     cy: "12",
     r: "10",
     stroke: "currentColor",
     strokeWidth: "4"
-  }), /*#__PURE__*/React.createElement("path", {
+  }), React.createElement("path", {
     className: "opacity-75",
     fill: "currentColor",
     d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-  })), "Processing...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(CheckCircle2, {
+  })), "Processing...") : React.createElement(React.Fragment, null, React.createElement(CheckCircle2, {
     className: "w-4 h-4"
-  }), isPaidBooking ? "Continue To Razorpay" : "I Agree & Confirm Booking")), /*#__PURE__*/React.createElement(Button, {
+  }), isPaidBooking ? "Continue To Razorpay" : "I Agree & Confirm Booking")), React.createElement(Button, {
     variant: "outline",
     onClick: () => setShowPaymentConfirmModal(false),
     className: "w-full h-10 rounded-xl"
-  }, "Cancel")))), isProcessingPayment && /*#__PURE__*/React.createElement("div", {
+  }, "Cancel")))), isProcessingPayment && React.createElement("div", {
     className: "fixed inset-0 bg-black/40 z-[60] flex flex-col items-center justify-center gap-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "w-10 h-10 border-4 border-white/30 border-t-white rounded-full animate-spin"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "text-white text-base font-medium flex items-center gap-1"
-  }, isPaidBooking ? "Opening Razorpay" : "Please wait", /*#__PURE__*/React.createElement("span", {
+  }, isPaidBooking ? "Opening Razorpay" : "Please wait", React.createElement("span", {
     className: "inline-flex w-8 ml-1"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "animate-[pulse_1.4s_ease-in-out_infinite]"
-  }, "."), /*#__PURE__*/React.createElement("span", {
+  }, "."), React.createElement("span", {
     className: "animate-[pulse_1.4s_ease-in-out_0.2s_infinite]"
-  }, "."), /*#__PURE__*/React.createElement("span", {
+  }, "."), React.createElement("span", {
     className: "animate-[pulse_1.4s_ease-in-out_0.4s_infinite]"
-  }, ".")))), /*#__PURE__*/React.createElement(Footer, null));
+  }, ".")))), React.createElement(Footer, null));
 }

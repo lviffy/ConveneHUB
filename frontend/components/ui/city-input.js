@@ -17,14 +17,14 @@ export function CityInput({
     const formattedValue = e.target.value.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ");
     onChange(formattedValue);
   };
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: `space-y-2 ${className}`
-  }, label && /*#__PURE__*/React.createElement(Label, {
+  }, label && React.createElement(Label, {
     htmlFor: id,
     className: "text-sm font-medium text-[#010101]"
-  }, label, " ", required && /*#__PURE__*/React.createElement("span", {
+  }, label, " ", required && React.createElement("span", {
     className: "text-red-500"
-  }, "*")), /*#__PURE__*/React.createElement(Input, {
+  }, "*")), React.createElement(Input, {
     id: id,
     type: "text",
     placeholder: placeholder,

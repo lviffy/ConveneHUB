@@ -56,13 +56,13 @@ export default function AuthCallbackPage() {
       router.replace("/auth/error?error=auth_failed&details=Invalid OAuth callback payload");
     }
   }, [router]);
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "min-h-screen flex items-center justify-center"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-center"
-  }, /*#__PURE__*/React.createElement(RefreshCw, {
+  }, React.createElement(RefreshCw, {
     className: "w-8 h-8 animate-spin text-slate-400 mx-auto mb-3"
-  }), /*#__PURE__*/React.createElement("p", {
+  }), React.createElement("p", {
     className: "text-slate-600"
   }, "Finishing sign in...")));
 }

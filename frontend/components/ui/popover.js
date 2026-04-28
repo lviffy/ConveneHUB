@@ -14,12 +14,12 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { cn } from "@/lib/utils";
 const Popover = PopoverPrimitive.Root;
 const PopoverTrigger = PopoverPrimitive.Trigger;
-const PopoverContent = /*#__PURE__*/React.forwardRef(({
+const PopoverContent = React.forwardRef(({
   className,
   align = "center",
   sideOffset = 4,
   ...props
-}, ref) => /*#__PURE__*/React.createElement(PopoverPrimitive.Portal, null, /*#__PURE__*/React.createElement(PopoverPrimitive.Content, _extends({
+}, ref) => React.createElement(PopoverPrimitive.Portal, null, React.createElement(PopoverPrimitive.Content, _extends({
   ref: ref,
   align: align,
   sideOffset: sideOffset,

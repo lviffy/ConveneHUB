@@ -314,24 +314,24 @@ export default function MyBookingsPage() {
   const getStatusBadge = status => {
     switch (status) {
       case "confirmed":
-        return /*#__PURE__*/React.createElement(Badge, {
+        return React.createElement(Badge, {
           className: "bg-green-500"
         }, "Confirmed");
       case "checked_in":
-        return /*#__PURE__*/React.createElement(Badge, {
+        return React.createElement(Badge, {
           className: "bg-blue-500"
         }, "Checked In");
       case "cancelled":
-        return /*#__PURE__*/React.createElement(Badge, {
+        return React.createElement(Badge, {
           className: "bg-red-500"
         }, "Cancelled");
       default:
-        return /*#__PURE__*/React.createElement(Badge, null, status);
+        return React.createElement(Badge, null, status);
     }
   };
   const getPaymentBadge = (paymentStatus, paymentRequired) => {
     if (!paymentRequired) {
-      return /*#__PURE__*/React.createElement(Badge, {
+      return React.createElement(Badge, {
         variant: "outline",
         className: "bg-gray-100 text-gray-700"
       }, "Free");
@@ -339,374 +339,374 @@ export default function MyBookingsPage() {
     switch (paymentStatus?.toUpperCase()) {
       case "SUCCESSFUL":
       case "PAID":
-        return /*#__PURE__*/React.createElement(Badge, {
+        return React.createElement(Badge, {
           className: "bg-green-500"
         }, "Paid");
       case "FAILED":
-        return /*#__PURE__*/React.createElement(Badge, {
+        return React.createElement(Badge, {
           className: "bg-red-500"
         }, "Payment Failed");
       default:
-        return /*#__PURE__*/React.createElement(Badge, {
+        return React.createElement(Badge, {
           variant: "outline"
         }, "Unknown");
     }
   };
   if (isLoading) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "min-h-screen bg-gradient-to-b from-gray-50 to-white"
-    }, /*#__PURE__*/React.createElement(EventsHeader, null), /*#__PURE__*/React.createElement("div", {
+    }, React.createElement(EventsHeader, null), React.createElement("div", {
       className: "flex items-center justify-center h-[calc(100vh-80px)]"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-center"
-    }, /*#__PURE__*/React.createElement(Spinner, {
+    }, React.createElement(Spinner, {
       className: "mx-auto mb-4"
-    }), /*#__PURE__*/React.createElement("p", {
+    }), React.createElement("p", {
       className: "text-gray-600"
     }, "Loading your bookings..."))));
   }
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "min-h-screen bg-gradient-to-b from-gray-50 to-white"
-  }, /*#__PURE__*/React.createElement(EventsHeader, null), /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(EventsHeader, null), React.createElement("div", {
     className: "container mx-auto px-4 pb-8 pt-24 md:pt-32 max-w-6xl"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "mb-8"
-  }, /*#__PURE__*/React.createElement("h1", {
+  }, React.createElement("h1", {
     className: "md:hidden text-2xl font-bold py-4"
-  }, "Bookings"), /*#__PURE__*/React.createElement("div", {
+  }, "Bookings"), React.createElement("div", {
     className: "hidden md:block"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     variant: "ghost",
     onClick: () => router.back(),
     className: "mb-4"
-  }, /*#__PURE__*/React.createElement(ArrowLeft, {
+  }, React.createElement(ArrowLeft, {
     className: "mr-2 h-4 w-4"
-  }), "Back"), /*#__PURE__*/React.createElement("h1", {
+  }), "Back"), React.createElement("h1", {
     className: "text-4xl font-bold mb-2"
-  }, "My Bookings"), /*#__PURE__*/React.createElement("p", {
+  }, "My Bookings"), React.createElement("p", {
     className: "text-gray-600"
-  }, "View and manage your event bookings"))), !error && bookings.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }, "View and manage your event bookings"))), !error && bookings.length > 0 && React.createElement("div", {
     className: "mb-6 flex flex-wrap gap-2"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     variant: filterStatus === "all" ? "default" : "outline",
     size: "sm",
     onClick: () => setFilterStatus("all")
-  }, "All (", bookings.length, ")"), /*#__PURE__*/React.createElement(Button, {
+  }, "All (", bookings.length, ")"), React.createElement(Button, {
     variant: filterStatus === "confirmed" ? "default" : "outline",
     size: "sm",
     onClick: () => setFilterStatus("confirmed")
-  }, "Confirmed (", bookings.filter(b => b.booking_status === "confirmed").length, ")"), /*#__PURE__*/React.createElement(Button, {
+  }, "Confirmed (", bookings.filter(b => b.booking_status === "confirmed").length, ")"), React.createElement(Button, {
     variant: filterStatus === "checked_in" ? "default" : "outline",
     size: "sm",
     onClick: () => setFilterStatus("checked_in")
-  }, "Checked In (", bookings.filter(b => b.booking_status === "checked_in").length, ")"), /*#__PURE__*/React.createElement(Button, {
+  }, "Checked In (", bookings.filter(b => b.booking_status === "checked_in").length, ")"), React.createElement(Button, {
     variant: filterStatus === "free" ? "default" : "outline",
     size: "sm",
     onClick: () => setFilterStatus("free")
-  }, "Free (", bookings.filter(b => !b.payment_required).length, ")"), /*#__PURE__*/React.createElement(Button, {
+  }, "Free (", bookings.filter(b => !b.payment_required).length, ")"), React.createElement(Button, {
     variant: filterStatus === "paid" ? "default" : "outline",
     size: "sm",
     onClick: () => setFilterStatus("paid")
-  }, "Paid (", bookings.filter(b => b.payment_status === "SUCCESSFUL" || b.payment_status === "paid").length, ")")), error && /*#__PURE__*/React.createElement(Card, {
+  }, "Paid (", bookings.filter(b => b.payment_status === "SUCCESSFUL" || b.payment_status === "paid").length, ")")), error && React.createElement(Card, {
     className: "border-red-200 bg-red-50 mb-6"
-  }, /*#__PURE__*/React.createElement(CardContent, {
+  }, React.createElement(CardContent, {
     className: "pt-6"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-3 text-red-800"
-  }, /*#__PURE__*/React.createElement(AlertCircle, {
+  }, React.createElement(AlertCircle, {
     className: "h-5 w-5"
-  }), /*#__PURE__*/React.createElement("p", null, error)))), !error && bookings.length === 0 && /*#__PURE__*/React.createElement(Card, {
+  }), React.createElement("p", null, error)))), !error && bookings.length === 0 && React.createElement(Card, {
     className: "border-dashed"
-  }, /*#__PURE__*/React.createElement(CardContent, {
+  }, React.createElement(CardContent, {
     className: "pt-12 pb-12 text-center"
-  }, /*#__PURE__*/React.createElement(Ticket, {
+  }, React.createElement(Ticket, {
     className: "h-16 w-16 mx-auto mb-4 text-gray-400"
-  }), /*#__PURE__*/React.createElement("h3", {
+  }), React.createElement("h3", {
     className: "text-xl font-semibold mb-2"
-  }, "No bookings yet"), /*#__PURE__*/React.createElement("p", {
+  }, "No bookings yet"), React.createElement("p", {
     className: "text-gray-600 mb-6"
-  }, "You haven't booked any events. Start exploring and book your first experience!"), /*#__PURE__*/React.createElement(Button, {
+  }, "You haven't booked any events. Start exploring and book your first experience!"), React.createElement(Button, {
     onClick: () => router.push("/events")
-  }, "Browse Events"))), bookings.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, filteredBookings.length === 0 ? /*#__PURE__*/React.createElement(Card, {
+  }, "Browse Events"))), bookings.length > 0 && React.createElement(React.Fragment, null, filteredBookings.length === 0 ? React.createElement(Card, {
     className: "border-dashed"
-  }, /*#__PURE__*/React.createElement(CardContent, {
+  }, React.createElement(CardContent, {
     className: "pt-12 pb-12 text-center"
-  }, /*#__PURE__*/React.createElement(Ticket, {
+  }, React.createElement(Ticket, {
     className: "h-16 w-16 mx-auto mb-4 text-gray-400"
-  }), /*#__PURE__*/React.createElement("h3", {
+  }), React.createElement("h3", {
     className: "text-xl font-semibold mb-2"
-  }, "No bookings match this filter"), /*#__PURE__*/React.createElement("p", {
+  }, "No bookings match this filter"), React.createElement("p", {
     className: "text-gray-600 mb-6"
-  }, "Try selecting a different filter to see your bookings."), /*#__PURE__*/React.createElement(Button, {
+  }, "Try selecting a different filter to see your bookings."), React.createElement(Button, {
     onClick: () => setFilterStatus("all"),
     variant: "outline"
-  }, "Show All Bookings"))) : /*#__PURE__*/React.createElement("div", {
+  }, "Show All Bookings"))) : React.createElement("div", {
     className: "grid gap-6 md:grid-cols-2 lg:grid-cols-2"
-  }, filteredBookings.map(booking => /*#__PURE__*/React.createElement(Card, {
+  }, filteredBookings.map(booking => React.createElement(Card, {
     key: booking.booking_id,
     className: "overflow-hidden hover:shadow-lg transition-shadow"
-  }, /*#__PURE__*/React.createElement(CardHeader, {
+  }, React.createElement(CardHeader, {
     className: "pb-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex justify-between items-start mb-2"
-  }, /*#__PURE__*/React.createElement(CardTitle, {
+  }, React.createElement(CardTitle, {
     className: "text-xl"
-  }, booking.event.title), /*#__PURE__*/React.createElement("div", {
+  }, booking.event.title), React.createElement("div", {
     className: "flex gap-2 flex-wrap"
-  }, getStatusBadge(booking.booking_status), getPaymentBadge(booking.payment_status, booking.payment_required))), /*#__PURE__*/React.createElement(CardDescription, null, "Booking Code: ", /*#__PURE__*/React.createElement("span", {
+  }, getStatusBadge(booking.booking_status), getPaymentBadge(booking.payment_status, booking.payment_required))), React.createElement(CardDescription, null, "Booking Code: ", React.createElement("span", {
     className: "font-mono font-bold text-black"
-  }, booking.booking_code))), /*#__PURE__*/React.createElement(CardContent, {
+  }, booking.booking_code))), React.createElement(CardContent, {
     className: "space-y-4"
-  }, booking.event.event_image && /*#__PURE__*/React.createElement("div", {
+  }, booking.event.event_image && React.createElement("div", {
     className: "relative w-full h-40 rounded-lg overflow-hidden"
-  }, /*#__PURE__*/React.createElement(Image, {
+  }, React.createElement(Image, {
     src: booking.event.event_image,
     alt: booking.event.title,
     fill: true,
     className: "object-cover"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "space-y-2 text-sm"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-start gap-2"
-  }, /*#__PURE__*/React.createElement(Calendar, {
+  }, React.createElement(Calendar, {
     className: "h-4 w-4 mt-0.5 text-gray-500 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("span", null, format(new Date(booking.event.date_time), "EEEE, MMMM d, yyyy • h:mm a"))), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("span", null, format(new Date(booking.event.date_time), "EEEE, MMMM d, yyyy • h:mm a"))), React.createElement("div", {
     className: "flex items-start gap-2"
-  }, /*#__PURE__*/React.createElement(MapPin, {
+  }, React.createElement(MapPin, {
     className: "h-4 w-4 mt-0.5 text-gray-500 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", null, React.createElement("div", {
     className: "font-medium"
-  }, booking.event.venue_name), /*#__PURE__*/React.createElement("div", {
+  }, booking.event.venue_name), React.createElement("div", {
     className: "text-gray-600"
-  }, booking.event.city))), /*#__PURE__*/React.createElement("div", {
+  }, booking.event.city))), React.createElement("div", {
     className: "flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(Ticket, {
+  }, React.createElement(Ticket, {
     className: "h-4 w-4 text-gray-500"
-  }), /*#__PURE__*/React.createElement("span", null, booking.tickets_count, " ", booking.tickets_count === 1 ? "Ticket" : "Tickets")), booking.total_amount > 0 && /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("span", null, booking.tickets_count, " ", booking.tickets_count === 1 ? "Ticket" : "Tickets")), booking.total_amount > 0 && React.createElement("div", {
     className: "flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "font-semibold"
-  }, "\u20B9", booking.total_amount.toFixed(2))), /*#__PURE__*/React.createElement("div", {
+  }, "\u20B9", booking.total_amount.toFixed(2))), React.createElement("div", {
     className: "flex items-center gap-2 text-gray-500"
-  }, /*#__PURE__*/React.createElement(Clock, {
+  }, React.createElement(Clock, {
     className: "h-4 w-4"
-  }), /*#__PURE__*/React.createElement("span", null, "Booked on ", format(new Date(booking.booked_at), "MMM d, yyyy")))), (booking.payment_status === "PENDING" || booking.payment_status === "pending" || booking.payment_status === "FAILED" || booking.payment_status === "failed") && /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("span", null, "Booked on ", format(new Date(booking.booked_at), "MMM d, yyyy")))), (booking.payment_status === "PENDING" || booking.payment_status === "pending" || booking.payment_status === "FAILED" || booking.payment_status === "failed") && React.createElement("div", {
     className: "pt-4 border-t"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-start gap-3"
-  }, /*#__PURE__*/React.createElement(AlertCircle, {
+  }, React.createElement(AlertCircle, {
     className: "h-5 w-5 text-yellow-600 mt-0.5 flex-shrink-0"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: "flex-1"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "font-medium text-yellow-900 mb-1"
-  }, booking.payment_status === "PENDING" || booking.payment_status === "pending" ? "Payment Pending" : "Payment Failed"), /*#__PURE__*/React.createElement("p", {
+  }, booking.payment_status === "PENDING" || booking.payment_status === "pending" ? "Payment Pending" : "Payment Failed"), React.createElement("p", {
     className: "text-sm text-yellow-700 mb-3"
-  }, booking.payment_status === "PENDING" || booking.payment_status === "pending" ? "Complete your payment to confirm this booking. Pending bookings will be automatically cancelled after 15 minutes." : "Your payment was not successful. This booking has been cancelled and slots have been released. You can try booking again."), /*#__PURE__*/React.createElement("div", {
+  }, booking.payment_status === "PENDING" || booking.payment_status === "pending" ? "Complete your payment to confirm this booking. Pending bookings will be automatically cancelled after 15 minutes." : "Your payment was not successful. This booking has been cancelled and slots have been released. You can try booking again."), React.createElement("div", {
     className: "flex gap-2 flex-wrap"
-  }, (booking.payment_status === "PENDING" || booking.payment_status === "pending") && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Button, {
+  }, (booking.payment_status === "PENDING" || booking.payment_status === "pending") && React.createElement(React.Fragment, null, React.createElement(Button, {
     onClick: () => router.push(`/events/${booking.event.event_id}`),
     size: "sm",
     className: "bg-blue-600 hover:bg-blue-700"
-  }, "Complete Payment"), /*#__PURE__*/React.createElement(Button, {
+  }, "Complete Payment"), React.createElement(Button, {
     onClick: () => confirmCancelBooking(booking),
     size: "sm",
     variant: "outline",
     disabled: deletingBooking === booking.booking_id,
     className: "border-red-300 text-red-600 hover:bg-red-50 hover:text-red-700"
-  }, deletingBooking === booking.booking_id ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Spinner, {
+  }, deletingBooking === booking.booking_id ? React.createElement(React.Fragment, null, React.createElement(Spinner, {
     className: "w-4 h-4 mr-2"
-  }), "Cancelling...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(X, {
+  }), "Cancelling...") : React.createElement(React.Fragment, null, React.createElement(X, {
     className: "w-4 h-4 mr-1"
-  }), "Cancel Booking"))), (booking.payment_status === "FAILED" || booking.payment_status === "failed") && /*#__PURE__*/React.createElement(Button, {
+  }), "Cancel Booking"))), (booking.payment_status === "FAILED" || booking.payment_status === "failed") && React.createElement(Button, {
     onClick: () => router.push(`/events/${booking.event.event_id}`),
     size: "sm",
     className: "bg-yellow-600 hover:bg-yellow-700"
   }, "Book Again")))))), (booking.booking_status === "confirmed" || booking.booking_status === "checked_in") && (booking.payment_status === "SUCCESSFUL" || booking.payment_status === "NOT_REQUIRED") && booking.tickets_count < 10 && new Date(booking.event.date_time) > new Date() && (
   // Event hasn't happened yet
-  booking.event.status === "published" || booking.event.status === "checkin_open") && /*#__PURE__*/React.createElement("div", {
+  booking.event.status === "published" || booking.event.status === "checkin_open") && React.createElement("div", {
     className: "pt-4 border-t"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     onClick: () => router.push(`/events/${booking.event.event_id}`),
     variant: "outline",
     className: "w-full border-blue-300 text-blue-600 hover:bg-blue-50",
     size: "sm"
-  }, /*#__PURE__*/React.createElement(Ticket, {
+  }, React.createElement(Ticket, {
     className: "w-4 h-4 mr-2"
-  }), "Add More Tickets")), (booking.booking_status === "confirmed" || booking.booking_status === "checked_in") && /*#__PURE__*/React.createElement("div", {
+  }), "Add More Tickets")), (booking.booking_status === "confirmed" || booking.booking_status === "checked_in") && React.createElement("div", {
     className: "pt-4 border-t"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "mb-3"
-  }, selectedBooking === booking.booking_id && qrCode ? /*#__PURE__*/React.createElement("div", {
+  }, selectedBooking === booking.booking_id && qrCode ? React.createElement("div", {
     className: "space-y-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "relative w-full aspect-square max-w-[220px] mx-auto bg-white p-4 rounded-lg border-2"
-  }, /*#__PURE__*/React.createElement(Image, {
+  }, React.createElement(Image, {
     src: qrCode,
     alt: "Booking QR Code",
     fill: true,
     className: "object-contain"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "flex gap-2"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     onClick: () => downloadQRCode(booking.booking_code),
     className: "flex-1",
     variant: "outline"
-  }, /*#__PURE__*/React.createElement(Download, {
+  }, React.createElement(Download, {
     className: "mr-2 h-4 w-4"
-  }), "Download"), /*#__PURE__*/React.createElement(Button, {
+  }), "Download"), React.createElement(Button, {
     onClick: () => setSelectedBooking(null),
     variant: "outline"
-  }, "Hide"))) : /*#__PURE__*/React.createElement(Button, {
+  }, "Hide"))) : React.createElement(Button, {
     onClick: () => fetchQRCode(booking.booking_id),
     disabled: loadingQR === booking.booking_id,
     className: "w-full"
-  }, loadingQR === booking.booking_id ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Spinner, {
+  }, loadingQR === booking.booking_id ? React.createElement(React.Fragment, null, React.createElement(Spinner, {
     className: "mr-2 h-4 w-4"
-  }), "Generating...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(QrCode, {
+  }), "Generating...") : React.createElement(React.Fragment, null, React.createElement(QrCode, {
     className: "mr-2 h-4 w-4"
-  }), "Show Booking QR"))), /*#__PURE__*/React.createElement("div", {
+  }), "Show Booking QR"))), React.createElement("div", {
     className: "mt-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between mb-2"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-sm font-semibold"
-  }, "Tickets"), /*#__PURE__*/React.createElement("div", {
+  }, "Tickets"), React.createElement("div", {
     className: "text-xs text-gray-500"
-  }, booking.tickets_count, " total")), loadingTicketsMap[booking.booking_id] ? /*#__PURE__*/React.createElement("div", {
+  }, booking.tickets_count, " total")), loadingTicketsMap[booking.booking_id] ? React.createElement("div", {
     className: "text-center py-4"
-  }, /*#__PURE__*/React.createElement(Spinner, {
+  }, React.createElement(Spinner, {
     className: "mx-auto"
-  }), /*#__PURE__*/React.createElement("p", {
+  }), React.createElement("p", {
     className: "text-sm text-gray-500 mt-2"
-  }, "Loading tickets...")) : ticketsMap[booking.booking_id] && ticketsMap[booking.booking_id].length > 0 ? /*#__PURE__*/React.createElement("div", {
+  }, "Loading tickets...")) : ticketsMap[booking.booking_id] && ticketsMap[booking.booking_id].length > 0 ? React.createElement("div", {
     className: "grid grid-cols-2 gap-3"
-  }, ticketsMap[booking.booking_id].map(t => /*#__PURE__*/React.createElement("button", {
+  }, ticketsMap[booking.booking_id].map(t => React.createElement("button", {
     key: t.ticket_id,
     onClick: () => handleTicketClick(t, booking.booking_code),
     className: "bg-gray-50 rounded-lg p-3 border border-gray-200 text-center hover:bg-gray-100 hover:border-blue-400 transition-all cursor-pointer"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-sm font-semibold"
-  }, "Ticket ", t.ticket_number), /*#__PURE__*/React.createElement("div", {
+  }, "Ticket ", t.ticket_number), React.createElement("div", {
     className: "text-xs font-mono text-gray-600 mb-2"
-  }, t.ticket_code), t.checked_in && /*#__PURE__*/React.createElement(Badge, {
+  }, t.ticket_code), t.checked_in && React.createElement(Badge, {
     className: "bg-green-100 text-green-800 text-xs mb-2"
-  }, "\u2713 Checked In"), loadingTicketQrMap[t.ticket_id] ? /*#__PURE__*/React.createElement("div", {
+  }, "\u2713 Checked In"), loadingTicketQrMap[t.ticket_id] ? React.createElement("div", {
     className: "text-center py-4"
-  }, /*#__PURE__*/React.createElement(Spinner, {
+  }, React.createElement(Spinner, {
     className: "mx-auto h-6 w-6"
-  })) : /*#__PURE__*/React.createElement("div", {
+  })) : React.createElement("div", {
     className: "flex items-center justify-center gap-1 text-xs text-blue-600 mt-2"
-  }, /*#__PURE__*/React.createElement(QrCode, {
+  }, React.createElement(QrCode, {
     className: "w-3 h-3"
-  }), "Click to view QR")))) : /*#__PURE__*/React.createElement("div", {
+  }), "Click to view QR")))) : React.createElement("div", {
     className: "text-center py-2 text-sm text-gray-500"
-  }, "No tickets found")), booking.event.entry_instructions && /*#__PURE__*/React.createElement("div", {
+  }, "No tickets found")), booking.event.entry_instructions && React.createElement("div", {
     className: "text-xs text-gray-600 bg-blue-50 p-3 rounded mt-4"
-  }, /*#__PURE__*/React.createElement("strong", null, "Entry Instructions:"), /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("strong", null, "Entry Instructions:"), React.createElement("p", {
     className: "mt-1"
-  }, booking.event.entry_instructions))), booking.booking_status === "checked_in" && /*#__PURE__*/React.createElement("div", {
+  }, booking.event.entry_instructions))), booking.booking_status === "checked_in" && React.createElement("div", {
     className: "pt-4 border-t"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-2 text-green-600 bg-green-50 p-3 rounded"
-  }, /*#__PURE__*/React.createElement(CheckCircle2, {
+  }, React.createElement(CheckCircle2, {
     className: "h-5 w-5"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "font-medium"
-  }, ticketsMap[booking.booking_id]?.some(t => !t.checked_in) ? `Partially checked in (${ticketsMap[booking.booking_id]?.filter(t => t.checked_in).length}/${ticketsMap[booking.booking_id]?.length} tickets)` : "You've checked in to this event"))))))))), selectedTicketQR && /*#__PURE__*/React.createElement("div", {
+  }, ticketsMap[booking.booking_id]?.some(t => !t.checked_in) ? `Partially checked in (${ticketsMap[booking.booking_id]?.filter(t => t.checked_in).length}/${ticketsMap[booking.booking_id]?.length} tickets)` : "You've checked in to this event"))))))))), selectedTicketQR && React.createElement("div", {
     className: "fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4",
     onClick: () => setSelectedTicketQR(null)
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl",
     onClick: e => e.stopPropagation()
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between mb-4"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
+  }, React.createElement("div", null, React.createElement("h3", {
     className: "text-xl font-bold"
-  }, "Ticket ", selectedTicketQR.ticket.ticket_number), /*#__PURE__*/React.createElement("p", {
+  }, "Ticket ", selectedTicketQR.ticket.ticket_number), React.createElement("p", {
     className: "text-sm text-gray-600 font-mono"
-  }, selectedTicketQR.ticket.ticket_code)), /*#__PURE__*/React.createElement("button", {
+  }, selectedTicketQR.ticket.ticket_code)), React.createElement("button", {
     onClick: () => setSelectedTicketQR(null),
     className: "text-gray-500 hover:text-gray-700 p-2"
-  }, /*#__PURE__*/React.createElement(X, {
+  }, React.createElement(X, {
     className: "w-6 h-6"
-  }))), selectedTicketQR.ticket.checked_in && /*#__PURE__*/React.createElement("div", {
+  }))), selectedTicketQR.ticket.checked_in && React.createElement("div", {
     className: "mb-4 p-3 bg-green-50 rounded-lg border border-green-200"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-2 text-green-800"
-  }, /*#__PURE__*/React.createElement(CheckCircle2, {
+  }, React.createElement(CheckCircle2, {
     className: "w-5 h-5"
-  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", null, React.createElement("div", {
     className: "font-semibold"
-  }, "Already Checked In"), selectedTicketQR.ticket.checked_in_at && /*#__PURE__*/React.createElement("div", {
+  }, "Already Checked In"), selectedTicketQR.ticket.checked_in_at && React.createElement("div", {
     className: "text-xs text-green-700"
-  }, new Date(selectedTicketQR.ticket.checked_in_at).toLocaleString())))), /*#__PURE__*/React.createElement("div", {
+  }, new Date(selectedTicketQR.ticket.checked_in_at).toLocaleString())))), React.createElement("div", {
     className: "relative w-full aspect-square bg-white p-4 rounded-lg border-2 border-gray-200 mb-4"
-  }, /*#__PURE__*/React.createElement(Image, {
+  }, React.createElement(Image, {
     src: selectedTicketQR.qrCode,
     alt: `QR Code for ${selectedTicketQR.ticket.ticket_code}`,
     fill: true,
     className: "object-contain"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     onClick: () => downloadTicketQR(selectedTicketQR.ticket.ticket_code, selectedTicketQR.qrCode),
     className: "w-full bg-blue-600 hover:bg-blue-700"
-  }, /*#__PURE__*/React.createElement(Download, {
+  }, React.createElement(Download, {
     className: "mr-2 h-4 w-4"
-  }), "Download QR Code"), /*#__PURE__*/React.createElement(Button, {
+  }), "Download QR Code"), React.createElement(Button, {
     onClick: () => setSelectedTicketQR(null),
     variant: "outline",
     className: "w-full"
-  }, "Close")), /*#__PURE__*/React.createElement("div", {
+  }, "Close")), React.createElement("div", {
     className: "mt-4 p-3 bg-blue-50 rounded-lg text-xs text-gray-700"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-start gap-2"
-  }, /*#__PURE__*/React.createElement(Info, {
+  }, React.createElement(Info, {
     className: "w-4 h-4 mt-0.5 flex-shrink-0 text-blue-600"
-  }), /*#__PURE__*/React.createElement("p", null, "Present this QR code at the event entrance for check-in. Each ticket must be scanned individually."))))), showCancelDialog && bookingToCancel && /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("p", null, "Present this QR code at the event entrance for check-in. Each ticket must be scanned individually."))))), showCancelDialog && bookingToCancel && React.createElement("div", {
     className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-in fade-in zoom-in duration-200"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-start gap-4 mb-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "w-12 h-12 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0"
-  }, /*#__PURE__*/React.createElement(AlertCircle, {
+  }, React.createElement(AlertCircle, {
     className: "w-6 h-6 text-red-600"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "flex-1"
-  }, /*#__PURE__*/React.createElement("h3", {
+  }, React.createElement("h3", {
     className: "text-xl font-bold text-gray-900 mb-1"
-  }, "Cancel Booking?"), /*#__PURE__*/React.createElement("p", {
+  }, "Cancel Booking?"), React.createElement("p", {
     className: "text-sm text-gray-600"
-  }, "This action cannot be undone."))), /*#__PURE__*/React.createElement("div", {
+  }, "This action cannot be undone."))), React.createElement("div", {
     className: "bg-gray-50 rounded-lg p-4 mb-6 space-y-2"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex justify-between text-sm"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-gray-600"
-  }, "Booking Code:"), /*#__PURE__*/React.createElement("span", {
+  }, "Booking Code:"), React.createElement("span", {
     className: "font-mono font-bold text-gray-900"
-  }, bookingToCancel.code)), /*#__PURE__*/React.createElement("div", {
+  }, bookingToCancel.code)), React.createElement("div", {
     className: "flex justify-between text-sm"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, React.createElement("span", {
     className: "text-gray-600"
-  }, "Tickets to Release:"), /*#__PURE__*/React.createElement("span", {
+  }, "Tickets to Release:"), React.createElement("span", {
     className: "font-semibold text-gray-900"
-  }, bookingToCancel.tickets))), /*#__PURE__*/React.createElement("div", {
+  }, bookingToCancel.tickets))), React.createElement("div", {
     className: "bg-blue-50 border border-blue-200 rounded-lg p-3 mb-6"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-start gap-2"
-  }, /*#__PURE__*/React.createElement(Info, {
+  }, React.createElement(Info, {
     className: "w-4 h-4 mt-0.5 flex-shrink-0 text-blue-600"
-  }), /*#__PURE__*/React.createElement("p", {
+  }), React.createElement("p", {
     className: "text-xs text-blue-900"
-  }, bookingToCancel.tickets, " ticket(s) will be released and become available for other users to book."))), /*#__PURE__*/React.createElement("div", {
+  }, bookingToCancel.tickets, " ticket(s) will be released and become available for other users to book."))), React.createElement("div", {
     className: "flex gap-3"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     onClick: () => {
       setShowCancelDialog(false);
       setBookingToCancel(null);
@@ -714,13 +714,13 @@ export default function MyBookingsPage() {
     variant: "outline",
     className: "flex-1",
     disabled: deletingBooking === bookingToCancel.id
-  }, "Keep Booking"), /*#__PURE__*/React.createElement(Button, {
+  }, "Keep Booking"), React.createElement(Button, {
     onClick: () => handleDeleteBooking(bookingToCancel.id),
     className: "flex-1 bg-red-600 hover:bg-red-700",
     disabled: deletingBooking === bookingToCancel.id
-  }, deletingBooking === bookingToCancel.id ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Spinner, {
+  }, deletingBooking === bookingToCancel.id ? React.createElement(React.Fragment, null, React.createElement(Spinner, {
     className: "w-4 h-4 mr-2"
-  }), "Cancelling...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(X, {
+  }), "Cancelling...") : React.createElement(React.Fragment, null, React.createElement(X, {
     className: "w-4 h-4 mr-2"
   }), "Yes, Cancel Booking"))))));
 }

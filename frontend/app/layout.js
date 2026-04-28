@@ -50,39 +50,39 @@ export const metadata = {
 export default function RootLayout({
   children
 }) {
-  return /*#__PURE__*/React.createElement("html", {
+  return React.createElement("html", {
     lang: "en",
     className: `${openSauceOne.variable}`,
     suppressHydrationWarning: true
-  }, /*#__PURE__*/React.createElement("head", null, /*#__PURE__*/React.createElement("link", {
+  }, React.createElement("head", null, React.createElement("link", {
     rel: "preconnect",
     href: "https://cdn.jsdelivr.net"
-  }), /*#__PURE__*/React.createElement("link", {
+  }), React.createElement("link", {
     rel: "dns-prefetch",
     href: "https://cdn.jsdelivr.net"
-  }), /*#__PURE__*/React.createElement("link", {
+  }), React.createElement("link", {
     rel: "preconnect",
     href: "https://prod.spline.design"
-  }), /*#__PURE__*/React.createElement("link", {
+  }), React.createElement("link", {
     rel: "dns-prefetch",
     href: "https://prod.spline.design"
-  }), /*#__PURE__*/React.createElement("link", {
+  }), React.createElement("link", {
     rel: "preload",
     href: "/fonts/OpenSauceOne-Regular.ttf",
     as: "font",
     type: "font/ttf",
     crossOrigin: "anonymous"
-  }), /*#__PURE__*/React.createElement("link", {
+  }), React.createElement("link", {
     rel: "preload",
     href: "/fonts/OpenSauceOne-Bold.ttf",
     as: "font",
     type: "font/ttf",
     crossOrigin: "anonymous"
-  })), /*#__PURE__*/React.createElement("body", {
+  })), React.createElement("body", {
     className: `${openSauceOne.className} antialiased`,
     suppressHydrationWarning: true
-  }, /*#__PURE__*/React.createElement(Script, {
+  }, React.createElement(Script, {
     src: "https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.25/dist/unicornStudio.umd.js",
     strategy: "afterInteractive"
-  }), children, /*#__PURE__*/React.createElement(Analytics, null), /*#__PURE__*/React.createElement(Toaster, null)));
+  }), children, React.createElement(Analytics, null), React.createElement(Toaster, null)));
 }

@@ -70,41 +70,41 @@ export default function SettlementModal({
     setSuccess(false);
     onClose();
   };
-  return /*#__PURE__*/React.createElement(Dialog, {
+  return React.createElement(Dialog, {
     open: isOpen,
     onOpenChange: handleClose
-  }, /*#__PURE__*/React.createElement(DialogContent, {
+  }, React.createElement(DialogContent, {
     className: "sm:max-w-[550px]"
-  }, /*#__PURE__*/React.createElement(DialogHeader, null, /*#__PURE__*/React.createElement(DialogTitle, null, "Mark Settlement as Paid"), /*#__PURE__*/React.createElement(DialogDescription, null, "Record the payment transfer to the event operations team for ", /*#__PURE__*/React.createElement("strong", null, event.title), ". This will lock the financial data for this event.")), success ? /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(DialogHeader, null, React.createElement(DialogTitle, null, "Mark Settlement as Paid"), React.createElement(DialogDescription, null, "Record the payment transfer to the event operations team for ", React.createElement("strong", null, event.title), ". This will lock the financial data for this event.")), success ? React.createElement("div", {
     className: "py-8 text-center"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4"
-  }, /*#__PURE__*/React.createElement(CheckCircle2, {
+  }, React.createElement(CheckCircle2, {
     className: "h-8 w-8 text-green-600"
-  })), /*#__PURE__*/React.createElement("h3", {
+  })), React.createElement("h3", {
     className: "text-lg font-semibold text-gray-900 mb-2"
-  }, "Settlement Recorded!"), /*#__PURE__*/React.createElement("p", {
+  }, "Settlement Recorded!"), React.createElement("p", {
     className: "text-gray-500"
-  }, "The payment has been marked as settled.")) : /*#__PURE__*/React.createElement("form", {
+  }, "The payment has been marked as settled.")) : React.createElement("form", {
     onSubmit: handleSubmit,
     className: "space-y-6"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bg-blue-50 border border-blue-200 rounded-lg p-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("div", null, React.createElement("p", {
     className: "text-sm text-blue-700 font-medium"
-  }, "Net Payout Amount"), /*#__PURE__*/React.createElement("p", {
+  }, "Net Payout Amount"), React.createElement("p", {
     className: "text-xs text-blue-600 mt-1"
-  }, "Amount to be paid to event operations")), /*#__PURE__*/React.createElement("div", {
+  }, "Amount to be paid to event operations")), React.createElement("div", {
     className: "text-2xl font-bold text-blue-900"
-  }, formatCurrency(event.net_payout)))), /*#__PURE__*/React.createElement("div", {
+  }, formatCurrency(event.net_payout)))), React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "transaction_reference"
-  }, "Transaction Reference ", /*#__PURE__*/React.createElement("span", {
+  }, "Transaction Reference ", React.createElement("span", {
     className: "text-red-500"
-  }, "*")), /*#__PURE__*/React.createElement(Input, {
+  }, "*")), React.createElement(Input, {
     id: "transaction_reference",
     placeholder: "UTR Number, Transfer ID, or Check Number",
     value: formData.transaction_reference,
@@ -114,15 +114,15 @@ export default function SettlementModal({
     }),
     required: true,
     disabled: loading
-  }), /*#__PURE__*/React.createElement("p", {
+  }), React.createElement("p", {
     className: "text-xs text-gray-500"
-  }, "Enter the bank transfer reference number or transaction ID")), /*#__PURE__*/React.createElement("div", {
+  }, "Enter the bank transfer reference number or transaction ID")), React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "transfer_date"
-  }, "Transfer Date ", /*#__PURE__*/React.createElement("span", {
+  }, "Transfer Date ", React.createElement("span", {
     className: "text-red-500"
-  }, "*")), /*#__PURE__*/React.createElement(Input, {
+  }, "*")), React.createElement(Input, {
     id: "transfer_date",
     type: "date",
     value: formData.transfer_date,
@@ -133,34 +133,34 @@ export default function SettlementModal({
     max: new Date().toISOString().split("T")[0],
     required: true,
     disabled: loading
-  }), /*#__PURE__*/React.createElement("p", {
+  }), React.createElement("p", {
     className: "text-xs text-gray-500"
-  }, "Date when the payment was transferred")), /*#__PURE__*/React.createElement("div", {
+  }, "Date when the payment was transferred")), React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "payment_method"
-  }, "Payment Method"), /*#__PURE__*/React.createElement(Select, {
+  }, "Payment Method"), React.createElement(Select, {
     value: formData.payment_method,
     onValueChange: value => setFormData({
       ...formData,
       payment_method: value
     }),
     disabled: loading
-  }, /*#__PURE__*/React.createElement(SelectTrigger, null, /*#__PURE__*/React.createElement(SelectValue, null)), /*#__PURE__*/React.createElement(SelectContent, null, /*#__PURE__*/React.createElement(SelectItem, {
+  }, React.createElement(SelectTrigger, null, React.createElement(SelectValue, null)), React.createElement(SelectContent, null, React.createElement(SelectItem, {
     value: "bank_transfer"
-  }, "Bank Transfer (NEFT/RTGS/IMPS)"), /*#__PURE__*/React.createElement(SelectItem, {
+  }, "Bank Transfer (NEFT/RTGS/IMPS)"), React.createElement(SelectItem, {
     value: "upi"
-  }, "UPI"), /*#__PURE__*/React.createElement(SelectItem, {
+  }, "UPI"), React.createElement(SelectItem, {
     value: "check"
-  }, "Check"), /*#__PURE__*/React.createElement(SelectItem, {
+  }, "Check"), React.createElement(SelectItem, {
     value: "cash"
-  }, "Cash"), /*#__PURE__*/React.createElement(SelectItem, {
+  }, "Cash"), React.createElement(SelectItem, {
     value: "other"
-  }, "Other")))), /*#__PURE__*/React.createElement("div", {
+  }, "Other")))), React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "notes"
-  }, "Notes (Optional)"), /*#__PURE__*/React.createElement(Textarea, {
+  }, "Notes (Optional)"), React.createElement(Textarea, {
     id: "notes",
     placeholder: "Add any additional notes about this settlement...",
     value: formData.notes,
@@ -170,30 +170,30 @@ export default function SettlementModal({
     }),
     rows: 3,
     disabled: loading
-  })), error && /*#__PURE__*/React.createElement(Alert, {
+  })), error && React.createElement(Alert, {
     variant: "destructive"
-  }, /*#__PURE__*/React.createElement(AlertCircle, {
+  }, React.createElement(AlertCircle, {
     className: "h-4 w-4"
-  }), /*#__PURE__*/React.createElement(AlertDescription, null, error)), /*#__PURE__*/React.createElement(Alert, null, /*#__PURE__*/React.createElement(AlertCircle, {
+  }), React.createElement(AlertDescription, null, error)), React.createElement(Alert, null, React.createElement(AlertCircle, {
     className: "h-4 w-4"
-  }), /*#__PURE__*/React.createElement(AlertDescription, null, /*#__PURE__*/React.createElement("strong", null, "Important:"), " Once marked as settled, the financial data for this event will be locked and cannot be modified.")), /*#__PURE__*/React.createElement(DialogFooter, null, /*#__PURE__*/React.createElement(Button, {
+  }), React.createElement(AlertDescription, null, React.createElement("strong", null, "Important:"), " Once marked as settled, the financial data for this event will be locked and cannot be modified.")), React.createElement(DialogFooter, null, React.createElement(Button, {
     type: "button",
     variant: "outline",
     onClick: handleClose,
     disabled: loading
-  }, "Cancel"), event.settlement_status === "settled" ? /*#__PURE__*/React.createElement(Button, {
+  }, "Cancel"), event.settlement_status === "settled" ? React.createElement(Button, {
     type: "button",
     disabled: true,
     className: "bg-green-600 hover:bg-green-600 cursor-not-allowed"
-  }, /*#__PURE__*/React.createElement(CheckCircle2, {
+  }, React.createElement(CheckCircle2, {
     className: "mr-2 h-4 w-4"
-  }), "Already Settled") : /*#__PURE__*/React.createElement(Button, {
+  }), "Already Settled") : React.createElement(Button, {
     type: "submit",
     disabled: loading || !formData.transaction_reference || !formData.transfer_date,
     className: "bg-[#195ADC] hover:bg-[#1451c4]"
-  }, loading ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Loader2, {
+  }, loading ? React.createElement(React.Fragment, null, React.createElement(Loader2, {
     className: "mr-2 h-4 w-4 animate-spin"
-  }), "Recording Settlement...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(CheckCircle2, {
+  }), "Recording Settlement...") : React.createElement(React.Fragment, null, React.createElement(CheckCircle2, {
     className: "mr-2 h-4 w-4"
   }), "Mark as Paid"))))));
 }

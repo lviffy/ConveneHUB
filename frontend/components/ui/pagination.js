@@ -14,24 +14,24 @@ import { buttonVariants } from "@/components/ui/button";
 const Pagination = ({
   className,
   ...props
-}) => /*#__PURE__*/React.createElement("nav", _extends({
+}) => React.createElement("nav", _extends({
   role: "navigation",
   "aria-label": "pagination",
   className: cn("mx-auto flex w-full justify-center", className)
 }, props));
 Pagination.displayName = "Pagination";
-const PaginationContent = /*#__PURE__*/React.forwardRef(({
+const PaginationContent = React.forwardRef(({
   className,
   ...props
-}, ref) => /*#__PURE__*/React.createElement("ul", _extends({
+}, ref) => React.createElement("ul", _extends({
   ref: ref,
   className: cn("flex flex-row items-center gap-1", className)
 }, props)));
 PaginationContent.displayName = "PaginationContent";
-const PaginationItem = /*#__PURE__*/React.forwardRef(({
+const PaginationItem = React.forwardRef(({
   className,
   ...props
-}, ref) => /*#__PURE__*/React.createElement("li", _extends({
+}, ref) => React.createElement("li", _extends({
   ref: ref,
   className: cn("", className)
 }, props)));
@@ -41,7 +41,7 @@ const PaginationLink = ({
   isActive,
   size = "icon",
   ...props
-}) => /*#__PURE__*/React.createElement("a", _extends({
+}) => React.createElement("a", _extends({
   "aria-current": isActive ? "page" : undefined,
   className: cn(buttonVariants({
     variant: isActive ? "outline" : "ghost",
@@ -52,34 +52,34 @@ PaginationLink.displayName = "PaginationLink";
 const PaginationPrevious = ({
   className,
   ...props
-}) => /*#__PURE__*/React.createElement(PaginationLink, _extends({
+}) => React.createElement(PaginationLink, _extends({
   "aria-label": "Go to previous page",
   size: "default",
   className: cn("gap-1 pl-2.5", className)
-}, props), /*#__PURE__*/React.createElement(ChevronLeft, {
+}, props), React.createElement(ChevronLeft, {
   className: "h-4 w-4"
-}), /*#__PURE__*/React.createElement("span", null, "Previous"));
+}), React.createElement("span", null, "Previous"));
 PaginationPrevious.displayName = "PaginationPrevious";
 const PaginationNext = ({
   className,
   ...props
-}) => /*#__PURE__*/React.createElement(PaginationLink, _extends({
+}) => React.createElement(PaginationLink, _extends({
   "aria-label": "Go to next page",
   size: "default",
   className: cn("gap-1 pr-2.5", className)
-}, props), /*#__PURE__*/React.createElement("span", null, "Next"), /*#__PURE__*/React.createElement(ChevronRight, {
+}, props), React.createElement("span", null, "Next"), React.createElement(ChevronRight, {
   className: "h-4 w-4"
 }));
 PaginationNext.displayName = "PaginationNext";
 const PaginationEllipsis = ({
   className,
   ...props
-}) => /*#__PURE__*/React.createElement("span", _extends({
+}) => React.createElement("span", _extends({
   "aria-hidden": true,
   className: cn("flex h-9 w-9 items-center justify-center", className)
-}, props), /*#__PURE__*/React.createElement(MoreHorizontal, {
+}, props), React.createElement(MoreHorizontal, {
   className: "h-4 w-4"
-}), /*#__PURE__*/React.createElement("span", {
+}), React.createElement("span", {
   className: "sr-only"
 }, "More pages"));
 PaginationEllipsis.displayName = "PaginationEllipsis";

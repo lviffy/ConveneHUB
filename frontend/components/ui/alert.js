@@ -21,11 +21,11 @@ const alertVariants = cva("relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 
     variant: "default"
   }
 });
-const Alert = /*#__PURE__*/React.forwardRef(({
+const Alert = React.forwardRef(({
   className,
   variant,
   ...props
-}, ref) => /*#__PURE__*/React.createElement("div", _extends({
+}, ref) => React.createElement("div", _extends({
   ref: ref,
   role: "alert",
   className: cn(alertVariants({
@@ -33,18 +33,18 @@ const Alert = /*#__PURE__*/React.forwardRef(({
   }), className)
 }, props)));
 Alert.displayName = "Alert";
-const AlertTitle = /*#__PURE__*/React.forwardRef(({
+const AlertTitle = React.forwardRef(({
   className,
   ...props
-}, ref) => /*#__PURE__*/React.createElement("h5", _extends({
+}, ref) => React.createElement("h5", _extends({
   ref: ref,
   className: cn("mb-1 font-medium leading-none tracking-tight", className)
 }, props)));
 AlertTitle.displayName = "AlertTitle";
-const AlertDescription = /*#__PURE__*/React.forwardRef(({
+const AlertDescription = React.forwardRef(({
   className,
   ...props
-}, ref) => /*#__PURE__*/React.createElement("div", _extends({
+}, ref) => React.createElement("div", _extends({
   ref: ref,
   className: cn("text-sm [&_p]:leading-relaxed", className)
 }, props)));

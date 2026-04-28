@@ -42,13 +42,13 @@ const flows = [{
   steps: ["Admin", "Monitor Platform", "Manage Tenants"]
 }];
 export default function EventsFeaturesSection() {
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("section", {
+  return React.createElement(React.Fragment, null, React.createElement("section", {
     className: "relative bg-white px-6 py-32"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "relative mx-auto max-w-6xl"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "mb-20 text-center"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: 10
@@ -66,7 +66,7 @@ export default function EventsFeaturesSection() {
       ease: [0.25, 0.1, 0.25, 1]
     },
     className: "mb-6 inline-flex items-center gap-2 text-sm uppercase tracking-wide text-gray-500"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       scaleX: 0
     },
@@ -82,7 +82,7 @@ export default function EventsFeaturesSection() {
       ease: [0.25, 0.1, 0.25, 1]
     },
     className: "h-[1px] w-8 origin-left bg-gray-300"
-  }), "Role Flows", /*#__PURE__*/React.createElement(motion.div, {
+  }), "Role Flows", React.createElement(motion.div, {
     initial: {
       scaleX: 0
     },
@@ -98,7 +98,7 @@ export default function EventsFeaturesSection() {
       ease: [0.25, 0.1, 0.25, 1]
     },
     className: "h-[1px] w-8 origin-right bg-gray-300"
-  })), /*#__PURE__*/React.createElement(motion.h2, {
+  })), React.createElement(motion.h2, {
     initial: {
       opacity: 0,
       y: 10
@@ -117,7 +117,7 @@ export default function EventsFeaturesSection() {
       ease: [0.25, 0.1, 0.25, 1]
     },
     className: "mb-4 text-4xl font-bold text-gray-900 md:text-5xl"
-  }, "Flow By Role"), /*#__PURE__*/React.createElement(motion.p, {
+  }, "Flow By Role"), React.createElement(motion.p, {
     initial: {
       opacity: 0
     },
@@ -134,11 +134,11 @@ export default function EventsFeaturesSection() {
       ease: [0.25, 0.1, 0.25, 1]
     },
     className: "mx-auto max-w-2xl text-lg text-gray-600"
-  }, "The platform now follows the organizer, attendee, promoter, and admin flows exactly as defined.")), /*#__PURE__*/React.createElement("div", {
+  }, "The platform now follows the organizer, attendee, promoter, and admin flows exactly as defined.")), React.createElement("div", {
     className: "grid grid-cols-1 gap-6 md:grid-cols-2"
   }, flows.map((flow, index) => {
     const Icon = flow.icon;
-    return /*#__PURE__*/React.createElement(motion.div, {
+    return React.createElement(motion.div, {
       key: flow.title,
       initial: {
         opacity: 0,
@@ -158,32 +158,32 @@ export default function EventsFeaturesSection() {
         ease: [0.25, 0.1, 0.25, 1]
       },
       className: "relative overflow-hidden rounded-2xl border border-gray-200 bg-[#F9FAFB] p-8"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: `absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${flow.accent}`
-    }), /*#__PURE__*/React.createElement("div", {
+    }), React.createElement("div", {
       className: "mb-5 flex items-center gap-3"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm"
-    }, /*#__PURE__*/React.createElement(Icon, {
+    }, React.createElement(Icon, {
       className: "h-5 w-5 text-gray-900"
-    })), /*#__PURE__*/React.createElement("h3", {
+    })), React.createElement("h3", {
       className: "text-xl font-bold text-gray-900"
-    }, flow.title)), /*#__PURE__*/React.createElement("div", {
+    }, flow.title)), React.createElement("div", {
       className: "flex flex-wrap items-center gap-2"
-    }, flow.steps.map((step, stepIndex) => /*#__PURE__*/React.createElement(React.Fragment, {
+    }, flow.steps.map((step, stepIndex) => React.createElement(React.Fragment, {
       key: `${flow.title}-${step}`
-    }, /*#__PURE__*/React.createElement("span", {
+    }, React.createElement("span", {
       className: "rounded-full bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm"
-    }, step), stepIndex < flow.steps.length - 1 && /*#__PURE__*/React.createElement(ArrowRight, {
+    }, step), stepIndex < flow.steps.length - 1 && React.createElement(ArrowRight, {
       className: "h-4 w-4 text-gray-300"
     })))));
-  })))), /*#__PURE__*/React.createElement("section", {
+  })))), React.createElement("section", {
     className: "relative bg-white px-6 py-32"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "relative mx-auto max-w-7xl"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "mb-20 text-center"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: 10
@@ -201,7 +201,7 @@ export default function EventsFeaturesSection() {
       ease: [0.25, 0.1, 0.25, 1]
     },
     className: "mb-6 inline-flex items-center gap-2 text-sm uppercase tracking-wide text-gray-500"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       scaleX: 0
     },
@@ -217,7 +217,7 @@ export default function EventsFeaturesSection() {
       ease: [0.25, 0.1, 0.25, 1]
     },
     className: "h-[1px] w-8 origin-left bg-gray-300"
-  }), "Why Book With Us", /*#__PURE__*/React.createElement(motion.div, {
+  }), "Why Book With Us", React.createElement(motion.div, {
     initial: {
       scaleX: 0
     },
@@ -233,7 +233,7 @@ export default function EventsFeaturesSection() {
       ease: [0.25, 0.1, 0.25, 1]
     },
     className: "h-[1px] w-8 origin-right bg-gray-300"
-  })), /*#__PURE__*/React.createElement(motion.h2, {
+  })), React.createElement(motion.h2, {
     initial: {
       opacity: 0,
       y: 10
@@ -252,9 +252,9 @@ export default function EventsFeaturesSection() {
       ease: [0.25, 0.1, 0.25, 1]
     },
     className: "text-4xl font-bold text-gray-900 md:text-5xl"
-  }, "Seamless Experience")), /*#__PURE__*/React.createElement("div", {
+  }, "Seamless Experience")), React.createElement("div", {
     className: "grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-4"
-  }, features.map((feature, index) => /*#__PURE__*/React.createElement(motion.div, {
+  }, features.map((feature, index) => React.createElement(motion.div, {
     key: index,
     initial: {
       opacity: 0,
@@ -274,13 +274,13 @@ export default function EventsFeaturesSection() {
       ease: [0.25, 0.1, 0.25, 1]
     },
     className: "group rounded-2xl bg-[#F9FAFB] p-8 transition-all duration-300 hover:-translate-y-1"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-gray-900 shadow-sm"
-  }, /*#__PURE__*/React.createElement(feature.icon, {
+  }, React.createElement(feature.icon, {
     className: "h-5 w-5"
-  })), /*#__PURE__*/React.createElement("h3", {
+  })), React.createElement("h3", {
     className: "mb-3 text-lg font-bold text-gray-900"
-  }, feature.title), /*#__PURE__*/React.createElement("p", {
+  }, feature.title), React.createElement("p", {
     className: "text-[15px] font-medium leading-relaxed text-gray-500"
   }, feature.description)))))));
 }

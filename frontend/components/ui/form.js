@@ -15,15 +15,15 @@ import { Controller, FormProvider, useFormContext } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 const Form = FormProvider;
-const FormFieldContext = /*#__PURE__*/React.createContext({});
+const FormFieldContext = React.createContext({});
 const FormField = ({
   ...props
 }) => {
-  return /*#__PURE__*/React.createElement(FormFieldContext.Provider, {
+  return React.createElement(FormFieldContext.Provider, {
     value: {
       name: props.name
     }
-  }, /*#__PURE__*/React.createElement(Controller, props));
+  }, React.createElement(Controller, props));
 };
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext);
@@ -48,23 +48,23 @@ const useFormField = () => {
     ...fieldState
   };
 };
-const FormItemContext = /*#__PURE__*/React.createContext({});
-const FormItem = /*#__PURE__*/React.forwardRef(({
+const FormItemContext = React.createContext({});
+const FormItem = React.forwardRef(({
   className,
   ...props
 }, ref) => {
   const id = React.useId();
-  return /*#__PURE__*/React.createElement(FormItemContext.Provider, {
+  return React.createElement(FormItemContext.Provider, {
     value: {
       id
     }
-  }, /*#__PURE__*/React.createElement("div", _extends({
+  }, React.createElement("div", _extends({
     ref: ref,
     className: cn("space-y-2", className)
   }, props)));
 });
 FormItem.displayName = "FormItem";
-const FormLabel = /*#__PURE__*/React.forwardRef(({
+const FormLabel = React.forwardRef(({
   className,
   ...props
 }, ref) => {
@@ -72,14 +72,14 @@ const FormLabel = /*#__PURE__*/React.forwardRef(({
     error,
     formItemId
   } = useFormField();
-  return /*#__PURE__*/React.createElement(Label, _extends({
+  return React.createElement(Label, _extends({
     ref: ref,
     className: cn(error && "text-destructive", className),
     htmlFor: formItemId
   }, props));
 });
 FormLabel.displayName = "FormLabel";
-const FormControl = /*#__PURE__*/React.forwardRef(({
+const FormControl = React.forwardRef(({
   ...props
 }, ref) => {
   const {
@@ -88,7 +88,7 @@ const FormControl = /*#__PURE__*/React.forwardRef(({
     formDescriptionId,
     formMessageId
   } = useFormField();
-  return /*#__PURE__*/React.createElement(Slot, _extends({
+  return React.createElement(Slot, _extends({
     ref: ref,
     id: formItemId,
     "aria-describedby": !error ? `${formDescriptionId}` : `${formDescriptionId} ${formMessageId}`,
@@ -96,21 +96,21 @@ const FormControl = /*#__PURE__*/React.forwardRef(({
   }, props));
 });
 FormControl.displayName = "FormControl";
-const FormDescription = /*#__PURE__*/React.forwardRef(({
+const FormDescription = React.forwardRef(({
   className,
   ...props
 }, ref) => {
   const {
     formDescriptionId
   } = useFormField();
-  return /*#__PURE__*/React.createElement("p", _extends({
+  return React.createElement("p", _extends({
     ref: ref,
     id: formDescriptionId,
     className: cn("text-sm text-muted-foreground", className)
   }, props));
 });
 FormDescription.displayName = "FormDescription";
-const FormMessage = /*#__PURE__*/React.forwardRef(({
+const FormMessage = React.forwardRef(({
   className,
   children,
   ...props
@@ -123,7 +123,7 @@ const FormMessage = /*#__PURE__*/React.forwardRef(({
   if (!body) {
     return null;
   }
-  return /*#__PURE__*/React.createElement("p", _extends({
+  return React.createElement("p", _extends({
     ref: ref,
     id: formMessageId,
     className: cn("text-sm font-medium text-destructive", className)

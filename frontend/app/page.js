@@ -14,9 +14,9 @@ export const metadata = {
   description: "Discover, book, and manage live events with seamless ticketing, QR check-ins, and real-time updates."
 };
 export default function Home() {
-  return /*#__PURE__*/React.createElement("main", {
+  return React.createElement("main", {
     className: "min-h-screen text-render-optimized"
-  }, /*#__PURE__*/React.createElement(EventsHeader, null), /*#__PURE__*/React.createElement(EventsHeroSection, null), /*#__PURE__*/React.createElement(HowItWorksSection, null), /*#__PURE__*/React.createElement(UpcomingHighlights, null), /*#__PURE__*/React.createElement(Suspense, {
+  }, React.createElement(EventsHeader, null), React.createElement(EventsHeroSection, null), React.createElement(HowItWorksSection, null), React.createElement(UpcomingHighlights, null), React.createElement(Suspense, {
     fallback: null
-  }, /*#__PURE__*/React.createElement(EventsListSection, null)), /*#__PURE__*/React.createElement(FeaturedExperiences, null), /*#__PURE__*/React.createElement(SeamlessExperienceSection, null), /*#__PURE__*/React.createElement(Footer, null));
+  }, React.createElement(EventsListSection, null)), React.createElement(FeaturedExperiences, null), React.createElement(SeamlessExperienceSection, null), React.createElement(Footer, null));
 }

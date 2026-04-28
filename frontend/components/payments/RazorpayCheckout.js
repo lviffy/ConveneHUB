@@ -176,44 +176,44 @@ export default function RazorpayCheckout({
       onFailure?.(message);
     }
   };
-  return /*#__PURE__*/React.createElement(React.Fragment, null, !autoTrigger && /*#__PURE__*/React.createElement(Button, {
+  return React.createElement(React.Fragment, null, !autoTrigger && React.createElement(Button, {
     type: "button",
     onClick: () => void initiatePayment(),
     disabled: loading || !scriptLoaded,
     className: "w-full bg-blue-600 hover:bg-blue-700 text-white h-12 rounded-xl"
-  }, loading ? "Opening Razorpay..." : "Pay With Razorpay"), showErrorModal && error && /*#__PURE__*/React.createElement("div", {
+  }, loading ? "Opening Razorpay..." : "Pay With Razorpay"), showErrorModal && error && React.createElement("div", {
     className: "fixed inset-0 z-[110] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4",
     onClick: () => setShowErrorModal(false)
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "bg-white rounded-2xl max-w-md w-full shadow-2xl",
     onClick: event => event.stopPropagation()
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "p-6 border-b border-gray-100 flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-3"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "w-10 h-10 rounded-full bg-red-100 flex items-center justify-center"
-  }, /*#__PURE__*/React.createElement(AlertCircle, {
+  }, React.createElement(AlertCircle, {
     className: "w-5 h-5 text-red-600"
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
+  })), React.createElement("div", null, React.createElement("h3", {
     className: "text-lg font-semibold text-gray-900"
-  }, "Payment Issue"), /*#__PURE__*/React.createElement("p", {
+  }, "Payment Issue"), React.createElement("p", {
     className: "text-sm text-gray-500"
-  }, "Razorpay could not complete the checkout."))), /*#__PURE__*/React.createElement(Button, {
+  }, "Razorpay could not complete the checkout."))), React.createElement(Button, {
     type: "button",
     variant: "ghost",
     size: "icon",
     onClick: () => setShowErrorModal(false),
     className: "rounded-full"
-  }, /*#__PURE__*/React.createElement(X, {
+  }, React.createElement(X, {
     className: "w-5 h-5"
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), React.createElement("div", {
     className: "p-6"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm text-gray-700 leading-relaxed"
-  }, error)), /*#__PURE__*/React.createElement("div", {
+  }, error)), React.createElement("div", {
     className: "p-6 pt-0"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     type: "button",
     onClick: () => setShowErrorModal(false),
     className: "w-full bg-gray-900 hover:bg-gray-800 text-white h-11 rounded-xl"

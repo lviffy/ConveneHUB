@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export default function BookingPage({
   params
 }) {
-  return /*#__PURE__*/React.createElement(EventBookingPage, {
+  return React.createElement(EventBookingPage, {
     eventId: params.id
   });
 }

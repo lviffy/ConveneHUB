@@ -14,12 +14,12 @@ import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 import { cn } from "@/lib/utils";
 const HoverCard = HoverCardPrimitive.Root;
 const HoverCardTrigger = HoverCardPrimitive.Trigger;
-const HoverCardContent = /*#__PURE__*/React.forwardRef(({
+const HoverCardContent = React.forwardRef(({
   className,
   align = "center",
   sideOffset = 4,
   ...props
-}, ref) => /*#__PURE__*/React.createElement(HoverCardPrimitive.Content, _extends({
+}, ref) => React.createElement(HoverCardPrimitive.Content, _extends({
   ref: ref,
   align: align,
   sideOffset: sideOffset,

@@ -156,38 +156,38 @@ function MovieTeamForgotPasswordContent() {
       setIsLoading(false);
     }
   };
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-white p-4"
-  }, /*#__PURE__*/React.createElement(Card, {
+  }, React.createElement(Card, {
     className: "w-full max-w-md border border-purple-200 shadow-lg"
-  }, /*#__PURE__*/React.createElement(CardHeader, {
+  }, React.createElement(CardHeader, {
     className: "space-y-6 text-center pb-8"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "mx-auto"
-  }, /*#__PURE__*/React.createElement(Image, {
+  }, React.createElement(Image, {
     src: "/logo/logo.jpg",
     alt: "ConveneHub",
     width: 80,
     height: 80,
     className: "mx-auto",
     priority: true
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(CardTitle, {
+  }, React.createElement(CardTitle, {
     className: "text-2xl font-bold text-[#010101]"
-  }, step === "email" ? "Reset Password" : "Enter Verification Code"), /*#__PURE__*/React.createElement(CardDescription, {
+  }, step === "email" ? "Reset Password" : "Enter Verification Code"), React.createElement(CardDescription, {
     className: "text-sm text-slate-600"
-  }, step === "email" ? "Enter your email address and we'll send you a verification code." : `We've sent a 6-digit code to ${email}`))), /*#__PURE__*/React.createElement(CardContent, {
+  }, step === "email" ? "Enter your email address and we'll send you a verification code." : `We've sent a 6-digit code to ${email}`))), React.createElement(CardContent, {
     className: "space-y-6"
-  }, step === "email" ? /*#__PURE__*/React.createElement("form", {
+  }, step === "email" ? React.createElement("form", {
     onSubmit: handleSendOTP,
     className: "space-y-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "email",
     className: "text-sm font-medium text-[#010101]"
-  }, "Email Address"), /*#__PURE__*/React.createElement(Input, {
+  }, "Email Address"), React.createElement(Input, {
     id: "email",
     type: "email",
     placeholder: "you@example.com",
@@ -196,73 +196,73 @@ function MovieTeamForgotPasswordContent() {
     required: true,
     disabled: isLoading,
     className: "h-11 border-2 border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
-  })), /*#__PURE__*/React.createElement(Button, {
+  })), React.createElement(Button, {
     type: "submit",
     className: "w-full h-10 bg-purple-600 hover:bg-purple-700 text-white font-medium mt-6",
     disabled: isLoading
-  }, isLoading ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Spinner, {
+  }, isLoading ? React.createElement(React.Fragment, null, React.createElement(Spinner, {
     className: "mr-2 h-4 w-4 text-white"
-  }), "Sending...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Mail, {
+  }), "Sending...") : React.createElement(React.Fragment, null, React.createElement(Mail, {
     className: "mr-2 h-4 w-4"
-  }), "Send Verification Code")), /*#__PURE__*/React.createElement("div", {
+  }), "Send Verification Code")), React.createElement("div", {
     className: "text-center pt-4"
-  }, /*#__PURE__*/React.createElement(Link, {
+  }, React.createElement(Link, {
     href: "/organizer-login",
     className: "text-sm text-purple-600 hover:text-purple-700 font-medium inline-flex items-center gap-1"
-  }, /*#__PURE__*/React.createElement(ArrowLeft, {
+  }, React.createElement(ArrowLeft, {
     className: "w-4 h-4"
-  }), "Back to Login"))) : /*#__PURE__*/React.createElement("div", {
+  }), "Back to Login"))) : React.createElement("div", {
     className: "space-y-6"
-  }, /*#__PURE__*/React.createElement(OTPInput, {
+  }, React.createElement(OTPInput, {
     value: otp,
     onChange: setOtp,
     disabled: isVerifying
-  }), isVerifying && /*#__PURE__*/React.createElement("div", {
+  }), isVerifying && React.createElement("div", {
     className: "flex items-center justify-center gap-2 text-sm text-slate-600"
-  }, /*#__PURE__*/React.createElement(Spinner, {
+  }, React.createElement(Spinner, {
     className: "h-4 w-4"
-  }), /*#__PURE__*/React.createElement("span", null, "Verifying...")), /*#__PURE__*/React.createElement(Button, {
+  }), React.createElement("span", null, "Verifying...")), React.createElement(Button, {
     type: "button",
     onClick: handleVerifyOTP,
     className: "w-full h-10 bg-purple-600 hover:bg-purple-700 text-white font-medium",
     disabled: otp.length !== 6 || isVerifying
-  }, isVerifying ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Spinner, {
+  }, isVerifying ? React.createElement(React.Fragment, null, React.createElement(Spinner, {
     className: "mr-2 h-4 w-4 text-white"
-  }), "Verifying...") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(KeyRound, {
+  }), "Verifying...") : React.createElement(React.Fragment, null, React.createElement(KeyRound, {
     className: "mr-2 h-4 w-4"
-  }), "Verify & Continue")), /*#__PURE__*/React.createElement("div", {
+  }), "Verify & Continue")), React.createElement("div", {
     className: "text-center space-y-2"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "text-sm text-slate-600"
-  }, "Didn't receive the code?"), countdown > 0 ? /*#__PURE__*/React.createElement("p", {
+  }, "Didn't receive the code?"), countdown > 0 ? React.createElement("p", {
     className: "text-sm text-slate-500"
-  }, "Resend in ", countdown, "s") : /*#__PURE__*/React.createElement(Button, {
+  }, "Resend in ", countdown, "s") : React.createElement(Button, {
     type: "button",
     variant: "link",
     onClick: handleResendOTP,
     disabled: isLoading,
     className: "text-purple-600 hover:text-purple-700"
-  }, isLoading ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Spinner, {
+  }, isLoading ? React.createElement(React.Fragment, null, React.createElement(Spinner, {
     className: "mr-2 h-3 w-3"
-  }), "Sending...") : "Resend Code")), /*#__PURE__*/React.createElement("div", {
+  }), "Sending...") : "Resend Code")), React.createElement("div", {
     className: "text-center pt-4 border-t border-slate-200"
-  }, /*#__PURE__*/React.createElement("button", {
+  }, React.createElement("button", {
     type: "button",
     onClick: () => {
       setStep("email");
       setOtp("");
     },
     className: "text-sm text-purple-600 hover:text-purple-700 font-medium inline-flex items-center gap-1"
-  }, /*#__PURE__*/React.createElement(ArrowLeft, {
+  }, React.createElement(ArrowLeft, {
     className: "w-4 h-4"
   }), "Use a different email"))))));
 }
 export default function MovieTeamForgotPasswordPage() {
-  return /*#__PURE__*/React.createElement(Suspense, {
-    fallback: /*#__PURE__*/React.createElement("div", {
+  return React.createElement(Suspense, {
+    fallback: React.createElement("div", {
       className: "min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-white"
-    }, /*#__PURE__*/React.createElement(Spinner, {
+    }, React.createElement(Spinner, {
       className: "w-8 h-8"
     }))
-  }, /*#__PURE__*/React.createElement(MovieTeamForgotPasswordContent, null));
+  }, React.createElement(MovieTeamForgotPasswordContent, null));
 }

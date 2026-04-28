@@ -98,65 +98,65 @@ export function CompleteProfileForm() {
     }
   };
   if (!user) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "min-h-screen flex items-center justify-center"
-    }, /*#__PURE__*/React.createElement(Spinner, {
+    }, React.createElement(Spinner, {
       className: "w-8 h-8"
     }));
   }
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900"
-  }, /*#__PURE__*/React.createElement(Card, {
+  }, React.createElement(Card, {
     className: "w-full max-w-md"
-  }, /*#__PURE__*/React.createElement(CardHeader, {
+  }, React.createElement(CardHeader, {
     className: "space-y-1 flex flex-col items-center"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "w-20 h-20 relative mb-4"
-  }, /*#__PURE__*/React.createElement(Image, {
+  }, React.createElement(Image, {
     src: "/logo/logo.jpg",
     alt: "ConveneHub Logo",
     fill: true,
     className: "object-contain",
     priority: true
-  })), /*#__PURE__*/React.createElement(CardTitle, {
+  })), React.createElement(CardTitle, {
     className: "text-2xl font-bold text-center"
-  }, "Complete Your Profile"), /*#__PURE__*/React.createElement(CardDescription, {
+  }, "Complete Your Profile"), React.createElement(CardDescription, {
     className: "text-center"
-  }, "Please provide some additional information to complete your profile")), /*#__PURE__*/React.createElement(CardContent, null, /*#__PURE__*/React.createElement("form", {
+  }, "Please provide some additional information to complete your profile")), React.createElement(CardContent, null, React.createElement("form", {
     onSubmit: handleSubmit,
     className: "space-y-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "email"
-  }, "Email"), /*#__PURE__*/React.createElement(Input, {
+  }, "Email"), React.createElement(Input, {
     id: "email",
     type: "email",
     value: userEmail,
     disabled: true,
     className: "bg-muted"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "space-y-2"
-  }, /*#__PURE__*/React.createElement(Label, {
+  }, React.createElement(Label, {
     htmlFor: "phone"
-  }, "Phone Number *"), /*#__PURE__*/React.createElement(Input, {
+  }, "Phone Number *"), React.createElement(Input, {
     id: "phone",
     type: "tel",
     placeholder: "+91 9876543210",
     value: phone,
     onChange: e => setPhone(e.target.value),
     required: true
-  })), /*#__PURE__*/React.createElement(CityInput, {
+  })), React.createElement(CityInput, {
     value: city,
     onChange: setCity,
     placeholder: "Enter your city",
     required: true,
     label: "City"
-  }), /*#__PURE__*/React.createElement(Button, {
+  }), React.createElement(Button, {
     type: "submit",
     className: "w-full",
     disabled: isLoading || !city || !phone
-  }, isLoading ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Spinner, {
+  }, isLoading ? React.createElement(React.Fragment, null, React.createElement(Spinner, {
     className: "mr-2 h-4 w-4"
   }), "Updating...") : "Complete Profile")))));
 }

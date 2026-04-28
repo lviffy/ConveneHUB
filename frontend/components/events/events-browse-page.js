@@ -112,19 +112,19 @@ export default function EventsBrowsePage() {
 
   // Loading state
   if (isLoading) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "min-h-[80vh] flex items-center justify-center"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-center"
-    }, /*#__PURE__*/React.createElement(Spinner, {
+    }, React.createElement(Spinner, {
       className: "w-10 h-10 text-[#195ADC] mx-auto"
-    }), /*#__PURE__*/React.createElement("p", {
+    }), React.createElement("p", {
       className: "text-gray-500 mt-4 text-sm font-medium"
     }, "Loading experiences...")));
   }
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "min-h-screen bg-white relative"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "fixed inset-0 z-0 pointer-events-none",
     style: {
       backgroundImage: `
@@ -135,9 +135,9 @@ export default function EventsBrowsePage() {
       WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, transparent 40%, #000 100%)",
       maskImage: "linear-gradient(to bottom, transparent 0%, transparent 40%, #000 100%)"
     }
-  }), /*#__PURE__*/React.createElement("main", {
+  }), React.createElement("main", {
     className: "relative z-10 px-6 lg:px-10 xl:px-16 py-6 sm:py-8"
-  }, /*#__PURE__*/React.createElement(motion.div, {
+  }, React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: 20
@@ -151,51 +151,51 @@ export default function EventsBrowsePage() {
       duration: 0.5
     },
     className: "mb-6"
-  }, /*#__PURE__*/React.createElement(Card, {
+  }, React.createElement(Card, {
     className: "border-gray-200 shadow-sm"
-  }, /*#__PURE__*/React.createElement(CardContent, {
+  }, React.createElement(CardContent, {
     className: "p-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex flex-col sm:flex-row gap-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex-1 relative"
-  }, /*#__PURE__*/React.createElement(Search, {
+  }, React.createElement(Search, {
     className: "absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-  }), /*#__PURE__*/React.createElement("input", {
+  }), React.createElement("input", {
     type: "text",
     placeholder: "Search events, venues, or cities...",
     value: searchQuery,
     onChange: e => setSearchQuery(e.target.value),
     className: "w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#195ADC]/20 focus:border-[#195ADC] transition-all"
-  }), searchQuery && /*#__PURE__*/React.createElement("button", {
+  }), searchQuery && React.createElement("button", {
     onClick: () => setSearchQuery(""),
     className: "absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-all"
-  }, /*#__PURE__*/React.createElement(X, {
+  }, React.createElement(X, {
     className: "w-4 h-4"
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), React.createElement("div", {
     className: "flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement("button", {
+  }, React.createElement("button", {
     onClick: () => setShowMobileFilters(!showMobileFilters),
     className: "lg:hidden flex items-center gap-2 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium text-gray-700 transition-all"
-  }, /*#__PURE__*/React.createElement(SlidersHorizontal, {
+  }, React.createElement(SlidersHorizontal, {
     className: "w-4 h-4"
-  }), "Filters", hasActiveFilters && /*#__PURE__*/React.createElement("span", {
+  }), "Filters", hasActiveFilters && React.createElement("span", {
     className: "w-2 h-2 rounded-full bg-[#195ADC]"
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: "flex items-center p-1 bg-gray-100 rounded-lg"
-  }, /*#__PURE__*/React.createElement("button", {
+  }, React.createElement("button", {
     onClick: () => setViewMode("grid"),
     className: cn("p-2.5 rounded-md transition-all", viewMode === "grid" ? "bg-white shadow-sm text-[#195ADC]" : "text-gray-400 hover:text-gray-600")
-  }, /*#__PURE__*/React.createElement(Grid3X3, {
+  }, React.createElement(Grid3X3, {
     className: "w-4 h-4"
-  })), /*#__PURE__*/React.createElement("button", {
+  })), React.createElement("button", {
     onClick: () => setViewMode("list"),
     className: cn("p-2.5 rounded-md transition-all", viewMode === "list" ? "bg-white shadow-sm text-[#195ADC]" : "text-gray-400 hover:text-gray-600")
-  }, /*#__PURE__*/React.createElement(LayoutList, {
+  }, React.createElement(LayoutList, {
     className: "w-4 h-4"
-  })))))))), /*#__PURE__*/React.createElement("div", {
+  })))))))), React.createElement("div", {
     className: "flex gap-8"
-  }, /*#__PURE__*/React.createElement(motion.aside, {
+  }, React.createElement(motion.aside, {
     initial: {
       opacity: 0,
       x: -20
@@ -209,44 +209,44 @@ export default function EventsBrowsePage() {
       duration: 0.5
     },
     className: "hidden lg:block w-72 flex-shrink-0"
-  }, /*#__PURE__*/React.createElement(Card, {
+  }, React.createElement(Card, {
     className: "border-gray-200 shadow-sm sticky top-24"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "border-b border-gray-100 bg-gray-50/50 px-5 py-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(Filter, {
+  }, React.createElement(Filter, {
     className: "w-4 h-4 text-[#195ADC]"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "font-semibold text-gray-900"
-  }, "Filters")), hasActiveFilters && /*#__PURE__*/React.createElement("button", {
+  }, "Filters")), hasActiveFilters && React.createElement("button", {
     onClick: clearFilters,
     className: "text-sm text-[#195ADC] hover:text-[#195ADC]/80 font-medium transition-colors"
-  }, "Clear all"))), /*#__PURE__*/React.createElement(CardContent, {
+  }, "Clear all"))), React.createElement(CardContent, {
     className: "p-5 space-y-6"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", null, React.createElement("div", {
     className: "flex items-center gap-2 mb-3"
-  }, /*#__PURE__*/React.createElement(MapPin, {
+  }, React.createElement(MapPin, {
     className: "w-4 h-4 text-gray-400"
-  }), /*#__PURE__*/React.createElement("h4", {
+  }), React.createElement("h4", {
     className: "font-medium text-gray-700 text-sm"
-  }, "Location")), /*#__PURE__*/React.createElement("div", {
+  }, "Location")), React.createElement("div", {
     className: "space-y-1"
-  }, cities.map(city => /*#__PURE__*/React.createElement("button", {
+  }, cities.map(city => React.createElement("button", {
     key: city,
     onClick: () => setSelectedCity(city),
     className: cn("w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all", selectedCity === city ? "bg-[#195ADC] text-white" : "text-gray-600 hover:bg-gray-100")
-  }, city)))), /*#__PURE__*/React.createElement("div", {
+  }, city)))), React.createElement("div", {
     className: "pt-4 border-t border-gray-100"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-2 mb-3"
-  }, /*#__PURE__*/React.createElement(Ticket, {
+  }, React.createElement(Ticket, {
     className: "w-4 h-4 text-gray-400"
-  }), /*#__PURE__*/React.createElement("h4", {
+  }), React.createElement("h4", {
     className: "font-medium text-gray-700 text-sm"
-  }, "Price")), /*#__PURE__*/React.createElement("div", {
+  }, "Price")), React.createElement("div", {
     className: "space-y-1"
   }, [{
     value: "all",
@@ -257,19 +257,19 @@ export default function EventsBrowsePage() {
   }, {
     value: "paid",
     label: "Paid Events"
-  }].map(option => /*#__PURE__*/React.createElement("button", {
+  }].map(option => React.createElement("button", {
     key: option.value,
     onClick: () => setPriceFilter(option.value),
     className: cn("w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all", priceFilter === option.value ? "bg-[#195ADC] text-white" : "text-gray-600 hover:bg-gray-100")
-  }, option.label)))), /*#__PURE__*/React.createElement("div", {
+  }, option.label)))), React.createElement("div", {
     className: "pt-4 border-t border-gray-100"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-2 mb-3"
-  }, /*#__PURE__*/React.createElement(Users, {
+  }, React.createElement(Users, {
     className: "w-4 h-4 text-gray-400"
-  }), /*#__PURE__*/React.createElement("h4", {
+  }), React.createElement("h4", {
     className: "font-medium text-gray-700 text-sm"
-  }, "Availability")), /*#__PURE__*/React.createElement("div", {
+  }, "Availability")), React.createElement("div", {
     className: "space-y-1"
   }, [{
     value: "all",
@@ -280,11 +280,11 @@ export default function EventsBrowsePage() {
   }, {
     value: "limited",
     label: "Limited Spots"
-  }].map(option => /*#__PURE__*/React.createElement("button", {
+  }].map(option => React.createElement("button", {
     key: option.value,
     onClick: () => setAvailabilityFilter(option.value),
     className: cn("w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all", availabilityFilter === option.value ? "bg-[#195ADC] text-white" : "text-gray-600 hover:bg-gray-100")
-  }, option.label))))))), /*#__PURE__*/React.createElement(AnimatePresence, null, showMobileFilters && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(motion.div, {
+  }, option.label))))))), React.createElement(AnimatePresence, null, showMobileFilters && React.createElement(React.Fragment, null, React.createElement(motion.div, {
     initial: {
       opacity: 0
     },
@@ -296,7 +296,7 @@ export default function EventsBrowsePage() {
     },
     onClick: () => setShowMobileFilters(false),
     className: "fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
-  }), /*#__PURE__*/React.createElement(motion.div, {
+  }), React.createElement(motion.div, {
     initial: {
       x: "100%"
     },
@@ -312,36 +312,36 @@ export default function EventsBrowsePage() {
       stiffness: 300
     },
     className: "fixed right-0 top-0 bottom-0 w-[320px] bg-white z-50 lg:hidden overflow-y-auto shadow-2xl"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "border-b border-gray-100 bg-gray-50/50 px-6 py-4"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement(Filter, {
+  }, React.createElement(Filter, {
     className: "w-4 h-4 text-[#195ADC]"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), React.createElement("span", {
     className: "font-semibold text-gray-900"
-  }, "Filters")), /*#__PURE__*/React.createElement("button", {
+  }, "Filters")), React.createElement("button", {
     onClick: () => setShowMobileFilters(false),
     className: "p-2 rounded-full hover:bg-gray-100 transition-colors"
-  }, /*#__PURE__*/React.createElement(X, {
+  }, React.createElement(X, {
     className: "w-5 h-5 text-gray-500"
-  })))), /*#__PURE__*/React.createElement("div", {
+  })))), React.createElement("div", {
     className: "p-6 space-y-6"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", {
+  }, React.createElement("div", null, React.createElement("h4", {
     className: "font-medium text-gray-700 text-sm mb-3"
-  }, "Location"), /*#__PURE__*/React.createElement("div", {
+  }, "Location"), React.createElement("div", {
     className: "space-y-1"
-  }, cities.map(city => /*#__PURE__*/React.createElement("button", {
+  }, cities.map(city => React.createElement("button", {
     key: city,
     onClick: () => setSelectedCity(city),
     className: cn("w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all", selectedCity === city ? "bg-[#195ADC] text-white" : "text-gray-600 hover:bg-gray-100")
-  }, city)))), /*#__PURE__*/React.createElement("div", {
+  }, city)))), React.createElement("div", {
     className: "pt-4 border-t border-gray-100"
-  }, /*#__PURE__*/React.createElement("h4", {
+  }, React.createElement("h4", {
     className: "font-medium text-gray-700 text-sm mb-3"
-  }, "Price"), /*#__PURE__*/React.createElement("div", {
+  }, "Price"), React.createElement("div", {
     className: "space-y-1"
   }, [{
     value: "all",
@@ -352,16 +352,16 @@ export default function EventsBrowsePage() {
   }, {
     value: "paid",
     label: "Paid Events"
-  }].map(option => /*#__PURE__*/React.createElement("button", {
+  }].map(option => React.createElement("button", {
     key: option.value,
     onClick: () => setPriceFilter(option.value),
     className: cn("w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all", priceFilter === option.value ? "bg-[#195ADC] text-white" : "text-gray-600 hover:bg-gray-100")
-  }, option.label)))), /*#__PURE__*/React.createElement("div", {
+  }, option.label)))), React.createElement("div", {
     className: "pt-4 border-t border-gray-100"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, React.createElement(Button, {
     onClick: () => setShowMobileFilters(false),
     className: "w-full bg-[#195ADC] hover:bg-[#195ADC]/90 text-white rounded-xl h-12 font-medium"
-  }, "Apply Filters")))))), /*#__PURE__*/React.createElement(motion.div, {
+  }, "Apply Filters")))))), React.createElement(motion.div, {
     initial: {
       opacity: 0,
       y: 20
@@ -375,59 +375,59 @@ export default function EventsBrowsePage() {
       duration: 0.5
     },
     className: "flex-1 min-w-0"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between mb-6"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center gap-3"
-  }, /*#__PURE__*/React.createElement(Calendar, {
+  }, React.createElement(Calendar, {
     className: "w-5 h-5 text-[#195ADC]"
-  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+  }), React.createElement("div", null, React.createElement("h2", {
     className: "font-semibold text-gray-900"
-  }, "Upcoming Events"), /*#__PURE__*/React.createElement("p", {
+  }, "Upcoming Events"), React.createElement("p", {
     className: "text-sm text-gray-500"
-  }, filteredEvents.length, " ", filteredEvents.length === 1 ? "event" : "events", " found"))), hasActiveFilters && /*#__PURE__*/React.createElement("div", {
+  }, filteredEvents.length, " ", filteredEvents.length === 1 ? "event" : "events", " found"))), hasActiveFilters && React.createElement("div", {
     className: "hidden md:flex items-center gap-2"
-  }, selectedCity !== "All" && /*#__PURE__*/React.createElement("span", {
+  }, selectedCity !== "All" && React.createElement("span", {
     className: "inline-flex items-center gap-2 px-3 py-1.5 bg-[#195ADC]/10 text-[#195ADC] text-sm font-medium rounded-full"
-  }, /*#__PURE__*/React.createElement(MapPin, {
+  }, React.createElement(MapPin, {
     className: "w-3.5 h-3.5"
-  }), selectedCity, /*#__PURE__*/React.createElement("button", {
+  }), selectedCity, React.createElement("button", {
     onClick: () => setSelectedCity("All"),
     className: "hover:text-[#195ADC]/70"
-  }, /*#__PURE__*/React.createElement(X, {
+  }, React.createElement(X, {
     className: "w-3.5 h-3.5"
-  }))), priceFilter !== "all" && /*#__PURE__*/React.createElement("span", {
+  }))), priceFilter !== "all" && React.createElement("span", {
     className: "inline-flex items-center gap-2 px-3 py-1.5 bg-[#195ADC]/10 text-[#195ADC] text-sm font-medium rounded-full"
-  }, /*#__PURE__*/React.createElement(Ticket, {
+  }, React.createElement(Ticket, {
     className: "w-3.5 h-3.5"
-  }), priceFilter === "free" ? "Free" : "Paid", /*#__PURE__*/React.createElement("button", {
+  }), priceFilter === "free" ? "Free" : "Paid", React.createElement("button", {
     onClick: () => setPriceFilter("all"),
     className: "hover:text-[#195ADC]/70"
-  }, /*#__PURE__*/React.createElement(X, {
+  }, React.createElement(X, {
     className: "w-3.5 h-3.5"
-  }))))), filteredEvents.length === 0 ? /*#__PURE__*/React.createElement(Card, {
+  }))))), filteredEvents.length === 0 ? React.createElement(Card, {
     className: "border-gray-200 shadow-sm"
-  }, /*#__PURE__*/React.createElement(CardContent, {
+  }, React.createElement(CardContent, {
     className: "py-16 text-center"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#195ADC]/10 mb-4"
-  }, /*#__PURE__*/React.createElement(Calendar, {
+  }, React.createElement(Calendar, {
     className: "w-8 h-8 text-[#195ADC]"
-  })), /*#__PURE__*/React.createElement("h3", {
+  })), React.createElement("h3", {
     className: "text-lg font-semibold text-gray-900 mb-2"
-  }, "No events found"), /*#__PURE__*/React.createElement("p", {
+  }, "No events found"), React.createElement("p", {
     className: "text-gray-500 max-w-sm mx-auto mb-6"
-  }, "Try adjusting your filters or search to find what you're looking for"), /*#__PURE__*/React.createElement(Button, {
+  }, "Try adjusting your filters or search to find what you're looking for"), React.createElement(Button, {
     onClick: clearFilters,
     variant: "outline",
     className: "border-[#195ADC] text-[#195ADC] hover:bg-[#195ADC]/5"
-  }, "Clear Filters"))) : /*#__PURE__*/React.createElement("div", {
+  }, "Clear Filters"))) : React.createElement("div", {
     className: cn(viewMode === "grid" ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4" : "space-y-3")
   }, filteredEvents.map((event, index) => {
     const isSoldOut = event.remaining === 0;
     const eventDate = new Date(event.date_time);
     const fillPercentage = (event.capacity - event.remaining) / event.capacity * 100;
-    return viewMode === "grid" ? /*#__PURE__*/React.createElement(motion.div, {
+    return viewMode === "grid" ? React.createElement(motion.div, {
       key: event.event_id,
       initial: {
         opacity: 0,
@@ -441,64 +441,64 @@ export default function EventsBrowsePage() {
         duration: 0.3,
         delay: index * 0.05
       }
-    }, /*#__PURE__*/React.createElement(Card, {
+    }, React.createElement(Card, {
       onClick: () => router.push(`/events/${event.event_id}`),
       className: cn("group cursor-pointer border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden", isSoldOut && "opacity-60")
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "relative aspect-video bg-gray-100 overflow-hidden"
-    }, event.event_image ? /*#__PURE__*/React.createElement(Image, {
+    }, event.event_image ? React.createElement(Image, {
       src: event.event_image,
       alt: event.title,
       fill: true,
       className: "object-cover group-hover:scale-105 transition-transform duration-500"
-    }) : /*#__PURE__*/React.createElement("div", {
+    }) : React.createElement("div", {
       className: "w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100"
-    }, /*#__PURE__*/React.createElement(Calendar, {
+    }, React.createElement(Calendar, {
       className: "w-12 h-12 text-gray-300"
-    })), isSoldOut && /*#__PURE__*/React.createElement("div", {
+    })), isSoldOut && React.createElement("div", {
       className: "absolute top-3 left-3"
-    }, /*#__PURE__*/React.createElement("span", {
+    }, React.createElement("span", {
       className: "px-3 py-1.5 rounded-full text-xs font-semibold bg-red-500 text-white"
-    }, "Sold Out")), !isSoldOut && event.remaining <= 10 && /*#__PURE__*/React.createElement("div", {
+    }, "Sold Out")), !isSoldOut && event.remaining <= 10 && React.createElement("div", {
       className: "absolute top-3 left-3"
-    }, /*#__PURE__*/React.createElement("span", {
+    }, React.createElement("span", {
       className: "px-3 py-1.5 rounded-full text-xs font-semibold bg-orange-500 text-white flex items-center gap-1"
-    }, /*#__PURE__*/React.createElement(Sparkles, {
+    }, React.createElement(Sparkles, {
       className: "w-3 h-3"
-    }), event.remaining, " left"))), /*#__PURE__*/React.createElement(CardContent, {
+    }), event.remaining, " left"))), React.createElement(CardContent, {
       className: "p-4"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "flex items-start justify-between gap-3 mb-3"
-    }, /*#__PURE__*/React.createElement("h3", {
+    }, React.createElement("h3", {
       className: "font-semibold text-gray-900 line-clamp-1 group-hover:text-[#195ADC] transition-colors"
-    }, event.title), /*#__PURE__*/React.createElement("span", {
+    }, event.title), React.createElement("span", {
       className: cn("text-sm font-bold flex-shrink-0", event.ticket_price === 0 ? "text-green-600" : "text-gray-900")
-    }, event.ticket_price === 0 ? "FREE" : `₹${event.ticket_price.toLocaleString()}`)), /*#__PURE__*/React.createElement("div", {
+    }, event.ticket_price === 0 ? "FREE" : `₹${event.ticket_price.toLocaleString()}`)), React.createElement("div", {
       className: "space-y-2 mb-4"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "flex items-center gap-2 text-sm text-gray-500"
-    }, /*#__PURE__*/React.createElement(Calendar, {
+    }, React.createElement(Calendar, {
       className: "w-4 h-4 text-gray-400 flex-shrink-0"
-    }), /*#__PURE__*/React.createElement("span", null, eventDate.toLocaleDateString("en-US", {
+    }), React.createElement("span", null, eventDate.toLocaleDateString("en-US", {
       weekday: "short",
       month: "short",
       day: "numeric"
-    })), /*#__PURE__*/React.createElement("span", {
+    })), React.createElement("span", {
       className: "text-gray-300"
-    }, "\u2022"), /*#__PURE__*/React.createElement("span", null, eventDate.toLocaleTimeString("en-US", {
+    }, "\u2022"), React.createElement("span", null, eventDate.toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "2-digit"
-    }))), /*#__PURE__*/React.createElement("div", {
+    }))), React.createElement("div", {
       className: "flex items-center gap-2 text-sm text-gray-500"
-    }, /*#__PURE__*/React.createElement(MapPin, {
+    }, React.createElement(MapPin, {
       className: "w-4 h-4 text-gray-400 flex-shrink-0"
-    }), /*#__PURE__*/React.createElement("span", {
+    }), React.createElement("span", {
       className: "truncate"
-    }, event.venue_name, ", ", event.city))), /*#__PURE__*/React.createElement("div", {
+    }, event.venue_name, ", ", event.city))), React.createElement("div", {
       className: "flex items-center gap-3"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden"
-    }, /*#__PURE__*/React.createElement(motion.div, {
+    }, React.createElement(motion.div, {
       initial: {
         width: 0
       },
@@ -510,10 +510,10 @@ export default function EventsBrowsePage() {
         delay: 0.2
       },
       className: cn("h-full rounded-full", fillPercentage >= 90 ? "bg-red-500" : fillPercentage >= 70 ? "bg-orange-500" : "bg-[#195ADC]")
-    })), /*#__PURE__*/React.createElement("span", {
+    })), React.createElement("span", {
       className: "text-xs font-medium text-gray-400 tabular-nums whitespace-nowrap"
-    }, event.remaining, " left"))))) /*#__PURE__*/ :
-    /*#__PURE__*/
+    }, event.remaining, " left")))))  :
+    
     // List View
     React.createElement(motion.div, {
       key: event.event_id,
@@ -529,55 +529,55 @@ export default function EventsBrowsePage() {
         duration: 0.3,
         delay: index * 0.05
       }
-    }, /*#__PURE__*/React.createElement(Card, {
+    }, React.createElement(Card, {
       onClick: () => router.push(`/events/${event.event_id}`),
       className: cn("group cursor-pointer border-gray-200 shadow-sm hover:shadow-md hover:border-[#195ADC]/30 transition-all duration-300", isSoldOut && "opacity-60")
-    }, /*#__PURE__*/React.createElement(CardContent, {
+    }, React.createElement(CardContent, {
       className: "p-4 flex gap-4"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "relative aspect-video w-36 sm:w-48 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100"
-    }, event.event_image ? /*#__PURE__*/React.createElement(Image, {
+    }, event.event_image ? React.createElement(Image, {
       src: event.event_image,
       alt: event.title,
       fill: true,
       className: "object-cover group-hover:scale-105 transition-transform duration-500"
-    }) : /*#__PURE__*/React.createElement("div", {
+    }) : React.createElement("div", {
       className: "w-full h-full flex items-center justify-center"
-    }, /*#__PURE__*/React.createElement(Calendar, {
+    }, React.createElement(Calendar, {
       className: "w-8 h-8 text-gray-300"
-    }))), /*#__PURE__*/React.createElement("div", {
+    }))), React.createElement("div", {
       className: "flex-1 min-w-0 flex flex-col justify-between"
-    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
+    }, React.createElement("div", null, React.createElement("h3", {
       className: "font-semibold text-gray-900 mb-1 group-hover:text-[#195ADC] transition-colors line-clamp-1"
-    }, event.title), /*#__PURE__*/React.createElement("div", {
+    }, event.title), React.createElement("div", {
       className: "flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500"
-    }, /*#__PURE__*/React.createElement("span", {
+    }, React.createElement("span", {
       className: "flex items-center gap-1"
-    }, /*#__PURE__*/React.createElement(Calendar, {
+    }, React.createElement(Calendar, {
       className: "w-3.5 h-3.5"
     }), eventDate.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric"
-    })), /*#__PURE__*/React.createElement("span", {
+    })), React.createElement("span", {
       className: "flex items-center gap-1"
-    }, /*#__PURE__*/React.createElement(Clock, {
+    }, React.createElement(Clock, {
       className: "w-3.5 h-3.5"
     }), eventDate.toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "2-digit"
-    })), /*#__PURE__*/React.createElement("span", {
+    })), React.createElement("span", {
       className: "flex items-center gap-1"
-    }, /*#__PURE__*/React.createElement(MapPin, {
+    }, React.createElement(MapPin, {
       className: "w-3.5 h-3.5"
-    }), event.city))), /*#__PURE__*/React.createElement("div", {
+    }), event.city))), React.createElement("div", {
       className: "flex items-center justify-between mt-2"
-    }, /*#__PURE__*/React.createElement("span", {
+    }, React.createElement("span", {
       className: cn("text-lg font-bold", event.ticket_price === 0 ? "text-green-600" : "text-gray-900")
-    }, event.ticket_price === 0 ? "FREE" : `₹${event.ticket_price.toLocaleString()}`), /*#__PURE__*/React.createElement("span", {
+    }, event.ticket_price === 0 ? "FREE" : `₹${event.ticket_price.toLocaleString()}`), React.createElement("span", {
       className: "text-sm text-gray-400"
-    }, event.remaining, " spots left"))), /*#__PURE__*/React.createElement("div", {
+    }, event.remaining, " spots left"))), React.createElement("div", {
       className: "hidden sm:flex items-center"
-    }, /*#__PURE__*/React.createElement(ArrowRight, {
+    }, React.createElement(ArrowRight, {
       className: "w-5 h-5 text-gray-300 group-hover:text-[#195ADC] group-hover:translate-x-1 transition-all"
     })))));
   }))))));

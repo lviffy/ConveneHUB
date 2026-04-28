@@ -28,13 +28,13 @@ export function TimelineContent({
     }
   };
   const variants = customVariants || defaultVariants;
-  return /*#__PURE__*/React.createElement(motion.div, {
+  return React.createElement(motion.div, {
     custom: animationNum,
     initial: "hidden",
     animate: isInView ? "visible" : "hidden",
     variants: variants,
     className: className
-  }, Component === "div" ? children : /*#__PURE__*/React.createElement(Component, {
+  }, Component === "div" ? children : React.createElement(Component, {
     className: className
   }, children));
 }

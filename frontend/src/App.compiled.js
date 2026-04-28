@@ -61,94 +61,94 @@ function EventDetailsRoute() {
   var _useParams = (0, _reactRouterDom.useParams)();
   var id = _useParams.id;
   if (!id) {
-    return /*#__PURE__*/React.createElement(_appNotFound2["default"], null);
+    return React.createElement(_appNotFound2["default"], null);
   }
-  return /*#__PURE__*/React.createElement(_componentsEventsEventBookingPage2["default"], {
+  return React.createElement(_componentsEventsEventBookingPage2["default"], {
     eventId: id
   });
 }
 function App() {
-  return /*#__PURE__*/React.createElement(_appClientLayout2["default"], null, /*#__PURE__*/React.createElement(_reactRouterDom.Routes, null, /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+  return React.createElement(_appClientLayout2["default"], null, React.createElement(_reactRouterDom.Routes, null, React.createElement(_reactRouterDom.Route, {
     path: "/",
-    element: /*#__PURE__*/React.createElement(_appPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/events",
-    element: /*#__PURE__*/React.createElement(_appEventsPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appEventsPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/events/:id",
-    element: /*#__PURE__*/React.createElement(EventDetailsRoute, null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(EventDetailsRoute, null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/login",
-    element: /*#__PURE__*/React.createElement(_appLoginPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appLoginPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/bookings",
-    element: /*#__PURE__*/React.createElement(_appBookingsPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appBookingsPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/complete-profile",
-    element: /*#__PURE__*/React.createElement(_appCompleteProfilePage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appCompleteProfilePage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/forgot-password",
-    element: /*#__PURE__*/React.createElement(_appForgotPasswordPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appForgotPasswordPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/reset-password",
-    element: /*#__PURE__*/React.createElement(_appResetPasswordPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appResetPasswordPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/organizer-login",
-    element: /*#__PURE__*/React.createElement(_appOrganizerLoginPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appOrganizerLoginPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/organizer-forgot-password",
-    element: /*#__PURE__*/React.createElement(_appOrganizerForgotPasswordPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appOrganizerForgotPasswordPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/organizer",
-    element: /*#__PURE__*/React.createElement(_srcPagesOrganizerTeamPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_srcPagesOrganizerTeamPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/promoter",
-    element: /*#__PURE__*/React.createElement(_srcPagesPromoterPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_srcPagesPromoterPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/movie-team-login",
-    element: /*#__PURE__*/React.createElement(_appOrganizerLoginPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appOrganizerLoginPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/movie-team-forgot-password",
-    element: /*#__PURE__*/React.createElement(_appOrganizerForgotPasswordPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appOrganizerForgotPasswordPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/movie-team",
-    element: /*#__PURE__*/React.createElement(_srcPagesOrganizerTeamPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_srcPagesOrganizerTeamPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/admin",
-    element: /*#__PURE__*/React.createElement(_srcPagesAdminPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_srcPagesAdminPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/admin/users",
-    element: /*#__PURE__*/React.createElement(_appAdminUsersPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appAdminUsersPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/admin/events/edit",
-    element: /*#__PURE__*/React.createElement(_appAdminEventsEditPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appAdminEventsEditPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/admin/assignments",
-    element: /*#__PURE__*/React.createElement(_reactRouterDom.Navigate, {
+    element: React.createElement(_reactRouterDom.Navigate, {
       to: "/admin?tab=events",
       replace: true
     })
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/contact",
-    element: /*#__PURE__*/React.createElement(_appContactPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appContactPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/privacy",
-    element: /*#__PURE__*/React.createElement(_appPrivacyPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appPrivacyPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/refund",
-    element: /*#__PURE__*/React.createElement(_appRefundPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appRefundPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/terms",
-    element: /*#__PURE__*/React.createElement(_appTermsPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appTermsPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/auth/callback",
-    element: /*#__PURE__*/React.createElement(_appAuthCallbackPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appAuthCallbackPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "/auth/error",
-    element: /*#__PURE__*/React.createElement(_appAuthErrorPage2["default"], null)
-  }), /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+    element: React.createElement(_appAuthErrorPage2["default"], null)
+  }), React.createElement(_reactRouterDom.Route, {
     path: "*",
-    element: /*#__PURE__*/React.createElement(_appNotFound2["default"], null)
-  })), /*#__PURE__*/React.createElement(_componentsUiToaster.Toaster, null));
+    element: React.createElement(_appNotFound2["default"], null)
+  })), React.createElement(_componentsUiToaster.Toaster, null));
 }
 module.exports = exports["default"];

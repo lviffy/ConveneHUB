@@ -15,17 +15,17 @@ export function Toaster() {
   const {
     toasts
   } = useToast();
-  return /*#__PURE__*/React.createElement(ToastProvider, null, toasts.map(function ({
+  return React.createElement(ToastProvider, null, toasts.map(function ({
     id,
     title,
     description,
     action,
     ...props
   }) {
-    return /*#__PURE__*/React.createElement(Toast, _extends({
+    return React.createElement(Toast, _extends({
       key: id
-    }, props), /*#__PURE__*/React.createElement("div", {
+    }, props), React.createElement("div", {
       className: "grid gap-1"
-    }, title && /*#__PURE__*/React.createElement(ToastTitle, null, title), description && /*#__PURE__*/React.createElement(ToastDescription, null, description)), action, /*#__PURE__*/React.createElement(ToastClose, null));
-  }), /*#__PURE__*/React.createElement(ToastViewport, null));
+    }, title && React.createElement(ToastTitle, null, title), description && React.createElement(ToastDescription, null, description)), action, React.createElement(ToastClose, null));
+  }), React.createElement(ToastViewport, null));
 }

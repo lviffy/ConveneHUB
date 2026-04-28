@@ -152,125 +152,125 @@ export default function PromoterPage() {
     }
   };
   if (loading) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "min-h-screen flex items-center justify-center"
-    }, /*#__PURE__*/React.createElement(Spinner, {
+    }, React.createElement(Spinner, {
       className: "w-8 h-8"
     }));
   }
   if (accessDenied) {
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       className: "min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-red-100"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-center p-8 bg-white rounded-lg shadow-xl max-w-md"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "text-6xl mb-4"
-    }, "\uD83D\uDEAB"), /*#__PURE__*/React.createElement("h1", {
+    }, "\uD83D\uDEAB"), React.createElement("h1", {
       className: "text-3xl font-bold text-red-600 mb-2"
-    }, "Access Denied"), /*#__PURE__*/React.createElement("p", {
+    }, "Access Denied"), React.createElement("p", {
       className: "text-gray-600 mb-4"
     }, "You do not have permission to access the promoter dashboard.")));
   }
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     className: "min-h-screen bg-gradient-to-b from-slate-50 to-white p-4 md:p-8"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "max-w-6xl mx-auto space-y-6"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "flex items-center justify-between gap-4"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", {
+  }, React.createElement("div", null, React.createElement("h1", {
     className: "text-2xl md:text-3xl font-bold text-slate-900"
-  }, "Promoter Dashboard"), /*#__PURE__*/React.createElement("p", {
+  }, "Promoter Dashboard"), React.createElement("p", {
     className: "text-slate-600"
-  }, "Create referral links and track your performance.")), /*#__PURE__*/React.createElement(Button, {
+  }, "Create referral links and track your performance.")), React.createElement(Button, {
     variant: "outline",
     onClick: () => void loadDashboardData(true),
     disabled: refreshing
-  }, /*#__PURE__*/React.createElement(RefreshCcw, {
+  }, React.createElement(RefreshCcw, {
     className: "w-4 h-4 mr-2"
-  }), refreshing ? "Refreshing..." : "Refresh")), /*#__PURE__*/React.createElement("div", {
+  }), refreshing ? "Refreshing..." : "Refresh")), React.createElement("div", {
     className: "grid grid-cols-1 md:grid-cols-3 gap-4"
-  }, /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(CardHeader, {
+  }, React.createElement(Card, null, React.createElement(CardHeader, {
     className: "pb-2"
-  }, /*#__PURE__*/React.createElement(CardDescription, null, "Total Bookings"), /*#__PURE__*/React.createElement(CardTitle, null, performance?.totalBookings ?? 0))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(CardHeader, {
+  }, React.createElement(CardDescription, null, "Total Bookings"), React.createElement(CardTitle, null, performance?.totalBookings ?? 0))), React.createElement(Card, null, React.createElement(CardHeader, {
     className: "pb-2"
-  }, /*#__PURE__*/React.createElement(CardDescription, null, "Total Tickets"), /*#__PURE__*/React.createElement(CardTitle, null, performance?.totalTickets ?? 0))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(CardHeader, {
+  }, React.createElement(CardDescription, null, "Total Tickets"), React.createElement(CardTitle, null, performance?.totalTickets ?? 0))), React.createElement(Card, null, React.createElement(CardHeader, {
     className: "pb-2"
-  }, /*#__PURE__*/React.createElement(CardDescription, null, "Total Revenue"), /*#__PURE__*/React.createElement(CardTitle, null, formatMoney(performance?.totalRevenue ?? 0))))), /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(CardDescription, null, "Total Revenue"), React.createElement(CardTitle, null, formatMoney(performance?.totalRevenue ?? 0))))), React.createElement("div", {
     className: "grid grid-cols-1 md:grid-cols-3 gap-4"
-  }, /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(CardHeader, {
+  }, React.createElement(Card, null, React.createElement(CardHeader, {
     className: "pb-2"
-  }, /*#__PURE__*/React.createElement(CardDescription, null, "Total Commission"), /*#__PURE__*/React.createElement(CardTitle, null, formatMoney(totals?.total ?? 0)))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(CardHeader, {
+  }, React.createElement(CardDescription, null, "Total Commission"), React.createElement(CardTitle, null, formatMoney(totals?.total ?? 0)))), React.createElement(Card, null, React.createElement(CardHeader, {
     className: "pb-2"
-  }, /*#__PURE__*/React.createElement(CardDescription, null, "Pending Commission"), /*#__PURE__*/React.createElement(CardTitle, null, formatMoney(totals?.pending ?? 0)))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(CardHeader, {
+  }, React.createElement(CardDescription, null, "Pending Commission"), React.createElement(CardTitle, null, formatMoney(totals?.pending ?? 0)))), React.createElement(Card, null, React.createElement(CardHeader, {
     className: "pb-2"
-  }, /*#__PURE__*/React.createElement(CardDescription, null, "Paid Commission"), /*#__PURE__*/React.createElement(CardTitle, null, formatMoney(totals?.paid ?? 0))))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(CardHeader, null, /*#__PURE__*/React.createElement(CardTitle, null, "Create Referral Link"), /*#__PURE__*/React.createElement(CardDescription, null, "Choose a published event and generate your shareable link.")), /*#__PURE__*/React.createElement(CardContent, {
+  }, React.createElement(CardDescription, null, "Paid Commission"), React.createElement(CardTitle, null, formatMoney(totals?.paid ?? 0))))), React.createElement(Card, null, React.createElement(CardHeader, null, React.createElement(CardTitle, null, "Create Referral Link"), React.createElement(CardDescription, null, "Choose a published event and generate your shareable link.")), React.createElement(CardContent, {
     className: "flex flex-col md:flex-row gap-3 md:items-center"
-  }, /*#__PURE__*/React.createElement(Select, {
+  }, React.createElement(Select, {
     value: selectedEventId,
     onValueChange: setSelectedEventId
-  }, /*#__PURE__*/React.createElement(SelectTrigger, {
+  }, React.createElement(SelectTrigger, {
     className: "w-full md:max-w-md"
-  }, /*#__PURE__*/React.createElement(SelectValue, {
+  }, React.createElement(SelectValue, {
     placeholder: "Select an event"
-  })), /*#__PURE__*/React.createElement(SelectContent, null, events.map(event => /*#__PURE__*/React.createElement(SelectItem, {
+  })), React.createElement(SelectContent, null, events.map(event => React.createElement(SelectItem, {
     key: event.event_id,
     value: event.event_id
-  }, event.title)))), /*#__PURE__*/React.createElement(Button, {
+  }, event.title)))), React.createElement(Button, {
     onClick: createLink,
     disabled: !selectedEventId || creatingLink
-  }, /*#__PURE__*/React.createElement(Link2, {
+  }, React.createElement(Link2, {
     className: "w-4 h-4 mr-2"
-  }), creatingLink ? "Generating..." : "Generate Link"))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(CardHeader, null, /*#__PURE__*/React.createElement(CardTitle, null, "Your Referral Links"), /*#__PURE__*/React.createElement(CardDescription, null, "Clicks and conversions for each generated link.")), /*#__PURE__*/React.createElement(CardContent, null, links.length === 0 ? /*#__PURE__*/React.createElement("p", {
+  }), creatingLink ? "Generating..." : "Generate Link"))), React.createElement(Card, null, React.createElement(CardHeader, null, React.createElement(CardTitle, null, "Your Referral Links"), React.createElement(CardDescription, null, "Clicks and conversions for each generated link.")), React.createElement(CardContent, null, links.length === 0 ? React.createElement("p", {
     className: "text-sm text-slate-500"
-  }, "No links yet. Create your first referral link above.") : /*#__PURE__*/React.createElement("div", {
+  }, "No links yet. Create your first referral link above.") : React.createElement("div", {
     className: "space-y-3"
   }, links.map(link => {
     const event = events.find(item => item.event_id === link.eventId);
     const url = `/events/${link.eventId}?ref=${link.code}`;
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       key: link.id || link._id || link.code,
       className: "p-3 border rounded-lg bg-white"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "flex items-start justify-between gap-3"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, React.createElement("div", {
       className: "space-y-1"
-    }, /*#__PURE__*/React.createElement("p", {
+    }, React.createElement("p", {
       className: "font-medium text-slate-900"
-    }, event?.title || "Event"), /*#__PURE__*/React.createElement("p", {
+    }, event?.title || "Event"), React.createElement("p", {
       className: "text-sm text-slate-600 break-all"
-    }, url), /*#__PURE__*/React.createElement("div", {
+    }, url), React.createElement("div", {
       className: "flex items-center gap-2 text-xs"
-    }, /*#__PURE__*/React.createElement(Badge, {
+    }, React.createElement(Badge, {
       variant: "secondary"
-    }, "Code: ", link.code), /*#__PURE__*/React.createElement(Badge, {
+    }, "Code: ", link.code), React.createElement(Badge, {
       variant: "outline"
-    }, "Clicks: ", link.clicks || 0), /*#__PURE__*/React.createElement(Badge, {
+    }, "Clicks: ", link.clicks || 0), React.createElement(Badge, {
       variant: "outline"
-    }, "Conversions: ", link.conversions || 0))), /*#__PURE__*/React.createElement(Button, {
+    }, "Conversions: ", link.conversions || 0))), React.createElement(Button, {
       size: "sm",
       variant: "outline",
       onClick: () => void copyReferralUrl(link)
-    }, /*#__PURE__*/React.createElement(Copy, {
+    }, React.createElement(Copy, {
       className: "w-4 h-4 mr-2"
     }), "Copy")));
-  })))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(CardHeader, null, /*#__PURE__*/React.createElement(CardTitle, null, "Recent Commissions"), /*#__PURE__*/React.createElement(CardDescription, null, "Latest payouts generated from attributed bookings.")), /*#__PURE__*/React.createElement(CardContent, null, commissions.length === 0 ? /*#__PURE__*/React.createElement("p", {
+  })))), React.createElement(Card, null, React.createElement(CardHeader, null, React.createElement(CardTitle, null, "Recent Commissions"), React.createElement(CardDescription, null, "Latest payouts generated from attributed bookings.")), React.createElement(CardContent, null, commissions.length === 0 ? React.createElement("p", {
     className: "text-sm text-slate-500"
-  }, "No commissions yet.") : /*#__PURE__*/React.createElement("div", {
+  }, "No commissions yet.") : React.createElement("div", {
     className: "space-y-2"
-  }, commissions.slice(0, 10).map(entry => /*#__PURE__*/React.createElement("div", {
+  }, commissions.slice(0, 10).map(entry => React.createElement("div", {
     key: entry._id,
     className: "flex items-center justify-between py-2 border-b last:border-b-0"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: "text-sm"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "font-medium text-slate-900"
-  }, entry.referralCode), /*#__PURE__*/React.createElement("p", {
+  }, entry.referralCode), React.createElement("p", {
     className: "text-slate-500"
-  }, new Date(entry.createdAt).toLocaleString("en-IN"))), /*#__PURE__*/React.createElement("div", {
+  }, new Date(entry.createdAt).toLocaleString("en-IN"))), React.createElement("div", {
     className: "text-right"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, React.createElement("p", {
     className: "font-semibold text-slate-900"
-  }, formatMoney(entry.amount)), /*#__PURE__*/React.createElement(Badge, {
+  }, formatMoney(entry.amount)), React.createElement(Badge, {
     variant: entry.status === "paid" ? "default" : "secondary"
   }, entry.status)))))))));
 }

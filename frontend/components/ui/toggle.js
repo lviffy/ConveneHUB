@@ -30,12 +30,12 @@ const toggleVariants = cva("inline-flex items-center justify-center rounded-md t
     size: "default"
   }
 });
-const Toggle = /*#__PURE__*/React.forwardRef(({
+const Toggle = React.forwardRef(({
   className,
   variant,
   size,
   ...props
-}, ref) => /*#__PURE__*/React.createElement(TogglePrimitive.Root, _extends({
+}, ref) => React.createElement(TogglePrimitive.Root, _extends({
   ref: ref,
   className: cn(toggleVariants({
     variant,
