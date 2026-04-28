@@ -61,7 +61,7 @@ In production, frontend may call backend directly using `VITE_API_BASE_URL`.
 
 ## 3.2 Runtime Composition (Code)
 
-Backend app assembly (`backend/src/app.ts`):
+Backend app assembly (`backend/src/app.js`):
 
 ```ts
 app.use(helmet(...));
@@ -90,10 +90,10 @@ window.fetch = async (input, init) => {
 
 ## 4.1 Bootstrap and Config
 
-- Entry: `backend/src/server.ts`
-- App factory: `backend/src/app.ts`
-- Env parser/validation: `backend/src/config/env.ts` (Zod)
-- DB connector: `backend/src/config/db.ts` (`mongoose.connect`)
+- Entry: `backend/src/server.js`
+- App factory: `backend/src/app.js`
+- Env parser/validation: `backend/src/config/env.js` (Zod)
+- DB connector: `backend/src/config/db.js` (`mongoose.connect`)
 
 Important behavior:
 
@@ -116,24 +116,24 @@ Important behavior:
 
 ## 4.3 Route Modules and Responsibilities
 
-Mounted under `/api/v1` in `backend/src/routes/index.ts`:
+Mounted under `/api/v1` in `backend/src/routes/index.js`:
 
-- `auth` -> `auth.routes.ts`
-- `events` -> `events.routes.ts`
-- `bookings` -> `bookings.routes.ts`
-- `tickets` -> `tickets.routes.ts`
-- `checkins` -> `checkins.routes.ts`
-- `promoters` -> `promoters.routes.ts`
-- `analytics` -> `analytics.routes.ts`
-- `admin` -> `admin.routes.ts`
-- `organizer` -> `organizer.routes.ts`
-- `uploads` -> `uploads.routes.ts`
-- `payments` -> `payments.routes.ts`
-- misc (`/profile/update`, `/contact`) -> `misc.routes.ts`
+- `auth` -> `auth.routes.js`
+- `events` -> `events.routes.js`
+- `bookings` -> `bookings.routes.js`
+- `tickets` -> `tickets.routes.js`
+- `checkins` -> `checkins.routes.js`
+- `promoters` -> `promoters.routes.js`
+- `analytics` -> `analytics.routes.js`
+- `admin` -> `admin.routes.js`
+- `organizer` -> `organizer.routes.js`
+- `uploads` -> `uploads.routes.js`
+- `payments` -> `payments.routes.js`
+- misc (`/profile/update`, `/contact`) -> `misc.routes.js`
 
 ## 4.4 Auth and Identity Flow
 
-`backend/src/routes/auth.routes.ts` handles:
+`backend/src/routes/auth.routes.js` handles:
 
 - Register/signup (`/register`, `/signup`)
 - Login/logout/signout
@@ -164,7 +164,7 @@ Role bridging:
 
 ### 4.5.2 Booking Lifecycle (Non-payment)
 
-`bookings.routes.ts`:
+`bookings.routes.js`:
 
 1. Validate role and payload
 2. Validate event status and tier capacity
@@ -177,7 +177,7 @@ Role bridging:
 
 ### 4.5.3 Paid Booking Lifecycle (Razorpay)
 
-`payments.routes.ts`:
+`payments.routes.js`:
 
 1. `POST /payments/create-order`
    - Validates event + capacity + no duplicate confirmed booking
@@ -194,10 +194,10 @@ Role bridging:
 
 ### 4.5.4 Check-in Flow
 
-- QR and manual check-ins in `checkins.routes.ts`.
+- QR and manual check-ins in `checkins.routes.js`.
 - Organizer can only check in for own events; admin unrestricted.
 - Check-in writes both `Ticket` status and `CheckIn` record and syncs `Attendee` aggregate.
-- `organizer.routes.ts` adds dashboard-specific check-in APIs and duplicate detection messages.
+- `organizer.routes.js` adds dashboard-specific check-in APIs and duplicate detection messages.
 
 ### 4.5.5 Promoter Flow
 
@@ -208,7 +208,7 @@ Role bridging:
 
 ### 4.5.6 Admin and Organizer Analytics/Finance
 
-Both `admin.routes.ts` and `organizer.routes.ts` expose financial summary and reconciliation views:
+Both `admin.routes.js` and `organizer.routes.js` expose financial summary and reconciliation views:
 
 - event-level bookings/check-ins/no-show metrics
 - gross revenue + platform commission calculations
@@ -273,7 +273,7 @@ Primary models (`backend/src/models`):
 
 ## 4.7 File Upload Subsystem
 
-`uploads.routes.ts`:
+`uploads.routes.js`:
 
 - accepts base64 image payloads (jpeg/png/gif/webp)
 - max file size: 5MB
@@ -285,9 +285,9 @@ Primary models (`backend/src/models`):
 
 `backend/scripts`:
 
-- `backfill-role-flow-data.ts`: tenant + attendee backfill and index sync
-- `migrate-schema-db.ts`: schema alias/data compatibility migration
-- `smoke-test-api.ts`: end-to-end API smoke harness covering auth/events/bookings/checkins/promoters/admin/payments
+- `backfill-role-flow-data.js`: tenant + attendee backfill and index sync
+- `migrate-schema-db.js`: schema alias/data compatibility migration
+- `smoke-test-api.js`: end-to-end API smoke harness covering auth/events/bookings/checkins/promoters/admin/payments
 
 ---
 
@@ -301,7 +301,7 @@ Primary models (`backend/src/models`):
 
 ## 5.2 Supabase-like Client Adapter (Critical Abstraction)
 
-`frontend/lib/convene/client.ts` is the main frontend data/auth adapter.
+`frontend/lib/convene/client.js` is the main frontend data/auth adapter.
 
 It provides a **Supabase-style API surface** while translating to backend REST calls:
 
@@ -352,7 +352,7 @@ Lazy-loading:
 
 ## 5.5 Asset URL Normalization
 
-`frontend/lib/storage.ts` translates stored image paths to resolved API URLs and strips legacy prefixes.
+`frontend/lib/storage.js` translates stored image paths to resolved API URLs and strips legacy prefixes.
 
 ## 5.6 Frontend Tests
 
@@ -481,7 +481,6 @@ All below are mounted under `/api/v1` unless noted.
 - `npm run dev:backend`
 - `npm run dev:frontend`
 - `npm run build`
-- `npm run typecheck`
 
 ## 8.2 Backend Environment (`backend/.env.example`)
 
@@ -542,7 +541,7 @@ Key groups:
 3. Multiple API calling layers:
 
 - `window.fetch` override in `src/main.jsx`
-- plus auth/data adapter in `lib/convene/client.ts`
+- plus auth/data adapter in `lib/convene/client.js`
 
 ---
 
@@ -550,16 +549,16 @@ Key groups:
 
 If onboarding a new engineer, read in this order:
 
-1. `backend/src/server.ts`
-2. `backend/src/app.ts`
-3. `backend/src/routes/index.ts`
-4. `backend/src/routes/auth.routes.ts`
-5. `backend/src/routes/bookings.routes.ts`
-6. `backend/src/routes/payments.routes.ts`
-7. `backend/src/models/*.ts`
+1. `backend/src/server.js`
+2. `backend/src/app.js`
+3. `backend/src/routes/index.js`
+4. `backend/src/routes/auth.routes.js`
+5. `backend/src/routes/bookings.routes.js`
+6. `backend/src/routes/payments.routes.js`
+7. `backend/src/models/*.js`
 8. `frontend/src/main.jsx`
 9. `frontend/src/App.jsx`
-10. `frontend/lib/convene/client.ts`
+10. `frontend/lib/convene/client.js`
 11. `frontend/components/events/event-booking-page.jsx`
 12. `frontend/components/admin/admin-dashboard.jsx`
 13. `frontend/components/organizer-team/organizer-team-dashboard.jsx`

@@ -1,7 +1,7 @@
 // ============================================================================
 // PART 9 FIX: FILE UPLOAD SECURITY - VALIDATION UTILITIES
 // ============================================================================
-// File: frontend/lib/validation/file.ts
+// File: frontend/lib/validation/file.js
 // ============================================================================
 
 import { z } from "zod";

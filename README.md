@@ -281,13 +281,11 @@ The implementation uses these role-aligned collections:
 npm run dev:backend    # Start backend in dev mode
 npm run dev:frontend   # Start frontend in dev mode
 npm run build          # Build all packages
-npm run typecheck      # Type check all packages
 ```
 
 ### From Backend Directory
 
 ```bash
-npm run typecheck           # Type check backend
 npm run build               # Build backend
 npm run backfill:role-flow  # Run database migration
 ```
@@ -337,7 +335,6 @@ Contributions are welcome! Please follow these steps:
 
 ### Development Guidelines
 
-- Run `npm run typecheck` before committing
 - Ensure all tests pass
 - Follow the existing code style
 - Update documentation as needed
@@ -359,6 +356,6 @@ This is a fully functional event management platform with complete role flows, b
 The codebase has been verified with:
 
 ```bash
-cd backend && npm run typecheck && npm run build
+cd backend && npm run build
 cd frontend && npm run build
 ```

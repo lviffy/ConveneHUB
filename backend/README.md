@@ -56,23 +56,23 @@ backend/
 │   │   ├── database.js       # MongoDB connection
 │   │   └── index.js          # Environment config
 │   ├── models/               # Mongoose models
-│   │   ├── User.ts
-│   │   ├── Event.ts
-│   │   ├── Booking.ts
-│   │   ├── Ticket.ts
-│   │   ├── Attendee.ts
-│   │   ├── ReferralLink.ts
-│   │   ├── Commission.ts
-│   │   ├── Tenant.ts
-│   │   └── Checkin.ts
+│   │   ├── User.js
+│   │   ├── Event.js
+│   │   ├── Booking.js
+│   │   ├── Ticket.js
+│   │   ├── Attendee.js
+│   │   ├── ReferralLink.js
+│   │   ├── Commission.js
+│   │   ├── Tenant.js
+│   │   └── Checkin.js
 │   ├── routes/               # API route definitions
-│   │   ├── auth.ts
-│   │   ├── events.ts
-│   │   ├── bookings.ts
-│   │   ├── checkins.ts
-│   │   ├── referrallinks.ts
-│   │   ├── commissions.ts
-│   │   └── admin.ts
+│   │   ├── auth.js
+│   │   ├── events.js
+│   │   ├── bookings.js
+│   │   ├── checkins.js
+│   │   ├── referrallinks.js
+│   │   ├── commissions.js
+│   │   └── admin.js
 │   ├── controllers/          # Route controllers
 │   ├── middleware/           # Custom middleware
 │   │   ├── auth.js           # Authentication middleware
@@ -84,12 +84,11 @@ backend/
 │   │   └── payment.js        # Payment processing
 │   └── types/                # JavaScript types
 ├── scripts/                  # Utility scripts
-│   └── backfill-role-flow-data.ts
+│   └── backfill-role-flow-data.js
 ├── uploads/                  # File upload directory
 ├── dist/                     # Compiled JavaScript
 ├── .env                      # Environment variables
 ├── .env.example              # Environment template
-├── tsconfig.json             # JavaScript configuration
 └── package.json              # Dependencies
 ```
 
@@ -167,21 +166,13 @@ npm run build
 npm start
 ```
 
-### Type Checking
-
-```bash
-# Run JavaScript type checker
-npm run typecheck
-```
-
 ## Available Scripts
 
 | Script | Description |
 |--------|-------------|
-| `npm run dev` | Start development server with tsx watch |
+| `npm run dev` | Start development server with Node watch mode |
 | `npm run build` | Compile JavaScript to JavaScript |
 | `npm run start` | Start production server |
-| `npm run typecheck` | Run JavaScript type checker |
 | `npm run backfill:role-flow` | Run database migration script |
 
 ## API Endpoints
@@ -350,9 +341,6 @@ This script:
 ## Testing
 
 ```bash
-# Run type checking
-npm run typecheck
-
 # Build the project
 npm run build
 ```
@@ -398,7 +386,7 @@ CMD ["npm", "start"]
 2. Use JavaScript for all new code
 3. Add JSDoc comments for complex functions
 4. Write tests for new features
-5. Run `npm run typecheck` before committing
+5. Run `npm run build` before committing
 
 ## License
 

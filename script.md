@@ -18,25 +18,25 @@ This script is designed for a video walkthrough of the ConveneHub codebase. It c
 
 ### Scene 2: Server Entry Point & Middleware
 
-- **🖥️ What to show (Screen):** Open `backend/src/server.ts` briefly, then switch to `backend/src/app.ts`. Highlight the middleware section with your cursor (lines containing `helmet`, `cors`, `morgan`, `rateLimit`).
+- **🖥️ What to show (Screen):** Open `backend/src/server.js` briefly, then switch to `backend/src/app.js`. Highlight the middleware section with your cursor (lines containing `helmet`, `cors`, `morgan`, `rateLimit`).
 - **🎙️ What to say (Voice-over):**
-  > "Let's dive into the backend first. Our entry point is `server.ts`, which bootstraps the database connection and starts the Express app. If we look at `app.ts`, you can see our robust middleware stack. We use Helmet for security headers, strict CORS policies, and global API rate limiting to protect our endpoints from abuse."
+  > "Let's dive into the backend first. Our entry point is `server.js`, which bootstraps the database connection and starts the Express app. If we look at `app.js`, you can see our robust middleware stack. We use Helmet for security headers, strict CORS policies, and global API rate limiting to protect our endpoints from abuse."
 
 ### Scene 3: Routing & Role-Based Access Control
 
-- **🖥️ What to show (Screen):** Open `backend/src/routes/index.ts` to show how routes are grouped under `/api/v1`. Then, open `backend/src/middlewares/auth.middleware.ts` and highlight the `requireAuth` and `requireRole` functions.
+- **🖥️ What to show (Screen):** Open `backend/src/routes/index.js` to show how routes are grouped under `/api/v1`. Then, open `backend/src/middlewares/auth.middleware.js` and highlight the `requireAuth` and `requireRole` functions.
 - **🎙️ What to say (Voice-over):**
   > "All our API routes are versioned and modular. Because ConveneHub serves different types of users, security is a priority. We have custom authentication middleware. The `requireAuth` function validates JWT access tokens, while `requireRole` acts as a guard, ensuring that only authorized users—like Admins or Organizers—can access sensitive financial or management endpoints."
 
 ### Scene 4: Database Models (MongoDB)
 
-- **🖥️ What to show (Screen):** Open `backend/src/models/Event.ts` or `backend/src/models/Booking.ts`. Slowly scroll through the schema definition.
+- **🖥️ What to show (Screen):** Open `backend/src/models/Event.js` or `backend/src/models/Booking.js`. Slowly scroll through the schema definition.
 - **🎙️ What to say (Voice-over):**
   > "For our database, we use MongoDB with Mongoose. Here is our Event model. It defines everything from ticket tiers and capacities to the lifecycle status of an event. Our database is heavily relational by design, intelligently linking Users, Events, Bookings, and Tickets together."
 
 ### Scene 5: Core Flows - Payments & Bookings
 
-- **🖥️ What to show (Screen):** Open `backend/src/routes/payments.routes.ts`. Highlight the Razorpay order creation and webhook verification logic.
+- **🖥️ What to show (Screen):** Open `backend/src/routes/payments.routes.js`. Highlight the Razorpay order creation and webhook verification logic.
 - **🎙️ What to say (Voice-over):**
   > "The heart of ConveneHub is the booking and payment engine. When a user buys a ticket, we generate a Razorpay order. Once the payment is verified via Razorpay's API, the system automatically decrements the available ticket count, creates a unique booking record, and issues digital tickets with secure QR codes for the attendees."
 
@@ -52,7 +52,7 @@ This script is designed for a video walkthrough of the ConveneHub codebase. It c
 
 ### Scene 7: The Data API Client Adapter
 
-- **🖥️ What to show (Screen):** Open `frontend/lib/convene/client.ts`. Scroll through the `auth` methods and the `.from()` query builder.
+- **🖥️ What to show (Screen):** Open `frontend/lib/convene/client.js`. Scroll through the `auth` methods and the `.from()` query builder.
 - **🎙️ What to say (Voice-over):**
   > "To keep our UI components clean, we built a custom API client adapter. This acts very much like a Supabase client, providing a clean abstraction over our REST API. It handles all the heavy lifting for authentication state, login logic, and data fetching across the entire application."
 
@@ -64,7 +64,7 @@ This script is designed for a video walkthrough of the ConveneHub codebase. It c
 
 ### Scene 9: QR Code Check-in System
 
-- **🖥️ What to show (Screen):** Open a check-in component, like `frontend/components/organizer-team/live-checkin.jsx` or the backend `backend/src/routes/checkins.routes.ts`.
+- **🖥️ What to show (Screen):** Open a check-in component, like `frontend/components/organizer-team/live-checkin.jsx` or the backend `backend/src/routes/checkins.routes.js`.
 - **🎙️ What to say (Voice-over):**
   > "Finally, for event-day operations, we built a Live Check-in system. Organizers can use their devices to scan attendees' ticket QR codes. This hits our backend check-in endpoint to validate the secure QR payload in real-time. It prevents duplicate entries and updates live attendance stats instantly."
 

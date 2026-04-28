@@ -70,7 +70,7 @@ frontend/
 ├── index.html               # HTML template
 ├── vite.config.js           # Vite configuration
 ├── tailwind.config.js       # Tailwind configuration
-├── tsconfig.json            # JavaScript configuration
+├── jsconfig.json            # JavaScript configuration
 └── package.json             # Dependencies
 ```
 

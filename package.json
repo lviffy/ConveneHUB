@@ -10,7 +10,6 @@
     "dev:frontend": "npm --workspace frontend run dev",
     "dev:backend": "npm --workspace backend run dev",
     "build": "bun run --filter=convenehub-backend build",
-    "start": "bun run --filter=convenehub-backend start",
-    "typecheck": "npm --workspace backend run typecheck && npm --workspace frontend run typecheck"
+    "start": "bun run --filter=convenehub-backend start"
   }
 }
