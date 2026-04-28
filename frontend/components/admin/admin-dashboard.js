@@ -33,7 +33,7 @@ export default function AdminDashboard({
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
+  const client = createClient();
 
   // Update active tab when URL changes
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function AdminDashboard({
     router.replace(query ? `/admin?${query}` : "/admin");
   };
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    await client.auth.signOut();
     router.push("/");
   };
   const sidebarLinks = [{

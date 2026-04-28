@@ -3,7 +3,7 @@ import { createServerClient } from "@/lib/convene/server";
 import { redirect } from "next/navigation";
 import { AdminDashboardLazy } from "@/components/lazy-components";
 export default async function AdminPage() {
-  const supabase = await createServerClient();
+  const client = await createServerClient();
 
   // Check if user is authenticated
   const {
@@ -11,7 +11,7 @@ export default async function AdminPage() {
       session
     },
     error: sessionError
-  } = await supabase.auth.getSession();
+  } = await client.auth.getSession();
   if (sessionError || !session) {
     redirect("/login");
   }
@@ -19,7 +19,7 @@ export default async function AdminPage() {
   // Get user profile from database (source of truth for role)
   const {
     data: profile
-  } = await supabase.from("profiles").select("*").eq("id", session.user.id).single();
+  } = await client.from("profiles").select("*").eq("id", session.user.id).single();
   const userRole = profile ? profile.role || "user" : "user";
 
   // Check if user is part of CONVENEHUB team

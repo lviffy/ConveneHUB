@@ -25,7 +25,7 @@ export default function EventsListSection() {
   const [cities, setCities] = useState(["All"]);
   const [user, setUser] = useState(null);
   const [userBookings, setUserBookings] = useState(new Set());
-  const supabase = useMemo(() => createClient(), []);
+  const client = useMemo(() => createClient(), []);
 
   // Clear URL filters
   const clearFilters = () => {
@@ -83,7 +83,7 @@ export default function EventsListSection() {
         data: {
           user: authUser
         }
-      } = await supabase.auth.getUser();
+      } = await client.auth.getUser();
       setUser(authUser);
       if (authUser) {
         fetchUserBookings(authUser.id);
@@ -96,7 +96,7 @@ export default function EventsListSection() {
       data: {
         subscription
       }
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = client.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user || null);
       if (session?.user) {
         fetchUserBookings(session.user.id);
@@ -107,7 +107,7 @@ export default function EventsListSection() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [supabase]);
+  }, [client]);
 
   // Fetch user's bookings
   const fetchUserBookings = async userId => {
@@ -115,7 +115,7 @@ export default function EventsListSection() {
       const {
         data,
         error
-      } = await supabase.from("bookings").select("event_id").eq("user_id", userId).neq("booking_status", "cancelled");
+      } = await client.from("bookings").select("event_id").eq("user_id", userId).neq("booking_status", "cancelled");
       if (!error && data) {
         const bookedEventIds = new Set(data.map(booking => booking.event_id));
         setUserBookings(bookedEventIds);
@@ -133,7 +133,7 @@ export default function EventsListSection() {
     let debounceTimer;
 
     // Set up real-time subscription for booking changes
-    const channel = supabase.channel("public-events-bookings").on("postgres_changes", {
+    const channel = client.channel("public-events-bookings").on("postgres_changes", {
       event: "*",
       schema: "public",
       table: "bookings"
@@ -152,7 +152,7 @@ export default function EventsListSection() {
       clearTimeout(debounceTimer);
       channel.unsubscribe();
     };
-  }, [user, fetchEvents, supabase]);
+  }, [user, fetchEvents, client]);
 
   // Memoize filtered events to prevent unnecessary recalculations
   const filteredEvents = useMemo(() => {

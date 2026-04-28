@@ -499,7 +499,7 @@ Key groups:
 Key groups:
 
 - API proxy targeting: `VITE_API_BASE_URL`
-- Supabase integration keys: `NEXT_PUBLIC_SUPABASE_*`, `SUPABASE_SERVICE_ROLE_KEY`
+- Authentication and payment environment keys are configured in frontend/backend env files.
 - Razorpay + email + QR HMAC keys
 
 ---

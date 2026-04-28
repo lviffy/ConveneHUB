@@ -13,7 +13,7 @@ export function ProtectedRoute({
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
+  const client = createClient();
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -22,7 +22,7 @@ export function ProtectedRoute({
             user
           },
           error
-        } = await supabase.auth.getUser();
+        } = await client.auth.getUser();
         if (error || !user) {
           router.push("/login");
           return;
@@ -39,7 +39,7 @@ export function ProtectedRoute({
         const {
           data: profile,
           error: profileError
-        } = await supabase.from("profiles").select("role").eq("id", user.id).single();
+        } = await client.from("profiles").select("role").eq("id", user.id).single();
 
         // SECURITY: Only use role from profiles table, never from user_metadata
         // If profile doesn't exist, redirect to complete-profile
@@ -61,7 +61,7 @@ export function ProtectedRoute({
       }
     };
     checkAuth();
-  }, [router, supabase, allowedRoles, redirectTo]);
+  }, [router, client, allowedRoles, redirectTo]);
   if (isLoading) {
     return React.createElement("div", {
       className: "min-h-screen flex items-center justify-center"

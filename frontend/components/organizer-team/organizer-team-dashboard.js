@@ -38,7 +38,7 @@ export default function MovieTeamDashboard({
   const [notesSaved, setNotesSaved] = useState(false);
   const [notesError, setNotesError] = useState("");
   const router = useRouter();
-  const supabase = createClient();
+  const client = createClient();
 
   // Fetch organizer-owned events on component mount
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function MovieTeamDashboard({
         data: {
           session
         }
-      } = await supabase.auth.getSession();
+      } = await client.auth.getSession();
       if (!session?.access_token) {
         throw new Error("Please log in again to load your events");
       }
@@ -76,7 +76,7 @@ export default function MovieTeamDashboard({
   };
   const handleSignOut = async () => {
     try {
-      await supabase.auth.signOut();
+      await client.auth.signOut();
       window.location.href = "/";
     } catch (error) {
       console.error("Sign out error:", error);

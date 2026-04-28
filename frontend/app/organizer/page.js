@@ -3,7 +3,7 @@ import { createServerClient } from "@/lib/convene/server";
 import { redirect } from "next/navigation";
 import { OrganizerTeamDashboardLazy } from "@/components/lazy-components";
 export default async function OrganizerPage() {
-  const supabase = await createServerClient();
+  const client = await createServerClient();
 
   // Check if user is authenticated.
   const {
@@ -11,7 +11,7 @@ export default async function OrganizerPage() {
       session
     },
     error: sessionError
-  } = await supabase.auth.getSession();
+  } = await client.auth.getSession();
   if (sessionError || !session) {
     redirect("/login");
   }
@@ -19,7 +19,7 @@ export default async function OrganizerPage() {
   // Get user profile from profiles table (source of truth).
   const {
     data: profile
-  } = await supabase.from("profiles").select("*").eq("id", session.user.id).single();
+  } = await client.from("profiles").select("*").eq("id", session.user.id).single();
   const userRole = profile?.role || "user";
   if (userRole !== "organizer") {
     return React.createElement("div", {

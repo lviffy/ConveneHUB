@@ -11,12 +11,12 @@ export default function UpcomingHighlights() {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchUpcomingEvent = async () => {
-      const supabase = createClient();
+      const client = createClient();
       const today = new Date().toISOString();
       const {
         data,
         error
-      } = await supabase.from("events").select("*").eq("status", "published").gte("date_time", today).order("date_time", {
+      } = await client.from("events").select("*").eq("status", "published").gte("date_time", today).order("date_time", {
         ascending: true
       }).limit(1).single();
       if (!error && data) {

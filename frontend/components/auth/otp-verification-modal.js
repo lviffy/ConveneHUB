@@ -25,7 +25,7 @@ export function OTPVerificationModal({
   const {
     toast
   } = useToast();
-  const supabase = createClient();
+  const client = createClient();
 
   // Reset state when modal opens
   useEffect(() => {
@@ -61,7 +61,7 @@ export function OTPVerificationModal({
       const {
         data,
         error
-      } = await supabase.auth.verifyOtp({
+      } = await client.auth.verifyOtp({
         email,
         token: otp,
         type
@@ -99,7 +99,7 @@ export function OTPVerificationModal({
     try {
       const {
         error
-      } = await supabase.auth.signInWithOtp({
+      } = await client.auth.signInWithOtp({
         email,
         options: {
           type,

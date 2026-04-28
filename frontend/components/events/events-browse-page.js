@@ -13,7 +13,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { resolveAssetUrl } from "@/lib/storage";
 export default function EventsBrowsePage() {
   const router = useRouter();
-  const supabase = useMemo(() => createClient(), []);
+  const client = useMemo(() => createClient(), []);
 
   // State
   const [events, setEvents] = useState([]);
@@ -64,7 +64,7 @@ export default function EventsBrowsePage() {
     try {
       const {
         data
-      } = await supabase.from("bookings").select("event_id").eq("user_id", userId).neq("booking_status", "cancelled");
+      } = await client.from("bookings").select("event_id").eq("user_id", userId).neq("booking_status", "cancelled");
       if (data) {
         setUserBookings(new Set(data.map(b => b.event_id)));
       }
@@ -79,12 +79,12 @@ export default function EventsBrowsePage() {
         data: {
           user: authUser
         }
-      } = await supabase.auth.getUser();
+      } = await client.auth.getUser();
       setUser(authUser);
       if (authUser) fetchUserBookings(authUser.id);
     };
     getUser();
-  }, [fetchEvents, supabase]);
+  }, [fetchEvents, client]);
 
   // Filtered events
   const filteredEvents = useMemo(() => {

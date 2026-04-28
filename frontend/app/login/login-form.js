@@ -58,7 +58,7 @@ export function LoginForm() {
     toast,
     dismiss
   } = useToast();
-  const supabase = createClient();
+  const client = createClient();
   const switchToSignUp = (prefillEmail, notice) => {
     setIsSignUp(true);
     setPassword("");
@@ -183,7 +183,7 @@ export function LoginForm() {
     try {
       const {
         error
-      } = await supabase.auth.signUp({
+      } = await client.auth.signUp({
         email,
         password,
         options: {
@@ -200,7 +200,7 @@ export function LoginForm() {
       }
       const {
         error: otpError
-      } = await supabase.auth.signInWithOtp({
+      } = await client.auth.signInWithOtp({
         email,
         options: {
           type: "signup",
@@ -245,7 +245,7 @@ export function LoginForm() {
       const {
         data,
         error
-      } = await supabase.auth.signInWithPassword({
+      } = await client.auth.signInWithPassword({
         email,
         password
       });
@@ -300,12 +300,12 @@ export function LoginForm() {
   };
   const handleGoogleLogin = async () => {
     try {
-      const supabase = createClient();
+      const client = createClient();
       // Ensure sign-in flow is treated as sign-in (not stale sign-up intent)
       document.cookie = "pending_google_signup=; Max-Age=0; Path=/; SameSite=Lax";
       const {
         error
-      } = await supabase.auth.signInWithOAuth({
+      } = await client.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth/callback`
@@ -345,7 +345,7 @@ export function LoginForm() {
       return;
     }
     try {
-      const supabase = createClient();
+      const client = createClient();
 
       // Store signup data in cookie so server can access it
       // Role is always 'user' for regular login page
@@ -360,7 +360,7 @@ export function LoginForm() {
       document.cookie = `pending_google_signup=${encodeURIComponent(JSON.stringify(signupDataWithRole))}; path=/; max-age=600; SameSite=Lax;${secureFlag}`;
       const {
         error
-      } = await supabase.auth.signInWithOAuth({
+      } = await client.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth/callback`

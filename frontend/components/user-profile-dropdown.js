@@ -18,20 +18,20 @@ export function UserProfileDropdown() {
   const {
     toast
   } = useToast();
-  const supabase = React.useMemo(() => createClient(), []);
+  const client = React.useMemo(() => createClient(), []);
   React.useEffect(() => {
     const getUser = async () => {
       const {
         data: {
           user
         }
-      } = await supabase.auth.getUser();
+      } = await client.auth.getUser();
       setUser(user);
       if (user) {
         // Fetch profile data from profiles table
         const {
           data: profileData
-        } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+        } = await client.from("profiles").select("*").eq("id", user.id).single();
         if (profileData) {
           setProfile(profileData);
         }
@@ -40,7 +40,7 @@ export function UserProfileDropdown() {
         const {
           count,
           error
-        } = await supabase.from("bookings").select("*", {
+        } = await client.from("bookings").select("*", {
           count: "exact",
           head: true
         }).eq("user_id", user.id).eq("checked_in", true).eq("booking_status", "confirmed");
@@ -57,16 +57,16 @@ export function UserProfileDropdown() {
       data: {
         subscription
       }
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = client.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       // If session changes, we should probably re-fetch profile, but for now this handles sign out
       if (!session) setProfile(null);
     });
     return () => subscription.unsubscribe();
-  }, [supabase]);
+  }, [client]);
   const handleSignOut = async () => {
     try {
-      await supabase.auth.signOut();
+      await client.auth.signOut();
       toast({
         title: "Signed out",
         description: "You have been signed out successfully."

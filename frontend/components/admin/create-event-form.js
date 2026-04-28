@@ -64,7 +64,7 @@ export default function CreateEventForm({
   const {
     toast
   } = useToast();
-  const supabase = createClient();
+  const client = createClient();
   const form = useForm({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
@@ -93,7 +93,7 @@ export default function CreateEventForm({
       const {
         data: event,
         error
-      } = await supabase.from("events").insert({
+      } = await client.from("events").insert({
         title: data.title,
         description: data.description,
         venue_name: data.venue_name,
@@ -121,7 +121,7 @@ export default function CreateEventForm({
       }
 
       // Log the action in audit logs
-      await supabase.from("audit_logs").insert({
+      await client.from("audit_logs").insert({
         actor_id: userId,
         actor_role: actorRole,
         action: "CREATE_EVENT",
@@ -170,7 +170,7 @@ export default function CreateEventForm({
         try {
           const filePath = extractUploadPath(currentImage);
           if (filePath) {
-            await supabase.storage.from("events").remove([filePath]);
+            await client.storage.from("events").remove([filePath]);
           }
         } catch (urlError) {}
       }
@@ -183,7 +183,7 @@ export default function CreateEventForm({
       const {
         data,
         error
-      } = await supabase.storage.from("events").upload(filePath, file, {
+      } = await client.storage.from("events").upload(filePath, file, {
         cacheControl: "3600",
         upsert: false
       });

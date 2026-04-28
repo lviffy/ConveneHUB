@@ -18,7 +18,7 @@ export function CompleteProfileForm() {
   const {
     toast
   } = useToast();
-  const supabase = createClient();
+  const client = createClient();
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +33,7 @@ export function CompleteProfileForm() {
           user: currentUser
         },
         error
-      } = await supabase.auth.getUser();
+      } = await client.auth.getUser();
       if (error || !currentUser) {
         router.push("/login");
         return;
@@ -42,7 +42,7 @@ export function CompleteProfileForm() {
       setUserEmail(currentUser.email || "");
       const {
         data: profile
-      } = await supabase.from("profiles").select("phone, city").eq("id", currentUser.id).single();
+      } = await client.from("profiles").select("phone, city").eq("id", currentUser.id).single();
       if (profile && typeof profile === "object") {
         const profileData = profile;
         if (profileData.phone) setPhone(profileData.phone);
@@ -74,7 +74,7 @@ export function CompleteProfileForm() {
       }
       const {
         error
-      } = await supabase.from("profiles").update({
+      } = await client.from("profiles").update({
         phone: phone || null,
         city
       }).eq("id", user.id).single();

@@ -17,7 +17,7 @@ function formatMoney(value) {
   }).format(Number(value || 0));
 }
 export default function PromoterPage() {
-  const supabase = useMemo(() => createClient(), []);
+  const client = useMemo(() => createClient(), []);
   const navigate = useNavigate();
   const {
     toast
@@ -78,7 +78,7 @@ export default function PromoterPage() {
         data: {
           session
         }
-      } = await supabase.auth.getSession();
+      } = await client.auth.getSession();
       if (!session) {
         navigate("/login", {
           replace: true
@@ -94,7 +94,7 @@ export default function PromoterPage() {
       await loadDashboardData(false);
     };
     void run();
-  }, [navigate, supabase]);
+  }, [navigate, client]);
   const createLink = async () => {
     if (!selectedEventId || creatingLink) return;
     try {

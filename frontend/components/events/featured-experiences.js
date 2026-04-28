@@ -47,11 +47,11 @@ export default function FeaturedExperiences() {
   const [canScrollRight, setCanScrollRight] = useState(true);
   useEffect(() => {
     const fetchFeaturedEvents = async () => {
-      const supabase = createClient();
+      const client = createClient();
       const {
         data,
         error
-      } = await supabase.from("events").select("*").eq("status", "published").gt("date_time", new Date().toISOString()).order("date_time", {
+      } = await client.from("events").select("*").eq("status", "published").gt("date_time", new Date().toISOString()).order("date_time", {
         ascending: true
       }).limit(6);
       if (!error && data) {

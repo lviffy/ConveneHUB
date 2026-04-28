@@ -14,7 +14,7 @@ export const EventsHeader = () => {
   const {
     scrollYProgress
   } = useScroll();
-  const supabase = React.useMemo(() => createClient(), []);
+  const client = React.useMemo(() => createClient(), []);
   React.useEffect(() => {
     const unsubscribe = scrollYProgress.on("change", latest => {
       setScrolled(latest > 0.05);
@@ -29,7 +29,7 @@ export const EventsHeader = () => {
         data: {
           user
         }
-      } = await supabase.auth.getUser();
+      } = await client.auth.getUser();
       setUser(user);
     };
     getUser();
@@ -39,11 +39,11 @@ export const EventsHeader = () => {
       data: {
         subscription
       }
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = client.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
     return () => subscription.unsubscribe();
-  }, [supabase]);
+  }, [client]);
   return React.createElement("header", {
     className: "fixed top-0 left-0 right-0 z-[999]"
   }, React.createElement(motion.nav, {

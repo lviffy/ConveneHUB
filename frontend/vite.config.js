@@ -27,12 +27,6 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       "process.env.NODE_ENV": JSON.stringify(env.NODE_ENV || mode),
-      "process.env.NEXT_PUBLIC_SUPABASE_URL": JSON.stringify(
-        env.NEXT_PUBLIC_SUPABASE_URL || env.VITE_SUPABASE_URL || "",
-      ),
-      "process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY": JSON.stringify(
-        env.NEXT_PUBLIC_SUPABASE_ANON_KEY || env.VITE_SUPABASE_ANON_KEY || "",
-      ),
       "process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID": JSON.stringify(
         env.NEXT_PUBLIC_RAZORPAY_KEY_ID || env.VITE_RAZORPAY_KEY_ID || "",
       ),

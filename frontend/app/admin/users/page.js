@@ -20,7 +20,7 @@ export default function UserManagementPage() {
   const {
     toast
   } = useToast();
-  const supabase = createClient();
+  const client = createClient();
   useEffect(() => {
     checkAuth();
     fetchUsers();
@@ -30,7 +30,7 @@ export default function UserManagementPage() {
       data: {
         user
       }
-    } = await supabase.auth.getUser();
+    } = await client.auth.getUser();
     setCurrentUser(user);
   };
   const fetchUsers = async () => {

@@ -57,7 +57,7 @@ export function MovieTeamLoginForm() {
     toast,
     dismiss
   } = useToast();
-  const supabase = createClient();
+  const client = createClient();
   const switchToSignUp = (prefillEmail, notice) => {
     setIsSignUp(true);
     setPassword("");
@@ -150,7 +150,7 @@ export function MovieTeamLoginForm() {
     try {
       const {
         error
-      } = await supabase.auth.signUp({
+      } = await client.auth.signUp({
         email,
         password,
         options: {
@@ -167,7 +167,7 @@ export function MovieTeamLoginForm() {
       }
       const {
         error: otpError
-      } = await supabase.auth.signInWithOtp({
+      } = await client.auth.signInWithOtp({
         email,
         options: {
           type: "signup",
@@ -212,7 +212,7 @@ export function MovieTeamLoginForm() {
       const {
         data,
         error
-      } = await supabase.auth.signInWithPassword({
+      } = await client.auth.signInWithPassword({
         email,
         password
       });
@@ -227,7 +227,7 @@ export function MovieTeamLoginForm() {
       // SECURITY: Verify the user is a movie team member
       if (userRole !== "organizer") {
         // Sign out the user since they're not a movie team member
-        await supabase.auth.signOut();
+        await client.auth.signOut();
         throw new Error("This login is for event operations members only. Please use the regular login page if you are a general user.");
       }
 
@@ -266,7 +266,7 @@ export function MovieTeamLoginForm() {
   };
   const handleGoogleLogin = async () => {
     try {
-      const supabase = createClient();
+      const client = createClient();
       // Ensure sign-in flow is treated as sign-in (not stale sign-up intent)
       document.cookie = "pending_google_signup=; Max-Age=0; Path=/; SameSite=Lax";
 
@@ -277,7 +277,7 @@ export function MovieTeamLoginForm() {
       document.cookie = `movie_team_login=true; path=/; max-age=600; SameSite=Lax;${secureFlag}`;
       const {
         error
-      } = await supabase.auth.signInWithOAuth({
+      } = await client.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth/callback?movie_team=true`
@@ -317,7 +317,7 @@ export function MovieTeamLoginForm() {
       return;
     }
     try {
-      const supabase = createClient();
+      const client = createClient();
 
       // Store signup data in cookie so server can access it
       // Role is always movie_team - hardcoded for security
@@ -333,7 +333,7 @@ export function MovieTeamLoginForm() {
       document.cookie = `movie_team_login=true; path=/; max-age=600; SameSite=Lax;${secureFlag}`;
       const {
         error
-      } = await supabase.auth.signInWithOAuth({
+      } = await client.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth/callback?movie_team=true`

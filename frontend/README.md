@@ -1,233 +1,98 @@
 # ConveneHub Frontend
 
-<div align="center">
-
-**The React + Vite frontend for ConveneHub event management platform**
-
-[![React](https://img.shields.io/badge/React-18.3+-61DAFB)](https://react.dev/)
-[![JavaScript](https://img.shields.io/badge/JavaScript-5.2-blue)](https://www.javascriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-7.1-646CFF)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.3-38B2AC)](https://tailwindcss.com/)
-
-</div>
-
----
+React + Vite client application for ConveneHub.
 
 ## Overview
 
-The ConveneHub frontend is a modern, responsive React application built with Vite and JavaScript. It provides role-based interfaces for organizers, attendees, promoters, and admins to manage events, bookings, and check-ins.
+The frontend delivers role-specific experiences for attendees, organizers, promoters, and administrators.
 
-## Features
+- Framework: React
+- Build tool: Vite
+- Styling: Tailwind CSS
+- Routing: React Router
+- Forms/validation: React Hook Form + Zod
 
-- **Multi-Role Interface** — Distinct dashboards for organizers, attendees, promoters, and admins
-- **Event Discovery** — Browse and search events with filtering options
-- **Ticket Booking** — Seamless booking flow with QR code generation
-- **QR Code Scanning** — Built-in QR scanner for check-in validation
-- **Real-time Updates** — Live booking and check-in status
-- **Responsive Design** — Mobile-first design that works on all devices
-- **Interactive Maps** — Event venue integration with Leaflet
-- **Analytics Dashboard** — Visual charts and statistics with Recharts
+## Project Layout
 
-## Tech Stack
-
-| Category          | Technology              |
-| ----------------- | ----------------------- |
-| **Framework**     | React 18.3+             |
-| **Build Tool**    | Vite 7.1                |
-| **Language**      | JavaScript 5.2          |
-| **Styling**       | Tailwind CSS 3.3        |
-| **Routing**       | React Router DOM 7.7    |
-| **UI Components** | Radix UI + shadcn/ui    |
-| **Forms**         | React Hook Form + Zod   |
-| **Animations**    | Framer Motion           |
-| **Charts**        | Recharts                |
-| **Maps**          | Leaflet + React Leaflet |
-| **QR Code**       | jsqr                    |
-| **Icons**         | Lucide React            |
-
-## Project Structure
-
-```
+```text
 frontend/
+├── app/
+├── components/
+├── hooks/
+├── lib/
+├── public/
 ├── src/
-│   ├── App.jsx              # Main application component
-│   ├── main.jsx             # Application entry point
-│   ├── pages/               # Page components
-│   │   ├── auth/            # Authentication pages
-│   │   ├── events/          # Event listing and details
-│   │   ├── bookings/        # Booking management
-│   │   ├── organizer/       # Organizer dashboard
-│   │   ├── promoter/        # Promoter dashboard
-│   │   └── admin/           # Admin dashboard
-│   ├── components/          # Reusable components
-│   │   ├── ui/              # shadcn/ui components
-│   │   └── ...              # Feature-specific components
-│   ├── lib/                 # Utility libraries
-│   ├── hooks/               # Custom React hooks
-│   ├── utils/               # Helper functions
-│   └── types/               # JavaScript type definitions
-├── public/                  # Static assets
-├── index.html               # HTML template
-├── vite.config.js           # Vite configuration
-├── tailwind.config.js       # Tailwind configuration
-├── jsconfig.json            # JavaScript configuration
-└── package.json             # Dependencies
+├── index.html
+├── jsconfig.json
+├── tailwind.config.js
+├── vite.config.js
+└── package.json
 ```
 
-## Getting Started
+## Local Development
 
 ### Prerequisites
 
 - Node.js 18+
-- npm or yarn
+- npm 9+
 
-### Installation
+### Install
 
 ```bash
-# Install dependencies
+cd frontend
 npm install
-
-# Copy environment variables
 cp .env.example .env.local
 ```
 
-### Environment Variables
-
-Configure your environment in `.env.local`:
-
-```env
-# API Configuration
-VITE_API_BASE_URL=http://localhost:3000/api
-
-# Optional: Google OAuth
-VITE_GOOGLE_CLIENT_ID=your-google-client-id
-```
-
-### Development
+### Run
 
 ```bash
-# Start development server
 npm run dev
-
-# The app will be available at http://localhost:5173
 ```
 
-### Build
+Default URL:
+
+- `http://localhost:5173`
+
+## Build and Preview
 
 ```bash
-# Build for production
 npm run build
-
-# Preview production build
 npm run start
 ```
 
-### Linting
+## Scripts
 
-```bash
-# Run ESLint
-npm run lint
-```
+- `npm run dev` - Start Vite development server
+- `npm run build` - Build production assets
+- `npm run start` - Preview production build
+- `npm run lint` - Run ESLint
+- `npm run analyze` - Build with bundle analysis flag
 
-## Available Scripts
+## Environment Variables
 
-| Script            | Description              |
-| ----------------- | ------------------------ |
-| `npm run dev`     | Start development server |
-| `npm run build`   | Build for production     |
-| `npm run start`   | Preview production build |
-| `npm run lint`    | Run ESLint               |
-| `npm run analyze` | Analyze bundle size      |
+Set values in `frontend/.env.local`.
 
-## Key Components
+Common keys:
 
-### Authentication
-
-- Login and registration forms
-- Google OAuth integration
-- Protected route wrapper
-- Session management
-
-### Event Management
-
-- Event listing with filters
-- Event detail pages
-- Event creation form (organizers)
-- Event editing and deletion
-
-### Booking System
-
-- Ticket selection
-- Booking confirmation
-- QR code display
-- Booking history
-
-### Check-in System
-
-- QR code scanner
-- Manual check-in
-- Check-in history
-- Real-time status updates
-
-### Analytics
-
-- Sales charts
-- Attendance statistics
-- Revenue tracking
-- Export functionality
-
-## Styling
-
-The project uses Tailwind CSS for styling with a custom design system:
-
-- **Colors**: Primary, secondary, accent, and semantic colors
-- **Typography**: Inter font family
-- **Spacing**: Consistent spacing scale
-- **Components**: Reusable UI components with variants
-
-## State Management
-
-State is managed through:
-
-- **React Context** — Global state (auth, theme)
-- **React Hook Form** — Form state and validation
-- **React Router** — Navigation state
-- **Custom Hooks** — Reusable state logic
+- `VITE_API_BASE_URL` (for example `http://localhost:3000/api/v1`)
+- `VITE_API_PROXY_TARGET` (optional local proxy target)
+- `VITE_RAZORPAY_KEY_ID` / `NEXT_PUBLIC_RAZORPAY_KEY_ID` (if enabled)
 
 ## API Integration
 
-The frontend communicates with the backend via REST API:
+The frontend targets backend routes under `/api/v1`.
 
-- Base URL: Configured via `VITE_API_BASE_URL`
-- Authentication: JWT tokens stored in localStorage
-- Error handling: Centralized error handling
-- Loading states: Global loading indicators
+When using local proxy in `vite.config.js`, API calls to `/api/...` are rewritten to `/api/v1/...`.
 
-## Browser Support
+## Quality Expectations
 
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
+Before merging frontend changes:
 
-## Contributing
-
-1. Follow the existing code style
-2. Use JavaScript for all new code
-3. Add tests for new features
-4. Update documentation as needed
-5. Run `npm run lint` before committing
+- Run `npm run lint`
+- Run `npm run build`
+- Verify key role-based flows manually (auth, events, bookings, check-ins)
 
 ## License
 
-MIT License — see the main project LICENSE file for details.
-
----
-
-**Built with ❤️ by the ConveneHub Team**
-<<<<<<< HEAD
-=======
-
-_Last Updated: April 26, 2026_
-
-> > > > > > > 885b164eaedd794fab3a8b0572cc3d121d2522a8
+MIT

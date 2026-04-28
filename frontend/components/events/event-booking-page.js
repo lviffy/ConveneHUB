@@ -38,7 +38,7 @@ export default function EventBookingPage({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const supabase = useMemo(() => createClient(), []);
+  const client = useMemo(() => createClient(), []);
 
   // Core state
   const [event, setEvent] = useState(null);
@@ -205,7 +205,7 @@ export default function EventBookingPage({
       const {
         data,
         error
-      } = await supabase.from("bookings").select(`
+      } = await client.from("bookings").select(`
           booking_id,
           booking_code,
           booking_status,
@@ -230,7 +230,7 @@ export default function EventBookingPage({
     } catch (error) {
       setExistingBooking(null);
     }
-  }, [eventId, supabase, fetchTickets]);
+  }, [eventId, client, fetchTickets]);
 
   // Initialize all data
   const initializePageData = useCallback(async () => {
@@ -243,7 +243,7 @@ export default function EventBookingPage({
           user: authUser
         },
         error: authError
-      } = await supabase.auth.getUser();
+      } = await client.auth.getUser();
       if (authError) {
         // Handle error silently or with proper error handling
       }
@@ -253,7 +253,7 @@ export default function EventBookingPage({
       if (authUser) {
         const {
           data: profileData
-        } = await supabase.from("profiles").select("*").eq("id", authUser.id).single();
+        } = await client.from("profiles").select("*").eq("id", authUser.id).single();
         if (profileData) {
           setProfile(profileData);
         }
@@ -269,7 +269,7 @@ export default function EventBookingPage({
     } finally {
       setIsInitializing(false);
     }
-  }, [supabase, fetchEventData, checkUserBooking]);
+  }, [client, fetchEventData, checkUserBooking]);
 
   // Initialize on mount
   useEffect(() => {
@@ -290,7 +290,7 @@ export default function EventBookingPage({
 
   // Set up real-time subscription for booking changes
   useEffect(() => {
-    const realtimeClient = supabase;
+    const realtimeClient = client;
     const channel = realtimeClient.channel(`event-bookings-${eventId}`).on("postgres_changes", {
       event: "*",
       schema: "public",
@@ -303,7 +303,7 @@ export default function EventBookingPage({
     return () => {
       channel.unsubscribe();
     };
-  }, [eventId, supabase, fetchEventData]);
+  }, [eventId, client, fetchEventData]);
 
   // Handle QR code display for individual ticket
   const handleShowTicketQR = async ticket => {

@@ -36,7 +36,7 @@ export default function MovieTeamDashboard({
   const [notesSaved, setNotesSaved] = useState(false);
   const [notesError, setNotesError] = useState("");
   const router = useRouter();
-  const supabase = createClient();
+  const client = createClient();
 
   // Fetch organizer-owned events on component mount
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function MovieTeamDashboard({
   };
   const handleSignOut = async () => {
     try {
-      await supabase.auth.signOut();
+      await client.auth.signOut();
       window.location.href = "/";
     } catch (error) {
       console.error("Sign out error:", error);

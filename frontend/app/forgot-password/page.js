@@ -25,7 +25,7 @@ function ForgotPasswordContent() {
   const {
     toast
   } = useToast();
-  const supabase = createClient();
+  const client = createClient();
 
   // Start countdown for resend
   const startCountdown = () => {
@@ -47,7 +47,7 @@ function ForgotPasswordContent() {
       // Send OTP for password recovery
       const {
         error
-      } = await supabase.auth.signInWithOtp({
+      } = await client.auth.signInWithOtp({
         email,
         options: {
           type: "recovery",
@@ -93,7 +93,7 @@ function ForgotPasswordContent() {
       const {
         data,
         error
-      } = await supabase.auth.verifyOtp({
+      } = await client.auth.verifyOtp({
         email,
         token: otp,
         type: "recovery"
@@ -129,7 +129,7 @@ function ForgotPasswordContent() {
     try {
       const {
         error
-      } = await supabase.auth.signInWithOtp({
+      } = await client.auth.signInWithOtp({
         email,
         options: {
           type: "recovery",

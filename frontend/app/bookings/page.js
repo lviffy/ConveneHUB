@@ -14,7 +14,7 @@ import { format } from "date-fns";
 import Image from "next/image";
 export default function MyBookingsPage() {
   const router = useRouter();
-  const supabase = createClient();
+  const client = createClient();
   const {
     toast
   } = useToast();
@@ -74,7 +74,7 @@ export default function MyBookingsPage() {
       data: {
         user
       }
-    } = await supabase.auth.getUser();
+    } = await client.auth.getUser();
     if (!user) {
       router.push("/login?redirect=/bookings");
       return;

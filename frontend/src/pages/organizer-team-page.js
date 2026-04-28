@@ -5,7 +5,7 @@ import { createClient } from "@/lib/convene/client";
 import { OrganizerTeamDashboardLazy } from "@/components/lazy-components";
 import { Spinner } from "@/components/ui/spinner";
 export default function OrganizerTeamPage() {
-  const supabase = useMemo(() => createClient(), []);
+  const client = useMemo(() => createClient(), []);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [accessDenied, setAccessDenied] = useState(false);
@@ -17,7 +17,7 @@ export default function OrganizerTeamPage() {
         data: {
           session
         }
-      } = await supabase.auth.getSession();
+      } = await client.auth.getSession();
       if (!session) {
         navigate("/login", {
           replace: true
@@ -27,7 +27,7 @@ export default function OrganizerTeamPage() {
       setEmail(session.user.email || "");
       const {
         data: dbProfile
-      } = await supabase.from("profiles").select("*").eq("id", session.user.id).single();
+      } = await client.from("profiles").select("*").eq("id", session.user.id).single();
       const finalProfile = dbProfile || {
         id: session.user.id,
         full_name: session.user.user_metadata?.full_name || "Event Operations User",
@@ -44,7 +44,7 @@ export default function OrganizerTeamPage() {
       setLoading(false);
     };
     run();
-  }, [navigate, supabase]);
+  }, [navigate, client]);
   if (loading) {
     return React.createElement("div", {
       className: "min-h-screen flex items-center justify-center"

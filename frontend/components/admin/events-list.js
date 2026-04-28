@@ -27,7 +27,7 @@ export default function EventsList() {
     toast
   } = useToast();
   const router = useRouter();
-  const supabase = createClient();
+  const client = createClient();
   useEffect(() => {
     fetchEvents();
   }, []);
@@ -36,7 +36,7 @@ export default function EventsList() {
       const {
         data,
         error
-      } = await supabase.from("events").select("*").order("created_at", {
+      } = await client.from("events").select("*").order("created_at", {
         ascending: false
       });
       if (error) {
@@ -48,7 +48,7 @@ export default function EventsList() {
         // Get all tickets from confirmed bookings
         const {
           data: bookings
-        } = await supabase.from("bookings").select("tickets_count").eq("event_id", event.event_id).neq("booking_status", "cancelled");
+        } = await client.from("bookings").select("tickets_count").eq("event_id", event.event_id).neq("booking_status", "cancelled");
 
         // Sum up all tickets
         const totalTickets = bookings?.reduce((sum, booking) => sum + (booking.tickets_count || 1), 0) ?? 0;
@@ -188,7 +188,7 @@ export default function EventsList() {
             const {
               data,
               error: storageError
-            } = await supabase.storage.from("events").remove([filePath]);
+            } = await client.storage.from("events").remove([filePath]);
             if (storageError) {
               // Don't throw - still proceed with event deletion
             } else {}
@@ -201,7 +201,7 @@ export default function EventsList() {
       // Delete the event from database
       const {
         error
-      } = await supabase.from("events").delete().eq("event_id", eventToDelete.event_id);
+      } = await client.from("events").delete().eq("event_id", eventToDelete.event_id);
       if (error) throw error;
       toast({
         title: "Event deleted",

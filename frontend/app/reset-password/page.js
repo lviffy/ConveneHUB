@@ -26,7 +26,7 @@ function ResetPasswordContent() {
   const {
     toast
   } = useToast();
-  const supabase = useMemo(() => createClient(), []);
+  const client = useMemo(() => createClient(), []);
 
   // Support both legacy movie-team and new organizer context flags.
   const fromParam = searchParams.get("from");
@@ -39,7 +39,7 @@ function ResetPasswordContent() {
         data: {
           session
         }
-      } = await supabase.auth.getSession();
+      } = await client.auth.getSession();
 
       // User should have a session from the recovery link (set by auth/callback)
       if (session) {
@@ -53,7 +53,7 @@ function ResetPasswordContent() {
         data: {
           session: retrySession
         }
-      } = await supabase.auth.getSession();
+      } = await client.auth.getSession();
       if (retrySession) {
         setIsValidSession(true);
       } else {
@@ -67,7 +67,7 @@ function ResetPasswordContent() {
       data: {
         subscription
       }
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = client.auth.onAuthStateChange((event, session) => {
       if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN" && session) {
         setIsValidSession(true);
       }
@@ -75,7 +75,7 @@ function ResetPasswordContent() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [supabase]);
+  }, [client]);
   const handleSubmit = async e => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -98,7 +98,7 @@ function ResetPasswordContent() {
     try {
       const {
         error
-      } = await supabase.auth.updateUser({
+      } = await client.auth.updateUser({
         password: password
       });
       if (error) {

@@ -23,7 +23,7 @@ function EditEventContent() {
   const {
     toast
   } = useToast();
-  const supabase = createClient();
+  const client = createClient();
   useEffect(() => {
     if (!eventId) {
       toast({
@@ -43,7 +43,7 @@ function EditEventContent() {
       const {
         data,
         error
-      } = await supabase.from("events").select("*").eq("event_id", eventId).single();
+      } = await client.from("events").select("*").eq("event_id", eventId).single();
       if (error) throw error;
       if (!data) {
         toast({

@@ -65,7 +65,7 @@ export default function EditEventForm({
   const {
     toast
   } = useToast();
-  const supabase = createClient();
+  const client = createClient();
 
   // Format date_time for input (YYYY-MM-DDTHH:MM format)
   const formatDateTimeForInput = dateString => {
@@ -138,13 +138,13 @@ export default function EditEventForm({
       // @ts-ignore - Supabase type mismatch
       const {
         error
-      } = await supabase.from("events").update(updateData).eq("event_id", event.event_id);
+      } = await client.from("events").update(updateData).eq("event_id", event.event_id);
       if (error) {
         throw error;
       }
 
       // Log the action in audit logs
-      await supabase.from("audit_logs").insert({
+      await client.from("audit_logs").insert({
         actor_id: event.created_by || "",
         actor_role: actorRole,
         action: "UPDATE_EVENT",
@@ -189,7 +189,7 @@ export default function EditEventForm({
         try {
           const filePath = extractUploadPath(currentImage);
           if (filePath) {
-            await supabase.storage.from("events").remove([filePath]);
+            await client.storage.from("events").remove([filePath]);
           }
         } catch (urlError) {}
       }
@@ -202,7 +202,7 @@ export default function EditEventForm({
       const {
         data,
         error
-      } = await supabase.storage.from("events").upload(filePath, file, {
+      } = await client.storage.from("events").upload(filePath, file, {
         cacheControl: "3600",
         upsert: false
       });
@@ -240,7 +240,7 @@ export default function EditEventForm({
           const {
             data,
             error: storageError
-          } = await supabase.storage.from("events").remove([filePath]);
+          } = await client.storage.from("events").remove([filePath]);
           if (storageError) {
             toast({
               title: "Warning",
@@ -252,7 +252,7 @@ export default function EditEventForm({
             const {
               data: listData,
               error: listError
-            } = await supabase.storage.from("events").list(filePath.split("/")[0], {
+            } = await client.storage.from("events").list(filePath.split("/")[0], {
               search: filePath.split("/").pop()
             });
             toast({
