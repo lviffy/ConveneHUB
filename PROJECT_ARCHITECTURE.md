@@ -335,7 +335,7 @@ Component architecture:
 
 - `components/events/*`: discovery and booking UX
 - `components/admin/*`: financial + reconciliation + event admin
-- `components/organizer-team/*` + `components/movie-team/*`: operational check-in UIs
+- `components/organizer-team/*`: operational check-in UIs
 - `components/ui/*`: reusable design system components
 
 Lazy-loading:

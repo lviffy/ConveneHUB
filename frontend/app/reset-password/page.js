@@ -28,9 +28,8 @@ function ResetPasswordContent() {
   } = useToast();
   const client = useMemo(() => createClient(), []);
 
-  // Support both legacy movie-team and new organizer context flags.
   const fromParam = searchParams.get("from");
-  const isOrganizerFlow = fromParam === "movie-team" || fromParam === "organizer";
+  const isOrganizerFlow = fromParam === "organizer";
   useEffect(() => {
     // Check if user has a valid recovery session
     const checkSession = async () => {

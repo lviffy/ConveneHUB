@@ -52,12 +52,6 @@ export default function App() {
         />
         <Route path="/organizer" element={<OrganizerTeamPage />} />
         <Route path="/promoter" element={<PromoterPage />} />
-        <Route path="/movie-team-login" element={<OrganizerLoginPage />} />
-        <Route
-          path="/movie-team-forgot-password"
-          element={<OrganizerForgotPasswordPage />}
-        />
-        <Route path="/movie-team" element={<OrganizerTeamPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/users" element={<AdminUsersPage />} />
         <Route path="/admin/events/edit" element={<AdminEventsEditPage />} />

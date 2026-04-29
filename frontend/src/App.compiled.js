@@ -106,15 +106,6 @@ function App() {
     path: "/promoter",
     element: React.createElement(_srcPagesPromoterPage2["default"], null)
   }), React.createElement(_reactRouterDom.Route, {
-    path: "/movie-team-login",
-    element: React.createElement(_appOrganizerLoginPage2["default"], null)
-  }), React.createElement(_reactRouterDom.Route, {
-    path: "/movie-team-forgot-password",
-    element: React.createElement(_appOrganizerForgotPasswordPage2["default"], null)
-  }), React.createElement(_reactRouterDom.Route, {
-    path: "/movie-team",
-    element: React.createElement(_srcPagesOrganizerTeamPage2["default"], null)
-  }), React.createElement(_reactRouterDom.Route, {
     path: "/admin",
     element: React.createElement(_srcPagesAdminPage2["default"], null)
   }), React.createElement(_reactRouterDom.Route, {
